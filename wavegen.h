@@ -117,6 +117,7 @@ void setup_wave(int freq, int phase, WAVE_TYPE type, VOICE *voice) {
  * @output Pointer to the output of the next sample in the line
  * returns FALSE if this was the last sample to in the line, or TRUE if there is still points left in the line
  */
+inline
 bool next_bres(LINE_TRIP *line, int *output) {
 	if (line->diffX >= line->diffY) {
 		*output = line->plotY;

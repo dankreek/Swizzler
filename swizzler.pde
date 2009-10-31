@@ -65,11 +65,17 @@ int speakerPin = 11;
 VOICE outVoice;
 int output;
 
+unsigned long ms;
+
+// Update the envelope every millisecond
+ISR(TIMER0_OVF_vect)
+{
+	next_envelope(&outVoice);
+	ms++;
+}
+
 // This is called at SAMPLE_RATE Hz to load the next sample.
 ISR(TIMER1_COMPA_vect) {
-	// OCR2A = sample
-	//OCR2A = lastSample;
-	//lastSample += 1;
 	next_sample(&outVoice);
 	OCR2A = (outVoice.wave.sample - LOWER_BOUND) / OVERSAMPLING;
 }
@@ -80,21 +86,18 @@ void setup()
     //lastSample = 0;
 	Serial.begin(19200);
 	setup_wave(220, 32, SQ_WAVE, &outVoice);
+	ms=0;
 	
 	// Setup the envelope
 	setup_env(ATTACK, DECAY, SUSTAIN, RELEASE, &outVoice);
-	
+	outVoice.envelope.gate = true;	
 	initSound();
 }
 
 void loop()
 {
     while (true) {	
-		delay(50);
-		outVoice.envelope.gate = true;	
-		delay(100);
-		outVoice.envelope.gate = false;
-		delay(75);
+		if (ms == 200) outVoice.envelope.gate = false;
     }
 }
 
