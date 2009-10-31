@@ -77,6 +77,7 @@ ISR(TIMER0_OVF_vect)
 // This is called at SAMPLE_RATE Hz to load the next sample.
 ISR(TIMER1_COMPA_vect) {
 	next_sample(&outVoice);
+	// Put enveloping in here
 	OCR2A = (outVoice.wave.sample - LOWER_BOUND) / OVERSAMPLING;
 }
 
@@ -97,7 +98,7 @@ void setup()
 void loop()
 {
     while (true) {	
-		if (ms == 200) outVoice.envelope.gate = false;
+		if (ms == 1000) outVoice.envelope.gate = false;
     }
 }
 
