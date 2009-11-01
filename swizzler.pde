@@ -64,42 +64,50 @@ int speakerPin = 11;
 //byte lastSample;
 VOICE outVoice;
 int output;
-
-unsigned long ms;
+int tempEnvScale;
 
 // Update the envelope every millisecond
+/*
 ISR(TIMER0_OVF_vect)
 {
-	next_envelope(&outVoice);
+	//next_envelope(&outVoice);
+	//tempEnvScale = (tempEnvScale + 1) % ENV_SCALAR_RANGE;
 	ms++;
 }
+*/
 
 // This is called at SAMPLE_RATE Hz to load the next sample.
+/*
 ISR(TIMER1_COMPA_vect) {
 	next_sample(&outVoice);
 	// Put enveloping in here
-	OCR2A = (outVoice.wave.sample - LOWER_BOUND) / OVERSAMPLING;
+	OCR2A = (((outVoice.wave.sample * tempEnvScale)/ENV_SCALAR_RANGE) - LOWER_BOUND) / OVERSAMPLING;
+
+	// Not enveloped
+	//OCR2A = (outVoice.wave.sample - LOWER_BOUND) / OVERSAMPLING;
 }
+*/
 
 void setup()
 {
+    tempEnvScale=64;
+
     pinMode(ledPin, OUTPUT);
     //lastSample = 0;
 	Serial.begin(19200);
-	setup_wave(220, 32, SQ_WAVE, &outVoice);
-	ms=0;
+	setup_wave(440, 32, SQ_WAVE, &outVoice);
 	
 	// Setup the envelope
 	setup_env(ATTACK, DECAY, SUSTAIN, RELEASE, &outVoice);
 	outVoice.envelope.gate = true;	
-	initSound();
+	//initSound();
 }
 
 void loop()
 {
-    while (true) {	
-		if (ms == 1000) outVoice.envelope.gate = false;
-    }
+	delay(1000);
+	Serial.println(tempEnvScale, DEC);
+	//tempEnvScale = (tempEnvScale + 1) % ENV_SCALAR_RANGE;
 }
 
 /**
@@ -168,6 +176,4 @@ void stopPlayback()
 
     digitalWrite(speakerPin, LOW);
 }
-
-
 

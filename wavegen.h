@@ -8,7 +8,7 @@ enum WAVE_TYPE {TRI_WAVE, SQ_WAVE, NOISE_WAVE};
 #define ENV_SCALAR_RANGE	127
 
 // Set 2X oversampling
-#define OVERSAMPLING 4
+#define OVERSAMPLING 2 
 #define LOWER_BOUND (-128 * OVERSAMPLING)
 #define UPPER_BOUND ((128 * OVERSAMPLING)-1)  
 
