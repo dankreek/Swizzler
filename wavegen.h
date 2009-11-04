@@ -2,10 +2,10 @@ enum WAVE_TYPE {TRI_WAVE, SQ_WAVE, NOISE_WAVE};
 
 #define NULL 0
 
-#define SAMPLE_RATE 32000
+#define SAMPLE_RATE 16000
 
 // Set the maximum envelope scalar value
-#define ENV_SCALAR_RANGE	127
+#define ENV_SCALAR_RANGE	32
 
 // Set 2X oversampling
 #define OVERSAMPLING 2 
@@ -49,6 +49,7 @@ struct VOICE {
 /**
  * Start a line over from the beginning
  */
+inline
 void reset_line(LINE_TRIP *line) {
 	line->plotY = line->initY;
 	line->i = 0;
@@ -99,7 +100,7 @@ void setup_wave(int freq, int phase, WAVE_TYPE type, VOICE *voice) {
 	// Calculate the waves
 	if (type == TRI_WAVE) {
 		init_line_trip(0, LOWER_BOUND, peak_sample, UPPER_BOUND, &voice->wave.start);
-		init_line_trip(peak_sample+1, UPPER_BOUND, wave_length, LOWER_BOUND, &voice->wave.end);
+		init_line_trip(peak_sample, UPPER_BOUND, wave_length, LOWER_BOUND, &voice->wave.end);
 	}
 	else if (type == SQ_WAVE) {
 		init_line_trip(0, LOWER_BOUND, peak_sample, LOWER_BOUND, &voice->wave.start);
@@ -135,15 +136,16 @@ bool next_bres(LINE_TRIP *line, int *output) {
 			return true;
 	}
 	else {
-		int startY;
-		for (startY = line->plotY; (line->error_term <= 0) && (line-> i <= line->diffY); line->i++) {
+		//int startY = line->plotY;
+		for (; (line->error_term <= 0) && (line->i <= line->diffY); line->i++) {
 			line->plotY += line->unitY;
 			line->error_term += line->diffX;
 		}
 		line->error_term -= line->diffY;
 		
 		// Put the sample in the midpoint of the verticle line
-		*output = ((line->plotY + startY)/2);
+		//*output = ((line->plotY + startY)/2);
+		*output = line->plotY;
 		
 		if (line->i > line->diffY)  
 			return false;
@@ -155,6 +157,7 @@ bool next_bres(LINE_TRIP *line, int *output) {
 /**
  * Swap to the next line in the wave loop
  */
+inline
 void next_wave_line(VOICE *voice) {
 	if (voice->wave.cur == &voice->wave.start) {
 		// Go to the downslope of the wave
@@ -172,9 +175,12 @@ void next_wave_line(VOICE *voice) {
  * Get the next sample in the voice
  * TODO: apply the envelope scaling factor after initial audio sample calculation
  */
+inline
 bool next_sample(VOICE *voice) {
-	if (next_bres(voice->wave.cur, &voice->wave.sample))
+	if (next_bres(voice->wave.cur, &voice->wave.sample)) {
+		//voice->wave.sample = (voice->wave.sample * voice->envelope.amp_scalar)/127;
 		return true;
+	}
 	else {
 		next_wave_line(voice);
 		return false;
@@ -193,6 +199,8 @@ bool next_sample(VOICE *voice) {
  * @voice	Voice containing envelope needs
  */
 void setup_env(int attack, int decay, int sustain, int release, VOICE* voice) {
+	voice->envelope.sustain = sustain;
+
 	// Initialize the attack and decay lines
 	init_line_trip(0,0,attack,ENV_SCALAR_RANGE, &voice->envelope.attack);
 	init_line_trip(0,ENV_SCALAR_RANGE,decay,sustain, &voice->envelope.decay);
@@ -212,19 +220,27 @@ void setup_env(int attack, int decay, int sustain, int release, VOICE* voice) {
 	voice->envelope.sustaining = false;
 }
 
+		// The gate's newly opened, start attack phase
+inline
+void close_gate(VOICE *voice) {
+	voice->envelope.gate = true;
+	voice->envelope.sustaining = false;
+	voice->envelope.cur =& voice->envelope.attack;
+	reset_line(voice->envelope.cur);	
+}
+
+inline
+void open_gate(VOICE *voice) {
+	voice->envelope.gate = false;
+}
+
 /**
  * Call this every millisecond to keep envelope in time
  */
+inline
 void next_envelope(VOICE *voice) {
 	// If gate is closed follow attack-decay-sustain cycle
-	if (voice->envelope.gate) {
-		// The gate's newly opened, start attack phase
-		if (voice->envelope.cur == NULL) {
-			voice->envelope.sustaining = false;
-			voice->envelope.cur =& voice->envelope.attack;
-			reset_line(voice->envelope.cur);
-		}
-		
+	if (voice->envelope.gate) {			
 		// If the envelope is not currently sustaining, then follow a line		
 		if (!voice->envelope.sustaining) {	
 			// Set the amplitude scalar to the next y-value in the envelope
@@ -237,12 +253,14 @@ void next_envelope(VOICE *voice) {
 					voice->envelope.sustaining = true;
 					// Get ready for release cycle
 					voice->envelope.cur = &voice->envelope.release;
+					voice->envelope.amp_scalar =  voice->envelope.sustain;
 				}
 				
 				// Reset the next line in the trip
 				reset_line(voice->envelope.cur);
 			}
 		}
+		
 	}
 	// If gate is open follow release cycle until completed
 	else {

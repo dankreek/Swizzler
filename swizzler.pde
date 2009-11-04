@@ -54,60 +54,67 @@
  * the following command to convert my wav file to the appropriate format:
  * sox audiodump.wav -c 1 -r 8000 -u -b macstartup-8000.wav
  */
-#define ATTACK 20
-#define DECAY 20
-#define SUSTAIN 64
-#define RELEASE 50
+#define ATTACK 0
+#define DECAY 10
+// 0-32
+#define SUSTAIN 16
+#define RELEASE 500
  
 int ledPin = 13;
+int buttonPin = 9;
 int speakerPin = 11;
-//byte lastSample;
 VOICE outVoice;
+
 int output;
-int tempEnvScale;
+unsigned long ms=0;
 
 // Update the envelope every millisecond
-/*
 ISR(TIMER0_OVF_vect)
-{
-	//next_envelope(&outVoice);
-	//tempEnvScale = (tempEnvScale + 1) % ENV_SCALAR_RANGE;
-	ms++;
+{	
+	// Get the next envelope value
+	next_envelope(&outVoice);
 }
-*/
 
 // This is called at SAMPLE_RATE Hz to load the next sample.
-/*
-ISR(TIMER1_COMPA_vect) {
+ISR(TIMER1_COMPA_vect) {	
 	next_sample(&outVoice);
-	// Put enveloping in here
-	OCR2A = (((outVoice.wave.sample * tempEnvScale)/ENV_SCALAR_RANGE) - LOWER_BOUND) / OVERSAMPLING;
+	
+	// Mix all outputs
+	output = outVoice.wave.sample;
+	output = (output * outVoice.envelope.amp_scalar)/ENV_SCALAR_RANGE;
+	
+	// Convert signed oversampled data to unsigned 8-bit output
+	OCR2A = (output - LOWER_BOUND) / OVERSAMPLING;
 
 	// Not enveloped
-	//OCR2A = (outVoice.wave.sample - LOWER_BOUND) / OVERSAMPLING;
+	//OCR2A = ((outVoice.wave.sample+outVoice2.wave.sample+outVoice3.wave.sample) - LOWER_BOUND) / OVERSAMPLING;
 }
-*/
 
 void setup()
 {
-    tempEnvScale=64;
-
     pinMode(ledPin, OUTPUT);
+	pinMode(buttonPin, INPUT);
+	
     //lastSample = 0;
-	Serial.begin(19200);
-	setup_wave(440, 32, SQ_WAVE, &outVoice);
+	Serial.begin(9600);
+	setup_wave(880, 32, SQ_WAVE, &outVoice);
 	
 	// Setup the envelope
 	setup_env(ATTACK, DECAY, SUSTAIN, RELEASE, &outVoice);
-	outVoice.envelope.gate = true;	
-	//initSound();
+	outVoice.envelope.gate = false;	
+	initSound();
 }
 
+
+bool gate=false;
 void loop()
 {
-	delay(1000);
-	Serial.println(tempEnvScale, DEC);
-	//tempEnvScale = (tempEnvScale + 1) % ENV_SCALAR_RANGE;
+	if ((digitalRead(buttonPin) == 1) && (outVoice.envelope.gate == false)) {
+		close_gate(&outVoice);
+	}
+	else if ((digitalRead(buttonPin) == 0) && (outVoice.envelope.gate == true)) {
+		open_gate(&outVoice);
+	}
 }
 
 /**
@@ -152,8 +159,8 @@ void initSound()
     // Set the compare register (OCR1A).
     // OCR1A is a 16-bit register, so we have to do this with
     // interrupts disabled to be safe.
-    OCR1A = F_CPU / SAMPLE_RATE;    // 16e6 / 8000 = 2000
-
+    OCR1A = F_CPU / SAMPLE_RATE;    // 16e6 / 16000 = 1000
+	
     // Enable interrupt when TCNT1 == OCR1A (p.136)
     TIMSK1 |= _BV(OCIE1A);
 
