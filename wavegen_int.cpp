@@ -5,14 +5,14 @@
 #include <WProgram.h>
 #include "wavetable.h"
 #include "wavegen_int.h"
-
+#include "wavegen.h"
 
 int wt_index;		// The current index in the wavetable
 
 // This is called at SAMPLE_RATE Hz to load the next sample.
 ISR(TIMER1_COMPA_vect) {	
 	// Output the current sample
-	OCR2A = Wavetable::tri_wt[wt_index];
+	OCR2A = ((int)(Wavetable::triTable[wt_index] << 4) * outVoice.envelope.amp_scalar) / (int)ENV_SCALAR_RANGE;
 
 	// Go to the next sample
 	wt_index = (wt_index+1) % TABLE_SIZE;
@@ -94,7 +94,11 @@ void stopWavegen()
 }
 
 /**
- * Figure out the value of OCR1A for the input frequency
+ * Figure out the value of OCR1A for the input frequency. This basically finds how many CPU cycles
+ * pass during the output of one sample from the wavetable. This is done by using the following formula:
+ * interrupt_counts = (1 / frequency) *
+ *
+ * Note that at 16Mhz there are 16 clock cycles in a microsecond
  */
 void setFreq(int freq) {
 	OCR1A = (unsigned long)1000000 / (unsigned long)freq;

@@ -1,15 +1,19 @@
 #include <WProgram.h>
 #include "wavetable.h"
 
-void Wavetable::generateNoise(unsigned char *buffer) {
+unsigned char Wavetable::noiseTable[TABLE_SIZE];
+unsigned char Wavetable::triTable[TABLE_SIZE];	
+unsigned char Wavetable::sawTable[TABLE_SIZE];
+
+void Wavetable::genNoise() {
 	int i;
 	
 	for (i=0; i < TABLE_SIZE; i++) {
-		buffer[i] = random(WAVE_HEIGHT-1);
+		Wavetable::noiseTable[i] = random(WAVE_HEIGHT-1);
 	}
 }
 
-void Wavetable::generateTriangle(unsigned char *buffer) {
+void Wavetable::genTriangle() {
 	short x1,x2,y1,y2;
 	short slope;
 	int i, sample=0;
@@ -21,7 +25,7 @@ void Wavetable::generateTriangle(unsigned char *buffer) {
 	slope = (y2-y1)/(x2-x1);
 	sample = y1;
 	for (i=0; i < (TABLE_SIZE/2); i++) {
-		buffer[i]= sample;
+		Wavetable::triTable[i]= sample;
 		sample += slope;
 	}
 	
@@ -32,12 +36,12 @@ void Wavetable::generateTriangle(unsigned char *buffer) {
 	slope = (y2-y1)/(x2-x1);
 	sample = y1-1;
 	for (; i < TABLE_SIZE; i++) {
-		buffer[i] = sample;
+		Wavetable::triTable[i] = sample;
 		sample += slope;
 	}
 }
 
-void Wavetable::generateSawtooth(unsigned char *buffer) {
+void Wavetable::genSawtooth() {
 	short x1=0,x2,y1=0,y2;
 	short slope;
 	int i,sample=0;
@@ -47,7 +51,8 @@ void Wavetable::generateSawtooth(unsigned char *buffer) {
 	slope = (y2-y1)/(x2-x1);
 	sample = 0;
 	for (i=0; i < TABLE_SIZE; i++) {
-		buffer[i]= sample;
+		Wavetable::sawTable[i]= sample;
 		sample += slope;
 	}
 }
+
