@@ -74,6 +74,7 @@ void init_line_trip(int x1, int y1, int x2, int y2, LINE_TRIP *line) {
  	else
  		line->unitY = 1;
 }
+
 /**
  * Setup the two lines that create a square or triangle wave
  * @freq	Frequency
