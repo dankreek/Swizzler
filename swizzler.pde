@@ -33,6 +33,8 @@
 #include "wavegen.h"
 #include "wavegen_int.h"
 
+extern "C" void __cxa_pure_virtual() {}
+
 
 /*
  * The audio data needs to be unsigned, 8-bit, 8000 Hz, and small enough
@@ -60,13 +62,11 @@
 #define ATTACK 0
 #define DECAY 10
 // 0-32
-#define SUSTAIN 16
-#define RELEASE 500
+#define SUSTAIN 30 
+#define RELEASE 1000
  
 int ledPin = 13;
 int buttonPin = 9;
-
-VOICE outVoice;
 
 int output;
 unsigned long ms=0;
@@ -80,26 +80,28 @@ ISR(TIMER0_OVF_vect)
 
 void setup()
 {	
-    pinMode(ledPin, OUTPUT);
+	pinMode(ledPin, OUTPUT);
 	pinMode(buttonPin, INPUT);
 
 	// Try and make sure our noise pattern is different every bootup!
 	randomSeed(analogRead(0));
 	
-    //lastSample = 0;
-	Serial.begin(9600);
+	//lastSample = 0;
+	Serial.begin(19200);
 		
 	// Setup the envelope generator
 	setup_env(ATTACK, DECAY, SUSTAIN, RELEASE, &outVoice);
 	outVoice.envelope.gate = false;	
 	
 	// Generate wavetables
-	generateTriangle(tri_wt);
-	generateSawtooth(saw_wt);
-	generateNoise(noise_wt);
+	Wavetable::genTriangle();
+	Wavetable::genSawtooth();
+	Wavetable::genNoise();
 	
 	// Startup the wave generation
 	initWavegen();
+
+	setFreq(440);
 }
 
 
@@ -113,8 +115,4 @@ void loop()
 		open_gate(&outVoice);
 	}
 }
-
-
-
-
 

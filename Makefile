@@ -51,11 +51,12 @@ AVR_TOOLS_PATH = /usr/bin
 SRC =  $(ARDUINO)/pins_arduino.c $(ARDUINO)/wiring.c \
 $(ARDUINO)/wiring_analog.c $(ARDUINO)/wiring_digital.c \
 $(ARDUINO)/wiring_pulse.c \
-$(ARDUINO)/wiring_shift.c $(ARDUINO)/WInterrupts.c
-CXXSRC = $(ARDUINO)/HardwareSerial.cpp $(ARDUINO)/WMath.cpp \
-$(ARDUINO)/Print.cpp
+$(ARDUINO)/wiring_shift.c $(ARDUINO)/WInterrupts.c $(wildcard *.c)
+CXXSRC = $(ARDUINO)/HardwareSerial.cpp $(ARDUINO)/WMath.cpp $(ARDUINO)/Print.cpp $(wildcard *.cpp)
 FORMAT = ihex
 
+#CPPFILES = $(wildcard *.cpp)
+#CFILES = $(wildcard *.c)
 
 # Name of this Makefile (used for "make depend").
 MAKEFILE = Makefile
