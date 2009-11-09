@@ -31,6 +31,7 @@
 #include <avr/pgmspace.h>
 #include "wavetable.h"
 #include "wavegen_int.h"
+#include "envgen.h"
 
 extern "C" void __cxa_pure_virtual() {}
 
@@ -74,7 +75,7 @@ unsigned long ms=0;
 ISR(TIMER0_OVF_vect)
 {	
 	// Get the next envelope value
-	next_envelope(&outVoice);
+	envelopeOut.next();
 }
 
 void setup()
@@ -89,8 +90,8 @@ void setup()
 	Serial.begin(19200);
 		
 	// Setup the envelope generator
-	setup_env(ATTACK, DECAY, SUSTAIN, RELEASE, &outVoice);
-	outVoice.envelope.gate = false;	
+	envelopeOut.setup(ATTACK, DECAY, SUSTAIN, RELEASE);
+	envelopeOut.openGate();	
 	
 	// Generate wavetables
 	Wavetable::genTriangle();
@@ -107,11 +108,11 @@ void setup()
 bool gate=false;
 void loop()
 {
-	if ((digitalRead(buttonPin) == 1) && (outVoice.envelope.gate == false)) {
-		close_gate(&outVoice);
+	if ((digitalRead(buttonPin) == 1) && (envelopeOut.gate == false)) {
+		envelopeOut.closeGate();
 	}
-	else if ((digitalRead(buttonPin) == 0) && (outVoice.envelope.gate == true)) {
-		open_gate(&outVoice);
+	else if ((digitalRead(buttonPin) == 0) && (envelopeOut.gate == true)) {
+		envelopeOut.openGate();
 	}
 }
 

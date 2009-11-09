@@ -9,9 +9,6 @@
 
 class Envelope {
     private:
-	bool		gate;		// TRUE=gate close (signal start envelope)
-					// FALSE=gate open (signalt start release)
-	
 	bool		sustaining;	// Is the envelope currently sustaining while the gate's open?
 
 	bool		last_gate;	// Is this still needed
@@ -24,6 +21,9 @@ class Envelope {
 	Bresenham	*cur;		// Pointer to the current phase of the envelope
 
     public:
+	bool		gate;		// TRUE=gate close (signal start envelope)
+					// FALSE=gate open (signalt start release)
+
 	int		scalar;		// The last calculated amplitude scalar
 	
 	void setup(int attack, int decay, int sustain, int release); 
@@ -45,5 +45,7 @@ class Envelope {
 	
 	
 }; 
+
+extern Envelope envelopeOut;
 
 #endif

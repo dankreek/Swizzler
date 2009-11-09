@@ -5,25 +5,17 @@
 #include <WProgram.h>
 #include "wavetable.h"
 #include "wavegen_int.h"
-#include "wavegen.h"
+#include "envgen.h"
 
 int wt_index;		// The current index in the wavetable
 
 // This is called at SAMPLE_RATE Hz to load the next sample.
 ISR(TIMER1_COMPA_vect) {	
 	// Output the current sample
-	OCR2A = ((int)(Wavetable::triTable[wt_index] << 4) * outVoice.envelope.amp_scalar) / (int)ENV_SCALAR_RANGE;
+	OCR2A = ((int)(Wavetable::triTable[wt_index] << 4) * envelopeOut.scalar) / (int)ENV_SCALAR_RANGE;
 
 	// Go to the next sample
 	wt_index = (wt_index+1) % TABLE_SIZE;
-
-	//next_sample(&outVoice);
-	
-	// Convert signed oversampled data to unsigned 8-bit output
-	//OCR2A = (output - LOWER_BOUND) / OVERSAMPLING;
-
-	// Not enveloped
-	//OCR2A = ((outVoice.wave.sample+outVoice2.wave.sample+outVoice3.wave.sample) - LOWER_BOUND) / OVERSAMPLING;
 }
 
 /**
