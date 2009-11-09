@@ -1,5 +1,14 @@
-#include "envgen.h"
+#include <stdint.h>
+#include <avr/interrupt.h>
+#include "envelope.h"
 #include "bresenham.h"
+
+// Update the envelope every millisecond
+ISR(TIMER0_OVF_vect)
+{	
+	// Get the next envelope value
+	envelopeOut.next();
+}
 
 /**
  * TODO: The release line CAN'T be setup until the gate is opened because the amp_scalar needs to be used as the first Y point

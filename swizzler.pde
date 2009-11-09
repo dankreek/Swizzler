@@ -30,8 +30,8 @@
 #include <avr/io.h>
 #include <avr/pgmspace.h>
 #include "wavetable.h"
-#include "wavegen_int.h"
-#include "envgen.h"
+#include "wavegen.h"
+#include "envelope.h"
 
 extern "C" void __cxa_pure_virtual() {}
 
@@ -62,7 +62,7 @@ extern "C" void __cxa_pure_virtual() {}
 #define ATTACK 0
 #define DECAY 10
 // 0-32
-#define SUSTAIN 30 
+#define SUSTAIN 28 
 #define RELEASE 1000
  
 int ledPin = 13;
@@ -70,13 +70,6 @@ int buttonPin = 9;
 
 int output;
 unsigned long ms=0;
-
-// Update the envelope every millisecond
-ISR(TIMER0_OVF_vect)
-{	
-	// Get the next envelope value
-	envelopeOut.next();
-}
 
 void setup()
 {	

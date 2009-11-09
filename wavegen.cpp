@@ -4,8 +4,8 @@
 #include <avr/pgmspace.h>
 #include <WProgram.h>
 #include "wavetable.h"
-#include "wavegen_int.h"
-#include "envgen.h"
+#include "wavegen.h"
+#include "envelope.h"
 
 int wt_index;		// The current index in the wavetable
 
