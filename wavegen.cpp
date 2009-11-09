@@ -4,25 +4,6 @@
 VOICE outVoice;
 
 /**
- * Setup one line trip
- */
-void init_line_trip(int x1, int y1, int x2, int y2, LINE_TRIP *line) {
-#ifdef DEBUG
-	printf("Drawing line (%d, %d) - (%d, %d)\n", x1, y1, x2, y2);
-#endif
-	line->initY = y1;
- 	line->diffY = y2-y1;
- 	line->diffX = x2-x1;
- 	
- 	if (line->diffY < 0) {
- 		line->diffY = -line->diffY;
- 		line->unitY = -1;
- 	}
- 	else
- 		line->unitY = 1;
-}
-
-/**
  * Setup the two lines that create a square or triangle wave
  * @freq	Frequency
  * @phase	Period (0-127)
@@ -94,39 +75,5 @@ bool next_sample(VOICE *voice) {
 		return false;
 	}	
 }
-
-/**
- * TODO: The release line CAN'T be setup until the gate is opened because the amp_scalar needs to be used as the first Y point
- * 
- * Setup a new set of envelope lines. In the envelope context the x coordinate measures time (in ms)
- * and the Y coordinate is an amplitude scaling
- * @attack	Attack time (in ms)
- * @decay	Decay time (in ms)
- * @sustain	Sustain level
- * @release	Release time (in ms)
- * @voice	Voice containing envelope needs
- */
-void setup_env(int attack, int decay, int sustain, int release, VOICE* voice) {
-	voice->envelope.sustain = sustain;
-
-	// Initialize the attack and decay lines
-	init_line_trip(0,0,attack,ENV_SCALAR_RANGE, &voice->envelope.attack);
-	init_line_trip(0,ENV_SCALAR_RANGE,decay,sustain, &voice->envelope.decay);
-
-	// This is done here for now, but needs to be moved!
-	init_line_trip(0,sustain,release,0, &voice->envelope.release);
-
-	// Envelope starts with a scalar of 0 and at the beginning of the attack phase
-	voice->envelope.amp_scalar = 0;
-	voice->envelope.cur = &voice->envelope.attack;
-	reset_line(voice->envelope.cur);
-		
-	// Gate is open until the user closes it
-	voice->envelope.gate = false;
-	
-	// Not sustaining until the decay cycle is over
-	voice->envelope.sustaining = false;
-}
-
 
 

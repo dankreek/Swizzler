@@ -30,7 +30,6 @@
 #include <avr/io.h>
 #include <avr/pgmspace.h>
 #include "wavetable.h"
-#include "wavegen.h"
 #include "wavegen_int.h"
 
 extern "C" void __cxa_pure_virtual() {}
