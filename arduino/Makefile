@@ -1,16 +1,14 @@
-# Swizzler Makefile by Justin May derived from:
 # Arduino 0015 Makefile
 # Arduino adaptation by mellis, eighthave, oli.keller
 #
-# This makefile allows you to build full C++ programs from the command line
-# without the Arduino environment (or Java). It
+# This makefile allows you to build sketches from the command line
+# without the Arduino environment (or Java).
 #
 # Detailed instructions for using the makefile:
 #
 #  1. Copy this file into the folder with your sketch. There should be a
-#     file with the same name as the folder and with the extension .cpp
-#     (e.g. foo.cpp in the foo/ folder). It should also have a main() function
-#     in it.
+#     file with the same name as the folder and with the extension .pde
+#     (e.g. foo.pde in the foo/ folder).
 #
 #  2. Modify the line containg "INSTALL_DIR" to point to the directory that
 #     contains the Arduino installation (for example, under Mac OS X, this
@@ -37,23 +35,26 @@
 # $Id$
 
 TARGET = $(notdir $(CURDIR))
-PORT = /dev/ttyUSB*
+INSTALL_DIR = ../../..
+PORT = /dev/tty.usb*
 UPLOAD_RATE = 19200
 AVRDUDE_PROGRAMMER = stk500v1
 MCU = atmega168
 F_CPU = 16000000
-ARDUINO = ./arduino
 
 ############################################################################
 # Below here nothing should be changed...
 
-AVR_TOOLS_PATH = /usr/bin
+ARDUINO = $(INSTALL_DIR)/hardware/cores/arduino
+AVR_TOOLS_PATH = $(INSTALL_DIR)/hardware/tools/avr/bin
 SRC =  $(ARDUINO)/pins_arduino.c $(ARDUINO)/wiring.c \
 $(ARDUINO)/wiring_analog.c $(ARDUINO)/wiring_digital.c \
-$(ARDUINO)/wiring_pulse.c \
-$(ARDUINO)/wiring_shift.c $(ARDUINO)/WInterrupts.c $(wildcard *.c)
-CXXSRC = $(ARDUINO)/HardwareSerial.cpp $(ARDUINO)/WMath.cpp $(ARDUINO)/Print.cpp $(wildcard *.cpp)
+$(ARDUINO)/wiring_pulse.c $(ARDUINO)/wiring_serial.c \
+$(ARDUINO)/wiring_shift.c $(ARDUINO)/WInterrupts.c
+CXXSRC = $(ARDUINO)/HardwareSerial.cpp $(ARDUINO)/WMath.cpp \
+$(ARDUINO)/Print.cpp
 FORMAT = ihex
+
 
 # Name of this Makefile (used for "make depend").
 MAKEFILE = Makefile
@@ -93,7 +94,7 @@ LDFLAGS = -lm
 # Programming support using avrdude. Settings and variables.
 AVRDUDE_PORT = $(PORT)
 AVRDUDE_WRITE_FLASH = -U flash:w:applet/$(TARGET).hex
-AVRDUDE_FLAGS = -V -F \
+AVRDUDE_FLAGS = -V -F -C $(INSTALL_DIR)/hardware/tools/avr/etc/avrdude.conf \
 -p $(MCU) -P $(AVRDUDE_PORT) -c $(AVRDUDE_PROGRAMMER) \
 -b $(UPLOAD_RATE)
 
@@ -123,14 +124,22 @@ ALL_ASFLAGS = -mmcu=$(MCU) -I. -x assembler-with-cpp $(ASFLAGS)
 
 
 # Default target.
-all: applet_dir build sizeafter
+all: applet_files build sizeafter
 
 build: elf hex 
 
-#applet_files: $(TARGET).pde
-applet_dir:
-	# Make the applet dir if it doesn't exist yet 
+applet_files: $(TARGET).pde
+	# Here is the "preprocessing".
+	# It creates a .cpp file based with the same name as the .pde file.
+	# On top of the new .cpp file comes the WProgram.h header.
+	# At the end there is a generic main() function attached.
+	# Then the .cpp file will be compiled. Errors during compile will
+	# refer to this new, automatically generated, file. 
+	# Not the original .pde file you actually edit...
 	test -d applet || mkdir applet
+	echo '#include "WProgram.h"' > applet/$(TARGET).cpp
+	cat $(TARGET).pde >> applet/$(TARGET).cpp
+	cat $(ARDUINO)/main.cxx >> applet/$(TARGET).cpp
 
 elf: applet/$(TARGET).elf
 hex: applet/$(TARGET).hex
@@ -186,9 +195,9 @@ extcoff: $(TARGET).elf
 .elf.sym:
 	$(NM) -n $< > $@
 
-# Link: create ELF output file from library.
-applet/$(TARGET).elf: $(TARGET).cpp applet/core.a 
-	$(CC) $(ALL_CXXFLAGS) -o $@ -L. applet/core.a $(LDFLAGS)
+	# Link: create ELF output file from library.
+applet/$(TARGET).elf: $(TARGET).pde applet/core.a 
+	$(CC) $(ALL_CFLAGS) -o $@ applet/$(TARGET).cpp -L. applet/core.a $(LDFLAGS)
 
 applet/core.a: $(OBJ)
 	@for i in $(OBJ); do echo $(AR) rcs applet/core.a $$i; $(AR) rcs applet/core.a $$i; done
@@ -229,3 +238,6 @@ clean:
 	$(OBJ) $(LST) $(SRC:.c=.s) $(SRC:.c=.d) $(CXXSRC:.cpp=.s) $(CXXSRC:.cpp=.d)
 
 .PHONY:	all build elf hex eep lss sym program coff extcoff clean applet_files sizebefore sizeafter
+
+include $(SRC:.c=.d)
+include $(CXXSRC:.cpp=.d)
