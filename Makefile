@@ -48,6 +48,7 @@ ARDUINO = ./arduino
 # Below here nothing should be changed...
 
 AVR_TOOLS_PATH = /usr/bin
+BIN = ./bin
 SRC =  $(ARDUINO)/pins_arduino.c $(ARDUINO)/wiring.c \
 $(ARDUINO)/wiring_analog.c $(ARDUINO)/wiring_digital.c \
 $(ARDUINO)/wiring_pulse.c \
@@ -92,7 +93,7 @@ LDFLAGS = -lm
 
 # Programming support using avrdude. Settings and variables.
 AVRDUDE_PORT = $(PORT)
-AVRDUDE_WRITE_FLASH = -U flash:w:applet/$(TARGET).hex
+AVRDUDE_WRITE_FLASH = -U flash:w:$(BIN)/$(TARGET).hex
 AVRDUDE_FLAGS = -V -F \
 -p $(MCU) -P $(AVRDUDE_PORT) -c $(AVRDUDE_PROGRAMMER) \
 -b $(UPLOAD_RATE)
@@ -123,34 +124,33 @@ ALL_ASFLAGS = -mmcu=$(MCU) -I. -x assembler-with-cpp $(ASFLAGS)
 
 
 # Default target.
-all: applet_dir build sizeafter
+all: bin_dir build sizeafter
 
 build: elf hex 
 
-#applet_files: $(TARGET).pde
-applet_dir:
-	# Make the applet dir if it doesn't exist yet 
-	test -d applet || mkdir applet
+bin_dir:
+	# Make the bin dir if it doesn't exist yet 
+	test -d $(BIN) || mkdir $(BIN)
 
-elf: applet/$(TARGET).elf
-hex: applet/$(TARGET).hex
-eep: applet/$(TARGET).eep
-lss: applet/$(TARGET).lss 
-sym: applet/$(TARGET).sym
+elf: $(BIN)/$(TARGET).elf
+hex: $(BIN)/$(TARGET).hex
+eep: $(BIN)/$(TARGET).eep
+lss: $(BIN)/$(TARGET).lss 
+sym: $(BIN)/$(TARGET).sym
 
 # Program the device.  
-upload: applet/$(TARGET).hex
+upload: $(BIN)/$(TARGET).hex
 	$(AVRDUDE) $(AVRDUDE_FLAGS) $(AVRDUDE_WRITE_FLASH)
 
 
 	# Display size of file.
-HEXSIZE = $(SIZE) --target=$(FORMAT) applet/$(TARGET).hex
-ELFSIZE = $(SIZE)  applet/$(TARGET).elf
+HEXSIZE = $(SIZE) --target=$(FORMAT) $(BIN)/$(TARGET).hex
+ELFSIZE = $(SIZE)  $(BIN)/$(TARGET).elf
 sizebefore:
-	@if [ -f applet/$(TARGET).elf ]; then echo; echo $(MSG_SIZE_BEFORE); $(HEXSIZE); echo; fi
+	@if [ -f $(BIN)/$(TARGET).elf ]; then echo; echo $(MSG_SIZE_BEFORE); $(HEXSIZE); echo; fi
 
 sizeafter:
-	@if [ -f applet/$(TARGET).elf ]; then echo; echo $(MSG_SIZE_AFTER); $(HEXSIZE); echo; fi
+	@if [ -f $(BIN)/$(TARGET).elf ]; then echo; echo $(MSG_SIZE_AFTER); $(HEXSIZE); echo; fi
 
 
 # Convert ELF to COFF for use in debugging / simulating in AVR Studio or VMLAB.
@@ -161,12 +161,12 @@ COFFCONVERT=$(OBJCOPY) --debugging \
 --change-section-address .eeprom-0x810000 
 
 
-coff: applet/$(TARGET).elf
-	$(COFFCONVERT) -O coff-avr applet/$(TARGET).elf $(TARGET).cof
+coff: $(BIN)/$(TARGET).elf
+	$(COFFCONVERT) -O coff-avr $(BIN)/$(TARGET).elf $(TARGET).cof
 
 
 extcoff: $(TARGET).elf
-	$(COFFCONVERT) -O coff-ext-avr applet/$(TARGET).elf $(TARGET).cof
+	$(COFFCONVERT) -O coff-ext-avr $(BIN)/$(TARGET).elf $(TARGET).cof
 
 
 .SUFFIXES: .elf .hex .eep .lss .sym
@@ -187,11 +187,11 @@ extcoff: $(TARGET).elf
 	$(NM) -n $< > $@
 
 # Link: create ELF output file from library.
-applet/$(TARGET).elf: $(TARGET).cpp applet/core.a 
-	$(CC) $(ALL_CXXFLAGS) -o $@ -L. applet/core.a $(LDFLAGS)
+$(BIN)/$(TARGET).elf: $(TARGET).cpp $(BIN)/core.a 
+	$(CC) $(ALL_CXXFLAGS) -o $@ -L. $(BIN)/core.a $(LDFLAGS)
 
-applet/core.a: $(OBJ)
-	@for i in $(OBJ); do echo $(AR) rcs applet/core.a $$i; $(AR) rcs applet/core.a $$i; done
+$(BIN)/core.a: $(OBJ)
+	@for i in $(OBJ); do echo $(AR) rcs $(BIN)/core.a $$i; $(AR) rcs $(BIN)/core.a $$i; done
 
 
 
@@ -224,8 +224,8 @@ applet/core.a: $(OBJ)
 
 # Target: clean project.
 clean:
-	$(REMOVE) applet/$(TARGET).hex applet/$(TARGET).eep applet/$(TARGET).cof applet/$(TARGET).elf \
-	applet/$(TARGET).map applet/$(TARGET).sym applet/$(TARGET).lss applet/core.a \
+	$(REMOVE) $(BIN)/$(TARGET).hex $(BIN)/$(TARGET).eep $(BIN)/$(TARGET).cof $(BIN)/$(TARGET).elf \
+	$(BIN)/$(TARGET).map i$(BIN)/$(TARGET).sym $(BIN)/$(TARGET).lss $(BIN)/core.a \
 	$(OBJ) $(LST) $(SRC:.c=.s) $(SRC:.c=.d) $(CXXSRC:.cpp=.s) $(CXXSRC:.cpp=.d)
 
-.PHONY:	all build elf hex eep lss sym program coff extcoff clean applet_files sizebefore sizeafter
+.PHONY:	all build elf hex eep lss sym program coff extcoff clean bin_dir sizebefore sizeafter
