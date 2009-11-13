@@ -4,7 +4,7 @@
 #include <avr/io.h>
 #include <avr/pgmspace.h>
 #include "wavetable.h"
-#include "wavegen.h"
+#include "waveout.h"
 #include "envelope.h"
 
 extern "C" void __cxa_pure_virtual() {}
@@ -21,18 +21,17 @@ int buttonPin = 9;
 int output;
 unsigned long ms=0;
 
-void setup()
-{	
+void setup() {	
 	pinMode(ledPin, OUTPUT);
 	pinMode(buttonPin, INPUT);
 
 	// Try and make sure our noise pattern is different every bootup!
 	randomSeed(analogRead(0));
 	
-	//lastSample = 0;
+	// For debugging. This will be turned into MIDI later.
 	Serial.begin(19200);
 		
-	// Setup the envelope generator
+	// Setup the envelope generator with some static values
 	envelopeOut.setup(ATTACK, DECAY, SUSTAIN, RELEASE);
 	envelopeOut.openGate();	
 	
@@ -42,9 +41,7 @@ void setup()
 	Wavetable::genNoise();
 	
 	// Startup the wave generation
-	initWavegen();
-
-	setFreq(440);
+	Waveout::start();
 }
 
 

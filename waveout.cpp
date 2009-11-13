@@ -4,25 +4,25 @@
 #include <avr/pgmspace.h>
 #include <WProgram.h>
 #include "wavetable.h"
-#include "wavegen.h"
+#include "waveout.h"
 #include "envelope.h"
 
-int wt_index;		// The current index in the wavetable
 
-// This is called at SAMPLE_RATE Hz to load the next sample.
+/**
+ * This is the ISR that handles doing sound output. One sample is output during the interrupt.
+ */
 ISR(TIMER1_COMPA_vect) {	
 	// Output the current sample
-	OCR2A = ((int)(Wavetable::triTable[wt_index] << 4) * envelopeOut.scalar) / (int)ENV_SCALAR_RANGE;
+	OCR2A = ((int)(Wavetable::triTable[Wavetable::wtIndex] << 4) * envelopeOut.scalar) / (int)ENV_SCALAR_RANGE;
 
 	// Go to the next sample
-	wt_index = (wt_index+1) % TABLE_SIZE;
+	Wavetable::incWtIndex();
 }
 
 /**
  * Initialize the sound output
  */
-void initWavegen()
-{
+void Waveout::start() {
     pinMode(WAVEOUT_PIN, OUTPUT);
 
     // Set up Timer 2 to do pulse width modulation on the speaker
@@ -57,10 +57,8 @@ void initWavegen()
     // No prescaler (p.134)
     TCCR1B = (TCCR1B & ~(_BV(CS12) | _BV(CS11))) | _BV(CS10);
 
-    // Set the compare register (OCR1A).
-    // OCR1A is a 16-bit register, so we have to do this with
-    // interrupts disabled to be safe.
     //OCR1A = F_CPU / SAMPLE_RATE;    // 16e6 / 16000 = 1000
+    setFreq(440);
 	
     // Enable interrupt when TCNT1 == OCR1A (p.136)
     TIMSK1 |= _BV(OCIE1A);
@@ -71,8 +69,7 @@ void initWavegen()
     digitalWrite(10, HIGH);
 }
 
-void stopWavegen()
-{
+void Waveout::stop() {
     // Disable playback per-sample interrupt.
     TIMSK1 &= ~_BV(OCIE1A);
 
@@ -92,6 +89,6 @@ void stopWavegen()
  *
  * Note that at 16Mhz there are 16 clock cycles in a microsecond
  */
-void setFreq(int freq) {
+void Waveout::setFreq(int freq) {
 	OCR1A = (unsigned long)1000000 / (unsigned long)freq;
 }

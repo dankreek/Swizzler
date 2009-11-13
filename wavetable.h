@@ -6,6 +6,13 @@
 
 class Wavetable {
     public:
+	static int wtIndex;
+
+	inline static
+	void incWtIndex() {
+		wtIndex = (wtIndex + 1) % TABLE_SIZE;
+	}
+
 	static void genTriangle();
 	static void genSawtooth();
 	static void genNoise();

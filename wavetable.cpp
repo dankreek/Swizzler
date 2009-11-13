@@ -1,6 +1,8 @@
 #include <WProgram.h>
 #include "wavetable.h"
 
+int Wavetable::wtIndex;
+
 unsigned char Wavetable::noiseTable[TABLE_SIZE];
 unsigned char Wavetable::triTable[TABLE_SIZE];	
 unsigned char Wavetable::sawTable[TABLE_SIZE];
