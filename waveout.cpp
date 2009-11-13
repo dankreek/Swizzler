@@ -1,23 +1,5 @@
-#include <stdint.h>
-#include <avr/interrupt.h>
-#include <avr/io.h>
-#include <avr/pgmspace.h>
 #include <WProgram.h>
-#include "wavetable.h"
 #include "waveout.h"
-#include "envelope.h"
-
-
-/**
- * This is the ISR that handles doing sound output. One sample is output during the interrupt.
- */
-ISR(TIMER1_COMPA_vect) {	
-	// Output the current sample
-	OCR2A = ((int)(Wavetable::triTable[Wavetable::wtIndex] << 4) * envelopeOut.scalar) / (int)ENV_SCALAR_RANGE;
-
-	// Go to the next sample
-	Wavetable::incWtIndex();
-}
 
 /**
  * Initialize the sound output
