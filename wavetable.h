@@ -9,7 +9,7 @@
 // The total amplitude for the wave generation (-31 to 31)
 // 64 is currently chosed as it is 1/4th the total amplitude
 // available with 8-bit output
-#define WAVE_HEIGHT 64
+#define WAVE_HEIGHT 128 
 #define MIN_SAMPLE (WAVE_HEIGHT/2*-1)
 #define MAX_SAMPLE (WAVE_HEIGHT/2)-1
 
@@ -26,9 +26,9 @@ class Wavetable {
 	static void genSawtooth();
 	static void genNoise();
 
-	static unsigned char noiseTable[TABLE_SIZE];
-	static unsigned char triTable[TABLE_SIZE];
-	static unsigned char sawTable[TABLE_SIZE];
+	static char noiseTable[TABLE_SIZE];
+	static char triTable[TABLE_SIZE];
+	static char sawTable[TABLE_SIZE];
 };
 
 #endif /*WAVETABLE_H_*/

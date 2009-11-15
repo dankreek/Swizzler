@@ -12,14 +12,13 @@
  * This is the ISR that handles doing sound output. One sample is output during the interrupt.
  */
 ISR(TIMER1_COMPA_vect) {	
-	int out = Wavetable::sawTable[Wavetable::wtIndex];
+	// Calculate the output sample (signed 8bit sample)
+	int out = Wavetable::triTable[Wavetable::wtIndex];
 	out *= envelopeOut.scalar;
 	out /= ENV_SCALAR_RANGE;
 
-	// Output the current sample
+	// Output the current sample (unsigned 8bit sample)
 	OCR2A = out+127;
-
-	//OCR2A = ((int)(Wavetable::triTable[Wavetable::wtIndex] << 4) * envelopeOut.scalar) / (int)ENV_SCALAR_RANGE;
 
 	// Go to the next sample
 	Wavetable::incWtIndex();

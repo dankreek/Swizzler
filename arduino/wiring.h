@@ -130,6 +130,9 @@ void detachInterrupt(uint8_t);
 void setup(void);
 void loop(void);
 
+// Call the normal arduino ms interrupt routine so that millis() still works
+void timerhook();
+
 #ifdef __cplusplus
 } // extern "C"
 #endif

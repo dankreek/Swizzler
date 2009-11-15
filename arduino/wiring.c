@@ -44,6 +44,8 @@ static unsigned char timer0_fract = 0;
 /** Hijacked by JDM
 SIGNAL(TIMER0_OVF_vect)
 {
+*/
+void timer_hook() {
 	// copy these to local variables so they can be stored in registers
 	// (volatile variables must be read from memory on every access)
 	unsigned long m = timer0_millis;
@@ -60,7 +62,6 @@ SIGNAL(TIMER0_OVF_vect)
 	timer0_millis = m;
 	timer0_overflow_count++;
 }
-*/
 
 unsigned long millis()
 {
