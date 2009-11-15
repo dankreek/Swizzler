@@ -5,7 +5,7 @@
 #include "bresenham.h"
 
 // Set the maximum envelope scalar value
-#define ENV_SCALAR_RANGE	32
+#define ENV_SCALAR_RANGE	32	
 
 class Envelope {
     private:

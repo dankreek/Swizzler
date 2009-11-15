@@ -9,11 +9,11 @@
 
 extern "C" void __cxa_pure_virtual() {}
 
-#define ATTACK 0
+#define ATTACK 2 
 #define DECAY 10
 // 0-32
-#define SUSTAIN 28 
-#define RELEASE 1000
+#define SUSTAIN 16 
+#define RELEASE 250 
  
 int ledPin = 13;
 int buttonPin = 9;

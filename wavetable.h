@@ -1,8 +1,17 @@
 #ifndef WAVETABLE_H_
 #define WAVETABLE_H_
 
+// The length (in samples) of the wavetable
+// this number is used to calculate the interrupt
+// timer length for correct frequency generation
 #define TABLE_SIZE 16
-#define WAVE_HEIGHT 16
+
+// The total amplitude for the wave generation (-31 to 31)
+// 64 is currently chosed as it is 1/4th the total amplitude
+// available with 8-bit output
+#define WAVE_HEIGHT 64
+#define MIN_SAMPLE (WAVE_HEIGHT/2*-1)
+#define MAX_SAMPLE (WAVE_HEIGHT/2)-1
 
 class Wavetable {
     public:

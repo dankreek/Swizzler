@@ -44,14 +44,15 @@ void Wavetable::genTriangle() {
 }
 
 void Wavetable::genSawtooth() {
-	short x1=0,x2,y1=0,y2;
+	short x1=0,x2,y1,y2;
 	short slope;
-	int i,sample=0;
+	int i,sample;
 	
-	y2 = WAVE_HEIGHT;
+	y1 = MIN_SAMPLE; 
+	y2 = MAX_SAMPLE;
 	x2 = TABLE_SIZE;
 	slope = (y2-y1)/(x2-x1);
-	sample = 0;
+	sample = y1;
 	for (i=0; i < TABLE_SIZE; i++) {
 		Wavetable::sawTable[i]= sample;
 		sample += slope;
