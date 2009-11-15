@@ -7,13 +7,13 @@
 #include "waveout.h"
 #include "envelope.h"
 
-
 /**
  * This is the ISR that handles doing sound output. One sample is output during the interrupt.
  */
 ISR(TIMER1_COMPA_vect) {	
 	// Calculate the output sample (signed 8bit sample)
-	int out = Wavetable::triTable[Wavetable::wtIndex];
+	int out = Wavetable::sawTable[Wavetable::wtIndex];
+	out += Wavetable::sawTable[(Wavetable::wtIndex*2) % TABLE_SIZE];
 	out *= envelopeOut.scalar;
 	out /= ENV_SCALAR_RANGE;
 

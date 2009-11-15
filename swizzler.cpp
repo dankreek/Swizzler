@@ -12,14 +12,15 @@ extern "C" void __cxa_pure_virtual() {}
 #define ATTACK 2 
 #define DECAY 10
 // 0-32
-#define SUSTAIN 28 
-#define RELEASE 250 
+#define SUSTAIN ENV_SCALAR_RANGE 
+#define RELEASE 1200 
  
 int ledPin = 13;
-int buttonPin = 9;
+int buttonPin = 2;
 
 int output;
-unsigned long ms=0;
+
+void handle_button();
 
 void setup() {	
 	pinMode(ledPin, OUTPUT);
@@ -42,21 +43,34 @@ void setup() {
 	
 	// Startup the wave generation
 	Waveout::start();
+
+	attachInterrupt(0, handle_button, CHANGE);
 }
 
-
+int freq=440;
 bool gate=false;
+int d=25;
 int main(void) {
 	init();
 	setup();
 
 	while(true) {
-		if ((digitalRead(buttonPin) == 1) && (envelopeOut.gate == false)) {
-			envelopeOut.closeGate();
-		}
-		else if ((digitalRead(buttonPin) == 0) && (envelopeOut.gate == true)) {
-			envelopeOut.openGate();
-		}
+		Waveout::setFreq(440);
+		delay(d);
+		Waveout::setFreq(523);
+		delay(d);
+		Waveout::setFreq(659);
+		delay(d);
+		Waveout::setFreq(880);
+		delay(d);
 	}
 }
 
+void handle_button() {
+	if ((digitalRead(buttonPin) == 1) && (envelopeOut.gate == false)) {
+		envelopeOut.closeGate();
+	}
+	else if ((digitalRead(buttonPin) == 0) && (envelopeOut.gate == true)) {
+		envelopeOut.openGate();
+	}	
+}

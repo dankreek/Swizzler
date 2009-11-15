@@ -2,12 +2,15 @@
 #include <avr/interrupt.h>
 #include "envelope.h"
 #include "bresenham.h"
+#include <wiring.h>
 
 // Update the envelope every millisecond
 ISR(TIMER0_OVF_vect)
 {	
 	// Get the next envelope value
 	envelopeOut.next();
+	
+	timerhook();
 }
 
 /**
