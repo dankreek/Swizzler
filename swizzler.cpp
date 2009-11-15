@@ -13,7 +13,7 @@ extern "C" void __cxa_pure_virtual() {}
 #define ATTACK 2 
 #define DECAY 10
 #define SUSTAIN ENV_SCALAR_RANGE/2 
-#define RELEASE 1200 
+#define RELEASE 700 
  
 int ledPin = 13;
 int buttonPin = 2;
@@ -48,23 +48,28 @@ void setup() {
 
 int freq=440;
 bool gate=false;
-int d=1000;
+int d=20;
 int main(void) {
 	init();
 	setup();
 
-	Waveout::setFreq(noteToFreq(76));
-
 	while(true) {
-		Waveout::setFreq(noteToFreq(69));
+		Waveout::setFreq(440);
+		delay(d);
+		Waveout::setFreq(523);
+		delay(d);
+		Waveout::setFreq(659);
+		delay(d);
+		Waveout::setFreq(880);
+		delay(d);
+/*
+		Waveout::setFreq(noteToFreq(72));
 		delay(d);
 		Waveout::setFreq(noteToFreq(72));
 		delay(d);
-/*
 		Waveout::setFreq(noteToFreq(76));
 		delay(d);
 		Waveout::setFreq(noteToFreq(81));
-		delay(d);
 */
 	}
 }

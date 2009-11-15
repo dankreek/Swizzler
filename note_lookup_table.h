@@ -25,9 +25,8 @@ int note_lookup[] PROGMEM = {
 /**
  * Convert a Midi note to a frequency
  */
-inline
 int noteToFreq(int noteNum) {
-	if (noteNum > 107) return note_lookup[11];
+	if (noteNum > 107) return 4186;
 
 	int octave = noteNum / 12;
 	int note = noteNum % 12;
