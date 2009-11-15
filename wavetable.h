@@ -25,10 +25,12 @@ class Wavetable {
 	static void genTriangle();
 	static void genSawtooth();
 	static void genNoise();
+	static void genSquare();
 
 	static char noiseTable[TABLE_SIZE];
 	static char triTable[TABLE_SIZE];
 	static char sawTable[TABLE_SIZE];
+	static char sqTable[TABLE_SIZE];
 };
 
 #endif /*WAVETABLE_H_*/

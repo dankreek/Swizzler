@@ -6,12 +6,24 @@ int Wavetable::wtIndex;
 char Wavetable::noiseTable[TABLE_SIZE];
 char Wavetable::triTable[TABLE_SIZE];	
 char Wavetable::sawTable[TABLE_SIZE];
+char Wavetable::sqTable[TABLE_SIZE];
 
 void Wavetable::genNoise() {
 	int i;
 	
 	for (i=0; i < TABLE_SIZE; i++) {
 		Wavetable::noiseTable[i] = random(WAVE_HEIGHT)-(WAVE_HEIGHT/2);
+	}
+}
+
+void Wavetable::genSquare() {
+	int i;
+	for (i=0; i < TABLE_SIZE/2; i++) {
+		Wavetable::sqTable[i] = MIN_SAMPLE;
+	}
+
+	for (; i < TABLE_SIZE; i++) {
+		Wavetable::sqTable[i] = MAX_SAMPLE;
 	}
 }
 

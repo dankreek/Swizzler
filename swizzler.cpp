@@ -6,19 +6,17 @@
 #include "wavetable.h"
 #include "waveout.h"
 #include "envelope.h"
+#include "note_lookup_table.h"
 
 extern "C" void __cxa_pure_virtual() {}
 
 #define ATTACK 2 
 #define DECAY 10
-// 0-32
-#define SUSTAIN ENV_SCALAR_RANGE 
+#define SUSTAIN ENV_SCALAR_RANGE/2 
 #define RELEASE 1200 
  
 int ledPin = 13;
 int buttonPin = 2;
-
-int output;
 
 void handle_button();
 
@@ -40,6 +38,7 @@ void setup() {
 	Wavetable::genTriangle();
 	Wavetable::genSawtooth();
 	Wavetable::genNoise();
+	Wavetable::genSquare();
 	
 	// Startup the wave generation
 	Waveout::start();
@@ -49,23 +48,28 @@ void setup() {
 
 int freq=440;
 bool gate=false;
-int d=25;
+int d=1000;
 int main(void) {
 	init();
 	setup();
 
+	Waveout::setFreq(noteToFreq(76));
+
 	while(true) {
-		Waveout::setFreq(440);
+		Waveout::setFreq(noteToFreq(69));
 		delay(d);
-		Waveout::setFreq(523);
+		Waveout::setFreq(noteToFreq(72));
 		delay(d);
-		Waveout::setFreq(659);
+/*
+		Waveout::setFreq(noteToFreq(76));
 		delay(d);
-		Waveout::setFreq(880);
+		Waveout::setFreq(noteToFreq(81));
 		delay(d);
+*/
 	}
 }
 
+// Eventually this will be a serial port read interrupt! Yay
 void handle_button() {
 	if ((digitalRead(buttonPin) == 1) && (envelopeOut.gate == false)) {
 		envelopeOut.closeGate();
