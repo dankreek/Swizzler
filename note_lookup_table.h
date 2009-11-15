@@ -26,13 +26,14 @@ int note_lookup[] PROGMEM = {
  * Convert a Midi note to a frequency
  */
 int noteToFreq(int noteNum) {
+	// C in octave 9 is the highest we're going to go! (C9 = 4186hz)
 	if (noteNum > 107) return 4186;
 
 	int octave = noteNum / 12;
 	int note = noteNum % 12;
 	
 	// Divides in half for the proper number of octaves
-	return note_lookup[note] >> (8-octave);
+	return pgm_read_word_near(note_lookup + note) >> (8-octave);
 }
 
 #endif

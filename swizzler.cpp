@@ -54,23 +54,13 @@ int main(void) {
 	setup();
 
 	while(true) {
-		Waveout::setFreq(440);
-		delay(d);
-		Waveout::setFreq(523);
-		delay(d);
-		Waveout::setFreq(659);
-		delay(d);
-		Waveout::setFreq(880);
-		delay(d);
-/*
-		Waveout::setFreq(noteToFreq(72));
+		Waveout::setFreq(noteToFreq(69));
 		delay(d);
 		Waveout::setFreq(noteToFreq(72));
 		delay(d);
 		Waveout::setFreq(noteToFreq(76));
 		delay(d);
 		Waveout::setFreq(noteToFreq(81));
-*/
 	}
 }
 
