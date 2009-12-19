@@ -12,15 +12,17 @@
  */
 ISR(TIMER1_COMPA_vect) {	
 	// Calculate the output sample (signed 8bit sample)
-	int out = Wavetable::sqTable[Wavetable::wtIndex];
-	out += Wavetable::sqTable[(Wavetable::wtIndex*2) % TABLE_SIZE];
+	int out;
 
+	// Start with the current sample in the wavetable
+	out = Wavetable::sawTable[Wavetable::wtIndex];
+	
 	// Apply envelope scaling
-	out *= envelopeOut.scalar;
-	out /= ENV_SCALAR_RANGE;
+	//out *= envelopeOut.scalar;
+	//out /= ENV_SCALAR_RANGE;
 
-	// Output the current sample, convert to unsigned 8bit
-	OCR2A = out+127;
+	// Output the mixed and modulated sample, convert to unsigned 8bit
+	OCR2A = out+128;
 
 	// Go to the next sample
 	Wavetable::incWtIndex();

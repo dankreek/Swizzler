@@ -6,7 +6,9 @@
 #include "wavetable.h"
 #include "waveout.h"
 #include "envelope.h"
-#include "note_lookup_table.h"
+#include "NoteLookupTable.h"
+#include "MidiInput.h"
+#include "MidiNoteBuffer.h"
 
 extern "C" void __cxa_pure_virtual() {}
 
@@ -16,19 +18,18 @@ extern "C" void __cxa_pure_virtual() {}
 #define RELEASE 700 
  
 int ledPin = 13;
-int buttonPin = 2;
+//int buttonPin = 2;
 
-void handle_button();
+//void handle_button();
 
 void setup() {	
 	pinMode(ledPin, OUTPUT);
-	pinMode(buttonPin, INPUT);
 
 	// Try and make sure our noise pattern is different every bootup!
 	randomSeed(analogRead(0));
 	
 	// For debugging. This will be turned into MIDI later.
-	Serial.begin(19200);
+	Serial.begin(31250);
 		
 	// Setup the envelope generator with some static values
 	envelopeOut.setup(ATTACK, DECAY, SUSTAIN, RELEASE);
@@ -42,28 +43,39 @@ void setup() {
 	
 	// Startup the wave generation
 	Waveout::start();
+	Waveout::setFreq(440);
 
-	attachInterrupt(0, handle_button, CHANGE);
+	// Initialize MIDI input
+	MidiInput::begin();
+	MidiNoteBuffer::begin();
 }
 
-int freq=440;
-bool gate=false;
-int d=20;
 int main(void) {
-	init();
-	setup();
+	init();		// Initialize Arduino code
+	setup();	// Setup my code
 
-	while(true) {
-		Waveout::setFreq(noteToFreq(69));
-		delay(d);
-		Waveout::setFreq(noteToFreq(72));
-		delay(d);
-		Waveout::setFreq(noteToFreq(76));
-		delay(d);
-		Waveout::setFreq(noteToFreq(81));
+	while (true) {
+		// Shove everything that's read by the serial port into the MIDI input
+		if (Serial.available() > 0)
+			MidiInput::pushByte(Serial.read());
 	}
+
+/*
+	last = 0;
+	while(true) {
+		now = analogRead(0);
+
+		if (last != now) {
+			Waveout::setFreq(analogRead(0) << 2);
+		}
+
+		last = now;
+		delay(10);
+	}
+*/
 }
 
+/*
 // Eventually this will be a serial port read interrupt! Yay
 void handle_button() {
 	if ((digitalRead(buttonPin) == 1) && (envelopeOut.gate == false)) {
@@ -73,3 +85,4 @@ void handle_button() {
 		envelopeOut.openGate();
 	}	
 }
+*/

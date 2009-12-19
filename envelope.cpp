@@ -8,7 +8,7 @@
 ISR(TIMER0_OVF_vect)
 {	
 	// Get the next envelope value
-	envelopeOut.next();
+//	envelopeOut.next();
 	
 	timerhook();
 }
