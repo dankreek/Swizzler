@@ -7,6 +7,26 @@ char Wavetable::noiseTable[TABLE_SIZE];
 char Wavetable::triTable[TABLE_SIZE];	
 char Wavetable::sawTable[TABLE_SIZE];
 char Wavetable::sqTable[TABLE_SIZE];
+char Wavetable::randTable[TABLE_SIZE];
+
+char* Wavetable::curWaveTable;
+
+void Wavetable::begin() {
+	genNoise();
+	genRand();
+	genSquare();
+	genTriangle();
+	genSawtooth();
+	curWaveTable = triTable;
+}
+
+void Wavetable::genRand() {
+	int i;
+	
+	for (i=0; i < TABLE_SIZE; i++) {
+		Wavetable::randTable[i] = random(WAVE_HEIGHT)-(WAVE_HEIGHT/2);
+	}
+}
 
 void Wavetable::genNoise() {
 	int i;

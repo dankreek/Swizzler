@@ -22,15 +22,22 @@ class Wavetable {
 		wtIndex = (wtIndex + 1) % TABLE_SIZE;
 	}
 
+	static void begin();
+
 	static void genTriangle();
 	static void genSawtooth();
 	static void genNoise();
 	static void genSquare();
+	static void genRand();
 
 	static char noiseTable[TABLE_SIZE];
+	static char randTable[TABLE_SIZE];
 	static char triTable[TABLE_SIZE];
 	static char sawTable[TABLE_SIZE];
 	static char sqTable[TABLE_SIZE];
+
+	// Points to the current
+	static char *curWaveTable;
 };
 
 #endif /*WAVETABLE_H_*/

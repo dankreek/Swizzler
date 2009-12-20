@@ -72,8 +72,11 @@ public:
 		}
 		// One byte commands
 		else if (midiData1 >= 0) {
-			if (isCommandByte(prgmChange))
+			if (isCommandByte(prgmChange)) {
 				handleProgramChange();
+				resetCommand();
+			}
+			// Ignore aftertouch
 			else if (isCommandByte(afterTouch))
 				resetCommand(); 
 		}
@@ -109,8 +112,8 @@ public:
 	static void handlePitchBend();
 	static void handleControlChange();
 	static void handleProgramChange();
-private:
-
 };
+
+
 
 #endif /*MIDIINPUT_H_*/

@@ -13,6 +13,12 @@ ISR(TIMER0_OVF_vect)
 	timerhook();
 }
 
+
+void Envelope::begin() {
+	envelopeOut.setup(ATTACK, DECAY, SUSTAIN, RELEASE);
+	envelopeOut.openGate();	
+}
+
 /**
  * TODO: The release line CAN'T be setup until the gate is opened because the amp_scalar needs to be used as the first Y point
  * 

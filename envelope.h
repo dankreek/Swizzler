@@ -7,6 +7,14 @@
 // Set the maximum envelope scalar value
 #define ENV_SCALAR_RANGE	32	
 
+// Default envelope values
+#define ATTACK 0 
+#define DECAY 0
+#define SUSTAIN ENV_SCALAR_RANGE/2 
+#define RELEASE 0 
+
+
+
 class Envelope {
     private:
 	bool		sustaining;	// Is the envelope currently sustaining while the gate's open?
@@ -26,6 +34,9 @@ class Envelope {
 
 	int		scalar;		// The last calculated amplitude scalar
 	
+	// Setup the envelope generator
+	void begin();
+
 	void setup(int attack, int decay, int sustain, int release); 
 	void next();
 

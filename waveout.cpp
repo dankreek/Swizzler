@@ -15,7 +15,7 @@ ISR(TIMER1_COMPA_vect) {
 	int out;
 
 	// Start with the current sample in the wavetable
-	out = Wavetable::triTable[Wavetable::wtIndex];
+	out = Wavetable::curWaveTable[Wavetable::wtIndex];
 
 	// Apply envelope scaling
 	out *= envelopeOut.scalar;

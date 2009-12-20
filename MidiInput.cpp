@@ -1,5 +1,6 @@
 #include "MidiInput.h"
 #include "MidiNoteBuffer.h"
+#include "wavetable.h"
 #include "envelope.h"
 #include "waveout.h"
 #include "NoteLookupTable.h"
@@ -8,7 +9,12 @@ int MidiInput::midiCmd;
 int MidiInput::midiData1;
 int MidiInput::midiData2;
 
-
+// Midi controller numbers
+#define SET_TRIANGLE 	67
+#define SET_SAWTOOTH 	26
+#define SET_SQUARE 	83
+#define SET_NOISE 	86 
+#define SET_RANDOM	87
 
 void MidiInput::handleNoteOn() {
 	MidiNote note;
@@ -41,11 +47,11 @@ void MidiInput::handleNoteOff() {
 	note.number = midiData1;
 
 	// If this note is the current note that's playing then open the gate
-	if (MidiNoteBuffer::size > 0) 
+	if (MidiNoteBuffer::size > 0) { 
 		if (MidiNoteBuffer::buffer[MidiNoteBuffer::lastNote].note.number == note.number) {
 			envelopeOut.openGate();	
 		}
-
+	}
 	
 	MidiNoteBuffer::removeMidiNote(note);
 }
@@ -53,7 +59,25 @@ void MidiInput::handleNoteOff() {
 void MidiInput::handlePitchBend() {
 }
 
+// Lots of fun with controllers!
 void MidiInput::handleControlChange() {
+	switch (midiData1) {
+		case SET_TRIANGLE:
+			Wavetable::curWaveTable = Wavetable::triTable;
+			break;
+		case SET_SAWTOOTH:
+			Wavetable::curWaveTable = Wavetable::sawTable;
+			break;
+		case SET_SQUARE:
+			Wavetable::curWaveTable = Wavetable::sqTable;
+			break;
+		case SET_NOISE:
+			Wavetable::curWaveTable = Wavetable::noiseTable;
+			break;
+		case SET_RANDOM:
+			Wavetable::curWaveTable = Wavetable::randTable;
+			break;
+	}
 }
 
 void MidiInput::handleProgramChange() {
