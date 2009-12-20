@@ -11,8 +11,7 @@ extern int note_lookup[];
  */
 inline
 int noteToFreq(int noteNum) {
-	// C in octave 9 is the highest we're going to go! (C9 = 4186hz)
-	if (noteNum > 107) return 4186;
+	if (noteNum > 83) return 1047;
 
 	int octave = noteNum / 12;
 	int note = noteNum % 12;

@@ -25,7 +25,7 @@ void MidiInput::handleNoteOn() {
 	note.velocity = midiData2;
 	
 	// Put MIDI note onto the ordered list
-	//MidiNoteBuffer::putMidiNote(note);
+	MidiNoteBuffer::putMidiNote(note);
 
 	// Set the new frequency
 	//Waveout::setFreq(noteToFreq(note.number));

@@ -99,7 +99,8 @@ public:
 	 */
 	static inline
 	void resetCommand() {
-		midiCmd = -1;
+		midiData1 = -1;
+		midiData2 = -1;
 	}
 	
 	// Handle MIDI events

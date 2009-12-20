@@ -15,11 +15,11 @@ ISR(TIMER1_COMPA_vect) {
 	int out;
 
 	// Start with the current sample in the wavetable
-	out = Wavetable::sawTable[Wavetable::wtIndex];
-	
+	out = Wavetable::triTable[Wavetable::wtIndex];
+
 	// Apply envelope scaling
-	//out *= envelopeOut.scalar;
-	//out /= ENV_SCALAR_RANGE;
+	out *= envelopeOut.scalar;
+	out /= ENV_SCALAR_RANGE;
 
 	// Output the mixed and modulated sample, convert to unsigned 8bit
 	OCR2A = out+128;
