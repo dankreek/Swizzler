@@ -9,15 +9,42 @@ char Wavetable::sawTable[TABLE_SIZE];
 char Wavetable::sqTable[TABLE_SIZE];
 char Wavetable::randTable[TABLE_SIZE];
 
-char* Wavetable::curWaveTable;
+char Wavetable::outputTable[TABLE_SIZE];
+
+char Wavetable::triLevel;
+char Wavetable::sawLevel;
+char Wavetable::sqLevel;
+char Wavetable::randLevel;
+char Wavetable::noiseLevel;
 
 void Wavetable::begin() {
+	// Generate waveforms
 	genNoise();
 	genRand();
 	genSquare();
 	genTriangle();
 	genSawtooth();
-	curWaveTable = triTable;
+	
+	// By default triangle wave is up full and the rest are at 0
+	triLevel = WAVE_MIX_AMP;
+	sqLevel = 0;
+	sawLevel = 0;
+	randLevel = 0;
+
+	mixWaves();
+}
+
+/**
+ * Mix all the waves together!
+ */
+void Wavetable::mixWaves() {
+	for (int i=0; i < TABLE_SIZE; i++) {
+		outputTable[i] = ((int)triTable[i]*(int)triLevel)/WAVE_MIX_AMP;
+		outputTable[i] += ((int)sawTable[i]*(int)sawLevel)/WAVE_MIX_AMP;
+		outputTable[i] += ((int)sqTable[i]*(int)sqLevel)/WAVE_MIX_AMP;
+		outputTable[i] += ((int)randTable[i]*(int)randLevel)/WAVE_MIX_AMP;
+		outputTable[i] += ((int)noiseTable[i]*(int)noiseLevel)/WAVE_MIX_AMP;
+	}
 }
 
 void Wavetable::genRand() {

@@ -16,6 +16,12 @@ int MidiInput::midiData2;
 #define SET_NOISE 	86 
 #define SET_RANDOM	87
 
+#define TRI_LEVEL	74
+#define SAW_LEVEL	71
+#define SQUARE_LEVEL	70
+#define RAND_LEVEL	20
+#define NOISE_LEVEL	21
+
 void MidiInput::handleNoteOn() {
 	MidiNote note;
 	
@@ -62,6 +68,22 @@ void MidiInput::handlePitchBend() {
 // Lots of fun with controllers!
 void MidiInput::handleControlChange() {
 	switch (midiData1) {
+		case TRI_LEVEL:
+			Wavetable::triLevel = (midiData2 >> 3);
+			break;
+		case SAW_LEVEL:
+			Wavetable::sawLevel = (midiData2 >> 3);
+			break;
+		case SQUARE_LEVEL:
+			Wavetable::sqLevel = (midiData2 >> 3);
+			break;
+		case RAND_LEVEL:
+			Wavetable::randLevel = (midiData2 >> 3);
+			break;
+		case NOISE_LEVEL:
+			Wavetable::noiseLevel = (midiData2 >> 3);
+			break;
+/*
 		case SET_TRIANGLE:
 			Wavetable::curWaveTable = Wavetable::triTable;
 			break;
@@ -77,6 +99,7 @@ void MidiInput::handleControlChange() {
 		case SET_RANDOM:
 			Wavetable::curWaveTable = Wavetable::randTable;
 			break;
+*/
 	}
 }
 

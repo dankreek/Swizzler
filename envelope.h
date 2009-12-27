@@ -8,10 +8,10 @@
 #define ENV_SCALAR_RANGE	32	
 
 // Default envelope values
-#define ATTACK 0 
-#define DECAY 0
-#define SUSTAIN ENV_SCALAR_RANGE/2 
-#define RELEASE 0 
+#define ATTACK 10 
+#define DECAY 20
+#define SUSTAIN ENV_SCALAR_RANGE/3 
+#define RELEASE 1000 
 
 
 

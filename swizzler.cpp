@@ -56,6 +56,10 @@ int main(void) {
 			// If new noise isn't generated then the output will be
 			// a very interesting (but non-noise) waveform
 			Wavetable::genNoise();
+
+			// Mixup the wavetables
+			Wavetable::mixWaves();
+
 		}
 	}
 }

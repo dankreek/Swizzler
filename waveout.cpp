@@ -14,8 +14,8 @@ ISR(TIMER1_COMPA_vect) {
 	// Calculate the output sample (signed 8bit sample)
 	int out;
 
-	// Start with the current sample in the wavetable
-	out = Wavetable::curWaveTable[Wavetable::wtIndex];
+	// Output the next sample 
+	out = Wavetable::outputTable[Wavetable::wtIndex];
 
 	// Apply envelope scaling
 	out *= envelopeOut.scalar;
