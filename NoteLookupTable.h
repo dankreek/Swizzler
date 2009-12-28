@@ -11,7 +11,7 @@ extern int note_lookup[];
  */
 inline
 int noteToFreq(int noteNum) {
-	if (noteNum > 83) return 1047;
+	//if (noteNum > 83) return 1047;
 
 	int octave = noteNum / 12;
 	int note = noteNum % 12;

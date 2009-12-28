@@ -2,56 +2,58 @@
 #define ENVGEN_H
 
 #include <stdlib.h>
-#include "bresenham.h"
+#include "AudioLine.h"
+
+enum EnvelopeState {ENV_CLOSED, ENV_ATTACK, ENV_DECAY, ENV_SUSTAIN, ENV_RELEASE};
 
 // Set the maximum envelope scalar value
-#define ENV_SCALAR_RANGE	32	
+#define ENV_SCALAR_RANGE	16	
 
 // Default envelope values
-#define ATTACK 10 
-#define DECAY 20
-#define SUSTAIN ENV_SCALAR_RANGE/3 
-#define RELEASE 1000 
-
-
+#define ATTACK 2 
+#define DECAY 1500
+#define SUSTAIN 8 
+#define RELEASE 1500 
 
 class Envelope {
     private:
-	bool		sustaining;	// Is the envelope currently sustaining while the gate's open?
+	EnvelopeState	state;		// Current state of envelope generator
 
-	bool		last_gate;	// Is this still needed
+	int		attackTime;	// The attack time
+	int		decayTime;	// The decay time
+	int		sustainLevel;	// The sustain level
+	int		releaseTime;	// The release time
+	int		time;		// Current time (in ms) of current envelope phase
 
-	Bresenham	attack;		// The attack leg of the envelope
-	Bresenham	decay;		// The decay leg 
-	int		sustain;	// The sustain level
-	Bresenham	release;	// The release leg
-
-	Bresenham	*cur;		// Pointer to the current phase of the envelope
+	void		setState(EnvelopeState state);	// Set the envelope's state
 
     public:
 	bool		gate;		// TRUE=gate close (signal start envelope)
 					// FALSE=gate open (signalt start release)
 
 	int		scalar;		// The last calculated amplitude scalar
+
+	AudioLine	line;		// Line used to calculate amplitudes
 	
 	// Setup the envelope generator
 	void begin();
 
 	void setup(int attack, int decay, int sustain, int release); 
+
+	// Calculate the next envelope scalar
 	void next();
 
 	// The gate's newly opened, start attack phase
 	inline
 	void closeGate() {
 		this->gate = true;
-		this->sustaining = false;
-		this->cur = &attack;
-		this->cur->reset();	
+		this->setState(ENV_ATTACK);
 	}
 
 	inline
 	void openGate() {
 		this->gate = false;
+		this->setState(ENV_RELEASE);
 	}
 	
 	
