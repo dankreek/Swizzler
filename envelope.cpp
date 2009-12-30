@@ -2,11 +2,15 @@
 #include <avr/interrupt.h>
 #include "envelope.h"
 #include <wiring.h>
+#include "FreqMan.h"
 
 // Update the envelope every millisecond
+// This routine is no longer envelope-specific, it should be moved
 ISR(TIMER0_OVF_vect) {	
 	// Get the next envelope value
 	envelopeOut.next();
+
+	FreqMan::nextTick();
 
 	// Call the arduino library's time keeping functions. May not be needed later.	
 	//timerhook();

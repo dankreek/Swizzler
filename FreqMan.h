@@ -3,11 +3,13 @@
 
 /**
  * The frequency manager takes in control messages (via MIDI) like note on, note off
- * portamento on/off, and arpeggio on/off, and tells the oscillator what frequency to
+ * portamento on/off, and arpeggio on/off and tells the oscillator what frequency to
  * put out at.
  */
 class FreqMan {
   public:
+	static bool portamentoOn;
+	static int portamentoTime;
 
 	/**
 	 * Initialize the frequency manager
@@ -55,12 +57,12 @@ class FreqMan {
 	int noteToFreq(int noteNum);
 
   private:
+	static int prevPortFreq;
+	static int curPortFreq;
+	static int destPortFreq;
+	static int portT;		// Current step in portamento glide
 
-	static
-	bool portamentOn;
-
-	static
-	bool arpeggioOn; 
+	static bool arpeggioOn; 
 
 };
 

@@ -7,10 +7,9 @@
 #include "waveout.h"
 #include "envelope.h"
 #include "MidiInput.h"
-#include "MidiNoteBuffer.h"
+#include "FreqMan.h"
 
 extern "C" void __cxa_pure_virtual() {}
-
  
 int ledPin = 13;
 
@@ -38,7 +37,9 @@ void setup() {
 
 	// Initialize MIDI input
 	MidiInput::begin();
-	MidiNoteBuffer::begin();
+
+	// Initialize Frequency Manager
+	FreqMan::begin();
 
 	digitalWrite(ledPin, LOW);
 }

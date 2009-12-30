@@ -1,3 +1,4 @@
+#include <inttypes.h>
 #include "MidiInput.h"
 #include "MidiNoteBuffer.h"
 #include "wavetable.h"
@@ -8,11 +9,13 @@ int MidiInput::midiData1;
 int MidiInput::midiData2;
 
 // Midi controller numbers
-#define SET_TRIANGLE 	67
-#define SET_SAWTOOTH 	26
-#define SET_SQUARE 	83
-#define SET_NOISE 	86 
-#define SET_RANDOM	87
+#define PORT_ON_OFF 	67
+#define PORT_TIME	5
+
+//#define SET_SAWTOOTH 	26
+//#define SET_SQUARE 	83
+//#define SET_NOISE 	86 
+//#define SET_RANDOM	87
 
 #define TRI_LEVEL	74
 #define SAW_LEVEL	71
@@ -55,6 +58,12 @@ void MidiInput::handleControlChange() {
 			break;
 		case NOISE_LEVEL:
 			Wavetable::noiseLevel = (midiData2 >> 3);
+			break;
+		case PORT_ON_OFF:
+			FreqMan::portamentoOn = (midiData2 > 0) ? true : false;
+			break;
+		case PORT_TIME:
+			FreqMan::portamentoTime = ((uint32_t)(midiData2+1) * (uint32_t)1000)/128;
 			break;
 	}
 }
