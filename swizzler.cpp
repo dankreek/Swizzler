@@ -6,7 +6,6 @@
 #include "wavetable.h"
 #include "waveout.h"
 #include "envelope.h"
-#include "NoteLookupTable.h"
 #include "MidiInput.h"
 #include "MidiNoteBuffer.h"
 
