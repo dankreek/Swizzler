@@ -10,7 +10,7 @@ int FreqMan::prevPortFreq;
 bool FreqMan::portamentoDone;
 int FreqMan::destPortFreq;
 int FreqMan::portamentoTime;
-Bresenham FreqMan::portamentoLine = Bresenham();
+Bresenham FreqMan::portamentoLine;
 bool FreqMan::arpeggioOn;
 
 /**

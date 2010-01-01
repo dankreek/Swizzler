@@ -11,6 +11,8 @@ char Wavetable::randTable[TABLE_SIZE];
 
 char Wavetable::outputTable[TABLE_SIZE];
 
+uint8_t Wavetable::pulseWidth;
+
 char Wavetable::triLevel;
 char Wavetable::sawLevel;
 char Wavetable::sqLevel;
@@ -18,6 +20,8 @@ char Wavetable::randLevel;
 char Wavetable::noiseLevel;
 
 void Wavetable::begin() {
+	pulseWidth = TABLE_SIZE/2;
+
 	// Generate waveforms
 	genNoise();
 	genRand();
@@ -65,7 +69,7 @@ void Wavetable::genNoise() {
 
 void Wavetable::genSquare() {
 	int i;
-	for (i=0; i < TABLE_SIZE/2; i++) {
+	for (i=0; i < pulseWidth; i++) {
 		Wavetable::sqTable[i] = MIN_SAMPLE;
 	}
 

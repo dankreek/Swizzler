@@ -1,6 +1,8 @@
 #ifndef WAVETABLE_H_
 #define WAVETABLE_H_
 
+#include <inttypes.h>
+
 // The length (in samples) of the wavetable
 // this number is used to calculate the interrupt
 // timer length for correct frequency generation
@@ -43,6 +45,9 @@ class Wavetable {
 	static char triTable[TABLE_SIZE];
 	static char sawTable[TABLE_SIZE];
 	static char sqTable[TABLE_SIZE];
+
+	// The pulsewidth of the square wave
+	static uint8_t pulseWidth;
 
 	// The mix levels of each waveform
 	static char triLevel;	

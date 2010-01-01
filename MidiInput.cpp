@@ -12,10 +12,7 @@ int MidiInput::midiData2;
 #define PORT_ON_OFF 	67
 #define PORT_TIME	5
 
-//#define SET_SAWTOOTH 	26
-//#define SET_SQUARE 	83
-//#define SET_NOISE 	86 
-//#define SET_RANDOM	87
+#define PULSE_WIDTH	12
 
 #define TRI_LEVEL	74
 #define SAW_LEVEL	71
@@ -64,6 +61,10 @@ void MidiInput::handleControlChange() {
 			break;
 		case PORT_TIME:
 			FreqMan::portamentoTime = ((uint32_t)(midiData2+1) * (uint32_t)1000)/128;
+			break;
+		case PULSE_WIDTH:
+			Wavetable::pulseWidth = (midiData2 >> 3);
+			Wavetable::genSquare();
 			break;
 	}
 }
