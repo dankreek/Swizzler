@@ -60,7 +60,7 @@ void MidiInput::handleControlChange() {
 			Wavetable::noiseLevel = (midiData2 >> 3);
 			break;
 		case PORT_ON_OFF:
-			FreqMan::portamentoOn = (midiData2 > 0) ? true : false;
+			FreqMan::enablePortamento( (midiData2 > 0) ? true : false);
 			break;
 		case PORT_TIME:
 			FreqMan::portamentoTime = ((uint32_t)(midiData2+1) * (uint32_t)1000)/128;

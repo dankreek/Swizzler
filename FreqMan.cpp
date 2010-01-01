@@ -7,11 +7,10 @@
 
 bool FreqMan::portamentoOn;
 int FreqMan::prevPortFreq;
-int FreqMan::curPortFreq;
+bool FreqMan::portamentoDone;
 int FreqMan::destPortFreq;
 int FreqMan::portamentoTime;
-int FreqMan::portT;
-
+Bresenham FreqMan::portamentoLine = Bresenham();
 bool FreqMan::arpeggioOn;
 
 /**
@@ -37,13 +36,23 @@ int note_lookup[] = {
 void FreqMan::begin() {
 	portamentoOn = false;
 	prevPortFreq = -1;
-	curPortFreq = -1;
 	destPortFreq = -1;
 	portamentoTime = 100;
-	portT = 0;
 
 	arpeggioOn = false;
 	MidiNoteBuffer::begin();
+}
+
+void FreqMan::enablePortamento(bool onOff) {
+	if (onOff) {
+		portamentoOn = true;
+		prevPortFreq = -1;
+		destPortFreq = -1;
+		portamentoDone = true;
+	}
+	else {
+		portamentoOn = false;
+	}
 }
 
 void FreqMan::noteOn(int noteNumber) {
@@ -58,17 +67,19 @@ void FreqMan::noteOn(int noteNumber) {
 		// If no previous note has been struck
 		if (prevPortFreq == -1) {
 			prevPortFreq = noteToFreq(noteNumber);
-			curPortFreq = prevPortFreq;
 			destPortFreq = prevPortFreq;
+			portamentoDone = true;
 
 			// Set the freq immediatly
-			Waveout::setFreq(prevPortFreq);
+			Waveout::setFreq(destPortFreq);
 		}
 		else {
 			prevPortFreq = destPortFreq;
-			curPortFreq = prevPortFreq;
 			destPortFreq = noteToFreq(noteNumber);
-			portT = 0;
+			portamentoDone = false;
+
+			// Setup the portamento linear function
+			portamentoLine.init(prevPortFreq, destPortFreq, portamentoTime);
 		}
 	}
 	else {
@@ -107,10 +118,14 @@ int FreqMan::noteToFreq(int noteNum) {
 }
 
 void FreqMan::nextTick() {
-	if (portamentoOn && (curPortFreq != destPortFreq)) {
-		curPortFreq = ((int32_t)(destPortFreq-prevPortFreq)*(int32_t)portT)/(int32_t)portamentoTime + prevPortFreq;
+	if (portamentoOn && (!portamentoDone)) {
+		int16_t nextFreq;
+		portamentoDone = !portamentoLine.next(&nextFreq);
 
-		Waveout::setFreq(curPortFreq);
-		portT++;
+		if (portamentoDone) {
+			nextFreq = destPortFreq;
+		}
+
+		Waveout::setFreq(nextFreq);
 	}
 }

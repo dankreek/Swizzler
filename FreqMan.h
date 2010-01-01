@@ -60,9 +60,9 @@ class FreqMan {
 
   private:
 	static int prevPortFreq;
-	static int curPortFreq;
 	static int destPortFreq;
-	static int portT;		// Current step in portamento glide
+	static bool portamentoDone;
+	static Bresenham portamentoLine;
 
 	static bool arpeggioOn; 
 
