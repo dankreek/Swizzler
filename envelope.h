@@ -2,18 +2,18 @@
 #define ENVGEN_H
 
 #include <stdlib.h>
-#include "AudioLine.h"
+#include "Bresenham.h"
 
 enum EnvelopeState {ENV_CLOSED, ENV_ATTACK, ENV_DECAY, ENV_SUSTAIN, ENV_RELEASE};
 
 // Set the maximum envelope scalar value
-#define ENV_SCALAR_RANGE	16	
+#define ENV_SCALAR_RANGE	32	
 
 // Default envelope values
-#define ATTACK 2 
-#define DECAY 1500
-#define SUSTAIN 8 
-#define RELEASE 1500 
+#define ATTACK 10 
+#define DECAY 20
+#define SUSTAIN ENV_SCALAR_RANGE/4 
+#define RELEASE 500 
 
 class Envelope {
     private:
@@ -31,9 +31,9 @@ class Envelope {
 	bool		gate;		// TRUE=gate close (signal start envelope)
 					// FALSE=gate open (signalt start release)
 
-	int		scalar;		// The last calculated amplitude scalar
+	int16_t		scalar;		// The last calculated amplitude scalar
 
-	AudioLine	line;		// Line used to calculate amplitudes
+	Bresenham	line;		// Line used to calculate amplitudes
 	
 	// Setup the envelope generator
 	void begin();

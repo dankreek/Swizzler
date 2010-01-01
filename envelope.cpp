@@ -30,16 +30,16 @@ void Envelope::setState(EnvelopeState state) {
 
 	switch (this->state) {
 		case ENV_ATTACK:
-			line.begin(0, ENV_SCALAR_RANGE, this->attackTime);
+			line.init(0, ENV_SCALAR_RANGE, this->attackTime);
 			break;
 		case ENV_DECAY:
-			line.begin(ENV_SCALAR_RANGE, this->sustainLevel, this->decayTime);
+			line.init(ENV_SCALAR_RANGE, this->sustainLevel, this->decayTime);
 			break;
 		case ENV_SUSTAIN:
 			scalar = sustainLevel;
 			break;
 		case ENV_RELEASE:
-			line.begin(this->sustainLevel, 0, this->releaseTime);
+			line.init(this->sustainLevel, 0, this->releaseTime);
 			break;
 		case ENV_CLOSED:
 			scalar = 0;
@@ -78,13 +78,13 @@ void Envelope::next() {
 	switch (state) {
 		case ENV_ATTACK:
 			time++;
-			scalar = line.getAmp(time);
+			line.next(&scalar);
 			if (time >= attackTime)
 				setState(ENV_DECAY);
 			break;
 		case ENV_DECAY:
 			time++;
-			scalar = line.getAmp(time);
+			line.next(&scalar);
 			if (time >= decayTime)
 				setState(ENV_SUSTAIN);
 			break;
@@ -92,7 +92,7 @@ void Envelope::next() {
 			break;
 		case ENV_RELEASE:
 			time++;
-			scalar = line.getAmp(time);
+			line.next(&scalar);
 			if (time >= releaseTime)
 				setState(ENV_CLOSED);
 			break;
