@@ -3,10 +3,16 @@
 #include "MidiNoteBuffer.h"
 #include "wavetable.h"
 #include "FreqMan.h"
+#include "envelope.h"
 
 int MidiInput::midiCmd;
 int MidiInput::midiData1;
 int MidiInput::midiData2;
+
+// The 16 values used to control the envelope timings. 
+// Directly lifted from the SID chip
+uint16_t attackTimes[] = {2, 8, 16, 24, 38, 56, 68, 80, 100, 250, 600, 800, 1000, 3000, 5000, 8000 };
+uint16_t decRelTimes[] = {6, 24, 48, 72, 114, 168, 204, 240, 300, 750, 1500, 2400, 3000, 9000, 15000, 24000};
 
 // Midi controller numbers
 #define PORT_ON_OFF 	67
@@ -20,15 +26,16 @@ int MidiInput::midiData2;
 #define RAND_LEVEL	20
 #define NOISE_LEVEL	21
 
+#define ATTACK_TIME	75
+#define DECAY_TIME	76
+#define SUSTAIN_LEVEL	77
+#define RELEASE_TIME	14
+
 void MidiInput::handleNoteOn() {
 	// Most MIDI input devices send a NOTE ON message with a velocity of 0
 	// to signal the note ending.
-	if (midiData2 == 0) {
-		handleNoteOff();
-		return;
-	}
-	
-	FreqMan::noteOn(midiData1);
+	if (midiData2 == 0) FreqMan::noteOff(midiData1);
+	else FreqMan::noteOn(midiData1);
 }
 
 void MidiInput::handleNoteOff() {	
@@ -65,6 +72,18 @@ void MidiInput::handleControlChange() {
 		case PULSE_WIDTH:
 			Wavetable::pulseWidth = (midiData2 >> 3);
 			Wavetable::genSquare();
+			break;
+		case ATTACK_TIME:
+			envelopeOut.attackTime = attackTimes[midiData2 >> 3];
+			break;
+		case DECAY_TIME:
+			envelopeOut.decayTime = decRelTimes[midiData2 >> 3];
+			break;
+		case SUSTAIN_LEVEL:
+			envelopeOut.sustainLevel = (midiData2 >> 2);
+			break;
+		case RELEASE_TIME:
+			envelopeOut.releaseTime = decRelTimes[midiData2 >> 3];
 			break;
 	}
 }
