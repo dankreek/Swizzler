@@ -1,5 +1,6 @@
 #include <inttypes.h>
 #include "FreqMan.h"
+#include "Bresenham.h"
 #include "MidiNoteBuffer.h"
 #include "waveout.h"
 #include "envelope.h"

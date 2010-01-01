@@ -1,6 +1,8 @@
 #ifndef FREQMAN_H
 #define FREQMAN_H
 
+#include "Bresenham.h"
+
 /**
  * The frequency manager takes in control messages (via MIDI) like note on, note off
  * portamento on/off, and arpeggio on/off and tells the oscillator what frequency to

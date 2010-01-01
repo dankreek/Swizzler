@@ -3,6 +3,7 @@
 #include <avr/io.h>
 #include <avr/pgmspace.h>
 #include <WProgram.h>
+#include <inttypes.h>
 #include "wavetable.h"
 #include "waveout.h"
 #include "envelope.h"
@@ -73,6 +74,10 @@ void Waveout::start() {
     TIMSK1 |= _BV(OCIE1A);
 
     sei();
+
+    // Ramp up the DAC from 0 to 128 to prevent the popping noise
+    for (uint8_t i=0; i < 128; i++)
+        OCR2A = i;
     
     pinMode(10, OUTPUT);
     digitalWrite(10, HIGH);
