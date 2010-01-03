@@ -52,6 +52,7 @@ void FreqMan::enablePortamento(bool onOff) {
 	}
 	else {
 		portamentoOn = false;
+		if (destPortFreq > -1) Waveout::setFreq(destPortFreq);
 	}
 }
 
