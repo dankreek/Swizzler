@@ -6,7 +6,7 @@ struct MidiNote {
 	unsigned char	velocity;
 };
 
-#define MIDI_NOTE_BUF_SIZE 5
+#define MIDI_NOTE_BUF_SIZE 10 
 
 /**
  * This is essentially an ordered doubly-linked list that keeps track of every MIDI note that is being pressed,

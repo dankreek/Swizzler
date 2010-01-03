@@ -39,7 +39,7 @@ void Envelope::setState(EnvelopeState state) {
 			scalar = sustainLevel;
 			break;
 		case ENV_RELEASE:
-			line.init(this->sustainLevel, 0, this->releaseTime);
+			line.init(scalar, 0, this->releaseTime);
 			break;
 		case ENV_CLOSED:
 			scalar = 0;
@@ -65,8 +65,6 @@ void Envelope::setup(int attack, int decay, int sustain, int release) {
 
 	// Gate is open until the user closes it
 	this->openGate();
-
-	// Will need to so some shits to reinitialize whatever the active line is...
 }
 
 /**
@@ -75,28 +73,22 @@ void Envelope::setup(int attack, int decay, int sustain, int release) {
 void Envelope::next() {
 	time++;
 
+	// Advance envelope lines where needed
 	switch (state) {
 		case ENV_ATTACK:
 			time++;
 			line.next(&scalar);
-			if (time >= attackTime)
-				setState(ENV_DECAY);
+			if (time >= attackTime)	setState(ENV_DECAY);
 			break;
 		case ENV_DECAY:
 			time++;
 			line.next(&scalar);
-			if (time >= decayTime)
-				setState(ENV_SUSTAIN);
-			break;
-		case ENV_SUSTAIN:
+			if (time >= decayTime) setState(ENV_SUSTAIN);
 			break;
 		case ENV_RELEASE:
 			time++;
 			line.next(&scalar);
-			if (time >= releaseTime)
-				setState(ENV_CLOSED);
-			break;
-		case ENV_CLOSED:
+			if (time >= releaseTime) setState(ENV_CLOSED);
 			break;
 	};
 } 
