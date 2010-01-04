@@ -2,6 +2,7 @@
 #define FREQMAN_H
 
 #include "Bresenham.h"
+#include "ArpManager.h"
 
 /**
  * The frequency manager takes in control messages (via MIDI) like note on, note off
@@ -10,6 +11,8 @@
  */
 class FreqMan {
   public:
+	static ArpManager arpManager;
+
 	static bool portamentoOn;
 	static int portamentoTime;
 
@@ -70,6 +73,12 @@ class FreqMan {
 	static
 	int noteToFreq(int noteNum);
 
+	/**
+	 * Minimum number of MIDI notes neded to stat arpeggio.
+	 */
+	static 
+	uint8_t arpMinNotes;
+
   private:
 	static int prevPortFreq;
 	static int destPortFreq;
@@ -77,20 +86,6 @@ class FreqMan {
 	static Bresenham portamentoLine;
 
 	static bool arpeggioOn;
-
-	// Pointer to which note in the buffer the arpeggiator is currently playing
-	static uint8_t arpIndex;
-
-	// The amount of time an arp not should be played
-	static uint16_t arpTime;
-
-	// How long until the next note in the arpeggio is played
-	static uint16_t	arpTimeCounter;
-
-	// The minimum number of notes needed to start an arpeggio playing
-	static uint8_t arpMinNotes;
-
-	// Is there an arpeggio currently running?
 	static bool arpRunning;
 };
 

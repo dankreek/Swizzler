@@ -5,6 +5,7 @@
 #include "waveout.h"
 #include "envelope.h"
 
+ArpManager FreqMan::arpManager;
 bool FreqMan::portamentoOn;
 int FreqMan::prevPortFreq;
 bool FreqMan::portamentoDone;
@@ -13,9 +14,6 @@ int FreqMan::portamentoTime;
 Bresenham FreqMan::portamentoLine;
 
 bool FreqMan::arpeggioOn;
-uint8_t FreqMan::arpIndex;
-uint16_t FreqMan::arpTimeCounter;
-uint16_t FreqMan::arpTime;
 bool FreqMan::arpRunning;
 uint8_t FreqMan::arpMinNotes;
 
@@ -45,17 +43,15 @@ void FreqMan::begin() {
 	destPortFreq = -1;
 	portamentoTime = 100;
 
-	arpeggioOn = true;
 	arpMinNotes = 2;
-	arpTime = 20;
+	arpManager.arpTime = 20;
+	enableArp(true);	
 		
 	MidiNoteBuffer::begin();
 }
 
 void FreqMan::enableArp(bool onOff) {
 	if (onOff) {
-		arpIndex = 0;
-		arpTimeCounter = 0;
 		arpeggioOn = true;
 		arpRunning = false;
 	}
@@ -124,8 +120,7 @@ void FreqMan::noteOn(int noteNumber) {
 }
 
 void FreqMan::startArp() {
-	arpTimeCounter = 0;
-	arpRunning = true;
+	arpRunning = false;
 	envelopeOut.closeGate();
 }
 
@@ -171,14 +166,6 @@ void FreqMan::nextTick() {
 	}
 	
 	if (arpeggioOn && arpRunning) {
-		// If this is the start of a new arpeggio note, play it!
-		if ((arpTimeCounter == 0) && (MidiNoteBuffer::size >= arpMinNotes))   {
-			arpIndex = (arpIndex + 1) % MidiNoteBuffer::size;
-			Waveout::setFreq(noteToFreq(MidiNoteBuffer::buffer[arpIndex].note.number));
-		}	
-
-		
-		// Increment arpeggio step timer
-		arpTimeCounter = (arpTimeCounter + 1) % arpTime;
+		arpManager.nextTick();
 	}
 }
