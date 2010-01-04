@@ -11,7 +11,13 @@ bool FreqMan::portamentoDone;
 int FreqMan::destPortFreq;
 int FreqMan::portamentoTime;
 Bresenham FreqMan::portamentoLine;
+
 bool FreqMan::arpeggioOn;
+uint8_t FreqMan::arpIndex;
+uint16_t FreqMan::arpTimeCounter;
+uint16_t FreqMan::arpTime;
+bool FreqMan::arpRunning;
+uint8_t FreqMan::arpMinNotes;
 
 /**
  * Frequency -> Note lookup table. These are the frequencies for
@@ -39,8 +45,23 @@ void FreqMan::begin() {
 	destPortFreq = -1;
 	portamentoTime = 100;
 
-	arpeggioOn = false;
+	arpeggioOn = true;
+	arpMinNotes = 2;
+	arpTime = 20;
+		
 	MidiNoteBuffer::begin();
+}
+
+void FreqMan::enableArp(bool onOff) {
+	if (onOff) {
+		arpIndex = 0;
+		arpTimeCounter = 0;
+		arpeggioOn = true;
+		arpRunning = false;
+	}
+	else {
+		arpeggioOn = false;
+	}
 }
 
 void FreqMan::enablePortamento(bool onOff) {
@@ -82,15 +103,35 @@ void FreqMan::noteOn(int noteNumber) {
 			// Setup the portamento linear function
 			portamentoLine.init(prevPortFreq, destPortFreq, portamentoTime);
 		}
+
+		// Restart the gate
+		envelopeOut.openGate();	
+		envelopeOut.closeGate();
+	}
+	else if (arpeggioOn) {
+		// Open the gate if the min number of keys are down for an arp
+		if ((MidiNoteBuffer::size >= arpMinNotes) && !arpRunning) startArp();
+		else if (arpRunning) stopArp();
 	}
 	else {
 		// Set the new frequency immediatly
 		Waveout::setFreq(noteToFreq(noteNumber));
-	}
 
-	// Restart the gate
-	envelopeOut.openGate();	
+		// Restart the gate
+		envelopeOut.openGate();	
+		envelopeOut.closeGate();
+	}
+}
+
+void FreqMan::startArp() {
+	arpTimeCounter = 0;
+	arpRunning = true;
 	envelopeOut.closeGate();
+}
+
+void FreqMan::stopArp() {
+	envelopeOut.openGate();
+	arpRunning = false;
 }
 
 void FreqMan::noteOff(int noteNumber) {
@@ -114,7 +155,6 @@ int FreqMan::noteToFreq(int noteNum) {
 	int note = noteNum % 12;
 	
 	// Divides in half for the proper number of octaves
-	//return pgm_read_word_near(note_lookup + note) >> (8-octave);
 	return (note_lookup[note] >> (8-octave));
 }
 
@@ -128,5 +168,17 @@ void FreqMan::nextTick() {
 		}
 
 		Waveout::setFreq(nextFreq);
+	}
+	
+	if (arpeggioOn && arpRunning) {
+		// If this is the start of a new arpeggio note, play it!
+		if ((arpTimeCounter == 0) && (MidiNoteBuffer::size >= arpMinNotes))   {
+			arpIndex = (arpIndex + 1) % MidiNoteBuffer::size;
+			Waveout::setFreq(noteToFreq(MidiNoteBuffer::buffer[arpIndex].note.number));
+		}	
+
+		
+		// Increment arpeggio step timer
+		arpTimeCounter = (arpTimeCounter + 1) % arpTime;
 	}
 }

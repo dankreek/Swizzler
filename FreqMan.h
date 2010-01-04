@@ -53,6 +53,18 @@ class FreqMan {
 	void enableArp(bool onOff);
 
 	/**
+	 * Start the arpeggiator spinning
+	 */
+	static
+	void startArp();
+
+	/**
+	 * Stop the arpeggio spinning
+	 */
+	static
+	void stopArp();
+	
+	/**
 	 * Convert a Midi note to a frequency
 	 */
 	static
@@ -64,8 +76,22 @@ class FreqMan {
 	static bool portamentoDone;
 	static Bresenham portamentoLine;
 
-	static bool arpeggioOn; 
+	static bool arpeggioOn;
 
+	// Pointer to which note in the buffer the arpeggiator is currently playing
+	static uint8_t arpIndex;
+
+	// The amount of time an arp not should be played
+	static uint16_t arpTime;
+
+	// How long until the next note in the arpeggio is played
+	static uint16_t	arpTimeCounter;
+
+	// The minimum number of notes needed to start an arpeggio playing
+	static uint8_t arpMinNotes;
+
+	// Is there an arpeggio currently running?
+	static bool arpRunning;
 };
 
 #endif
