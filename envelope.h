@@ -1,6 +1,6 @@
 #ifndef ENVGEN_H
 #define ENVGEN_H
-
+#include <WProgram.h>
 #include <stdlib.h>
 #include "Bresenham.h"
 
@@ -48,12 +48,14 @@ class Envelope {
 	void closeGate() {
 		this->gate = true;
 		this->setState(ENV_ATTACK);
+		digitalWrite(13, LOW);
 	}
 
 	inline
 	void openGate() {
 		this->gate = false;
 		this->setState(ENV_RELEASE);
+		digitalWrite(13, HIGH);
 	}
 	
 	

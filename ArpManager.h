@@ -26,13 +26,13 @@ class ArpManager {
 
 	/**
 	 * MIDI notes in arpeggio generator
-	 * Do NOT modify while generator is on
+	 * Do NOT modify while generator is ticking 
 	 */
 	uint8_t noteList[ARP_BUFFER_SIZE];
 
 	/**
-	 * Size the note list
-	 * Do NOT modify while generator is on
+	 * Size of the note list
+	 * Do NOT modify while generator is ticking
 	 */
 	uint8_t noteListSize;
 

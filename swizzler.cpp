@@ -14,8 +14,6 @@ extern "C" void __cxa_pure_virtual() {}
 int ledPin = 13;
 
 void setup() {	
-	digitalWrite(ledPin, HIGH);
-
 	pinMode(ledPin, OUTPUT);
 
 	// Try and make sure our noise pattern is different every bootup!
@@ -41,7 +39,7 @@ void setup() {
 	// Initialize Frequency Manager
 	FreqMan::begin();
 
-	digitalWrite(ledPin, LOW);
+	digitalWrite(ledPin, HIGH);
 }
 
 int main(void) {

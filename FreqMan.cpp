@@ -1,4 +1,5 @@
 #include <inttypes.h>
+#include <WProgram.h>
 #include "FreqMan.h"
 #include "Bresenham.h"
 #include "MidiNoteBuffer.h"
@@ -45,7 +46,7 @@ void FreqMan::begin() {
 
 	arpMinNotes = 2;
 	arpManager.arpTime = 20;
-	enableArp(true);	
+	enableArp(false);	
 		
 	MidiNoteBuffer::begin();
 }
