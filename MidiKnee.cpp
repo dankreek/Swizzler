@@ -7,7 +7,7 @@ uint16_t MidiKnee::getValue(uint8_t midiValue) {
 		out = ((uint16_t)kneeY*(uint16_t)midiValue)/kneeX;	
 	}
 	else {
-		out = ((uint16_t)(range-kneeY)*(uint16_t)midiValue)/(127-kneeX); 
+		out = ((uint16_t)(range-kneeY)*(uint16_t)(midiValue-kneeX)/(127-kneeX)+kneeY; 
 	}
 
 	return out;
