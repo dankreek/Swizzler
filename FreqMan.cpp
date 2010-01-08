@@ -1,19 +1,16 @@
 #include <inttypes.h>
 #include <WProgram.h>
 #include "FreqMan.h"
+#include "PortamentoManager.h"
 #include "Bresenham.h"
 #include "MidiNoteBuffer.h"
 #include "waveout.h"
 #include "envelope.h"
 
-ArpManager FreqMan::arpManager;
-bool FreqMan::portamentoOn;
-int FreqMan::prevPortFreq;
-bool FreqMan::portamentoDone;
-int FreqMan::destPortFreq;
-int FreqMan::portamentoTime;
-Bresenham FreqMan::portamentoLine;
+ArpManager FreqMan::arpMan;
+PortamentoManager FreqMan::portMan;
 
+bool FreqMan::portamentoOn;
 bool FreqMan::arpeggioOn;
 bool FreqMan::arpRunning;
 uint8_t FreqMan::arpMinNotes;
@@ -40,12 +37,10 @@ int note_lookup[] = {
 
 void FreqMan::begin() {
 	portamentoOn = false;
-	prevPortFreq = -1;
-	destPortFreq = -1;
-	portamentoTime = 100;
+	portMan.begin();
 
 	arpMinNotes = 2;
-	arpManager.arpTime = 20;
+	arpMan.arpTime = 20;
 	enableArp(false);	
 		
 	MidiNoteBuffer::begin();
@@ -62,15 +57,13 @@ void FreqMan::enableArp(bool onOff) {
 }
 
 void FreqMan::enablePortamento(bool onOff) {
-	if (onOff) {
+	if (onOff && !portamentoOn) {
 		portamentoOn = true;
-		prevPortFreq = -1;
-		destPortFreq = -1;
-		portamentoDone = true;
+		portMan.begin();
 	}
-	else {
+	else if (!onOff && portamentoOn) {
 		portamentoOn = false;
-		if (destPortFreq > -1) Waveout::setFreq(destPortFreq);
+		if (portMan.destFreq > -1) Waveout::setFreq(portMan.destFreq);
 	}
 }
 
@@ -83,23 +76,7 @@ void FreqMan::noteOn(int noteNumber) {
 	MidiNoteBuffer::putMidiNote(note);
 	
 	if (portamentoOn) {
-		// If no previous note has been struck
-		if (prevPortFreq == -1) {
-			prevPortFreq = noteToFreq(noteNumber);
-			destPortFreq = prevPortFreq;
-			portamentoDone = true;
-
-			// Set the freq immediatly
-			Waveout::setFreq(destPortFreq);
-		}
-		else {
-			prevPortFreq = destPortFreq;
-			destPortFreq = noteToFreq(noteNumber);
-			portamentoDone = false;
-
-			// Setup the portamento linear function
-			portamentoLine.init(prevPortFreq, destPortFreq, portamentoTime);
-		}
+		portMan.nextFreq(noteToFreq(noteNumber));		
 
 		// Restart the gate
 		envelopeOut.openGate();	
@@ -115,7 +92,6 @@ void FreqMan::noteOn(int noteNumber) {
 		Waveout::setFreq(noteToFreq(noteNumber));
 
 		// Restart the gate
-		envelopeOut.openGate();	
 		envelopeOut.closeGate();
 	}
 }
@@ -155,18 +131,22 @@ int FreqMan::noteToFreq(int noteNum) {
 }
 
 void FreqMan::nextTick() {
-	if (portamentoOn && (!portamentoDone)) {
-		int16_t nextFreq;
-		portamentoDone = !portamentoLine.next(&nextFreq);
-
-		if (portamentoDone) {
-			nextFreq = destPortFreq;
-		}
-
-		Waveout::setFreq(nextFreq);
-	}
-	
 	if (arpeggioOn && arpRunning) {
-		arpManager.nextTick();
+		// If the next note in the arpeggio needs to be updated 
+		if (arpMan.nextTick()) {
+			if (portamentoOn) {
+				// If portamento on, update portamento info
+				portMan.nextFreq(noteToFreq(arpMan.curNote()));
+			}
+			else {
+				// Otherwise go directly to the next frequency
+				Waveout::setFreq(noteToFreq(arpMan.curNote()));
+			}	
+		}
+	}
+
+	// If portamento's on and running then output the new frequency
+	if (portamentoOn && !portMan.done) {
+		if (portMan.nextTick()) Waveout::setFreq(portMan.curFreq);
 	}
 }

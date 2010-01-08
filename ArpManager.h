@@ -40,6 +40,14 @@ class ArpManager {
 	 * index pointer to current note in arpeggio
 	 */
 	uint8_t noteListIndex;
+
+	/**
+	 * Macro to get the pointer to the current note
+	 */
+	inline
+	uint8_t curNote() {
+		return noteList[noteListIndex];
+	}
   private:
 	/**
 	 * Counts up to arpTime and switches to next note

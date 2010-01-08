@@ -1,8 +1,8 @@
 #ifndef FREQMAN_H
 #define FREQMAN_H
 
-#include "Bresenham.h"
 #include "ArpManager.h"
+#include "PortamentoManager.h"
 
 /**
  * The frequency manager takes in control messages (via MIDI) like note on, note off
@@ -11,10 +11,8 @@
  */
 class FreqMan {
   public:
-	static ArpManager arpManager;
-
-	static bool portamentoOn;
-	static int portamentoTime;
+	static ArpManager arpMan;
+	static PortamentoManager portMan;
 
 	/**
 	 * Initialize the frequency manager
@@ -80,12 +78,8 @@ class FreqMan {
 	uint8_t arpMinNotes;
 
   private:
-	static int prevPortFreq;
-	static int destPortFreq;
-	static bool portamentoDone;
-	static Bresenham portamentoLine;
-
 	static bool arpeggioOn;
+	static bool portamentoOn;
 	static bool arpRunning;
 };
 

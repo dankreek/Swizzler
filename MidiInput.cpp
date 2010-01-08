@@ -67,7 +67,7 @@ void MidiInput::handleControlChange() {
 			FreqMan::enablePortamento( (midiData2 > 0) ? true : false);
 			break;
 		case PORT_TIME:
-			FreqMan::portamentoTime = ((uint32_t)(midiData2+1) * (uint32_t)1000)/128;
+			FreqMan::portMan.time = ((uint32_t)(midiData2+1) * (uint32_t)1000)/128;
 			break;
 		case PULSE_WIDTH:
 			Wavetable::pulseWidth = (midiData2 >> 3);
