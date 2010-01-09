@@ -12,10 +12,12 @@ void PortamentoManager::nextFreq(uint16_t freq) {
 	if (prevFreq == -1) {
 		prevFreq = freq;
 		destFreq = freq;
+		curFreq = freq;
 		done = true;
 	}
 	else {
 		prevFreq = destFreq;
+		curFreq = prevFreq;
 		destFreq = freq;
 		done = false;
 		timeLine.init(prevFreq, destFreq, time);
@@ -27,7 +29,8 @@ bool PortamentoManager::nextTick() {
 		int16_t nextFreq;
 		bool lineDone = timeLine.next(&nextFreq);
 
-		if (nextFreq != curFreq) {
+		if (!lineDone) {
+			
 			curFreq = nextFreq;
 			return true;
 		}
