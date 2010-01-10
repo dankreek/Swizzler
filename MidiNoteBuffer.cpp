@@ -20,6 +20,10 @@ void MidiNoteBuffer::removeMidiNote(MidiNote note) {
 			
 			closeHole(i);
 			size--;
+
+			// Update the last note pointer if it past the hole
+			if (lastNote > i) lastNote--;
+
 			break;
 		}
 	}

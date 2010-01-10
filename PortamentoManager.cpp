@@ -27,9 +27,14 @@ void PortamentoManager::nextFreq(uint16_t freq) {
 bool PortamentoManager::nextTick() {
 	if (!done) {
 		int16_t nextFreq;
-		bool lineDone = timeLine.next(&nextFreq);
+		bool stillGoing = timeLine.next(&nextFreq);
 
-		if (!lineDone) {
+		if (!stillGoing) {
+			curFreq = destFreq;
+			done = true;
+			return true;
+		}
+		else if (curFreq != nextFreq) {
 			
 			curFreq = nextFreq;
 			return true;

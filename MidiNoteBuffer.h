@@ -1,6 +1,8 @@
 #ifndef MIDINOTEBUFFER_H_
 #define MIDINOTEBUFFER_H_
 
+#include <inttypes.h>
+
 struct MidiNote {
 	unsigned char	number;
 	unsigned char	velocity;
@@ -16,7 +18,7 @@ struct MidiNote {
 class MidiNoteBuffer {
   public:  
   	// The current size of the list (how many keys are being held down)
-  	static int size;
+  	static uint8_t size;
   
   	// The index of the latest note that was struck in the buffer
   	static int lastNote;
