@@ -78,6 +78,10 @@ class FreqMan {
 	uint8_t arpMinNotes;
 
   private:
+
+	static
+	void copyNoteBufferToArpBuffer();
+
 	static bool arpeggioOn;
 	static bool portamentoOn;
 	static bool arpRunning;

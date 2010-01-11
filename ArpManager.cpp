@@ -1,7 +1,8 @@
 #include "ArpManager.h"
 
 void ArpManager::restartArpeggio() {
-	noteListIndex = 0;
+	// Set the note index to the last element so it will rollover on nextTick()
+	noteListIndex = (noteListSize-1);
 
 	// Set to the last tick so a rollover to 0 will occur on nextTick()
 	arpCounter = (arpTime-1);

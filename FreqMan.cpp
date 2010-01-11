@@ -40,8 +40,8 @@ void FreqMan::begin() {
 	portMan.begin();
 
 	arpMinNotes = 2;
-	arpMan.arpTime = 20;
-	enableArp(false);	
+	arpMan.arpTime = 50;
+	enableArp(true);	
 		
 	MidiNoteBuffer::begin();
 }
@@ -67,11 +67,18 @@ void FreqMan::enablePortamento(bool onOff) {
 	}
 }
 
+// TODO: This will be done via different algo's later, ie up, down, up&down, random, etc
+void FreqMan::copyNoteBufferToArpBuffer() {
+	for (int i=0; i < MidiNoteBuffer::size; i++) {
+		arpMan.noteList[i] = MidiNoteBuffer::buffer[i].number;
+	}
+	arpMan.noteListSize = MidiNoteBuffer::size;
+}	
+
 void FreqMan::noteOn(int noteNumber) {
 	MidiNote note;
 
 	note.number = noteNumber;
-	note.velocity = 127;
 
 	MidiNoteBuffer::putMidiNote(note);
 	
@@ -84,8 +91,14 @@ void FreqMan::noteOn(int noteNumber) {
 	}
 	else if (arpeggioOn) {
 		// Open the gate if the min number of keys are down for an arp
-		if ((MidiNoteBuffer::size >= arpMinNotes) && !arpRunning) startArp();
-		else if (arpRunning) stopArp();
+		if (MidiNoteBuffer::size >= arpMinNotes) {
+			// Copy the midi key buffer into the arp bufferin order from lowest to highest note
+			copyNoteBufferToArpBuffer();	
+			startArp();
+		}
+		else if (arpRunning) {
+			stopArp();
+		}
 	}
 	else {
 		// Set the new frequency immediatly
@@ -94,10 +107,19 @@ void FreqMan::noteOn(int noteNumber) {
 		// Restart the gate
 		envelopeOut.closeGate();
 	}
+
+	// For debugging
+	if (MidiNoteBuffer::size > 0) {
+		digitalWrite(8, true);
+	}
+	else {
+		digitalWrite(8, false);
+	}
 }
 
 void FreqMan::startArp() {
-	arpRunning = false;
+	arpRunning = true;
+	arpMan.restartArpeggio();
 	envelopeOut.closeGate();
 }
 
@@ -112,12 +134,28 @@ void FreqMan::noteOff(int noteNumber) {
 
 	// If this note is the current note that's playing then open the gate
 	if (MidiNoteBuffer::size > 0) { 
-		if (MidiNoteBuffer::buffer[MidiNoteBuffer::lastNote].note.number == note.number) {
-			envelopeOut.openGate();	
+		if (!arpeggioOn) {
+			if ((MidiNoteBuffer::lastNote > -1) && (MidiNoteBuffer::getLastNote().number == note.number)) {
+				envelopeOut.openGate();	
+			}
+		}
+		
+		MidiNoteBuffer::removeMidiNote(note);
+
+		// TODO: This needs to be a LOT smarter! (If #keys is too low, close gate)
+		if (arpeggioOn) {
+			copyNoteBufferToArpBuffer();
+			arpMan.restartArpeggio();
 		}
 	}
 
-	MidiNoteBuffer::removeMidiNote(note);
+	// For debugging
+	if (MidiNoteBuffer::size > 0) {
+		digitalWrite(8, true);
+	}
+	else {
+		digitalWrite(8, false);
+	}
 }
 
 int FreqMan::noteToFreq(int noteNum) {

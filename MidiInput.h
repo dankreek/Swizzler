@@ -32,11 +32,13 @@ public:
 	 */
 	inline static
 	void pushByte(unsigned char byte) {
+		// Throw out system realtime messages
+		if ((byte >= 0xf0) && (byte <= 0xff)) return;
+
 		// This is a status byte, so start the MIDI command all over
 		if (byte & 0x80) {
 			midiCmd = byte;
-			midiData1 = -1;
-			midiData2 = -1;
+			resetCommand();
 		}
 		else if ((midiCmd > -1) && (midiData1 == -1)) {
 			midiData1 = byte;

@@ -15,8 +15,11 @@
 // 64 is currently chosed as it is 1/4th the total amplitude
 // available with 8-bit output
 #define WAVE_HEIGHT 128 
-#define MIN_SAMPLE (WAVE_HEIGHT/2*-1)/2
-#define MAX_SAMPLE ((WAVE_HEIGHT/2)-1)/2
+#define MIN_SAMPLE (WAVE_HEIGHT/2*-1)
+#define MAX_SAMPLE ((WAVE_HEIGHT/2)-1)
+
+//#define MIN_SAMPLE (WAVE_HEIGHT/2*-1)/2
+//#define MAX_SAMPLE ((WAVE_HEIGHT/2)-1)/2
 
 class Wavetable {
     public:

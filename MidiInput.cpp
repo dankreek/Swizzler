@@ -18,6 +18,8 @@ uint16_t decRelTimes[] = {6, 24, 48, 72, 114, 168, 204, 240, 300, 750, 1500, 240
 #define PORT_ON_OFF 	67
 #define PORT_TIME	5
 
+#define ARP_ON_OFF	26
+
 #define PULSE_WIDTH	12
 
 #define TRI_LEVEL	74
@@ -64,7 +66,7 @@ void MidiInput::handleControlChange() {
 			Wavetable::noiseLevel = (midiData2 >> 3);
 			break;
 		case PORT_ON_OFF:
-			FreqMan::enablePortamento( (midiData2 > 0) ? true : false);
+			FreqMan::enablePortamento((midiData2 > 0) ? true : false);
 			break;
 		case PORT_TIME:
 			FreqMan::portMan.time = ((uint32_t)(midiData2+1) * (uint32_t)1000)/128;
@@ -84,6 +86,9 @@ void MidiInput::handleControlChange() {
 			break;
 		case RELEASE_TIME:
 			envelopeOut.releaseTime = decRelTimes[midiData2 >> 3];
+			break;
+		case ARP_ON_OFF:
+			FreqMan::enableArp((midiData2 > 0) ? true : false);
 			break;
 	}
 }

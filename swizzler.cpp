@@ -15,11 +15,12 @@ int ledPin = 13;
 
 void setup() {	
 	pinMode(ledPin, OUTPUT);
+	pinMode(8, OUTPUT);
 
 	// Try and make sure our noise pattern is different every bootup!
 	randomSeed(analogRead(0));
 	
-	// 31,250bps is the speed a which MIDI travels in a vacuum. 
+	// 31.250kbps is the speed a which MIDI travels in a vacuum. 
 	Serial.begin(31250);
 		
 	// Setup the envelope generator with some static values

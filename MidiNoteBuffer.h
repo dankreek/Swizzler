@@ -4,8 +4,8 @@
 #include <inttypes.h>
 
 struct MidiNote {
-	unsigned char	number;
-	unsigned char	velocity;
+	uint8_t	number;
+	uint8_t	velocity;
 };
 
 #define MIDI_NOTE_BUF_SIZE 10 
@@ -21,14 +21,8 @@ class MidiNoteBuffer {
   	static uint8_t size;
   
   	// The index of the latest note that was struck in the buffer
-  	static int lastNote;
+  	static int8_t lastNote;
   
-  	class NoteNode {
-  		public:
-  		MidiNote note;
-  		bool alloc;	// Is this node allocated?
-  	};
-  	
   	// Initialize the Note Buffer
   	static void begin();
   	
@@ -38,12 +32,18 @@ class MidiNoteBuffer {
 	// Remove a midi note from the buffer
 	static void removeMidiNote(MidiNote);
 
+	// Get the last note that was struck
+	inline static
+	MidiNote getLastNote() {
+		return buffer[lastNote];
+	}
+
   	// Buffer where the notes reside
-  	static NoteNode buffer[MIDI_NOTE_BUF_SIZE];
+  	static MidiNote buffer[MIDI_NOTE_BUF_SIZE];
   	
   private:
-  	static void makeHole(int);
-  	static void closeHole(int);
+  	static void makeHole(uint8_t);
+  	static void closeHole(uint8_t);
 };
 
 #endif /*MIDINOTEBUFFER_H_*/
