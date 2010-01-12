@@ -93,8 +93,11 @@ void FreqMan::noteOn(int noteNumber) {
 		// Open the gate if the min number of keys are down for an arp
 		if (MidiNoteBuffer::size >= arpMinNotes) {
 			// Copy the midi key buffer into the arp bufferin order from lowest to highest note
-			copyNoteBufferToArpBuffer();	
-			arpMan.restartArpeggio();
+			stopArp();
+			copyNoteBufferToArpBuffer();
+			startArp();
+
+			if (envelopeOut.gate == false) envelopeOut.closeGate();
 		}
 		else if (arpRunning) {
 			stopArp();
@@ -120,7 +123,7 @@ void FreqMan::noteOn(int noteNumber) {
 void FreqMan::startArp() {
 	arpRunning = true;
 	arpMan.restartArpeggio();
-	envelopeOut.closeGate();
+
 }
 
 void FreqMan::stopArp() {
@@ -149,9 +152,11 @@ void FreqMan::noteOff(int noteNumber) {
 			}
 			// Modify the arpeggio if there is now one less note in it
 			else {
+				stopArp();
 				copyNoteBufferToArpBuffer();
-				arpMan.restartArpeggio();
+				startArp();
 			}
+
 		}
 	}
 
