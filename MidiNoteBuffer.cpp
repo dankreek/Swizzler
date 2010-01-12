@@ -14,7 +14,7 @@ void MidiNoteBuffer::removeMidiNote(MidiNote note) {
 		// If this index contains the note to be removed
 		if (buffer[i].number == note.number) {
 			// The last note struck is unstruck, remove it
-			if (lastNote == i) i = -1;
+			if (lastNote == i) lastNote = -1;
 			
 			closeHole(i);
 			size--;
@@ -61,7 +61,7 @@ void MidiNoteBuffer::putMidiNote(MidiNote note) {
 
 void MidiNoteBuffer::makeHole(uint8_t insert) {	
 	for (uint8_t i = (size+1); i > insert; i--) {
-		buffer[i] = buffer[i-1];
+		buffer[i].number = buffer[i-1].number;
 	}
 }
 

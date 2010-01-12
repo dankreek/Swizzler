@@ -94,7 +94,7 @@ void FreqMan::noteOn(int noteNumber) {
 		if (MidiNoteBuffer::size >= arpMinNotes) {
 			// Copy the midi key buffer into the arp bufferin order from lowest to highest note
 			copyNoteBufferToArpBuffer();	
-			startArp();
+			arpMan.restartArp();
 		}
 		else if (arpRunning) {
 			stopArp();
@@ -142,10 +142,16 @@ void FreqMan::noteOff(int noteNumber) {
 		
 		MidiNoteBuffer::removeMidiNote(note);
 
-		// TODO: This needs to be a LOT smarter! (If #keys is too low, close gate)
 		if (arpeggioOn) {
-			copyNoteBufferToArpBuffer();
-			arpMan.restartArpeggio();
+			// Open the gate if there's not enough notes to make an arpeggio
+			if (MidiNoteBuffer::size <  arpMinNotes) {
+				stopArpeggio();
+			}
+			// Modify the arpeggio if there is now one less note in it
+			else {
+				copyNoteBufferToArpBuffer();
+				arpMan.restartArpeggio();
+			}
 		}
 	}
 
