@@ -84,7 +84,7 @@ void FreqMan::noteOn(int noteNumber) {
 	
 	if (portamentoOn) {
 		// If no previous note in the buffer then just play the note
-		if (MidiNoteBuffer::size == 1) {
+		if (MidiNoteBuffer::lastNote == -1) {
 			portMan.nextDirectFreq(noteToFreq(noteNumber));
 		}
 		else {
@@ -115,8 +115,8 @@ void FreqMan::noteOn(int noteNumber) {
 		// Set the new frequency immediatly
 		Waveout::setFreq(noteToFreq(noteNumber));
 
-		// Restart the gate if this is a new note
-		if (MidiNoteBuffer::size == 1) envelopeOut.closeGate();
+		// Restart the gate 
+		envelopeOut.closeGate();
 	}
 
 	// For debugging
