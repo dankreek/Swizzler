@@ -83,7 +83,14 @@ void FreqMan::noteOn(int noteNumber) {
 	MidiNoteBuffer::putMidiNote(note);
 	
 	if (portamentoOn) {
-		portMan.nextFreq(noteToFreq(noteNumber));		
+		// If no previous note in the buffer then just play the note
+		if (MidiNoteBuffer::size == 1) {
+			portMan.nextDirectFreq(noteToFreq(noteNumber));
+		}
+		else {
+			// If there is a previous note setup the glide
+			portMan.nextGlideFreq(noteToFreq(noteNumber));		
+		}
 
 		// Restart the gate
 		envelopeOut.openGate();	
@@ -103,12 +110,13 @@ void FreqMan::noteOn(int noteNumber) {
 			stopArp();
 		}
 	}
+	// No arpeggiating or portamento
 	else {
 		// Set the new frequency immediatly
 		Waveout::setFreq(noteToFreq(noteNumber));
 
-		// Restart the gate
-		envelopeOut.closeGate();
+		// Restart the gate if this is a new note
+		if (MidiNoteBuffer::size == 1) envelopeOut.closeGate();
 	}
 
 	// For debugging
@@ -185,7 +193,7 @@ void FreqMan::nextTick() {
 		if (arpMan.nextTick()) {
 			if (portamentoOn) {
 				// If portamento on, update portamento info
-				portMan.nextFreq(noteToFreq(arpMan.curNote()));
+				portMan.nextGlideFreq(noteToFreq(arpMan.curNote()));
 			}
 			else {
 				// Otherwise go directly to the next frequency
