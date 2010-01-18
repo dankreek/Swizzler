@@ -157,7 +157,6 @@ void FreqMan::noteOff(int noteNumber) {
 		if (arpeggioOn) {
 			// Open the gate if there's not enough notes to make an arpeggio
 			if (MidiNoteBuffer::size <  arpMinNotes) {
-				// Open the gate
 				envelopeOut.openGate();	
 			}
 			// Modify the arpeggio if there is now one less note in it
@@ -193,19 +192,12 @@ void FreqMan::nextTick() {
 	if (arpeggioOn && arpRunning) {
 		// If the next note in the arpeggio needs to be updated 
 		if (arpMan.nextTick()) {
-			if (portamentoOn) {
-				// If portamento on, update portamento info
-				portMan.nextGlideFreq(noteToFreq(arpMan.curNote()));
-			}
-			else {
-				// Otherwise go directly to the next frequency
-				Waveout::setFreq(noteToFreq(arpMan.curNote()));
-			}	
+			// Otherwise go directly to the next frequency
+			Waveout::setFreq(noteToFreq(arpMan.curNote()));
 		}
 	}
-
 	// If portamento's on and running then output the new frequency
-	if (portamentoOn && !portMan.done) {
+	else if (portamentoOn && !portMan.done) {
 		if (portMan.nextTick()) Waveout::setFreq(portMan.curFreq);
 	}
 }
