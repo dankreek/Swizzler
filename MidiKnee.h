@@ -12,7 +12,7 @@
 class MidiKnee {
   public:
 	inline
-	void init(uint16_t range, uint8_t kneeX, uint16_t kneeY) {
+	MidiKnee(uint16_t range, uint8_t kneeX, uint16_t kneeY) {
 		this->range = range;
 		this->kneeX = kneeX;
 		this->kneeY = kneeY;

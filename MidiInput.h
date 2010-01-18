@@ -33,7 +33,7 @@ public:
 	inline static
 	void pushByte(unsigned char byte) {
 		// Throw out system realtime messages
-		if ((byte >= 0xf0) && (byte <= 0xff)) return;
+		if ((byte > 0xf0) && (byte <= 0xff)) return;
 
 		// This is a status byte, so start the MIDI command all over
 		if (byte & 0x80) {

@@ -1,9 +1,13 @@
 #include <inttypes.h>
+#include "MidiKnee.h"
 #include "MidiInput.h"
 #include "MidiNoteBuffer.h"
 #include "wavetable.h"
 #include "FreqMan.h"
 #include "envelope.h"
+
+// Knees to define how midi controls work, and the range for the control
+MidiKnee portTimeKnee = MidiKnee(2000, 95, 500);
 
 int MidiInput::midiCmd;
 int MidiInput::midiData1;
@@ -69,7 +73,8 @@ void MidiInput::handleControlChange() {
 			FreqMan::enablePortamento((midiData2 > 0) ? true : false);
 			break;
 		case PORT_TIME:
-			FreqMan::portMan.time = ((uint32_t)(midiData2+1) * (uint32_t)1000)/128;
+			//FreqMan::portMan.time = ((uint32_t)(midiData2+1) * (uint32_t)1000)/128;
+			FreqMan::portMan.time = portTimeKnee.getValue(midiData2);
 			break;
 		case PULSE_WIDTH:
 			Wavetable::pulseWidth = (midiData2 >> 3);
