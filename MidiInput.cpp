@@ -8,15 +8,12 @@
 
 // Knees to define how midi controls work, and the range for the control
 MidiKnee portTimeKnee = MidiKnee(2000, 95, 500);
+MidiKnee attackTimeKnee = MidiKnee(8000, 95, 1000);
+MidiKnee decRelTimeKnee = MidiKnee(24000, 95, 2400);	// Decay/release time knee
 
 int MidiInput::midiCmd;
 int MidiInput::midiData1;
 int MidiInput::midiData2;
-
-// The 16 values used to control the envelope timings. 
-// Directly lifted from the SID chip
-uint16_t attackTimes[] = {2, 8, 16, 24, 38, 56, 68, 80, 100, 250, 600, 800, 1000, 3000, 5000, 8000 };
-uint16_t decRelTimes[] = {6, 24, 48, 72, 114, 168, 204, 240, 300, 750, 1500, 2400, 3000, 9000, 15000, 24000};
 
 // Midi controller numbers
 #define PORT_ON_OFF 	67
@@ -73,7 +70,6 @@ void MidiInput::handleControlChange() {
 			FreqMan::enablePortamento((midiData2 > 0) ? true : false);
 			break;
 		case PORT_TIME:
-			//FreqMan::portMan.time = ((uint32_t)(midiData2+1) * (uint32_t)1000)/128;
 			FreqMan::portMan.time = portTimeKnee.getValue(midiData2);
 			break;
 		case PULSE_WIDTH:
@@ -81,16 +77,16 @@ void MidiInput::handleControlChange() {
 			Wavetable::genSquare();
 			break;
 		case ATTACK_TIME:
-			envelopeOut.attackTime = attackTimes[midiData2 >> 3];
+			envelopeOut.attackTime = attackTimeKnee.getValue(midiData2);
 			break;
 		case DECAY_TIME:
-			envelopeOut.decayTime = decRelTimes[midiData2 >> 3];
+			envelopeOut.decayTime = decRelTimeKnee.getValue(midiData2);
 			break;
 		case SUSTAIN_LEVEL:
 			envelopeOut.sustainLevel = (midiData2 >> 2);
 			break;
 		case RELEASE_TIME:
-			envelopeOut.releaseTime = decRelTimes[midiData2 >> 3];
+			envelopeOut.releaseTime = decRelTimeKnee.getValue(midiData2);
 			break;
 		case ARP_ON_OFF:
 			FreqMan::enableArp((midiData2 > 0) ? true : false);
