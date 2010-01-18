@@ -43,7 +43,7 @@ class Envelope {
 	// Calculate the next envelope scalar
 	void next();
 
-	// The gate's newly opened, start attack phase
+	// The gate's closed, start attack phase
 	inline
 	void closeGate() {
 		this->gate = true;
@@ -51,6 +51,7 @@ class Envelope {
 		digitalWrite(13, LOW);
 	}
 
+	// The gate's been open start release phase
 	inline
 	void openGate() {
 		this->gate = false;

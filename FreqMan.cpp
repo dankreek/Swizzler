@@ -17,7 +17,7 @@ uint8_t FreqMan::arpMinNotes;
 
 /**
  * Frequency -> Note lookup table. These are the frequencies for
- * octave 3. All the frequencies for the lower frequencies are
+ * the 8th octave. All the frequencies for the lower frequencies are
  * found by dividing.
  */
 int note_lookup[] = {
@@ -68,6 +68,7 @@ void FreqMan::enablePortamento(bool onOff) {
 }
 
 // TODO: This will be done via different algo's later, ie up, down, up&down, random, etc
+// TODO: Move this to the arp manager
 void FreqMan::copyNoteBufferToArpBuffer() {
 	for (int i=0; i < MidiNoteBuffer::size; i++) {
 		arpMan.noteList[i] = MidiNoteBuffer::buffer[i].number;
@@ -156,7 +157,8 @@ void FreqMan::noteOff(int noteNumber) {
 		if (arpeggioOn) {
 			// Open the gate if there's not enough notes to make an arpeggio
 			if (MidiNoteBuffer::size <  arpMinNotes) {
-				stopArp();
+				// Open the gate
+				envelopeOut.openGate();	
 			}
 			// Modify the arpeggio if there is now one less note in it
 			else {
