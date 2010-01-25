@@ -8,9 +8,12 @@
 #include "envelope.h"
 #include "MidiInput.h"
 #include "FreqMan.h"
+#include "Preset.h"
 
 extern "C" void __cxa_pure_virtual() {}
- 
+
+PresetType PROGMEM lastSettings;
+
 int ledPin = 13;
 
 void setup() {	
@@ -45,12 +48,13 @@ void setup() {
 
 int main(void) {
 	init();		// Initialize Arduino library 
-	setup();	// Setup synthesizer 
+	setup();	// Setup synthesizer data structures and interrupt routines 
 
 	while (true) {
 		// Shove everything that's read by the serial port into the MIDI input
-		if (Serial.available() > 0)
+		if (Serial.available() > 0) {
 			MidiInput::pushByte(Serial.read());
+		}
 		else {
 			// If new noise isn't generated then the output will be
 			// a very interesting (but non-noise) waveform
@@ -58,7 +62,6 @@ int main(void) {
 
 			// Mixup the wavetables
 			Wavetable::mixWaves();
-
 		}
 	}
 }
