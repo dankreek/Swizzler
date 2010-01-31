@@ -36,7 +36,8 @@
 #
 # $Id$
 
-TARGET = $(notdir $(CURDIR))
+#TARGET = $(notdir $(CURDIR))
+TARGET = main
 PORT = /dev/ttyUSB*
 UPLOAD_RATE = 19200
 AVRDUDE_PROGRAMMER = stk500v1
