@@ -1,7 +1,6 @@
 #ifndef FREQMAN_H
 #define FREQMAN_H
 
-#include "ArpManager.h"
 #include "PortamentoManager.h"
 
 /**
@@ -9,9 +8,8 @@
  * portamento on/off, and arpeggio on/off and tells the oscillator what frequency to
  * put out at.
  */
-class FreqMan {
+class FrequencyManager {
   public:
-	static ArpManager arpMan;
 	static PortamentoManager portMan;
 
 	/**
@@ -47,44 +45,14 @@ class FreqMan {
 	void enablePortamento(bool onOff);
 
 	/**
-	 * Turn on/off the arp'er
-	 * @onOff true to turn on arpeggiator, false to turn it off
-	 */
-	static
-	void enableArp(bool onOff);
-
-	/**
-	 * Start the arpeggiator spinning
-	 */
-	static
-	void startArp();
-
-	/**
-	 * Stop the arpeggio spinning
-	 */
-	static
-	void stopArp();
-	
-	/**
 	 * Convert a Midi note to a frequency
 	 */
 	static
 	int noteToFreq(int noteNum);
 
-	/**
-	 * Minimum number of MIDI notes neded to stat arpeggio.
-	 */
-	static 
-	uint8_t arpMinNotes;
-
   private:
-
-	static
-	void copyNoteBufferToArpBuffer();
-
-	static bool arpeggioOn;
+	static void copyNoteBufferToArpBuffer();
 	static bool portamentoOn;
-	static bool arpRunning;
 };
 
 #endif

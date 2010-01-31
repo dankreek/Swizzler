@@ -6,8 +6,4 @@ class NoteManager {
 	
 };
 
-class NoteManager
-{
-};
-
 #endif

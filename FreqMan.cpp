@@ -7,13 +7,8 @@
 #include "waveout.h"
 #include "envelope.h"
 
-ArpManager FreqMan::arpMan;
-PortamentoManager FreqMan::portMan;
-
-bool FreqMan::portamentoOn;
-bool FreqMan::arpeggioOn;
-bool FreqMan::arpRunning;
-uint8_t FreqMan::arpMinNotes;
+PortamentoManager FrequencyManager::portMan;
+bool FrequencyManager::portamentoOn;
 
 /**
  * Frequency -> Note lookup table. These are the frequencies for
@@ -35,28 +30,14 @@ int note_lookup[] = {
 	3951,	// B
 };
 
-void FreqMan::begin() {
+void FrequencyManager::begin() {
 	portamentoOn = false;
 	portMan.begin();
-
-	arpMinNotes = 2;
-	arpMan.arpTime = 50;
-	enableArp(true);	
-		
+	
 	MidiNoteBuffer::begin();
 }
 
-void FreqMan::enableArp(bool onOff) {
-	if (onOff) {
-		arpeggioOn = true;
-		arpRunning = false;
-	}
-	else {
-		arpeggioOn = false;
-	}
-}
-
-void FreqMan::enablePortamento(bool onOff) {
+void FrequencyManager::enablePortamento(bool onOff) {
 	if (onOff && !portamentoOn) {
 		portamentoOn = true;
 		portMan.begin();
@@ -67,16 +48,7 @@ void FreqMan::enablePortamento(bool onOff) {
 	}
 }
 
-// TODO: This will be done via different algo's later, ie up, down, up&down, random, etc
-// TODO: Move this to the arp manager
-void FreqMan::copyNoteBufferToArpBuffer() {
-	for (int i=0; i < MidiNoteBuffer::size; i++) {
-		arpMan.noteList[i] = MidiNoteBuffer::buffer[i].number;
-	}
-	arpMan.noteListSize = MidiNoteBuffer::size;
-}	
-
-void FreqMan::noteOn(int noteNumber) {
+void FrequencyManager::noteOn(int noteNumber) {
 	MidiNote note;
 
 	note.number = noteNumber;
@@ -97,20 +69,6 @@ void FreqMan::noteOn(int noteNumber) {
 		envelopeOut.openGate();	
 		envelopeOut.closeGate();
 	}
-	else if (arpeggioOn) {
-		// Open the gate if the min number of keys are down for an arp
-		if (MidiNoteBuffer::size >= arpMinNotes) {
-			// Copy the midi key buffer into the arp bufferin order from lowest to highest note
-			stopArp();
-			copyNoteBufferToArpBuffer();
-			startArp();
-
-			if (envelopeOut.gate == false) envelopeOut.closeGate();
-		}
-		else if (arpRunning) {
-			stopArp();
-		}
-	}
 	// No arpeggiating or portamento
 	else {
 		// Set the new frequency immediatly
@@ -129,44 +87,13 @@ void FreqMan::noteOn(int noteNumber) {
 	}
 }
 
-void FreqMan::startArp() {
-	arpRunning = true;
-	arpMan.restartArpeggio();
-
-}
-
-void FreqMan::stopArp() {
-	envelopeOut.openGate();
-	arpRunning = false;
-}
-
-void FreqMan::noteOff(int noteNumber) {
+void FrequencyManager::noteOff(int noteNumber) {
 	MidiNote note;
 	note.number = noteNumber;
 
 	// If this note is the current note that's playing then open the gate
-	if (MidiNoteBuffer::size > 0) { 
-		if (!arpeggioOn) {
-			if ((MidiNoteBuffer::lastNote > -1) && (MidiNoteBuffer::getLastNote().number == note.number)) {
-				envelopeOut.openGate();	
-			}
-		}
-		
+	if (MidiNoteBuffer::size > 0) { 		
 		MidiNoteBuffer::removeMidiNote(note);
-
-		if (arpeggioOn) {
-			// Open the gate if there's not enough notes to make an arpeggio
-			if (MidiNoteBuffer::size <  arpMinNotes) {
-				envelopeOut.openGate();	
-			}
-			// Modify the arpeggio if there is now one less note in it
-			else {
-				stopArp();
-				copyNoteBufferToArpBuffer();
-				startArp();
-			}
-
-		}
 	}
 
 	// For debugging
@@ -178,7 +105,7 @@ void FreqMan::noteOff(int noteNumber) {
 	}
 }
 
-int FreqMan::noteToFreq(int noteNum) {
+int FrequencyManager::noteToFreq(int noteNum) {
 	//if (noteNum > 83) return 1047;
 
 	int octave = noteNum / 12;
@@ -188,16 +115,9 @@ int FreqMan::noteToFreq(int noteNum) {
 	return (note_lookup[note] >> (8-octave));
 }
 
-void FreqMan::nextTick() {
-	if (arpeggioOn && arpRunning) {
-		// If the next note in the arpeggio needs to be updated 
-		if (arpMan.nextTick()) {
-			// Otherwise go directly to the next frequency
-			Waveout::setFreq(noteToFreq(arpMan.curNote()));
-		}
-	}
+void FrequencyManager::nextTick() {
 	// If portamento's on and running then output the new frequency
-	else if (portamentoOn && !portMan.done) {
+	if (portamentoOn && !portMan.done) {
 		if (portMan.nextTick()) Waveout::setFreq(portMan.curFreq);
 	}
 }

@@ -37,12 +37,12 @@ int MidiInput::midiData2;
 void MidiInput::handleNoteOn() {
 	// Most MIDI input devices send a NOTE ON message with a velocity of 0
 	// to signal the note ending.
-	if (midiData2 == 0) FreqMan::noteOff(midiData1);
-	else FreqMan::noteOn(midiData1);
+	if (midiData2 == 0) FrequencyManager::noteOff(midiData1);
+	else FrequencyManager::noteOn(midiData1);
 }
 
 void MidiInput::handleNoteOff() {	
-	FreqMan::noteOff(midiData1);
+	FrequencyManager::noteOff(midiData1);
 }
 
 void MidiInput::handlePitchBend() {
@@ -67,10 +67,10 @@ void MidiInput::handleControlChange() {
 			Wavetable::noiseLevel = (midiData2 >> 3);
 			break;
 		case PORT_ON_OFF:
-			FreqMan::enablePortamento((midiData2 > 0) ? true : false);
+			FrequencyManager::enablePortamento((midiData2 > 0) ? true : false);
 			break;
 		case PORT_TIME:
-			FreqMan::portMan.time = portTimeKnee.getValue(midiData2);
+			FrequencyManager::portMan.time = portTimeKnee.getValue(midiData2);
 			break;
 		case PULSE_WIDTH:
 			Wavetable::pulseWidth = (midiData2 >> 3);
@@ -89,7 +89,6 @@ void MidiInput::handleControlChange() {
 			envelopeOut.releaseTime = decRelTimeKnee.getValue(midiData2);
 			break;
 		case ARP_ON_OFF:
-			FreqMan::enableArp((midiData2 > 0) ? true : false);
 			break;
 	}
 }

@@ -41,7 +41,7 @@ void setup() {
 	MidiInput::begin();
 
 	// Initialize Frequency Manager
-	FreqMan::begin();
+	FrequencyManager::begin();
 
 	digitalWrite(ledPin, HIGH);
 }

@@ -10,7 +10,7 @@ ISR(TIMER0_OVF_vect) {
 	// Get the next envelope value
 	envelopeOut.next();
 
-	FreqMan::nextTick();
+	FrequencyManager::nextTick();
 
 	// Call the arduino library's time keeping functions. May not be needed later.	
 	//timerhook();
