@@ -91,9 +91,14 @@ void FrequencyManager::noteOff(int noteNumber) {
 	MidiNote note;
 	note.number = noteNumber;
 
-	// If this note is the current note that's playing then open the gate
-	if (MidiNoteBuffer::size > 0) { 		
+	if (MidiNoteBuffer::size > 0) {
+		// If this note is the current note that's playing then open the gate
+		if (MidiNoteBuffer::getLastNote().number == noteNumber)
+			envelopeOut.openGate();
+
 		MidiNoteBuffer::removeMidiNote(note);
+
+
 	}
 
 	// For debugging

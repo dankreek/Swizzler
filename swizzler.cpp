@@ -12,8 +12,6 @@
 
 extern "C" void __cxa_pure_virtual() {}
 
-PresetType PROGMEM lastSettings;
-
 int ledPin = 13;
 
 void setup() {	
