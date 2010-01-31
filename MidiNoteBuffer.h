@@ -3,11 +3,6 @@
 
 #include <inttypes.h>
 
-struct MidiNote {
-	uint8_t	number;
-	uint8_t	velocity;
-};
-
 #define MIDI_NOTE_BUF_SIZE 10 
 
 /**
@@ -27,19 +22,19 @@ class MidiNoteBuffer {
   	static void begin();
   	
   	//Add a new midi note in-order
-	static void putMidiNote(MidiNote);
+	static void putMidiNote(uint8_t noteNumber);
 
 	// Remove a midi note from the buffer
-	static void removeMidiNote(MidiNote);
+	static void removeMidiNote(uint8_t noteNumber);
 
 	// Get the last note that was struck
 	inline static
-	MidiNote getLastNote() {
+	uint8_t getLastNote() {
 		return buffer[lastNote];
 	}
 
   	// Buffer where the notes reside
-  	static MidiNote buffer[MIDI_NOTE_BUF_SIZE];
+  	static uint8_t buffer[MIDI_NOTE_BUF_SIZE];
   	
   private:
   	static void makeHole(uint8_t);

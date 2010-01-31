@@ -48,12 +48,8 @@ void FrequencyManager::enablePortamento(bool onOff) {
 	}
 }
 
-void FrequencyManager::noteOn(int noteNumber) {
-	MidiNote note;
-
-	note.number = noteNumber;
-
-	MidiNoteBuffer::putMidiNote(note);
+void FrequencyManager::noteOn(uint8_t noteNumber) {
+	MidiNoteBuffer::putMidiNote(noteNumber);
 	
 	if (portamentoOn) {
 		// If no previous note in the buffer then just play the note
@@ -71,7 +67,7 @@ void FrequencyManager::noteOn(int noteNumber) {
 	}
 	// No arpeggiating or portamento
 	else {
-		// Set the new frequency immediatly
+		// Set the new frequency immediately
 		Waveout::setFreq(noteToFreq(noteNumber));
 
 		// Restart the gate 
@@ -87,18 +83,13 @@ void FrequencyManager::noteOn(int noteNumber) {
 	}
 }
 
-void FrequencyManager::noteOff(int noteNumber) {
-	MidiNote note;
-	note.number = noteNumber;
-
+void FrequencyManager::noteOff(uint8_t noteNumber) {
 	if (MidiNoteBuffer::size > 0) {
 		// If this note is the current note that's playing then open the gate
-		if (MidiNoteBuffer::getLastNote().number == noteNumber)
+		if (MidiNoteBuffer::getLastNote() == noteNumber)
 			envelopeOut.openGate();
 
-		MidiNoteBuffer::removeMidiNote(note);
-
-
+		MidiNoteBuffer::removeMidiNote(noteNumber);
 	}
 
 	// For debugging

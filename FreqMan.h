@@ -29,13 +29,13 @@ class FrequencyManager {
 	 * @noteNumber	MIDI note number that has been hit
 	 */
 	static
-	void noteOn(int noteNumber);
+	void noteOn(uint8_t noteNumber);
 
 	/**
 	 * Tell the frequency manager that a note has been let off
 	 */
 	static
-	void noteOff(int noteNumber);
+	void noteOff(uint8_t noteNumber);
 
 	/**
 	 * Turn on/off portamento
