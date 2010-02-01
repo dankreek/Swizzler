@@ -58,10 +58,6 @@ class Envelope {
 		this->setState(ENV_RELEASE);
 		digitalWrite(13, HIGH);
 	}
-	
-	
 }; 
-
-extern Envelope envelopeOut;
 
 #endif

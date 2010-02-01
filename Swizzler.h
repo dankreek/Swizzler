@@ -19,8 +19,12 @@ class Swizzler {
   public:
 	static const int ledPin = 13;
 
-	static void init();
-	static void mainLoop();
+	void init();
+	void mainLoop();
+
+	Envelope envelope;
 };
+
+extern Swizzler swizzler;
 
 #endif /* SWIZZLER_H_ */

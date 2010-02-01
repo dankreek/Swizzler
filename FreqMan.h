@@ -48,7 +48,7 @@ class FrequencyManager {
 	 * Convert a Midi note to a frequency
 	 */
 	static
-	int noteToFreq(int noteNum);
+	int noteToFreq(uint8_t noteNum);
 
   private:
 	static void copyNoteBufferToArpBuffer();

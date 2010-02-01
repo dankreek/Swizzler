@@ -4,7 +4,7 @@
 #include "MidiNoteBuffer.h"
 #include "wavetable.h"
 #include "FreqMan.h"
-#include "envelope.h"
+#include "Swizzler.h"
 
 // Knees to define how midi controls work, and the range for the control
 MidiKnee portTimeKnee = MidiKnee(2000, 95, 500);
@@ -77,16 +77,16 @@ void MidiInput::handleControlChange() {
 			Wavetable::genSquare();
 			break;
 		case ATTACK_TIME:
-			envelopeOut.attackTime = attackTimeKnee.getValue(midiData2);
+			swizzler.envelope.attackTime = attackTimeKnee.getValue(midiData2);
 			break;
 		case DECAY_TIME:
-			envelopeOut.decayTime = decRelTimeKnee.getValue(midiData2);
+			swizzler.envelope.decayTime = decRelTimeKnee.getValue(midiData2);
 			break;
 		case SUSTAIN_LEVEL:
-			envelopeOut.sustainLevel = (midiData2 >> 2);
+			swizzler.envelope.sustainLevel = (midiData2 >> 2);
 			break;
 		case RELEASE_TIME:
-			envelopeOut.releaseTime = decRelTimeKnee.getValue(midiData2);
+			swizzler.envelope.releaseTime = decRelTimeKnee.getValue(midiData2);
 			break;
 		case ARP_ON_OFF:
 			break;

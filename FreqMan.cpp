@@ -5,7 +5,7 @@
 #include "Bresenham.h"
 #include "MidiNoteBuffer.h"
 #include "waveout.h"
-#include "envelope.h"
+#include "Swizzler.h"
 
 PortamentoManager FrequencyManager::portMan;
 bool FrequencyManager::portamentoOn;
@@ -62,8 +62,8 @@ void FrequencyManager::noteOn(uint8_t noteNumber) {
 		}
 
 		// Restart the gate
-		envelopeOut.openGate();	
-		envelopeOut.closeGate();
+		swizzler.envelope.openGate();
+		swizzler.envelope.closeGate();
 	}
 	// No arpeggiating or portamento
 	else {
@@ -71,7 +71,7 @@ void FrequencyManager::noteOn(uint8_t noteNumber) {
 		Waveout::setFreq(noteToFreq(noteNumber));
 
 		// Restart the gate 
-		envelopeOut.closeGate();
+		swizzler.envelope.closeGate();
 	}
 
 	// For debugging
@@ -87,7 +87,7 @@ void FrequencyManager::noteOff(uint8_t noteNumber) {
 	if (MidiNoteBuffer::size > 0) {
 		// If this note is the current note that's playing then open the gate
 		if (MidiNoteBuffer::getLastNote() == noteNumber)
-			envelopeOut.openGate();
+			swizzler.envelope.openGate();
 
 		MidiNoteBuffer::removeMidiNote(noteNumber);
 	}
@@ -101,7 +101,7 @@ void FrequencyManager::noteOff(uint8_t noteNumber) {
 	}
 }
 
-int FrequencyManager::noteToFreq(int noteNum) {
+int FrequencyManager::noteToFreq(uint8_t noteNum) {
 	//if (noteNum > 83) return 1047;
 
 	int octave = noteNum / 12;

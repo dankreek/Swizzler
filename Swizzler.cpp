@@ -18,7 +18,7 @@ void Swizzler::init() {
 
 	// Setup the envelope generator with some static values
 	// These will be set by MIDI soon
-	envelopeOut.begin();
+	envelope.begin();
 
 	// Generate wavetables
 	Wavetable::begin();
@@ -52,3 +52,5 @@ void Swizzler::mainLoop() {
 		}
 	}
 }
+
+Swizzler swizzler = Swizzler();

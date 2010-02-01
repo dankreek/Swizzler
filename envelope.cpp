@@ -1,14 +1,18 @@
 #include <stdint.h>
 #include <avr/interrupt.h>
-#include "envelope.h"
+#include <avr/io.h>
+#include <avr/pgmspace.h>
+#include <WProgram.h>
 #include <wiring.h>
+#include "Swizzler.h"
+#include "envelope.h"
 #include "FreqMan.h"
 
 // Update the envelope every millisecond
 // This routine is no longer envelope-specific, it should be moved
 ISR(TIMER0_OVF_vect) {	
 	// Get the next envelope value
-	envelopeOut.next();
+	swizzler.envelope.next();
 
 	FrequencyManager::nextTick();
 
@@ -92,6 +96,4 @@ void Envelope::next() {
 			break;
 	};
 } 
-
-Envelope envelopeOut = Envelope();
 

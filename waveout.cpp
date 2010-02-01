@@ -6,7 +6,7 @@
 #include <inttypes.h>
 #include "wavetable.h"
 #include "waveout.h"
-#include "envelope.h"
+#include "Swizzler.h"
 
 /**
  * This is the ISR that handles doing sound output. One sample is output during the interrupt.
@@ -19,7 +19,7 @@ ISR(TIMER1_COMPA_vect) {
 	out = Wavetable::outputTable[Wavetable::wtIndex];
 
 	// Apply envelope scaling
-	out *= envelopeOut.scalar;
+	out *= swizzler.envelope.scalar;
 	out /= ENV_SCALAR_RANGE;
 
 	// Output the mixed and modulated sample, convert to unsigned 8bit
