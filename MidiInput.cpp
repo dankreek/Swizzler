@@ -3,7 +3,7 @@
 #include "MidiInput.h"
 #include "MidiNoteBuffer.h"
 #include "wavetable.h"
-#include "FreqMan.h"
+#include "FrequencyManager.h"
 #include "Swizzler.h"
 
 // Knees to define how midi controls work, and the range for the control

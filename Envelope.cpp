@@ -5,8 +5,7 @@
 #include <WProgram.h>
 #include <wiring.h>
 #include "Swizzler.h"
-#include "envelope.h"
-#include "FreqMan.h"
+#include "Envelope.h"
 
 // Update the envelope every millisecond
 // This routine is no longer envelope-specific, it should be moved

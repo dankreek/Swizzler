@@ -1,10 +1,10 @@
 #include <inttypes.h>
 #include <WProgram.h>
-#include "FreqMan.h"
+#include "FrequencyManager.h"
 #include "PortamentoManager.h"
 #include "Bresenham.h"
 #include "MidiNoteBuffer.h"
-#include "waveout.h"
+#include "Waveout.h"
 #include "Swizzler.h"
 
 PortamentoManager FrequencyManager::portMan;

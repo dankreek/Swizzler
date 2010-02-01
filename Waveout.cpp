@@ -5,7 +5,7 @@
 #include <WProgram.h>
 #include <inttypes.h>
 #include "wavetable.h"
-#include "waveout.h"
+#include "Waveout.h"
 #include "Swizzler.h"
 
 /**

@@ -9,11 +9,11 @@
 #define SWIZZLER_H_
 
 #include <WProgram.h>
-#include "envelope.h"
+#include "Envelope.h"
 #include "wavetable.h"
-#include "waveout.h"
+#include "Waveout.h"
 #include "MidiInput.h"
-#include "FreqMan.h"
+#include "FrequencyManager.h"
 
 class Swizzler {
   public:
