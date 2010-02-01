@@ -30,11 +30,29 @@ int note_lookup[] = {
 	3951,	// B
 };
 
-void FrequencyManager::begin() {
+void FrequencyManager::init() {
 	portamentoOn = false;
 	portMan.begin();
 	
 	MidiNoteBuffer::begin();
+}
+
+void FrequencyManager::newNote(uint8_t noteNumber) {
+	// If portamento's on, start the glide
+	if (portamentoOn) {
+		// If no previous note in the buffer then just play the note
+		if (MidiNoteBuffer::lastNote == -1) {
+			portMan.nextDirectFreq(noteToFreq(noteNumber));
+		}
+		else {
+			// If there is a previous note setup the glide
+			portMan.nextGlideFreq(noteToFreq(noteNumber));
+		}
+	}
+	// Set the frequency directly
+	else {
+		Waveout::setFreq(noteToFreq(noteNumber));
+	}
 }
 
 void FrequencyManager::enablePortamento(bool onOff) {
@@ -48,58 +66,6 @@ void FrequencyManager::enablePortamento(bool onOff) {
 	}
 }
 
-void FrequencyManager::noteOn(uint8_t noteNumber) {
-	MidiNoteBuffer::putMidiNote(noteNumber);
-	
-	if (portamentoOn) {
-		// If no previous note in the buffer then just play the note
-		if (MidiNoteBuffer::lastNote == -1) {
-			portMan.nextDirectFreq(noteToFreq(noteNumber));
-		}
-		else {
-			// If there is a previous note setup the glide
-			portMan.nextGlideFreq(noteToFreq(noteNumber));		
-		}
-
-		// Restart the gate
-		swizzler.envelope.openGate();
-		swizzler.envelope.closeGate();
-	}
-	// No arpeggiating or portamento
-	else {
-		// Set the new frequency immediately
-		Waveout::setFreq(noteToFreq(noteNumber));
-
-		// Restart the gate 
-		swizzler.envelope.closeGate();
-	}
-
-	// For debugging
-	if (MidiNoteBuffer::size > 0) {
-		digitalWrite(8, true);
-	}
-	else {
-		digitalWrite(8, false);
-	}
-}
-
-void FrequencyManager::noteOff(uint8_t noteNumber) {
-	if (MidiNoteBuffer::size > 0) {
-		// If this note is the current note that's playing then open the gate
-		if (MidiNoteBuffer::getLastNote() == noteNumber)
-			swizzler.envelope.openGate();
-
-		MidiNoteBuffer::removeMidiNote(noteNumber);
-	}
-
-	// For debugging
-	if (MidiNoteBuffer::size > 0) {
-		digitalWrite(8, true);
-	}
-	else {
-		digitalWrite(8, false);
-	}
-}
 
 int FrequencyManager::noteToFreq(uint8_t noteNum) {
 	//if (noteNum > 83) return 1047;

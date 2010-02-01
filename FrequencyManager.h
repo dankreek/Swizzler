@@ -16,26 +16,19 @@ class FrequencyManager {
 	 * Initialize the frequency manager
 	 */
 	static
-	void begin();
+	void init();
+
+	/**
+	 * The note manager is sending a new note
+	 */
+	static
+	void newNote(uint8_t noteNumber);
 
 	/**
 	 * This is called once every millisecond to handle all the business
 	 */
 	static
 	void nextTick();
-
-	/**
-	 * Signal the a note has been hit
-	 * @noteNumber	MIDI note number that has been hit
-	 */
-	static
-	void noteOn(uint8_t noteNumber);
-
-	/**
-	 * Tell the frequency manager that a note has been let off
-	 */
-	static
-	void noteOff(uint8_t noteNumber);
 
 	/**
 	 * Turn on/off portamento
@@ -51,7 +44,6 @@ class FrequencyManager {
 	int noteToFreq(uint8_t noteNum);
 
   private:
-	static void copyNoteBufferToArpBuffer();
 	static bool portamentoOn;
 };
 

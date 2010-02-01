@@ -31,7 +31,7 @@ void Swizzler::init() {
 	MidiInput::begin();
 
 	// Initialize Frequency Manager
-	FrequencyManager::begin();
+	FrequencyManager::init();
 
 	digitalWrite(ledPin, HIGH);
 }

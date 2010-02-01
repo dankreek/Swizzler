@@ -1,15 +1,16 @@
 #include <inttypes.h>
-#include "MidiKnee.h"
+#include "KnobKnee.h"
 #include "MidiInput.h"
 #include "MidiNoteBuffer.h"
 #include "wavetable.h"
 #include "FrequencyManager.h"
+#include "NoteManager.h"
 #include "Swizzler.h"
 
 // Knees to define how midi controls work, and the range for the control
-MidiKnee portTimeKnee = MidiKnee(2000, 95, 500);
-MidiKnee attackTimeKnee = MidiKnee(8000, 95, 1000);
-MidiKnee decRelTimeKnee = MidiKnee(24000, 95, 2400);	// Decay/release time knee
+KnobKnee portTimeKnee = KnobKnee(2000, 95, 500);
+KnobKnee attackTimeKnee = KnobKnee(8000, 95, 1000);
+KnobKnee decRelTimeKnee = KnobKnee(24000, 95, 2400);	// Decay/release time knee
 
 int MidiInput::midiCmd;
 int MidiInput::midiData1;
@@ -37,12 +38,12 @@ int MidiInput::midiData2;
 void MidiInput::handleNoteOn() {
 	// Most MIDI input devices send a NOTE ON message with a velocity of 0
 	// to signal the note ending.
-	if (midiData2 == 0) FrequencyManager::noteOff(midiData1);
-	else FrequencyManager::noteOn(midiData1);
+	if (midiData2 == 0) NoteManager::noteOff(midiData1);
+	else NoteManager::noteOn(midiData1);
 }
 
 void MidiInput::handleNoteOff() {	
-	FrequencyManager::noteOff(midiData1);
+	NoteManager::noteOff(midiData1);
 }
 
 void MidiInput::handlePitchBend() {

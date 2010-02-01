@@ -1,6 +1,6 @@
-#include "MidiKnee.h"
+#include "KnobKnee.h"
 
-uint16_t MidiKnee::getValue(uint8_t midiValue) {
+uint16_t KnobKnee::getValue(uint8_t midiValue) {
 	uint16_t out;
 
 	if (midiValue <= kneeX) {

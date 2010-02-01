@@ -9,10 +9,10 @@
  * The (kneeX, kneeY) point defines a point where the knee of the input 
  * scaler changes.
  */
-class MidiKnee {
+class KnobKnee {
   public:
 	inline
-	MidiKnee(uint16_t range, uint8_t kneeX, uint16_t kneeY) {
+	KnobKnee(uint16_t range, uint8_t kneeX, uint16_t kneeY) {
 		this->range = range;
 		this->kneeX = kneeX;
 		this->kneeY = kneeY;
