@@ -7,20 +7,26 @@
 
 class ArpManager {
   public:
+  	/**
+  	 * The minimum number of notes needed to start an arpeggio
+  	 */
+  	uint8_t minNotes;
+  
 	/**
 	 * Restart the arpeggio generator
 	 */
 	void restartArpeggio();
 
 	/**
-	 * This needs to be called once per millisecond
+	 * This needs to be called once per millisecond (handled by timer interrup)
+	 * 
 	 * @return true if the next note in the sequence is triggered, 
 	 *         false if still on current note
 	 */
 	bool nextTick();
 
 	/**
-	 * Time between note changes in milliseconds
+	 * Time between note changes (milliseconds)
 	 */
 	uint16_t arpTime;
 
@@ -44,10 +50,13 @@ class ArpManager {
 	/**
 	 * Macro to get the pointer to the current note
 	 */
-	inline
-	uint8_t curNote() {
+	inline uint8_t curNote() {
 		return noteList[noteListIndex];
 	}
+	
+	// Is an arpeggio currently running?
+	bool arpRunning;
+	
   private:
 	/**
 	 * Counts up to arpTime and switches to next note

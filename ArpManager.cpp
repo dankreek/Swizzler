@@ -6,6 +6,8 @@ void ArpManager::restartArpeggio() {
 
 	// Set to the last tick so a rollover to 0 will occur on nextTick()
 	arpCounter = (arpTime-1);
+	
+	arpRunning = true;
 }
 
 bool ArpManager::nextTick() {
