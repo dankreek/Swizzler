@@ -33,6 +33,8 @@ void Swizzler::init() {
 	// Initialize Frequency Manager
 	FrequencyManager::init();
 
+	NoteManager::enableArpeggio(false);
+
 	digitalWrite(ledPin, HIGH);
 }
 

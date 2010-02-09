@@ -5,6 +5,10 @@
 bool NoteManager::arpOn;
 ArpManager NoteManager::arpManager;
 
+void NoteManager::enableArpeggio(bool onOff) {
+	arpOn = onOff;
+}
+
 void NoteManager::noteOn(uint8_t noteNumber) {
 	// Put the note into the notes-on Arpbuffer
 	MidiNoteBuffer::putMidiNote(noteNumber);
@@ -55,6 +59,12 @@ void NoteManager::noteOff(uint8_t noteNumber) {
 	// Make sure the buffer's not already empty (could happen if a player mashes
 	// down on a shitload of keys and lets them all off randomly)
 	if (MidiNoteBuffer::size > 0) {
+		if (!arpOn) {
+			// If this note is the current note that's playing then open the gate
+			if (MidiNoteBuffer::getLastNote() == noteNumber)
+				swizzler.envelope.openGate();
+		}
+
 		MidiNoteBuffer::removeMidiNote(noteNumber);
 		
 		if (arpOn) {
@@ -66,11 +76,6 @@ void NoteManager::noteOff(uint8_t noteNumber) {
 			else {
 				reloadArpeggiator();
 			}	
-		}
-		else {
-			// If this note is the current note that's playing then open the gate
-			if (MidiNoteBuffer::getLastNote() == noteNumber)
-				swizzler.envelope.openGate();
 		}
 	}
 

@@ -14,6 +14,8 @@
 #include "Waveout.h"
 #include "MidiInput.h"
 #include "FrequencyManager.h"
+#include "NoteManager.h"
+
 
 class Swizzler {
   public:

@@ -41,7 +41,7 @@ class NoteManager {
   private:
   	// Is the arpeggiator on or off?
   	static bool arpOn;
-  	
+
   	// Stop the arpeggiator, reload it, and start it up again
 	static void reloadArpeggiator();
 	
