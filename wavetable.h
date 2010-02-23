@@ -31,7 +31,7 @@ class Wavetable {
 	}
 
 	// Initialize the wavetables and mix levels
-	static void begin();
+	static void init();
 
 	// Generate waveforms
 	static void genTriangle();

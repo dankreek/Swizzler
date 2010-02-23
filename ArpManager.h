@@ -7,6 +7,8 @@
 
 class ArpManager {
   public:
+	void init();
+
   	/**
   	 * The minimum number of notes needed to start an arpeggio
   	 */

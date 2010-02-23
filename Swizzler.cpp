@@ -16,28 +16,36 @@ void Swizzler::init() {
 	// 31.250kbps is the speed a which MIDI travels in a vacuum.
 	Serial.begin(31250);
 
-	// Setup the envelope generator with some static values
-	// These will be set by MIDI soon
-	envelope.begin();
+	// Intialize the envelope generator
+	envelope.init();
 
 	// Generate wavetables
-	Wavetable::begin();
+	Wavetable::init();
 
-	// Startup the wave output
+	// Startup the wave output (PWM generator)
 	Waveout::start();
+
+	// The oscillator will startup at 440hz
 	Waveout::setFreq(440);
 
 	// Initialize MIDI input
-	MidiInput::begin();
+	MidiInput::init();
+
+	// Initialize the Note Manager
+	NoteManager::init();
 
 	// Initialize Frequency Manager
 	FrequencyManager::init();
 
-	NoteManager::enableArpeggio(false);
-
+	// Turn the on-board LED off
 	digitalWrite(ledPin, HIGH);
 }
 
+/**
+ * This is the non-ending loop, essentially it contains the lowest priority
+ * tasks which are constantly being interrupted by the frequency-keeping and
+ * time-keeping ISR's.
+ */
 void Swizzler::mainLoop() {
 	while (true) {
 		// Shove everything that's read by the serial port into the MIDI input
@@ -45,11 +53,11 @@ void Swizzler::mainLoop() {
 			MidiInput::pushByte(Serial.read());
 		}
 		else {
-			// If new noise isn't generated then the output will be
+			// If new noise isn't constantly generated then the output will be
 			// a very interesting (but non-noise) waveform
 			Wavetable::genNoise();
 
-			// Mixup the wavetables
+			// Remix the wavetables (since the waveform mix could be constantly changing)
 			Wavetable::mixWaves();
 		}
 	}

@@ -36,7 +36,7 @@ class Envelope {
 	Bresenham	line;		// Line used to calculate amplitudes
 	
 	// Setup the envelope generator
-	void begin();
+	void init();
 
 	void setup(int attack, int decay, int sustain, int release); 
 

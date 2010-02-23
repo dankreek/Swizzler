@@ -90,6 +90,7 @@ void MidiInput::handleControlChange() {
 			swizzler.envelope.releaseTime = decRelTimeKnee.getValue(midiData2);
 			break;
 		case ARP_ON_OFF:
+			NoteManager::enableArpeggio((midiData2 > 0) ? true : false);
 			break;
 	}
 }

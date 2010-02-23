@@ -21,7 +21,7 @@ public:
 	 * Initialize it
 	 */
 	static inline
-	void begin() {
+	void init() {
 		midiCmd=-1;
 		midiData1=-1;
 		midiData2=-1;
@@ -32,7 +32,7 @@ public:
 	 */
 	inline static
 	void pushByte(unsigned char byte) {
-		// Throw out system realtime messages
+		// Throw out system real-time messages
 		if ((byte > 0xf0) && (byte <= 0xff)) return;
 
 		// This is a status byte, so start the MIDI command all over
@@ -53,7 +53,7 @@ public:
 	}
 
 	/**
-	 * If a status byt of some kind has been sent make sure there are enough data bytes for it.
+	 * If a status byte of some kind has been sent make sure there are enough data bytes for it.
 	 * If there are indeed enough data bytes, call the handler function
 	 */
 	inline static

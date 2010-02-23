@@ -13,13 +13,14 @@ ISR(TIMER0_OVF_vect) {
 	// Get the next envelope value
 	swizzler.envelope.next();
 
+	NoteManager::nextTick();
 	FrequencyManager::nextTick();
 
 	// Call the arduino library's time keeping functions. May not be needed later.	
 	//timerhook();
 }
 
-void Envelope::begin() {
+void Envelope::init() {
 	this->setup(ATTACK, DECAY, SUSTAIN, RELEASE);
 	this->openGate();	
 

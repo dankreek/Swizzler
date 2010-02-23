@@ -5,6 +5,15 @@
 bool NoteManager::arpOn;
 ArpManager NoteManager::arpManager;
 
+void NoteManager::init()  {
+	// Initialize the arpeggio manager
+	arpManager.init();
+
+	// Arpeggios are turned off by default
+	enableArpeggio(false);
+}
+
+// TODO: There really doesn't need to be a setter here, just make arpOn public
 void NoteManager::enableArpeggio(bool onOff) {
 	arpOn = onOff;
 }
@@ -16,12 +25,12 @@ void NoteManager::noteOn(uint8_t noteNumber) {
 	// If the arpeggiator is running
 	if (arpOn) {
 		// If there's enough notes being held down start a new arpeggio
-		if (MidiNoteBuffer::size  > arpManager.minNotes) {
+		if (MidiNoteBuffer::size  >= arpManager.minNotes) {
 			reloadArpeggiator();
 			restartGate();
 		}
 	}
-	// If arepggiator is off simply restart the gate
+	// If arpeggiator is off simply restart the gate
 	else {
 		FrequencyManager::newNote(noteNumber);
 		restartGate();
@@ -46,12 +55,14 @@ void NoteManager::reloadArpeggiator() {
 	arpManager.arpRunning = false;
 	
 	// Copy currently held notes into arpeggio buffer
+	// (This might be factored out later to allow for different arpeggio directions,
+	// currently only bottom-to-top is supported)
 	for (int i=0; i < MidiNoteBuffer::buffer[i]; i++) {
 		arpManager.noteList[i] = MidiNoteBuffer::buffer[i];
 	}
 	arpManager.noteListSize=MidiNoteBuffer::size;
 				
-	// Start a new arpeggio
+	// Start a new arpeggio from the beginning
 	arpManager.restartArpeggio();
 }	
 

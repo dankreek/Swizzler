@@ -8,7 +8,12 @@
 class NoteManager {
   public:
 	/**
-	 * Signal the a note has been hit
+	 * Initialize the note manager
+	 */
+	static void init();
+
+	/**
+	 * Signal that a note has been hit
 	 * @noteNumber	MIDI note number that has been hit
 	 */
 	static void noteOn(uint8_t noteNumber);

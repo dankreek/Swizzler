@@ -19,7 +19,7 @@ char Wavetable::sqLevel;
 char Wavetable::randLevel;
 char Wavetable::noiseLevel;
 
-void Wavetable::begin() {
+void Wavetable::init() {
 	pulseWidth = TABLE_SIZE/2;
 
 	// Generate waveforms
