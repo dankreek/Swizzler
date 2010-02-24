@@ -1,10 +1,6 @@
 #include <inttypes.h>
 #include "KnobKnee.h"
 #include "MidiInput.h"
-#include "MidiNoteBuffer.h"
-#include "wavetable.h"
-#include "FrequencyManager.h"
-#include "NoteManager.h"
 #include "Swizzler.h"
 
 // Knees to define how midi controls work, and the range for the control
@@ -47,6 +43,9 @@ void MidiInput::handleNoteOff() {
 }
 
 void MidiInput::handlePitchBend() {
+	// I'm going to ignore the least significant byte of this message for now
+	// (my controller only sends 0 for the LSB anyway, so who cares)
+
 }
 
 // Lots of fun with controllers!

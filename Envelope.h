@@ -1,7 +1,7 @@
 #ifndef ENVGEN_H
 #define ENVGEN_H
 #include <WProgram.h>
-#include <stdlib.h>
+#include <inttypes.h>
 #include "Bresenham.h"
 
 enum EnvelopeState {ENV_CLOSED, ENV_ATTACK, ENV_DECAY, ENV_SUSTAIN, ENV_RELEASE};
@@ -18,15 +18,15 @@ enum EnvelopeState {ENV_CLOSED, ENV_ATTACK, ENV_DECAY, ENV_SUSTAIN, ENV_RELEASE}
 class Envelope {
     private:
 	EnvelopeState	state;		// Current state of envelope generator
-	int		time;		// Current time (in ms) of current envelope phase
+	uint16_t		time;		// Current time (in ms) of current envelope phase
 
 	void		setState(EnvelopeState state);	// Set the envelope's state
 
     public:
-	int		attackTime;	// The attack time
-	int		decayTime;	// The decay time
-	int		sustainLevel;	// The sustain level
-	int		releaseTime;	// The release time
+	uint16_t		attackTime;	// The attack time
+	uint16_t		decayTime;	// The decay time
+	uint16_t		sustainLevel;	// The sustain level
+	uint16_t		releaseTime;	// The release time
 
 	bool		gate;		// TRUE=gate close (signal start envelope)
 					// FALSE=gate open (signalt start release)
