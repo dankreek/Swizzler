@@ -3,7 +3,7 @@
 
 class MidiInput {
 public:
-	// Hold Midi the current midi command data
+	// Current MIDI command data
 	static int midiCmd;
 	static int midiData1;
 	static int midiData2;
@@ -31,11 +31,11 @@ public:
 	 * Push a byte onto the Midi stack. This will be called by an interrupt routine or some shits.
 	 */
 	inline static
-	void pushByte(unsigned char byte) {
+	void pushByte(uint8_t byte) {
 		// Throw out system real-time messages
 		if ((byte > 0xf0) && (byte <= 0xff)) return;
 
-		// This is a status byte, so start the MIDI command all over
+		// This is a status byte, so start a new MIDI command
 		if (byte & 0x80) {
 			midiCmd = byte;
 			resetCommand();
@@ -47,7 +47,7 @@ public:
 			midiData2 = byte;
 		}
 		
-		// Is command complete?
+		// If a status byte is set, see if it's a complete command
 		if (midiCmd >= 0x80)
 			handleMidiCommand();
 	}
