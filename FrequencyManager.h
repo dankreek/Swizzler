@@ -2,6 +2,7 @@
 #define FREQMAN_H
 
 #include "PortamentoManager.h"
+#include "Swizzler.h"
 
 /**
  * The frequency manager takes in control messages (via MIDI) like note on, note off
@@ -25,10 +26,17 @@ class FrequencyManager {
 	void newNote(uint8_t noteNumber);
 
 	/**
-	 * This is called once every millisecond to handle all the business
+	 * This is called once every millisecond to handle all the business.
+	 * Currently only the portamento manager needs a timer hook.
 	 */
-	static
-	void nextTick();
+	static inline
+	void nextTick() {
+		// If portamento's on and running then output a new frequency
+		if (portamentoOn && !portMan.done) {
+			// only change frequency if it's necessary
+			if (portMan.nextTick()) Waveout::setFreq(portMan.curFreq);
+		}
+	}
 
 	/**
 	 * Turn on/off portamento

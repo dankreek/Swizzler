@@ -98,3 +98,13 @@ void NoteManager::noteOff(uint8_t noteNumber) {
 		digitalWrite(8, false);
 	}
 }
+
+void NoteManager::nextTick() {
+	if (arpOn) {
+		// If the arpmanager says we should send a new note
+		if (arpManager.nextTick()) {
+			// Send it
+			FrequencyManager::newNote(arpManager.curNote());
+		}
+	}
+}

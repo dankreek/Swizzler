@@ -33,15 +33,7 @@ class NoteManager {
 	static ArpManager arpManager;
 	
 	// Called every millisecond to keep the arpeggios running
-	inline static void nextTick() {
-		if (arpOn) {
-			// If the arpmanager says we should send a new note
-			if (arpManager.nextTick()) {
-				// Send it
-				FrequencyManager::newNote(arpManager.curNote());
-			}
-		}
-	} 
+	static void nextTick();
 	
   private:
   	// Is the arpeggiator on or off?

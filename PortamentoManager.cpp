@@ -39,7 +39,7 @@ bool PortamentoManager::nextTick() {
 				done = true;
 				return true;
 			}
-			else if (curFreq != nextFreq) {	
+			else if (curFreq != nextFreq) {
 				curFreq = nextFreq;
 				return true;
 			}

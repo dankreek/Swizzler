@@ -71,18 +71,20 @@ void FrequencyManager::enablePortamento(bool onOff) {
 
 
 int FrequencyManager::noteToFreq(uint8_t noteNum) {
+	// TODO: Find the max frequency this thing will safely run at
 	//if (noteNum > 83) return 1047;
 
+	/**
+	 * The MIDI standard defines note #0 as a 'C', so
+	 * divide the note number by 12 to get the octave the note is in
+	 * and take the remainder the find the note name.
+	 */
 	int octave = noteNum / 12;
 	int note = noteNum % 12;
 	
 	// Divides in half for the proper number of octaves
+	// (every right shift is one less octave)
 	return (note_lookup[note] >> (8-octave));
 }
 
-void FrequencyManager::nextTick() {
-	// If portamento's on and running then output the new frequency
-	if (portamentoOn && !portMan.done) {
-		if (portMan.nextTick()) Waveout::setFreq(portMan.curFreq);
-	}
-}
+
