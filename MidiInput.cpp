@@ -9,9 +9,9 @@ KnobKnee attackTimeKnee = KnobKnee(8000, 95, 1000);
 KnobKnee decRelTimeKnee = KnobKnee(24000, 95, 2400);	// Decay/release time knee
 KnobKnee arpTimeKnee = KnobKnee(1000, 95, 250);			// Arpeggio time (ms per note)
 
-int MidiInput::midiCmd;
-int MidiInput::midiData1;
-int MidiInput::midiData2;
+int16_t MidiInput::midiCmd;
+int16_t MidiInput::midiData1;
+int16_t MidiInput::midiData2;
 
 // Midi controller numbers
 #define PORT_ON_OFF 67
@@ -87,9 +87,8 @@ void MidiInput::handleControlChange() {
 		case PORT_TIME:
 			FrequencyManager::portMan.time = portTimeKnee.getValue(midiData2);
 			break;
-
+		//Pulse width is a 4 bit value because the wavetables are 4bits long
 		case PULSE_WIDTH:
-			//Pulse width is a 4 bit value because the wavetables are 4bits long
 			Wavetable::pulseWidth = (midiData2 >> 3);
 			Wavetable::genSquare();
 			break;

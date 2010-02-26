@@ -12,7 +12,7 @@ class PortamentoManager {
 	int16_t		destFreq;
 
 	// Initialize portamento manager
-	void		begin();
+	void		init();
 
 	// Put the portamento generator directly on a note
 	void		nextDirectFreq(uint16_t freq);	

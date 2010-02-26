@@ -44,6 +44,7 @@ class FrequencyManager {
 	int noteToFreq(uint8_t noteNum);
 
   private:
+	// Is portamento currently on?
 	static bool portamentoOn;
 };
 

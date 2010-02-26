@@ -1,23 +1,23 @@
 #include "WProgram.h"
-#include "wavetable.h"
+#include "Wavetable.h"
 
 int Wavetable::wtIndex;
 
-char Wavetable::noiseTable[TABLE_SIZE];
-char Wavetable::triTable[TABLE_SIZE];	
-char Wavetable::sawTable[TABLE_SIZE];
-char Wavetable::sqTable[TABLE_SIZE];
-char Wavetable::randTable[TABLE_SIZE];
+int8_t Wavetable::noiseTable[TABLE_SIZE];
+int8_t Wavetable::triTable[TABLE_SIZE];
+int8_t Wavetable::sawTable[TABLE_SIZE];
+int8_t Wavetable::sqTable[TABLE_SIZE];
+int8_t Wavetable::randTable[TABLE_SIZE];
 
-char Wavetable::outputTable[TABLE_SIZE];
+int8_t Wavetable::outputTable[TABLE_SIZE];
 
 uint8_t Wavetable::pulseWidth;
 
-char Wavetable::triLevel;
-char Wavetable::sawLevel;
-char Wavetable::sqLevel;
-char Wavetable::randLevel;
-char Wavetable::noiseLevel;
+int8_t Wavetable::triLevel;
+int8_t Wavetable::sawLevel;
+int8_t Wavetable::sqLevel;
+int8_t Wavetable::randLevel;
+int8_t Wavetable::noiseLevel;
 
 void Wavetable::init() {
 	pulseWidth = TABLE_SIZE/2;
@@ -42,17 +42,17 @@ void Wavetable::init() {
  * Mix all the waves together!
  */
 void Wavetable::mixWaves() {
-	for (int i=0; i < TABLE_SIZE; i++) {
-		outputTable[i] = ((int)triTable[i]*(int)triLevel)/WAVE_MIX_AMP;
-		outputTable[i] += ((int)sawTable[i]*(int)sawLevel)/WAVE_MIX_AMP;
-		outputTable[i] += ((int)sqTable[i]*(int)sqLevel)/WAVE_MIX_AMP;
-		outputTable[i] += ((int)randTable[i]*(int)randLevel)/WAVE_MIX_AMP;
-		outputTable[i] += ((int)noiseTable[i]*(int)noiseLevel)/WAVE_MIX_AMP;
+	for (uint8_t i=0; i < TABLE_SIZE; i++) {
+		outputTable[i] = ((int16_t)triTable[i]*(int16_t)triLevel)/WAVE_MIX_AMP;
+		outputTable[i] += ((int16_t)sawTable[i]*(int16_t)sawLevel)/WAVE_MIX_AMP;
+		outputTable[i] += ((int16_t)sqTable[i]*(int16_t)sqLevel)/WAVE_MIX_AMP;
+		outputTable[i] += ((int16_t)randTable[i]*(int16_t)randLevel)/WAVE_MIX_AMP;
+		outputTable[i] += ((int16_t)noiseTable[i]*(int16_t)noiseLevel)/WAVE_MIX_AMP;
 	}
 }
 
 void Wavetable::genRand() {
-	int i;
+	uint8_t i;
 	
 	for (i=0; i < TABLE_SIZE; i++) {
 		Wavetable::randTable[i] = random(WAVE_HEIGHT)-(WAVE_HEIGHT/2);
@@ -60,7 +60,7 @@ void Wavetable::genRand() {
 }
 
 void Wavetable::genNoise() {
-	int i;
+	uint8_t i;
 	
 	for (i=0; i < TABLE_SIZE; i++) {
 		Wavetable::noiseTable[i] = random(WAVE_HEIGHT)-(WAVE_HEIGHT/2);
@@ -68,7 +68,7 @@ void Wavetable::genNoise() {
 }
 
 void Wavetable::genSquare() {
-	int i;
+	uint8_t i;
 	for (i=0; i < pulseWidth; i++) {
 		Wavetable::sqTable[i] = MIN_SAMPLE;
 	}
@@ -79,9 +79,9 @@ void Wavetable::genSquare() {
 }
 
 void Wavetable::genTriangle() {
-	short x1,x2,y1,y2;
-	short slope;
-	int i, sample=0;
+	int8_t x1,x2,y1,y2;
+	int8_t slope;
+	int8_t i, sample=0;
 	
 	x1=0;
 	y1=MIN_SAMPLE;
@@ -107,9 +107,9 @@ void Wavetable::genTriangle() {
 }
 
 void Wavetable::genSawtooth() {
-	short x1,x2,y1,y2;
-	short slope;
-	int i,sample;
+	int8_t x1,x2,y1,y2;
+	int8_t slope;
+	int8_t i,sample;
 	
 	x1 = 0;
 	y1 = MIN_SAMPLE; 

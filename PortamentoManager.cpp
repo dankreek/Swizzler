@@ -1,6 +1,6 @@
 #include "PortamentoManager.h"
 
-void PortamentoManager::begin() {
+void PortamentoManager::init() {
 	prevFreq = -1;
 	destFreq = -1;
 	curFreq = -1;

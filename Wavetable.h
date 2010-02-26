@@ -43,24 +43,24 @@ class Wavetable {
 	// Mix all the wave tables into the output table
 	static void mixWaves();
 
-	static char noiseTable[TABLE_SIZE];
-	static char randTable[TABLE_SIZE];
-	static char triTable[TABLE_SIZE];
-	static char sawTable[TABLE_SIZE];
-	static char sqTable[TABLE_SIZE];
+	static int8_t noiseTable[TABLE_SIZE];
+	static int8_t randTable[TABLE_SIZE];
+	static int8_t triTable[TABLE_SIZE];
+	static int8_t sawTable[TABLE_SIZE];
+	static int8_t sqTable[TABLE_SIZE];
 
 	// The pulsewidth of the square wave
 	static uint8_t pulseWidth;
 
 	// The mix levels of each waveform
-	static char triLevel;	
-	static char sawLevel;
-	static char sqLevel;
-	static char randLevel;
-	static char noiseLevel;
+	static int8_t triLevel;
+	static int8_t sawLevel;
+	static int8_t sqLevel;
+	static int8_t randLevel;
+	static int8_t noiseLevel;
 
 	// The combined waveforms are mixed into here and then output
-	static char outputTable[TABLE_SIZE];
+	static int8_t outputTable[TABLE_SIZE];
 };
 
 #endif /*WAVETABLE_H_*/

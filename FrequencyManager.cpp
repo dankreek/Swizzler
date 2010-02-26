@@ -32,7 +32,7 @@ int note_lookup[] = {
 
 void FrequencyManager::init() {
 	portamentoOn = false;
-	portMan.begin();
+	portMan.init();
 	
 	MidiNoteBuffer::begin();
 }
@@ -40,28 +40,31 @@ void FrequencyManager::init() {
 void FrequencyManager::newNote(uint8_t noteNumber) {
 	// If portamento's on, start the glide
 	if (portamentoOn) {
-		// If no previous note in the buffer then just play the note
-		if (MidiNoteBuffer::lastNote == -1) {
+		// If no previous note in the buffer then just play the note at its frequency
+		if (MidiNoteBuffer::isEmpty()) {
 			portMan.nextDirectFreq(noteToFreq(noteNumber));
 		}
+		// If there is a previous note setup the glide
 		else {
-			// If there is a previous note setup the glide
 			portMan.nextGlideFreq(noteToFreq(noteNumber));
 		}
 	}
-	// Set the frequency directly
+	// If no portamento then set the frequency directly
 	else {
 		Waveout::setFreq(noteToFreq(noteNumber));
 	}
 }
 
 void FrequencyManager::enablePortamento(bool onOff) {
+	// Turn portamento on
 	if (onOff && !portamentoOn) {
 		portamentoOn = true;
-		portMan.begin();
+		portMan.init();
 	}
+	// Turn portamento off
 	else if (!onOff && portamentoOn) {
 		portamentoOn = false;
+		// If a destination frequency has been defined, jump directly to it
 		if (portMan.destFreq > -1) Waveout::setFreq(portMan.destFreq);
 	}
 }
