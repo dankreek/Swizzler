@@ -103,7 +103,7 @@ void FrequencyManager::recalculateBendOffset() {
 	if (bendAmount == 0) bendOffset = 0;
 	// Bend up
 	else if (bendAmount > 0) {
-		bendOffset = (bendAmount * (noteToFreq(curMidiNote+bendRange)-noteToFreq(curMidiNote)))/63;
+		bendOffset = (bendAmount * (int16_t)(noteToFreq(curMidiNote+bendRange)-noteToFreq(curMidiNote)))/63;
 	}
 	// Bend down
 	else if (bendAmount < 0) {
