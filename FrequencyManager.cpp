@@ -39,7 +39,7 @@ void FrequencyManager::init() {
 	portMan.init();
 	
 	bendOffset = 0;
-	bendRange = 3;
+	bendRange = 2;
 }
 
 void FrequencyManager::newNote(uint8_t noteNumber) {

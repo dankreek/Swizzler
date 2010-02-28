@@ -17,10 +17,11 @@ int16_t MidiInput::midiData2;
 #define PORT_ON_OFF 67
 #define PORT_TIME	5
 
-#define ARP_ON_OFF	26
-#define ARP_TIME    13
+#define ARP_ON_OFF	  26
+#define ARP_TIME      13
+#define ARP_MIN_NOTES 91
 
-#define PULSE_WIDTH	12
+#define PULSE_WIDTH	 12
 
 #define TRI_LEVEL    74
 #define SAW_LEVEL	 71
@@ -122,6 +123,10 @@ void MidiInput::handleControlChange() {
 			// Tweaked to make 10 the minimum value.
 			// XXX: Is this the best way to go about it?
 			NoteManager::arpManager.arpTime = arpTimeKnee.getValue(midiData2)+10;
+			break;
+		case ARP_MIN_NOTES:
+			// Ranges from 1-16
+			NoteManager::arpManager.minNotes = (midiData2 >> 3)+1;
 			break;
 	}
 }
