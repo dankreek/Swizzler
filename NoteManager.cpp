@@ -6,6 +6,8 @@ bool NoteManager::arpOn;
 ArpManager NoteManager::arpManager;
 
 void NoteManager::init()  {
+	MidiNoteBuffer::begin();
+
 	// Initialize the arpeggio manager
 	arpManager.init();
 

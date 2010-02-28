@@ -9,9 +9,10 @@
 
 PortamentoManager FrequencyManager::portMan;
 bool FrequencyManager::portamentoOn;
-int8_t FrequencyManager::bendAmount;
+uint8_t FrequencyManager::bendAmount;
 uint8_t FrequencyManager::bendRange;
 uint8_t FrequencyManager::curMidiNote;
+int16_t FrequencyManager::bendOffset;
 
 /**
  * Frequency -> Note lookup table. These are the frequencies for
@@ -37,10 +38,14 @@ void FrequencyManager::init() {
 	portamentoOn = false;
 	portMan.init();
 	
-	MidiNoteBuffer::begin();
+	bendOffset = 0;
+	bendRange = 3;
+	bendAmount = 64;
 }
 
 void FrequencyManager::newNote(uint8_t noteNumber) {
+	curMidiNote = noteNumber;
+
 	// If portamento's on, start the glide
 	if (portamentoOn) {
 		// If no previous note in the buffer then just play the note at its frequency
@@ -54,7 +59,7 @@ void FrequencyManager::newNote(uint8_t noteNumber) {
 	}
 	// If no portamento then set the frequency directly
 	else {
-		Waveout::setFreq(noteToFreq(noteNumber));
+		Waveout::setFreq(noteToFreq(noteNumber)+bendOffset);
 	}
 }
 
@@ -72,11 +77,9 @@ void FrequencyManager::enablePortamento(bool onOff) {
 	}
 }
 
-
 uint16_t FrequencyManager::noteToFreq(uint8_t noteNum) {
 	// TODO: Find the max frequency this thing will safely run at
 	//if (noteNum > 83) return 1047;
-
 	/**
 	 * The MIDI standard defines note #0 as a 'C', so
 	 * divide the note number by 12 to get the octave the note is in
@@ -85,29 +88,35 @@ uint16_t FrequencyManager::noteToFreq(uint8_t noteNum) {
 	int octave = noteNum / 12;
 	int note = noteNum % 12;
 	
-	curMidiNote = noteNum;
-
 	// Divides in half for the proper number of octaves
 	// (every right shift is one less octave)
 	return (note_lookup[note] >> (8-octave));
 }
 
-void FrequencyManager::setBendAmount(int8_t ba) {
+void FrequencyManager::setBendAmount(uint8_t ba) {
 	bendAmount = ba;
 	recalculateBendOffset();
 }
 
 void FrequencyManager::recalculateBendOffset() {
-	// TODO: bendAmount needs to be unsigned, so going to have to store the direction in a different variable
+	// This variable is needed as a hack to make sure the numerator of the calculation can fit into a 16bit unsigned int
+	uint16_t bendTemp;
+
+	// Range being bent over
+	uint16_t freqRange;
+
 	// No bend
-	if (bendAmount == 0) bendOffset = 0;
+	if (bendAmount == 64) bendOffset = 0;
 	// Bend up
-	else if (bendAmount > 0) {
-		bendOffset = ((int16_t)bendAmount * noteToFreq(curMidiNote+bendAmount))/63;
+	else if (bendAmount > 64) {
+		bendTemp = (bendAmount - 64);
+		bendOffset = (bendTemp * (noteToFreq(curMidiNote+bendRange)-noteToFreq(curMidiNote)))/63;
 	}
 	// Bend down
 	else {
-		bendOffset = ((int16_t)bendAmount * noteToFreq(curMidiNote+bendAmount))/(-64);
+		bendTemp = (64 - bendAmount);
+		bendOffset = (bendTemp * (noteToFreq(curMidiNote)-noteToFreq(curMidiNote-bendRange)))/64;
+		bendOffset *= -1;
 	}
 }
 

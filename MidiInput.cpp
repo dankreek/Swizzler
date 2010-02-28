@@ -49,7 +49,7 @@ void MidiInput::handleNoteOff() {
 void MidiInput::handlePitchBend() {
 	// I'm going to ignore the least significant byte of this message for now
 	// (my controller only sends 0 for the LSB anyway, so who cares)
-
+	FrequencyManager::setBendAmount(midiData2);
 }
 
 // Lots of fun with controllers!

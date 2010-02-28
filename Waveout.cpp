@@ -102,6 +102,6 @@ void Waveout::stop() {
  *
  * Note that at 16Mhz there are 16 clock cycles in a microsecond
  */
-void Waveout::setFreq(int freq) {
+void Waveout::setFreq(uint16_t freq) {
 	OCR1A = (unsigned long)1000000 / (unsigned long)freq;
 }

@@ -3,6 +3,8 @@
 
 #define WAVEOUT_PIN 11
 
+#include <inttypes.h>
+
 class Waveout {
     public:
 	static void start();
@@ -14,7 +16,7 @@ class Waveout {
  	 *
  	 * There is a minimum and maximum frequency. I'll figure them out later.
  	 */
-	static void setFreq(int);
+	static void setFreq(uint16_t);
 };
 
 #endif
