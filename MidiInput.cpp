@@ -49,7 +49,9 @@ void MidiInput::handleNoteOff() {
 void MidiInput::handlePitchBend() {
 	// I'm going to ignore the least significant byte of this message for now
 	// (my controller only sends 0 for the LSB anyway, so who cares)
-	FrequencyManager::setBendAmount(midiData2);
+	// This number comes in as an unsigned 7bit number, but internally I store it
+	// as a signed 7 bit number. The -64 is to convert to signed.
+	FrequencyManager::setBendAmount((int8_t)midiData2-64);
 }
 
 // Lots of fun with controllers!

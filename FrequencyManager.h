@@ -38,7 +38,7 @@ class FrequencyManager {
 	/**
 	 * Set a new bend value 0 is max bend low, 64 is no bend, 127 is max high bend
 	 */
-	static void setBendAmount(uint8_t ba);
+	static void setBendAmount(int8_t ba);
 
 	/**
 	 * Turn on/off portamento
@@ -59,7 +59,7 @@ class FrequencyManager {
 	static bool portamentoOn;
 
 	// Current bend amount, this is an unsigned 7bit number (-64,63)
-	static uint8_t bendAmount;
+	static int8_t bendAmount;
 
 	// Use the bendAmount and the current note number to recalculate the bendOffset
 	static void recalculateBendOffset();

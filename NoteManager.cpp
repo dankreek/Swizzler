@@ -37,14 +37,6 @@ void NoteManager::noteOn(uint8_t noteNumber) {
 		FrequencyManager::newNote(noteNumber);
 		restartGate();
 	}
-
-	// LED fun for debugging
-	if (MidiNoteBuffer::size > 0) {
-		digitalWrite(8, true);
-	}
-	else {
-		digitalWrite(8, false);
-	}
 }
 
 void NoteManager::restartGate() {
@@ -90,14 +82,6 @@ void NoteManager::noteOff(uint8_t noteNumber) {
 				reloadArpeggiator();
 			}	
 		}
-	}
-
-	// For debugging
-	if (MidiNoteBuffer::size > 0) {
-		digitalWrite(8, true);
-	}
-	else {
-		digitalWrite(8, false);
 	}
 }
 

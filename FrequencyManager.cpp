@@ -9,7 +9,7 @@
 
 PortamentoManager FrequencyManager::portMan;
 bool FrequencyManager::portamentoOn;
-uint8_t FrequencyManager::bendAmount;
+int8_t FrequencyManager::bendAmount;
 uint8_t FrequencyManager::bendRange;
 uint8_t FrequencyManager::curMidiNote;
 int16_t FrequencyManager::bendOffset;
@@ -40,7 +40,7 @@ void FrequencyManager::init() {
 	
 	bendOffset = 0;
 	bendRange = 3;
-	bendAmount = 64;
+	bendAmount = 0;
 }
 
 void FrequencyManager::newNote(uint8_t noteNumber) {
@@ -93,30 +93,22 @@ uint16_t FrequencyManager::noteToFreq(uint8_t noteNum) {
 	return (note_lookup[note] >> (8-octave));
 }
 
-void FrequencyManager::setBendAmount(uint8_t ba) {
+void FrequencyManager::setBendAmount(int8_t ba) {
 	bendAmount = ba;
 	recalculateBendOffset();
 }
 
 void FrequencyManager::recalculateBendOffset() {
-	// This variable is needed as a hack to make sure the numerator of the calculation can fit into a 16bit unsigned int
-	uint16_t bendTemp;
-
-	// Range being bent over
-	uint16_t freqRange;
-
 	// No bend
-	if (bendAmount == 64) bendOffset = 0;
+	if (bendAmount == 0) bendOffset = 0;
 	// Bend up
-	else if (bendAmount > 64) {
-		bendTemp = (bendAmount - 64);
-		bendOffset = (bendTemp * (noteToFreq(curMidiNote+bendRange)-noteToFreq(curMidiNote)))/63;
+	else if (bendAmount > 0) {
+		bendOffset = (bendAmount * (noteToFreq(curMidiNote+bendRange)-noteToFreq(curMidiNote)))/63;
 	}
 	// Bend down
-	else {
-		bendTemp = (64 - bendAmount);
-		bendOffset = (bendTemp * (noteToFreq(curMidiNote)-noteToFreq(curMidiNote-bendRange)))/64;
-		bendOffset *= -1;
+	else if (bendAmount < 0) {
+		//digitalWrite(8, true);
+		bendOffset = (bendAmount * (int16_t)(noteToFreq(curMidiNote)-noteToFreq(curMidiNote-bendRange)))/64;
 	}
 }
 
