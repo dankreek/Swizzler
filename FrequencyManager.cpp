@@ -9,10 +9,10 @@
 
 PortamentoManager FrequencyManager::portMan;
 bool FrequencyManager::portamentoOn;
-int8_t FrequencyManager::bendAmount;
 uint8_t FrequencyManager::bendRange;
 uint8_t FrequencyManager::curMidiNote;
 int16_t FrequencyManager::bendOffset;
+uint16_t FrequencyManager::curFreq;
 
 /**
  * Frequency -> Note lookup table. These are the frequencies for
@@ -40,7 +40,6 @@ void FrequencyManager::init() {
 	
 	bendOffset = 0;
 	bendRange = 3;
-	bendAmount = 0;
 }
 
 void FrequencyManager::newNote(uint8_t noteNumber) {
@@ -59,7 +58,7 @@ void FrequencyManager::newNote(uint8_t noteNumber) {
 	}
 	// If no portamento then set the frequency directly
 	else {
-		Waveout::setFreq(noteToFreq(noteNumber)+bendOffset);
+		setBaseFrequency(noteToFreq(noteNumber));
 	}
 }
 
@@ -73,7 +72,7 @@ void FrequencyManager::enablePortamento(bool onOff) {
 	else if (!onOff && portamentoOn) {
 		portamentoOn = false;
 		// If a destination frequency has been defined from a previous glide, jump directly to it
-		if (portMan.destFreq > -1) Waveout::setFreq(portMan.destFreq);
+		if (portMan.destFreq > -1) setBaseFrequency(portMan.destFreq);
 	}
 }
 
@@ -94,11 +93,11 @@ uint16_t FrequencyManager::noteToFreq(uint8_t noteNum) {
 }
 
 void FrequencyManager::setBendAmount(int8_t ba) {
-	bendAmount = ba;
-	recalculateBendOffset();
+	recalculateBendOffset(ba);
+	sendFrequency();
 }
 
-void FrequencyManager::recalculateBendOffset() {
+void FrequencyManager::recalculateBendOffset(int8_t bendAmount) {
 	// No bend
 	if (bendAmount == 0) bendOffset = 0;
 	// Bend up
@@ -112,3 +111,11 @@ void FrequencyManager::recalculateBendOffset() {
 	}
 }
 
+void FrequencyManager::setBaseFrequency(uint16_t freq) {
+	curFreq = freq;
+	sendFrequency();
+}
+
+void FrequencyManager::sendFrequency() {
+	Waveout::setFreq(curFreq+bendOffset);
+}

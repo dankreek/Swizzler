@@ -31,7 +31,7 @@ class FrequencyManager {
 		// If portamento's on and running then output a new frequency
 		if (portamentoOn && !portMan.done) {
 			// only change frequency if it's necessary
-			if (portMan.nextTick()) Waveout::setFreq(portMan.curFreq);
+			if (portMan.nextTick()) setBaseFrequency(portMan.curFreq);
 		}
 	}
 
@@ -54,21 +54,26 @@ class FrequencyManager {
 	// The range that the pitch bend swings between (in +/- half-steps)
 	static uint8_t bendRange;
 
+	static void setBaseFrequency(uint16_t freq);
+
   private:
 	// Is portamento currently on?
 	static bool portamentoOn;
 
-	// Current bend amount, this is an unsigned 7bit number (-64,63)
-	static int8_t bendAmount;
+	// Recalculate and send the current frequency to the frequency managers
+	static void sendFrequency();
 
 	// Use the bendAmount and the current note number to recalculate the bendOffset
-	static void recalculateBendOffset();
+	static void recalculateBendOffset(int8_t);
 
 	// How much to increment (or decrement) the output frequency (in hz) as set by recalculateBendOffset()
 	static int16_t bendOffset;
 
 	// The last note that was sent
 	static uint8_t curMidiNote;
+
+	// The current base frequency to be output
+	static uint16_t curFreq;
 };
 
 #endif
