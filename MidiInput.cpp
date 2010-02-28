@@ -21,6 +21,8 @@ int16_t MidiInput::midiData2;
 #define ARP_TIME      13
 #define ARP_MIN_NOTES 91
 
+#define PITCH_BEND_RANGE  15
+
 #define PULSE_WIDTH	 12
 
 #define TRI_LEVEL    74
@@ -128,6 +130,10 @@ void MidiInput::handleControlChange() {
 			// Ranges from 1-16
 			NoteManager::arpManager.minNotes = (midiData2 >> 3)+1;
 			break;
+
+		case PITCH_BEND_RANGE:
+			// Bend range (in half-steps) ranges from 0-15
+			FrequencyManager::bendRange = (midiData2 >> 3);
 	}
 }
 
