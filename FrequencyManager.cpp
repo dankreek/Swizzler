@@ -9,6 +9,9 @@
 
 PortamentoManager FrequencyManager::portMan;
 bool FrequencyManager::portamentoOn;
+int8_t FrequencyManager::bendAmount;
+uint8_t FrequencyManager::bendRange;
+uint8_t FrequencyManager::curMidiNote;
 
 /**
  * Frequency -> Note lookup table. These are the frequencies for
@@ -64,13 +67,13 @@ void FrequencyManager::enablePortamento(bool onOff) {
 	// Turn portamento off
 	else if (!onOff && portamentoOn) {
 		portamentoOn = false;
-		// If a destination frequency has been defined, jump directly to it
+		// If a destination frequency has been defined from a previous glide, jump directly to it
 		if (portMan.destFreq > -1) Waveout::setFreq(portMan.destFreq);
 	}
 }
 
 
-int FrequencyManager::noteToFreq(uint8_t noteNum) {
+uint16_t FrequencyManager::noteToFreq(uint8_t noteNum) {
 	// TODO: Find the max frequency this thing will safely run at
 	//if (noteNum > 83) return 1047;
 
@@ -82,9 +85,29 @@ int FrequencyManager::noteToFreq(uint8_t noteNum) {
 	int octave = noteNum / 12;
 	int note = noteNum % 12;
 	
+	curMidiNote = noteNum;
+
 	// Divides in half for the proper number of octaves
 	// (every right shift is one less octave)
 	return (note_lookup[note] >> (8-octave));
 }
 
+void FrequencyManager::setBendAmount(int8_t ba) {
+	bendAmount = ba;
+	recalculateBendOffset();
+}
+
+void FrequencyManager::recalculateBendOffset() {
+	// TODO: bendAmount needs to be unsigned, so going to have to store the direction in a different variable
+	// No bend
+	if (bendAmount == 0) bendOffset = 0;
+	// Bend up
+	else if (bendAmount > 0) {
+		bendOffset = ((int16_t)bendAmount * noteToFreq(curMidiNote+bendAmount))/63;
+	}
+	// Bend down
+	else {
+		bendOffset = ((int16_t)bendAmount * noteToFreq(curMidiNote+bendAmount))/(-64);
+	}
+}
 
