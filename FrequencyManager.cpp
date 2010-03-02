@@ -13,6 +13,7 @@ uint8_t FrequencyManager::bendRange;
 uint8_t FrequencyManager::curMidiNote;
 int16_t FrequencyManager::bendOffset;
 uint16_t FrequencyManager::curFreq;
+int8_t FrequencyManager::bendAmount;
 
 /**
  * Frequency -> Note lookup table. These are the frequencies for
@@ -44,6 +45,8 @@ void FrequencyManager::init() {
 
 void FrequencyManager::newNote(uint8_t noteNumber) {
 	curMidiNote = noteNumber;
+
+	if (bendAmount != 0) recalculateBendOffset();
 
 	// If portamento's on, start the glide
 	if (portamentoOn) {
@@ -93,21 +96,24 @@ uint16_t FrequencyManager::noteToFreq(uint8_t noteNum) {
 }
 
 void FrequencyManager::setBendAmount(int8_t ba) {
-	recalculateBendOffset(ba);
+	bendAmount = ba;
+	recalculateBendOffset();
 	sendFrequency();
 }
 
-void FrequencyManager::recalculateBendOffset(int8_t bendAmount) {
-	// No bend
-	if (bendAmount == 0) bendOffset = 0;
+void FrequencyManager::recalculateBendOffset() {
 	// Bend up
-	else if (bendAmount > 0) {
+	if (bendAmount > 0) {
 		bendOffset = (bendAmount * (int16_t)(noteToFreq(curMidiNote+bendRange)-noteToFreq(curMidiNote)))/63;
 	}
 	// Bend down
 	else if (bendAmount < 0) {
 		//digitalWrite(8, true);
 		bendOffset = (bendAmount * (int16_t)(noteToFreq(curMidiNote)-noteToFreq(curMidiNote-bendRange)))/64;
+	}
+	// No bend
+	else {
+		bendOffset = 0;
 	}
 }
 

@@ -64,7 +64,7 @@ class FrequencyManager {
 	static void sendFrequency();
 
 	// Use the bendAmount and the current note number to recalculate the bendOffset
-	static void recalculateBendOffset(int8_t);
+	static void recalculateBendOffset();
 
 	// How much to increment (or decrement) the output frequency (in hz) as set by recalculateBendOffset()
 	static int16_t bendOffset;
@@ -74,6 +74,9 @@ class FrequencyManager {
 
 	// The current base frequency to be output
 	static uint16_t curFreq;
+
+	// The current bend mount (-64-63)
+	static int8_t bendAmount;
 };
 
 #endif
