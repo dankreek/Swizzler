@@ -80,17 +80,14 @@ void Envelope::next() {
 	// Advance envelope lines where needed
 	switch (state) {
 		case ENV_ATTACK:
-			time++;
 			line.next(&scalar);
 			if (time >= attackTime)	setState(ENV_DECAY);
 			break;
 		case ENV_DECAY:
-			time++;
 			line.next(&scalar);
 			if (time >= decayTime) setState(ENV_SUSTAIN);
 			break;
 		case ENV_RELEASE:
-			time++;
 			line.next(&scalar);
 			if (time >= releaseTime) setState(ENV_CLOSED);
 			break;
