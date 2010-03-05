@@ -38,8 +38,6 @@ class Envelope {
 	// Setup the envelope generator
 	void init();
 
-	void setup(int attack, int decay, int sustain, int release); 
-
 	// Calculate the next envelope scalar
 	void next();
 

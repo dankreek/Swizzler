@@ -21,7 +21,10 @@ ISR(TIMER0_OVF_vect) {
 }
 
 void Envelope::init() {
-	this->setup(ATTACK, DECAY, SUSTAIN, RELEASE);
+	attackTime = ATTACK;
+	decayTime = DECAY;
+	sustainLevel = SUSTAIN;
+	releaseTime = RELEASE;
 	this->openGate();	
 
 	// The envelope is in the "not doing anything" state
@@ -49,26 +52,6 @@ void Envelope::setState(EnvelopeState state) {
 			scalar = 0;
 			break;
 	};
-}
-
-/**
- * 
- * Setup a new set of envelope lines. In the envelope context the x coordinate measures time (in ms)
- * and the Y coordinate is an amplitude scaling
- * @attack	Attack time (in ms)
- * @decay	Decay time (in ms)
- * @sustain	Sustain level
- * @release	Release time (in ms)
- */
-void Envelope::setup(int attack, int decay, int sustain, int release) {
-	// Record the envelope paramters
-	this->attackTime = attack;
-	this->decayTime = decay;
-	this->sustainLevel = sustain;
-	this->releaseTime = release;
-
-	// Gate is open until the user closes it
-	this->openGate();
 }
 
 /**
