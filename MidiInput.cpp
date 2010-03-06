@@ -110,9 +110,9 @@ void MidiInput::handleControlChange() {
 		case RELEASE_TIME:
 			swizzler.envelope.releaseTime = decRelTimeKnee.getValue(midiData2);
 			break;
-		// Except sustain level, it's a 5bit value for right now
+		// Except sustain level, it's a 7bit value for right now
 		case SUSTAIN_LEVEL:
-			swizzler.envelope.sustainLevel = (midiData2 >> 2);
+			swizzler.envelope.sustainLevel = midiData2; //(midiData2 >> 1);
 			break;
 
 

@@ -7,12 +7,12 @@
 enum EnvelopeState {ENV_CLOSED, ENV_ATTACK, ENV_DECAY, ENV_SUSTAIN, ENV_RELEASE};
 
 // Set the maximum envelope scalar value
-#define ENV_SCALAR_RANGE	32	
+#define ENV_SCALAR_RANGE	127
 
 // Default envelope values
 #define ATTACK 10 
 #define DECAY 20
-#define SUSTAIN ENV_SCALAR_RANGE/4 
+#define SUSTAIN ENV_SCALAR_RANGE/2
 #define RELEASE 500 
 
 class Envelope {
