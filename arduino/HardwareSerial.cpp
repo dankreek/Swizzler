@@ -31,7 +31,7 @@
 // using a ring buffer (I think), in which rx_buffer_head is the index of the
 // location to which to write the next incoming character and rx_buffer_tail
 // is the index of the location from which to read.
-#define RX_BUFFER_SIZE 32 
+#define RX_BUFFER_SIZE 16
 
 struct ring_buffer {
   unsigned char buffer[RX_BUFFER_SIZE];
@@ -61,34 +61,6 @@ inline void store_char(unsigned char c, ring_buffer *rx_buffer)
   }
 }
 
-#if defined(__AVR_ATmega1280__)
-
-SIGNAL(SIG_USART0_RECV)
-{
-  unsigned char c = UDR0;
-  store_char(c, &rx_buffer);
-}
-
-SIGNAL(SIG_USART1_RECV)
-{
-  unsigned char c = UDR1;
-  store_char(c, &rx_buffer1);
-}
-
-SIGNAL(SIG_USART2_RECV)
-{
-  unsigned char c = UDR2;
-  store_char(c, &rx_buffer2);
-}
-
-SIGNAL(SIG_USART3_RECV)
-{
-  unsigned char c = UDR3;
-  store_char(c, &rx_buffer3);
-}
-
-#else
-
 #if defined(__AVR_ATmega8__)
 SIGNAL(SIG_UART_RECV)
 #else
@@ -102,8 +74,6 @@ SIGNAL(USART_RX_vect)
 #endif
   store_char(c, &rx_buffer);
 }
-
-#endif
 
 // Constructors ////////////////////////////////////////////////////////////////
 
@@ -182,19 +152,6 @@ int HardwareSerial::read(void)
   }
 }
 
-void HardwareSerial::flush()
-{
-  // don't reverse this or there may be problems if the RX interrupt
-  // occurs after reading the value of rx_buffer_head but before writing
-  // the value to rx_buffer_tail; the previous value of rx_buffer_head
-  // may be written to rx_buffer_tail, making it appear as if the buffer
-  // don't reverse this or there may be problems if the RX interrupt
-  // occurs after reading the value of rx_buffer_head but before writing
-  // the value to rx_buffer_tail; the previous value of rx_buffer_head
-  // may be written to rx_buffer_tail, making it appear as if the buffer
-  // were full, not empty.
-  _rx_buffer->head = _rx_buffer->tail;
-}
 
 void HardwareSerial::write(uint8_t c)
 {
