@@ -7,6 +7,8 @@
 #include "Swizzler.h"
 
 void Swizzler::init() {
+	Wire.begin();
+
 	pinMode(ledPin, OUTPUT);
 	pinMode(8, OUTPUT);
 

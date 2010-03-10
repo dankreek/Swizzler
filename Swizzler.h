@@ -15,6 +15,7 @@
 #include "MidiInput.h"
 #include "FrequencyManager.h"
 #include "NoteManager.h"
+#include "Wire.h"
 
 class Swizzler {
   public:
