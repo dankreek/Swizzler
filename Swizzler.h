@@ -16,6 +16,7 @@
 #include "FrequencyManager.h"
 #include "NoteManager.h"
 #include "Wire.h"
+#include "SetParameters.h"
 
 class Swizzler {
   public:

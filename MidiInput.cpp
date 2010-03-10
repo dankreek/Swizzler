@@ -1,13 +1,6 @@
 #include <inttypes.h>
-#include "KnobKnee.h"
 #include "MidiInput.h"
 #include "Swizzler.h"
-
-// Knees to define how midi controls work, and the range for the control
-KnobKnee portTimeKnee = KnobKnee(2000, 95, 500);
-KnobKnee attackTimeKnee = KnobKnee(8000, 95, 1000);
-KnobKnee decRelTimeKnee = KnobKnee(24000, 95, 2400);	// Decay/release time knee
-KnobKnee arpTimeKnee = KnobKnee(1000, 95, 250);			// Arpeggio time (ms per note)
 
 int16_t MidiInput::midiCmd;
 int16_t MidiInput::midiData1;
@@ -68,72 +61,66 @@ void MidiInput::handleControlChange() {
 		 * All the oscillator level settings are 4bit values
 		 */
 		case TRI_LEVEL:
-			Wavetable::triLevel = (midiData2 >> 3);
+			SetParameters::setTriLevel(midiData2);
 			break;
 		case SAW_LEVEL:
-			Wavetable::sawLevel = (midiData2 >> 3);
+			SetParameters::setSawtoothLevel(midiData2);
 			break;
 		case SQUARE_LEVEL:
-			Wavetable::sqLevel = (midiData2 >> 3);
+			SetParameters::setSquareLevel(midiData2);
 			break;
 		case RAND_LEVEL:
-			Wavetable::randLevel = (midiData2 >> 3);
+			SetParameters::setRandomLevel(midiData2);
 			break;
 		case NOISE_LEVEL:
-			Wavetable::noiseLevel = (midiData2 >> 3);
+			SetParameters::setNoiseLevel(midiData2);
 			break;
 
 		/**
 		 * Portamento Controls
 		 */
 		case PORT_ON_OFF:
-			FrequencyManager::enablePortamento((midiData2 > 0) ? true : false);
+			SetParameters::enablePortamento(midiData2);
 			break;
 		case PORT_TIME:
-			FrequencyManager::portMan.time = portTimeKnee.getValue(midiData2);
+			SetParameters::setPortamentoTime(midiData2);
 			break;
-		//Pulse width is a 4 bit value because the wavetables are 4bits long
+
 		case PULSE_WIDTH:
-			Wavetable::pulseWidth = (midiData2 >> 3);
-			Wavetable::genSquare();
+			SetParameters::setPulseWidth(midiData2);
 			break;
 
 		/**
 		 * Envelope value ares calculated using a knee
 		 */
 		case ATTACK_TIME:
-			swizzler.envelope.attackTime = attackTimeKnee.getValue(midiData2);
+			SetParameters::setAttackTime(midiData2);
 			break;
 		case DECAY_TIME:
-			swizzler.envelope.decayTime = decRelTimeKnee.getValue(midiData2);
+			SetParameters::setDecayTime(midiData2);
 			break;
 		case RELEASE_TIME:
-			swizzler.envelope.releaseTime = decRelTimeKnee.getValue(midiData2);
+			SetParameters::setReleaseTime(midiData2);
 			break;
-		// Except sustain level, it's a 7bit value for right now
 		case SUSTAIN_LEVEL:
-			swizzler.envelope.sustainLevel = midiData2; //(midiData2 >> 1);
+			SetParameters::setSustainLevel(midiData2);
 			break;
-
 
 		// Arpeggio controls
 		case ARP_ON_OFF:
-			NoteManager::enableArpeggio((midiData2 > 0) ? true : false);
+			SetParameters::enableArpeggio(midiData2);
 			break;
 		// Arp time is measured in milliseconds per note
 		case ARP_TIME:
-			// Tweaked to make 10 the minimum value.
-			// XXX: Is this the best way to go about it?
-			NoteManager::arpManager.arpTime = arpTimeKnee.getValue(midiData2)+10;
+			SetParameters::setArpeggioTime(midiData2);
 			break;
 		case ARP_MIN_NOTES:
-			// Ranges from 1-16
-			NoteManager::arpManager.minNotes = (midiData2 >> 3)+1;
+			SetParameters::setArpeggioMinNotes(midiData2);
 			break;
 
 		case PITCH_BEND_RANGE:
-			// Bend range (in half-steps) ranges from 0-15
-			FrequencyManager::bendRange = (midiData2 >> 3);
+			SetParameters::setBendRange(midiData2);
+			break;
 	}
 }
 
