@@ -10,6 +10,13 @@
 
 #include "Swizzler.h"
 
+/**
+ * All methods in this class take a 7bit unsigned int as an input which is the
+ * size that a MIDI controller provides. This reduces  memory size and makes preset
+ * storing and loading much easier.
+ *
+ * All scaling of controller values to real values are done in these methods
+ */
 class SetParameters {
 public:
 	static void setTriLevel(uint8_t);
