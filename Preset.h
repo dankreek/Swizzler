@@ -25,12 +25,12 @@ struct Preset {
 
 	// Portamento
 	uint8_t portamentoTime;
-	bool portamentoOn;
+	uint8_t portamentoOn;
 
 	// Arpeggiator
 	uint8_t arpeggioTime;
 	uint8_t arpeggioMinNotes;
-	bool arpeggioOn;
+	uint8_t arpeggioOn;
 };
 
 #endif
