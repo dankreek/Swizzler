@@ -31,6 +31,9 @@ struct Preset {
 	uint8_t arpeggioTime;
 	uint8_t arpeggioMinNotes;
 	uint8_t arpeggioOn;
+
+	// Range of bend
+	uint8_t bendRange;
 };
 
 #endif
