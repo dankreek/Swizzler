@@ -5,6 +5,7 @@
  *      Author: justin
  */
 #include "Swizzler.h"
+#include "PresetManager.h"
 
 void Swizzler::init() {
 	Wire.begin();
@@ -38,6 +39,8 @@ void Swizzler::init() {
 
 	// Initialize Frequency Manager
 	FrequencyManager::init();
+
+	PresetManager::loadPoweronSettings();
 
 	// Turn the on-board LED off
 	digitalWrite(ledPin, HIGH);
