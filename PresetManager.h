@@ -16,8 +16,6 @@ class PresetManager {
 	// The current controller values that the synth is using
 	static Preset curSettings;
 
-	static uint16_t presetTimer;
-
 	// Load and set a preset by its number (0-127)
 	static void loadPreset(uint8_t);
 

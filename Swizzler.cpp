@@ -40,7 +40,8 @@ void Swizzler::init() {
 	// Initialize Frequency Manager
 	FrequencyManager::init();
 
-	//PresetManager::loadPoweronSettings();
+	// Restore previous settings
+	PresetManager::loadPoweronSettings();
 
 	// Turn the on-board LED off
 	digitalWrite(ledPin, HIGH);

@@ -5,6 +5,7 @@
 #include <wiring.h>
 #include "Swizzler.h"
 #include "Envelope.h"
+#include "PresetManager.h"
 
 // Update the envelope every millisecond
 // This routine is no longer envelope-specific, it should be moved
@@ -14,8 +15,6 @@ ISR(TIMER0_OVF_vect) {
 
 	NoteManager::nextTick();
 	FrequencyManager::nextTick();
-
-	// Every
 
 	// Call the arduino library's time keeping functions. May not be needed later.	
 	//timerhook();

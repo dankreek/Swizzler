@@ -1,6 +1,7 @@
 #include <inttypes.h>
 #include "MidiInput.h"
 #include "Swizzler.h"
+#include "PresetManager.h"
 
 int16_t MidiInput::midiCmd;
 int16_t MidiInput::midiData1;
@@ -28,6 +29,8 @@ int16_t MidiInput::midiData2;
 #define DECAY_TIME      76
 #define SUSTAIN_LEVEL   77
 #define RELEASE_TIME    14
+
+#define SAVE_POWERON	84
 
 void MidiInput::handleNoteOn() {
 	/**
@@ -121,6 +124,9 @@ void MidiInput::handleControlChange() {
 		case PITCH_BEND_RANGE:
 			SetParameters::setBendRange(midiData2);
 			break;
+
+		case SAVE_POWERON:
+			PresetManager::savePoweronSettings();
 	}
 }
 
