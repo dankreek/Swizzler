@@ -7,8 +7,13 @@
  * This struct reprents one Preset stored in RAM
  * Note that all stored values are in raw MIDI controller values (0-127)
  * and will be translated to real values through the midi input shits
+ *
+ * Currently 24 bytes long
  */
 struct Preset {
+	// Preset name
+	char name[8];
+
 	// Envelope
 	uint8_t	attackTime;
 	uint8_t	decayTime;

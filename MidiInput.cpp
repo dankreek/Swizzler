@@ -126,9 +126,10 @@ void MidiInput::handleControlChange() {
 			break;
 
 		case SAVE_POWERON:
-			PresetManager::savePoweronSettings();
+			PresetManager::storePreset();
 	}
 }
 
 void MidiInput::handleProgramChange() {
+	PresetManager::loadPreset(midiData1);
 }

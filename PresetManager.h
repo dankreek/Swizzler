@@ -16,11 +16,14 @@ class PresetManager {
 	// The current controller values that the synth is using
 	static Preset curSettings;
 
+	// The current preset number that's loaded
+	static uint8_t	curPreset;
+
 	// Load and set a preset by its number (0-127)
 	static void loadPreset(uint8_t);
 
 	// Save the current settings in curSettings to a preset number (0-127)
-	static void storePreset(uint8_t);
+	static void storePreset();
 
 	// If this is the first boot of the swizzler, set the default settings
 	static void setInitialSettings();

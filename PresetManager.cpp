@@ -10,24 +10,30 @@
 #include <avr/eeprom.h>
 
 Preset PresetManager::curSettings;
+uint8_t	PresetManager::curPreset;
 
 void PresetManager::setInitialSettings() {
 }
 
-void PresetManager::savePoweronSettings() {
+void PresetManager::storePreset() {
 	const byte* p = (const byte*)(const void*)&curSettings;
+	uint8_t presetOfs = curPreset*sizeof(Preset);
 
 	for (int i=0; i < sizeof(curSettings); i++) {
-		eeprom_write_byte((unsigned char *)i, *p++);
+		eeprom_write_byte(presetOfs+(unsigned char *)i, *p++);
 	}
 }
 
-void PresetManager::loadPoweronSettings() {
+void PresetManager::loadPreset(uint8_t patchNum) {
+	if (patchNum > 18) return;
+
 	Preset savedSettings;
 	byte* p = (byte*)(void*)&savedSettings;
 
+	uint8_t presetOfs = patchNum * sizeof(Preset);
+
 	for (int i=0; i < sizeof(savedSettings); i++) {
-		*p++ = eeprom_read_byte((unsigned char *)i);
+		*p++ = eeprom_read_byte(presetOfs+(unsigned char *)i);
 	}
 
 	SetParameters::setAttackTime(savedSettings.attackTime);
@@ -50,4 +56,6 @@ void PresetManager::loadPoweronSettings() {
 	SetParameters::enableArpeggio(savedSettings.arpeggioOn);
 
 	SetParameters::setBendRange(savedSettings.bendRange);
+
+	curPreset = patchNum;
 }
