@@ -12,7 +12,7 @@
  */
 ISR(TIMER1_COMPA_vect) {	
 	// Calculate the output sample (signed 8bit sample)
-	int out;
+	int16_t out;
 
 	// Output the next sample 
 	out = Wavetable::outputTable[Wavetable::wtIndex];
@@ -34,8 +34,8 @@ ISR(TIMER1_COMPA_vect) {
 void Waveout::start() {
     pinMode(WAVEOUT_PIN, OUTPUT);
 
-    // Set up Timer 2 to do pulse width modulation on the speaker
-    // pin.
+    // Set up Timer 2 to do pulse width modulation on the speaker pin.
+    //
 
     // Use internal clock (datasheet p.160)
     ASSR &= ~(_BV(EXCLK) | _BV(AS2));
@@ -66,17 +66,12 @@ void Waveout::start() {
     // No prescaler (p.134)
     TCCR1B = (TCCR1B & ~(_BV(CS12) | _BV(CS11))) | _BV(CS10);
 
-    //OCR1A = F_CPU / SAMPLE_RATE;    // 16e6 / 16000 = 1000
     setFreq(440);
 	
     // Enable interrupt when TCNT1 == OCR1A (p.136)
     TIMSK1 |= _BV(OCIE1A);
 
     sei();
-
-    // Ramp up the DAC from 0 to 128 to prevent the popping noise
-    for (uint8_t i=0; i < 128; i++)
-        OCR2A = i;
     
     pinMode(10, OUTPUT);
     digitalWrite(10, HIGH);

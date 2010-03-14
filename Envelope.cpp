@@ -1,4 +1,3 @@
-#include <stdint.h>
 #include <avr/interrupt.h>
 #include <avr/io.h>
 #include <avr/pgmspace.h>
@@ -15,6 +14,8 @@ ISR(TIMER0_OVF_vect) {
 
 	NoteManager::nextTick();
 	FrequencyManager::nextTick();
+
+	// Every
 
 	// Call the arduino library's time keeping functions. May not be needed later.	
 	//timerhook();
