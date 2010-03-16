@@ -6,6 +6,8 @@
 
 /**
  * This class implements Bresenham's algorithm (optimized for audio)
+ *
+ * This is essentially a fast way of computing a linear function incrementally
  */
 class Bresenham {
     private:
