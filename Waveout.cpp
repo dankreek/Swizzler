@@ -11,8 +11,6 @@
  * This is the ISR that handles doing sound output. One sample is output during the interrupt.
  */
 ISR(TIMER1_COMPA_vect) {	
-	cli();
-
 	// Calculate the output sample (signed 8bit sample)
 	int16_t out;
 
@@ -25,7 +23,6 @@ ISR(TIMER1_COMPA_vect) {
 
 	// Output the mixed and modulated sample, convert to unsigned 8bit
 	OCR2A = out+128;
-	sei();
 
 	// Go to the next sample
 	Wavetable::incWtIndex();
