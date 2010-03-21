@@ -17,14 +17,20 @@
 #include "NoteManager.h"
 #include "Wire.h"
 #include "SetParameters.h"
+#include "ExternalEeprom.h"
 
 class Swizzler {
   public:
 	static const int ledPin = 13;
-	static const int eepromAddress = 0x50;
+	static const uint8_t eepromAddress = 0x50;
 
 	void init();
 	void mainLoop();
+
+	/**
+	 * Send the processor into an infinite blinking loop to indicate a run-time error
+	 */
+	void setErrorState();
 
 	Envelope envelope;
 };

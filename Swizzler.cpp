@@ -9,6 +9,7 @@
 
 void Swizzler::init() {
 	Wire.begin();
+	//PresetEeprom.performSelfTest();
 
 	pinMode(ledPin, OUTPUT);
 	pinMode(8, OUTPUT);
@@ -41,10 +42,12 @@ void Swizzler::init() {
 	FrequencyManager::init();
 
 	// Reset all presets
-	for (int i=0; i < 127; i++) {
+	/*
+	for (int i=0; i < 128; i++) {
 		PresetManager::curPreset = i;
 		PresetManager::storePreset();
 	}
+	*/
 
 	// Begin with initial preset of 0
 	PresetManager::loadPreset(0);
@@ -72,6 +75,12 @@ void Swizzler::mainLoop() {
 			// Remix the wavetables (since the waveform mix could be constantly changing)
 			Wavetable::mixWaves();
 		}
+	}
+}
+
+void Swizzler::setErrorState() {
+	while (true) {
+		digitalWrite(ledPin, 0);
 	}
 }
 

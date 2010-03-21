@@ -9,26 +9,23 @@
 #include "Swizzler.h"
 #include <avr/eeprom.h>
 #include "Wire.h"
+#include "ExternalEeprom.h"
 
 Preset PresetManager::curSettings;
 uint8_t	PresetManager::curPreset;
+
+// This is used to read in a preset from EEPROM before its settings are applied
+Preset readStorage;
 
 void PresetManager::setInitialSettings() {
 }
 
 void PresetManager::storePreset() {
 	const byte* p = (const byte*)(const void*)&curSettings;
-	uint8_t presetOfs = curPreset*sizeof(Preset);
+	uint16_t presetOfs = curPreset*sizeof(Preset);
 
 	// Store preset to external EEPROM
-	for (int i=0; i < sizeof(Preset); i++) {
-		int rdata = p[i];
-		Wire.beginTransmission(Swizzler::eepromAddress);
-		Wire.send((int)(presetOfs >> 8)); // MSB
-		Wire.send((int)(presetOfs & 0xFF)); // LSB
-		Wire.send(rdata);
-		Wire.endTransmission();
-	}
+	PresetEeprom.writeBlock(presetOfs, (byte*)(void*)&curSettings, sizeof(Preset));
 
 	/*
 	// Store preset to internal EEPROM
@@ -39,51 +36,34 @@ void PresetManager::storePreset() {
 }
 
 void PresetManager::loadPreset(uint8_t patchNum) {
-	if (patchNum > 18) return;
+	if (patchNum > 127) return;
+	uint8_t* p = (uint8_t*)&readStorage;
 
-	Preset savedSettings;
-	byte* p = (byte*)(void*)&savedSettings;
+	uint16_t presetOfs = patchNum * sizeof(Preset);
 
-	uint8_t presetOfs = patchNum * sizeof(Preset);
+	// Read block from external EEPROM
+	PresetEeprom.readBlock(presetOfs, p, sizeof(Preset));
 
-	// Read a block from external EEPROM
-	Wire.beginTransmission(Swizzler::eepromAddress);
-	Wire.send(((int)presetOfs >> 8)); // MSB
-	Wire.send(((int)presetOfs & 0xFF)); // LSB
-	Wire.endTransmission();
-	Wire.requestFrom(Swizzler::eepromAddress, sizeof(Preset));
-	for (int c = 0; c < sizeof(Preset); c++ ) {
-		if (Wire.available()) {
-			p[c] = Wire.receive();
-		}
-	}
-	/*
-	// Read preset from internal EEPROM
-	for (int i=0; i < sizeof(savedSettings); i++) {
-		*p++ = eeprom_read_byte(presetOfs+(unsigned char *)i);
-	}
-	*/
+	SetParameters::setAttackTime(readStorage.attackTime);
+	SetParameters::setDecayTime(readStorage.decayTime);
+	SetParameters::setSustainLevel(readStorage.sustainLevel);
+	SetParameters::setReleaseTime(readStorage.releaseTime);
 
-	SetParameters::setAttackTime(savedSettings.attackTime);
-	SetParameters::setDecayTime(savedSettings.decayTime);
-	SetParameters::setSustainLevel(savedSettings.sustainLevel);
-	SetParameters::setReleaseTime(savedSettings.releaseTime);
+	SetParameters::setTriLevel(readStorage.triLevel);
+	SetParameters::setSawtoothLevel(readStorage.sawLevel);
+	SetParameters::setSquareLevel(readStorage.sqLevel);
+	SetParameters::setRandomLevel(readStorage.randLevel);
+	SetParameters::setNoiseLevel(readStorage.noiseLevel);
+	SetParameters::setPulseWidth(readStorage.pulseWidth);
 
-	SetParameters::setTriLevel(savedSettings.triLevel);
-	SetParameters::setSawtoothLevel(savedSettings.sawLevel);
-	SetParameters::setSquareLevel(savedSettings.sqLevel);
-	SetParameters::setRandomLevel(savedSettings.randLevel);
-	SetParameters::setNoiseLevel(savedSettings.noiseLevel);
-	SetParameters::setPulseWidth(savedSettings.pulseWidth);
+	SetParameters::setPortamentoTime(readStorage.portamentoTime);
+	SetParameters::enablePortamento(readStorage.portamentoOn);
 
-	SetParameters::setPortamentoTime(savedSettings.portamentoTime);
-	SetParameters::enablePortamento(savedSettings.portamentoOn);
+	SetParameters::setArpeggioTime(readStorage.arpeggioTime);
+	SetParameters::setArpeggioMinNotes(readStorage.arpeggioMinNotes);
+	SetParameters::enableArpeggio(readStorage.arpeggioOn);
 
-	SetParameters::setArpeggioTime(savedSettings.arpeggioTime);
-	SetParameters::setArpeggioMinNotes(savedSettings.arpeggioMinNotes);
-	SetParameters::enableArpeggio(savedSettings.arpeggioOn);
-
-	SetParameters::setBendRange(savedSettings.bendRange);
+	SetParameters::setBendRange(readStorage.bendRange);
 
 	curPreset = patchNum;
 }
