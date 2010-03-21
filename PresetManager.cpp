@@ -25,7 +25,7 @@ void PresetManager::storePreset() {
 	uint16_t presetOfs = curPreset*sizeof(Preset);
 
 	// Store preset to external EEPROM
-	PresetEeprom.writeBlock(presetOfs, (byte*)(void*)&curSettings, sizeof(Preset));
+	PresetEeprom.writeBlock(curPreset*64, (byte*)(void*)&curSettings, sizeof(Preset));
 
 	/*
 	// Store preset to internal EEPROM
@@ -42,7 +42,7 @@ void PresetManager::loadPreset(uint8_t patchNum) {
 	uint16_t presetOfs = patchNum * sizeof(Preset);
 
 	// Read block from external EEPROM
-	PresetEeprom.readBlock(presetOfs, p, sizeof(Preset));
+	PresetEeprom.readBlock(patchNum*64, p, sizeof(Preset));
 
 	SetParameters::setAttackTime(readStorage.attackTime);
 	SetParameters::setDecayTime(readStorage.decayTime);

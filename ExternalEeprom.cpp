@@ -23,11 +23,12 @@ ExternalEeprom::ExternalEeprom(uint8_t address) {
  */
 void ExternalEeprom::writeBlock(uint16_t address, uint8_t* buffer, uint8_t size) {
 	Wire.beginTransmission(this->i2cAddress);
-
 	Wire.send((int)(address >> 8)); // MSB
 	Wire.send((int)(address & 0xFF)); // LSB
-	for (uint8_t c = 0; c < size; c++)
+
+	for (uint8_t c = 0; c < size; c++) {
 		Wire.send(buffer[c]);
+	}
 
 	Wire.endTransmission();
 }
@@ -37,9 +38,11 @@ void ExternalEeprom::readBlock(uint16_t address, uint8_t* buffer, uint8_t size) 
 	Wire.send((int)(address >> 8)); // MSB
 	Wire.send((int)(address & 0xFF)); // LSB
 	Wire.endTransmission();
+
 	Wire.requestFrom(this->i2cAddress, size);
-	int c = 0;
-	for ( c = 0; c < size; c++ )
-	if (Wire.available()) buffer[c] = Wire.receive();
+
+	for (uint8_t c = 0; c < size; c++ )	{
+		if (Wire.available()) buffer[c] = Wire.receive();
+	}
 }
 

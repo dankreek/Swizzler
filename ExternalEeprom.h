@@ -13,8 +13,27 @@
 
 class ExternalEeprom {
 public:
+	/**
+	 * Create a new External Eeprom object with the given i2c address.
+	 * This class should work with a number of ic2 eeprom devices, though its only
+	 * been tested on the Atmel AT24C256B
+	 */
 	ExternalEeprom(uint8_t i2cAddress);
+
+	/**
+	 * Write a block of memory to the EEPROM chip
+	 * @address	The address to begin writing to on the EEPROM
+	 * @buffer A pointer to the data buffer that is to be written to the chip
+	 * @size the size (in bytes) of the data buffer
+	 */
 	void writeBlock(uint16_t address, byte* buffer, uint8_t size);
+
+	/**
+	 * Read a block of memory from the EEPROM into the Atmega's ram
+	 * @address	The address to begin reading from on the EEPROM
+	 * @buffer A pointer to the data buffer that will be written to
+	 * @size the number of bytes to be written into the buffer
+	 */
 	void readBlock(uint16_t address, byte* buffer, uint8_t size);
 private:
 	uint8_t	i2cAddress;
