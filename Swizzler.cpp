@@ -40,6 +40,12 @@ void Swizzler::init() {
 	// Initialize Frequency Manager
 	FrequencyManager::init();
 
+	// Reset all presets
+	for (int i=0; i < 127; i++) {
+		PresetManager::curPreset = i;
+		PresetManager::storePreset();
+	}
+
 	// Begin with initial preset of 0
 	PresetManager::loadPreset(0);
 

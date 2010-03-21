@@ -8,6 +8,7 @@
 #include "PresetManager.h"
 #include "Swizzler.h"
 #include <avr/eeprom.h>
+#include "Wire.h"
 
 Preset PresetManager::curSettings;
 uint8_t	PresetManager::curPreset;
@@ -19,9 +20,22 @@ void PresetManager::storePreset() {
 	const byte* p = (const byte*)(const void*)&curSettings;
 	uint8_t presetOfs = curPreset*sizeof(Preset);
 
+	// Store preset to external EEPROM
+	for (int i=0; i < sizeof(Preset); i++) {
+		int rdata = p[i];
+		Wire.beginTransmission(Swizzler::eepromAddress);
+		Wire.send((int)(presetOfs >> 8)); // MSB
+		Wire.send((int)(presetOfs & 0xFF)); // LSB
+		Wire.send(rdata);
+		Wire.endTransmission();
+	}
+
+	/*
+	// Store preset to internal EEPROM
 	for (int i=0; i < sizeof(curSettings); i++) {
 		eeprom_write_byte(presetOfs+(unsigned char *)i, *p++);
 	}
+	*/
 }
 
 void PresetManager::loadPreset(uint8_t patchNum) {
@@ -32,9 +46,23 @@ void PresetManager::loadPreset(uint8_t patchNum) {
 
 	uint8_t presetOfs = patchNum * sizeof(Preset);
 
+	// Read a block from external EEPROM
+	Wire.beginTransmission(Swizzler::eepromAddress);
+	Wire.send(((int)presetOfs >> 8)); // MSB
+	Wire.send(((int)presetOfs & 0xFF)); // LSB
+	Wire.endTransmission();
+	Wire.requestFrom(Swizzler::eepromAddress, sizeof(Preset));
+	for (int c = 0; c < sizeof(Preset); c++ ) {
+		if (Wire.available()) {
+			p[c] = Wire.receive();
+		}
+	}
+	/*
+	// Read preset from internal EEPROM
 	for (int i=0; i < sizeof(savedSettings); i++) {
 		*p++ = eeprom_read_byte(presetOfs+(unsigned char *)i);
 	}
+	*/
 
 	SetParameters::setAttackTime(savedSettings.attackTime);
 	SetParameters::setDecayTime(savedSettings.decayTime);

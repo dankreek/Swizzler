@@ -21,6 +21,7 @@
 class Swizzler {
   public:
 	static const int ledPin = 13;
+	static const int eepromAddress = 0x50;
 
 	void init();
 	void mainLoop();
