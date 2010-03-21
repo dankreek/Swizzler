@@ -44,8 +44,6 @@ class TwoWire
   public:
     TwoWire();
     void begin();
-    void begin(uint8_t);
-    void begin(int);
     void beginTransmission(uint8_t);
     void beginTransmission(int);
     uint8_t endTransmission(void);

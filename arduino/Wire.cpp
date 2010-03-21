@@ -49,7 +49,7 @@ TwoWire::TwoWire()
 
 // Public Methods //////////////////////////////////////////////////////////////
 
-void TwoWire::begin(void)
+void TwoWire::begin()
 {
   // init buffer for reads
   rxBuffer = (uint8_t*) calloc(BUFFER_LENGTH, sizeof(uint8_t));
@@ -64,18 +64,6 @@ void TwoWire::begin(void)
   twi_init();
 }
 
-void TwoWire::begin(uint8_t address)
-{
-  twi_setAddress(address);
-  twi_attachSlaveTxEvent(onRequestService);
-  twi_attachSlaveRxEvent(onReceiveService);
-  begin();
-}
-
-void TwoWire::begin(int address)
-{
-  begin((uint8_t)address);
-}
 
 uint8_t TwoWire::requestFrom(uint8_t address, uint8_t quantity)
 {
