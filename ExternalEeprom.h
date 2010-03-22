@@ -13,6 +13,8 @@
 
 class ExternalEeprom {
 public:
+	static const uint8_t pageSize = 64;
+
 	/**
 	 * Create a new External Eeprom object with the given i2c address.
 	 * This class should work with a number of ic2 eeprom devices, though its only
