@@ -13,6 +13,11 @@
 
 class ExternalEeprom {
 public:
+	/**
+	 * The EEPROM chip I'm using has a 64 byte page size. Sequential reads can not
+	 * be read over a 64-byte page boundry which is why the PresetManager simply stores
+	 * each preset starting at an offset of (presetNumber * pageSize).
+	 */
 	static const uint8_t pageSize = 64;
 
 	/**

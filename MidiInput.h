@@ -37,8 +37,16 @@ public:
 
 		// This is a status byte, so start a new MIDI command
 		if (byte & 0x80) {
-			midiCmd = byte;
-			resetCommand();
+			// If this command is not on our channel, then skip it
+			// (hard coded to 1 for now, will make an option later)
+			if ((byte & 0x0f) == 0) {
+				midiCmd = byte;
+				resetCommand();
+			}
+			else {
+				// Set to no-message pending state
+				init();
+			}
 		}
 		else if ((midiCmd > -1) && (midiData1 == -1)) {
 			midiData1 = byte;
