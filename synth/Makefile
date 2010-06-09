@@ -38,7 +38,7 @@
 
 #TARGET = $(notdir $(CURDIR))
 TARGET = main
-PORT = /dev/ttyUSB*
+PORT = /dev/ttyUSB1
 UPLOAD_RATE = 19200
 AVRDUDE_PROGRAMMER = stk500v1
 MCU = atmega168
@@ -107,7 +107,8 @@ OBJDUMP = $(AVR_TOOLS_PATH)/avr-objdump
 AR  = $(AVR_TOOLS_PATH)/avr-ar
 SIZE = $(AVR_TOOLS_PATH)/avr-size
 NM = $(AVR_TOOLS_PATH)/avr-nm
-AVRDUDE = $(AVR_TOOLS_PATH)/avrdude
+#AVRDUDE = $(AVR_TOOLS_PATH)/avrdude
+AVRDUDE = avrdude
 REMOVE = rm -f
 MV = mv -f
 
