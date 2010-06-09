@@ -3,12 +3,27 @@
 
 #include <inttypes.h>
 
+/**
+ * The display reads in data as a continuous stream and InputHandler::recvByte() is the function that
+ * pushes the next byte of data into the InputHandler. The stream is interpreted and the various commands are
+ * executed on the LCD display itself.
+ *
+ * I did it this way that later I could support SPI and RS232 input
+ * methods, currently only two-wire (twi, or i2c) is supported.
+ */
+
+/**
+ * The different states the InputHandler can be in
+ */
 enum InputState {
-	PRINTING,         // Currently priuntg characters
-	READING_COMMAND,  // The command char (0xfe) was sent, now awaiting command type
+	PRINTING,             // Currently printing characters
+	READING_COMMAND,      // The command char (0xfe) was sent, now awaiting command type
 	READING_COMMAND_DATA  // Reading data for command
 };
 
+/**
+ * The various single character commands
+ */
 enum CommandByte {
 	NONE = 0x00,
 	AUTO_SCROLL_ON = 0x51,
@@ -33,14 +48,14 @@ enum CommandByte {
  * serial, or SPI)
  */
 class InputHandler {
-    public:
+  public:
 	/**
 	 * Initialize the input handler
 	 */
 	static void init();
 
 	/**
-	 * Recieve one character into input handler
+	 * Receive one character into input handler
 	 */
 	static void recvByte(uint8_t got);
     private:

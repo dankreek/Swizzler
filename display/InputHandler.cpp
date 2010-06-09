@@ -21,23 +21,23 @@ void InputHandler::recvByte(uint8_t c) {
 		curCmd = (CommandByte)c;
 
 		// Setting the cursor position requires two more bytes
-		// So just set the state of return
+		// So just set the state and return
 		if (curCmd == SET_CURSOR_POS) {
 			curState = READING_COMMAND_DATA;
 			return;
 		}
 		// The rest of the commands don't require data so 
 		// just do the action then return to the printing state
-		else if (curCmd == AUTO_SCROLL_ON) LcdDisplay::autoScroll = true;
+		else if (curCmd == AUTO_SCROLL_ON)  LcdDisplay::autoScroll = true;
 		else if (curCmd == AUTO_SCROLL_OFF) LcdDisplay::autoScroll = false;
-		else if (curCmd == CLEAR_SCREEN) LcdDisplay::clear();
-		else if (curCmd == GO_HOME) LcdDisplay::goHome();
-		else if (curCmd == UNDERLINE_ON) LcdDisplay::setUnderline(true);
-		else if (curCmd == UNDERLINE_OFF) LcdDisplay::setUnderline(false);
-		else if (curCmd == BLINK_ON) LcdDisplay::setBlink(true);
-		else if (curCmd == BLINK_OFF) LcdDisplay::setBlink(false);
+		else if (curCmd == CLEAR_SCREEN)    LcdDisplay::clear();
+		else if (curCmd == GO_HOME)         LcdDisplay::goHome();
+		else if (curCmd == UNDERLINE_ON)    LcdDisplay::setUnderline(true);
+		else if (curCmd == UNDERLINE_OFF)   LcdDisplay::setUnderline(false);
+		else if (curCmd == BLINK_ON)        LcdDisplay::setBlink(true);
+		else if (curCmd == BLINK_OFF)       LcdDisplay::setBlink(false);
 
-		// All commands other than SET_CURSOR_POS don't require data
+		// All commands other than SET_CURSOR_POS (handled above) don't require data
 		curState = PRINTING;
 		curCmd = NONE;
 	}
@@ -45,6 +45,7 @@ void InputHandler::recvByte(uint8_t c) {
 		cmdData[cmdDataSize] = c;
 		cmdDataSize++;
 
+		// Currently setCursorPosition is the only command supported that requires data
 		if ((curCmd == SET_CURSOR_POS) && (cmdDataSize == 2)) {
 			LcdDisplay::moveCursor(cmdData[0], cmdData[1]);
 			curState = PRINTING;
@@ -54,5 +55,4 @@ void InputHandler::recvByte(uint8_t c) {
 	else if (curState == PRINTING) {
 		LcdDisplay::write(c);
 	}
-	
 }

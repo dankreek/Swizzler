@@ -49,8 +49,6 @@ int main(void) {
 	// Initialize the input handler
 	InputHandler::init();
 
-	//	printf("Test one!\nTest two!\n");
-
 	// Enable interrupts
 	sei();
 
