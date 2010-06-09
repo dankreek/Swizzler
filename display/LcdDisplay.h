@@ -6,10 +6,10 @@
 #include <util/delay.h>
 
 //	LCD Port Information (from microcontroller)
-#define	LCD_OUT		PORTD
-#define	LCD_IN		PIND
-#define	LCD_DDR		DDRD
-#define	ENABLE		6
+#define	LCD_OUT PORTD
+#define	LCD_IN  PIND
+#define	LCD_DDR DDRD
+#define	ENABLE  6
 #define	RW		5
 #define	RS		4
 #define	D7		3
@@ -27,7 +27,7 @@
 #define delay50us(x) for (int i=0; i<x; i++) _delay_us(50)
 
 class LcdDisplay {
-    public:
+  public:
 	/**
 	 * If true then the screen scrolls and creates a new line when printing beyond the last line,
 	 * otherwise just go back to the upper-left corner 
@@ -60,7 +60,7 @@ class LcdDisplay {
 
 
 	/**
-	 * Scroll the text on the display up one row
+	 * Scroll the text on the display up one row (effectively scrolling down to next line)
 	 */
 	static void scrollDown();
 
@@ -76,10 +76,13 @@ class LcdDisplay {
 	 */
 	static void setDisplayProperties(bool displayOn, bool underlineOn, bool blockBlinkOn);
 
-
+	/**
+	 * Convenience methods to flip the underline and blink bits in one stroke (the down stroke)
+	 */
 	static void setUnderline(bool);
 	static void setBlink(bool);
-    private:
+
+  private:
 	static bool underlineOn;
 	static bool blinkOn;
 
@@ -87,7 +90,7 @@ class LcdDisplay {
 	static volatile uint8_t position;
 
 	/**
-	 * Since the character positions are wierd, we keep the first char in 
+	 * Since the character positions are weird, we keep the first char in
 	 * each row's address to compute X,Y coordinate addresses
 	 */
 	static uint8_t rowAddress[4];
@@ -113,7 +116,7 @@ class LcdDisplay {
 	static void cr();
 
 	/**
-	 * Writes a byte to the display
+	 * Writes a byte to the display unit
 	 */
 	static void writeByte(uint8_t reg, uint8_t byte);
 
@@ -139,8 +142,6 @@ class LcdDisplay {
 	 */
 	static uint8_t readByte(uint8_t reg);
 	
-
-
 	// Width and height of the display
 	static uint8_t width;
 	static uint8_t height;

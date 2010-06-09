@@ -53,7 +53,7 @@ int main(void) {
 	sei();
 
 	while(TRUE) {
-		// Sit on thumb
+		// Sit on thumb, let the interrupt handlers do it from here
 		_delay_ms(100);	
 	}
 	return 0;

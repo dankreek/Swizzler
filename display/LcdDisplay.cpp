@@ -1,8 +1,14 @@
 #include "LcdDisplay.h"
 
+// Each row starts on a randomly chosen address, no idea why
+#define FIRST_ROW_ADDRESS   0x00
+#define SECOND_ROW_ADDRESS  0x40
+#define THIRD_ROW_ADDRESS   0x14
+#define FOURTH_ROW_ADDRESS  0x54
+
 volatile bool LcdDisplay::autoScroll;
 volatile uint8_t LcdDisplay::position;
-uint8_t LcdDisplay::rowAddress[] = {0x00, 0x40, 0x14, 0x54};
+uint8_t LcdDisplay::rowAddress[] = {FIRST_ROW_ADDRESS, SECOND_ROW_ADDRESS, THIRD_ROW_ADDRESS, FOURTH_ROW_ADDRESS};
 uint8_t LcdDisplay::width, LcdDisplay::height;
 bool LcdDisplay::underlineOn, LcdDisplay::blinkOn;
 
