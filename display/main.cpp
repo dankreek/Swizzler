@@ -12,14 +12,19 @@
 #define TRUE 1
 #define FALSE 0
 
+#include "RingBuffer.cpp"
+
 #ifdef __cplusplus 
 extern "C"{ 
  FILE * uart_str; 
 } 
 #endif 
 
+uint8_t inputSpace[32];
+RingBuffer<uint8_t> inputBuffer(inputSpace, 32);
+
 static int lcd_putchar(char,FILE*);
-void gotData(int);
+void recvTwiData(int);
 #undef FDEV_SETUP_STREAM 
 #define FDEV_SETUP_STREAM(p, g, f) { 0, 0, f, 0, 0, p, g, 0 }
 FILE lcd_out = FDEV_SETUP_STREAM(lcd_putchar, NULL, _FDEV_SETUP_WRITE);
@@ -44,7 +49,7 @@ int main(void) {
 
 	// Initialize TWI bus
 	Wire.begin(0x69);
-	Wire.onReceive(gotData);
+	Wire.onReceive(recvTwiData);
 
 	// Initialize the input handler
 	InputHandler::init();
@@ -53,17 +58,23 @@ int main(void) {
 	sei();
 
 	while(TRUE) {
-		// Sit on thumb, let the interrupt handlers do it from here
-		_delay_ms(100);	
+		if (inputBuffer.hasData()) {
+			InputHandler::recvByte(inputBuffer.popFront());
+		}
+
+		// Won't run without this, I probably really need some synchronization code
+		_delay_us(10);
+
 	}
 	return 0;
 }
 
-void gotData(int count) {
+void recvTwiData(int count) {
 	while (Wire.available()) {
 		//char c = Wire.receive();
 		// printf("\n%3d = '%c'", (unsigned char)c, c);
-		InputHandler::recvByte(Wire.receive());
+		//InputHandler::recvByte(Wire.receive());
+		inputBuffer.pushBack(Wire.receive());
 	}
 }
 
