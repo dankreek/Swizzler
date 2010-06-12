@@ -22,7 +22,8 @@ void LcdDisplay::init(uint8_t w, uint8_t h) {
 	position = 0;
 	
 	// Set the proper data direction for output
-	LCD_DDR = 0x7f;
+	LCD_CTRL_DDR |= 0x70;
+	LCD_DATA_DDR |= 0x0f;
 
 	// First, delay50us for at least 15ms after power on
 	delay50us(300);
@@ -61,26 +62,24 @@ void LcdDisplay::waitForReady(void) {
 }
 
 void LcdDisplay::writeNibble(uint8_t reg, uint8_t nibble) {
+	// Clear out the control bits
+	LCD_CTRL &= 0x8f;
+
 	//	Pull the enable line high
-	LCD_OUT = _BV(ENABLE);
+	LCD_CTRL |= _BV(ENABLE);
+
+	// Clear the data bits
+	LCD_DATA &= 0xf0;
 
 	//	Output the nibble to the LCD
-	LCD_OUT |= nibble;
+	LCD_DATA |= nibble;
 	
 	//	Determine if the register select bit needs to be set
-	if(reg == DATA_REGISTER)
-	{
-		//	If so, then set it
-		LCD_OUT |= _BV(RS);
-	}
-	else
-	{
-		//	Otherwise, clear the register select bit
-		LCD_OUT &= ~_BV(RS);
-	}
+	if (reg == DATA_REGISTER) LCD_CTRL |= _BV(RS);
+	else LCD_CTRL &= ~_BV(RS);
 	
 	//	Toggle the enable line to latch the nibble
-	LCD_OUT &= ~_BV(ENABLE);
+	LCD_CTRL &= ~_BV(ENABLE);
 }
 
 void LcdDisplay::write(char c) {
@@ -126,24 +125,23 @@ void LcdDisplay::writeByte(uint8_t reg, uint8_t byte) {
 }
 
 uint8_t LcdDisplay::readNibble(uint8_t reg) {
-	// Create a variable for the nibble
 	uint8_t nibble = 0x00;
 	
-	// dcSet the data direction for the incoming data
-	LCD_DDR = 0x70;
+	// Set the data direction for the incoming data
+	LCD_DATA_DDR &= 0xf0;
 	
 	// Turn on the enable, set the read/write pin to read
 	// and clear the rest of the port
-	LCD_OUT |= _BV(ENABLE) | _BV(RW);
+	LCD_CTRL |= _BV(ENABLE) | _BV(RW);
 	
 	// Determine if the register select bit needs to be set
 	if(reg == DATA_REGISTER) {
 		// If so, then set it
-		LCD_OUT |= _BV(RS);
+		LCD_CTRL |= _BV(RS);
 	}
 	else {
 		// Otherwise, clear the register select bit
-		LCD_OUT &= ~_BV(RS);
+		LCD_CTRL &= ~_BV(RS);
 	}
 	
 	// Wait some number of clock cycles for the data to become
@@ -151,16 +149,18 @@ uint8_t LcdDisplay::readNibble(uint8_t reg) {
 	_delay_us(38); 
 
 	// Read the data bus and mask only the lower four bits of the port
-	nibble = LCD_IN & 0x0f;
+	nibble = LCD_DATA_IN & 0x0f;
 	
 	// Clear the enable
-	LCD_OUT &= ~_BV(ENABLE);
+	LCD_CTRL &= ~_BV(ENABLE);
 	
 	// Clear the read/write strobe
-	LCD_OUT &= ~_BV(RW);
+	LCD_CTRL &= ~_BV(RW);
 	
 	// Return the data direction to the original state
-	LCD_DDR = 0x7f;
+	LCD_DATA_DDR |= 0x0f;
+
+	LCD_CTRL_DDR |= 0x70;
 	
 	// Finally, return the nibble
 	return nibble;

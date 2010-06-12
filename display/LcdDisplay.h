@@ -6,16 +6,21 @@
 #include <util/delay.h>
 
 //	LCD Port Information (from microcontroller)
-#define	LCD_OUT PORTD
 #define	LCD_IN  PIND
-#define	LCD_DDR DDRD
-#define	ENABLE  6
-#define	RW		5
-#define	RS		4
-#define	D7		3
-#define	D6		2
-#define	D5		1
-#define	D4		0
+
+#define	LCD_CTRL     PORTD
+#define	LCD_CTRL_DDR DDRD
+#define	ENABLE       6
+#define	RW		     5
+#define	RS		     4
+
+#define LCD_DATA      PORTC
+#define LCD_DATA_IN   PINC
+#define LCD_DATA_DDR  DDRC
+#define	D7		      3
+#define	D6		      2
+#define	D5		      1
+#define	D4		      0
 
 //	Register Select Constants
 #define	DATA_REGISTER		0
