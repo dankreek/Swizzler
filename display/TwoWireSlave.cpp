@@ -24,37 +24,43 @@ extern "C" {
   #include "twi.h"
 }
 
-#include "Wire.h"
+#include "TwoWireSlave.h"
+
+RingBuffer<uint8_t>* TwoWireSlave::inputBuffer;
 
 // Initialize Class Variables //////////////////////////////////////////////////
+/*
+uint8_t* TwoWireSlave::rxBuffer = 0;
+uint8_t TwoWireSlave::rxBufferIndex = 0;
+uint8_t TwoWireSlave::rxBufferLength = 0;
+*/
 
-uint8_t* TwoWire::rxBuffer = 0;
-uint8_t TwoWire::rxBufferIndex = 0;
-uint8_t TwoWire::rxBufferLength = 0;
+uint8_t TwoWireSlave::txAddress = 0;
+uint8_t* TwoWireSlave::txBuffer = 0;
+uint8_t TwoWireSlave::txBufferIndex = 0;
+uint8_t TwoWireSlave::txBufferLength = 0;
 
-uint8_t TwoWire::txAddress = 0;
-uint8_t* TwoWire::txBuffer = 0;
-uint8_t TwoWire::txBufferIndex = 0;
-uint8_t TwoWire::txBufferLength = 0;
-
-uint8_t TwoWire::transmitting = 0;
-void (*TwoWire::user_onRequest)(void);
-void (*TwoWire::user_onReceive)(int);
+uint8_t TwoWireSlave::transmitting = 0;
+void (*TwoWireSlave::user_onRequest)(void);
+//void (*TwoWireSlave::user_onReceive)(int);
 
 // Constructors ////////////////////////////////////////////////////////////////
 
-TwoWire::TwoWire()
+TwoWireSlave::TwoWireSlave()
 {
 }
 
+
 // Public Methods //////////////////////////////////////////////////////////////
 
-void TwoWire::begin(void)
+void TwoWireSlave::begin()
 {
   // init buffer for reads
+	/*
   rxBuffer = (uint8_t*) calloc(BUFFER_LENGTH, sizeof(uint8_t));
   rxBufferIndex = 0;
   rxBufferLength = 0;
+*/
 
   // init buffer for writes
   txBuffer = (uint8_t*) calloc(BUFFER_LENGTH, sizeof(uint8_t));
@@ -64,19 +70,16 @@ void TwoWire::begin(void)
   twi_init();
 }
 
-void TwoWire::begin(uint8_t address)
-{
-  twi_setAddress(address);
-  twi_attachSlaveTxEvent(onRequestService);
-  twi_attachSlaveRxEvent(onReceiveService);
-  begin();
+
+void TwoWireSlave::init(uint8_t address, RingBuffer<uint8_t> *buf) {
+    inputBuffer = buf;
+    twi_setAddress(address);
+    twi_attachSlaveTxEvent(onRequestService);
+    twi_attachSlaveRxEvent(onReceiveService);
+    begin();
 }
 
-void TwoWire::begin(int address)
-{
-  begin((uint8_t)address);
-}
-
+/*
 uint8_t TwoWire::requestFrom(uint8_t address, uint8_t quantity)
 {
   // clamp to buffer length
@@ -107,12 +110,16 @@ void TwoWire::beginTransmission(uint8_t address)
   txBufferIndex = 0;
   txBufferLength = 0;
 }
+*/
 
+/*
 void TwoWire::beginTransmission(int address)
 {
   beginTransmission((uint8_t)address);
 }
+*/
 
+/*
 uint8_t TwoWire::endTransmission(void)
 {
   // transmit buffer (blocking)
@@ -124,11 +131,12 @@ uint8_t TwoWire::endTransmission(void)
   transmitting = 0;
   return ret;
 }
+*/
 
 // must be called in:
 // slave tx event callback
 // or after beginTransmission(address)
-void TwoWire::send(uint8_t data)
+void TwoWireSlave::send(uint8_t data)
 {
   if(transmitting){
   // in master transmitter mode
@@ -151,7 +159,7 @@ void TwoWire::send(uint8_t data)
 // must be called in:
 // slave tx event callback
 // or after beginTransmission(address)
-void TwoWire::send(uint8_t* data, uint8_t quantity)
+void TwoWireSlave::send(uint8_t* data, uint8_t quantity)
 {
   if(transmitting){
   // in master transmitter mode
@@ -168,7 +176,7 @@ void TwoWire::send(uint8_t* data, uint8_t quantity)
 // must be called in:
 // slave tx event callback
 // or after beginTransmission(address)
-void TwoWire::send(char* data)
+void TwoWireSlave::send(char* data)
 {
   send((uint8_t*)data, strlen(data));
 }
@@ -176,7 +184,7 @@ void TwoWire::send(char* data)
 // must be called in:
 // slave tx event callback
 // or after beginTransmission(address)
-void TwoWire::send(int data)
+void TwoWireSlave::send(int data)
 {
   send((uint8_t)data);
 }
@@ -184,15 +192,18 @@ void TwoWire::send(int data)
 // must be called in:
 // slave rx event callback
 // or after requestFrom(address, numBytes)
-uint8_t TwoWire::available(void)
+/*
+uint8_t TwoWireSlave::available(void)
 {
   return rxBufferLength - rxBufferIndex;
 }
+*/
 
 // must be called in:
 // slave rx event callback
 // or after requestFrom(address, numBytes)
-uint8_t TwoWire::receive(void)
+/*
+uint8_t TwoWireSlave::receive(void)
 {
   // default to returning null char
   // for people using with char strings
@@ -206,34 +217,41 @@ uint8_t TwoWire::receive(void)
 
   return value;
 }
+*/
 
 // behind the scenes function that is called when data is received
-void TwoWire::onReceiveService(uint8_t* inBytes, int numBytes)
-{
-  // don't bother if user hasn't registered a callback
-  if(!user_onReceive){
-    return;
-  }
-  // don't bother if rx buffer is in use by a master requestFrom() op
-  // i know this drops data, but it allows for slight stupidity
-  // meaning, they may not have read all the master requestFrom() data yet
-  if(rxBufferIndex < rxBufferLength){
-    return;
-  }
-  // copy twi rx buffer into local read buffer
-  // this enables new reads to happen in parallel
-  for(uint8_t i = 0; i < numBytes; ++i){
-    rxBuffer[i] = inBytes[i];    
-  }
-  // set rx iterator vars
-  rxBufferIndex = 0;
-  rxBufferLength = numBytes;
-  // alert user program
-  user_onReceive(numBytes);
+void TwoWireSlave::onReceiveService(uint8_t* inBytes, int numBytes) {
+    // don't bother if user hasn't registered a callback
+	/*
+    if(!user_onReceive){
+        return;
+    }
+    */
+    // don't bother if rx buffer is in use by a master requestFrom() op
+    // i know this drops data, but it allows for slight stupidity
+	// meaning, they may not have read all the master requestFrom() data yet
+    /*
+	if(rxBufferIndex < rxBufferLength){
+        return;
+    }
+    */
+
+    // copy twi rx buffer into local read buffer
+    // this enables new reads to happen in parallel
+    for(uint8_t i = 0; i < numBytes; ++i){
+        //rxBuffer[i] = inBytes[i];
+    	inputBuffer->pushBack(inBytes[i]);
+    }
+    // set rx iterator vars
+    //rxBufferIndex = 0;
+    //rxBufferLength = numBytes;
+
+    // alert user program
+    //user_onReceive(numBytes);
 }
 
 // behind the scenes function that is called when data is requested
-void TwoWire::onRequestService(void)
+void TwoWireSlave::onRequestService(void)
 {
   // don't bother if user hasn't registered a callback
   if(!user_onRequest){
@@ -248,18 +266,21 @@ void TwoWire::onRequestService(void)
 }
 
 // sets function called on slave write
-void TwoWire::onReceive( void (*function)(int) )
+/*
+void TwoWireSlave::onReceive( void (*function)(int) )
 {
   user_onReceive = function;
 }
+*/
 
 // sets function called on slave read
-void TwoWire::onRequest( void (*function)(void) )
+void TwoWireSlave::onRequest( void (*function)(void) )
 {
   user_onRequest = function;
 }
 
 // Preinstantiate Objects //////////////////////////////////////////////////////
 
-TwoWire Wire = TwoWire();
+TwoWireSlave twi = TwoWireSlave();
+//TwoWireSlave twi;
 

@@ -40,9 +40,11 @@ static uint8_t twi_slarw;
 static void (*twi_onSlaveTransmit)(void);
 static void (*twi_onSlaveReceive)(uint8_t*, int);
 
+/*
 static uint8_t* twi_masterBuffer;
 static volatile uint8_t twi_masterBufferIndex;
 static uint8_t twi_masterBufferLength;
+*/
 
 static uint8_t* twi_txBuffer;
 static volatile uint8_t twi_txBufferIndex;
@@ -90,7 +92,7 @@ void twi_init(void)
   TWCR = _BV(TWEN) | _BV(TWIE) | _BV(TWEA);
 	
   // allocate buffers
-  twi_masterBuffer = (uint8_t*) calloc(TWI_BUFFER_LENGTH, sizeof(uint8_t));
+  //twi_masterBuffer = (uint8_t*) calloc(TWI_BUFFER_LENGTH, sizeof(uint8_t));
   twi_txBuffer = (uint8_t*) calloc(TWI_BUFFER_LENGTH, sizeof(uint8_t));
   twi_rxBuffer = (uint8_t*) calloc(TWI_BUFFER_LENGTH, sizeof(uint8_t));
 }
@@ -116,6 +118,7 @@ void twi_setAddress(uint8_t address)
  *          length: number of bytes to read into array
  * Output   number of bytes read
  */
+/*
 uint8_t twi_readFrom(uint8_t address, uint8_t* data, uint8_t length)
 {
   uint8_t i;
@@ -164,6 +167,7 @@ uint8_t twi_readFrom(uint8_t address, uint8_t* data, uint8_t length)
 	
   return length;
 }
+*/
 
 /* 
  * Function twi_writeTo
@@ -179,6 +183,7 @@ uint8_t twi_readFrom(uint8_t address, uint8_t* data, uint8_t length)
  *          3 .. data send, NACK received
  *          4 .. other twi error (lost bus arbitration, bus error, ..)
  */
+/*
 uint8_t twi_writeTo(uint8_t address, uint8_t* data, uint8_t length, uint8_t wait)
 {
   uint8_t i;
@@ -226,6 +231,7 @@ uint8_t twi_writeTo(uint8_t address, uint8_t* data, uint8_t length, uint8_t wait
   else
     return 4;	// other twi error
 }
+*/
 
 /* 
  * Function twi_transmit
@@ -337,59 +343,6 @@ void twi_releaseBus(void)
 SIGNAL(TWI_vect)
 {
   switch(TW_STATUS){
-    // All Master
-    case TW_START:     // sent start condition
-    case TW_REP_START: // sent repeated start condition
-      // copy device address and r/w bit to output register and ack
-      TWDR = twi_slarw;
-      twi_reply(1);
-      break;
-
-    // Master Transmitter
-    case TW_MT_SLA_ACK:  // slave receiver acked address
-    case TW_MT_DATA_ACK: // slave receiver acked data
-      // if there is data to send, send it, otherwise stop 
-      if(twi_masterBufferIndex < twi_masterBufferLength){
-        // copy data to output register and ack
-        TWDR = twi_masterBuffer[twi_masterBufferIndex++];
-        twi_reply(1);
-      }else{
-        twi_stop();
-      }
-      break;
-    case TW_MT_SLA_NACK:  // address sent, nack received
-      twi_error = TW_MT_SLA_NACK;
-      twi_stop();
-      break;
-    case TW_MT_DATA_NACK: // data sent, nack received
-      twi_error = TW_MT_DATA_NACK;
-      twi_stop();
-      break;
-    case TW_MT_ARB_LOST: // lost bus arbitration
-      twi_error = TW_MT_ARB_LOST;
-      twi_releaseBus();
-      break;
-
-    // Master Receiver
-    case TW_MR_DATA_ACK: // data received, ack sent
-      // put byte into buffer
-      twi_masterBuffer[twi_masterBufferIndex++] = TWDR;
-    case TW_MR_SLA_ACK:  // address sent, ack received
-      // ack if more bytes are expected, otherwise nack
-      if(twi_masterBufferIndex < twi_masterBufferLength){
-        twi_reply(1);
-      }else{
-        twi_reply(0);
-      }
-      break;
-    case TW_MR_DATA_NACK: // data received, nack sent
-      // put final byte into buffer
-      twi_masterBuffer[twi_masterBufferIndex++] = TWDR;
-    case TW_MR_SLA_NACK: // address sent, nack received
-      twi_stop();
-      break;
-    // TW_MR_ARB_LOST handled by TW_MT_ARB_LOST case
-
     // Slave Receiver
     case TW_SR_SLA_ACK:   // addressed, returned ack
     case TW_SR_GCALL_ACK: // addressed generally, returned ack

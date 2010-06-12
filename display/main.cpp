@@ -5,7 +5,7 @@
 #include <util/delay.h>
 #include <stdio.h>
 #include <avr/interrupt.h>
-#include "Wire.h"
+#include "TwoWireSlave.h"
 #include "LcdDisplay.h"
 #include "InputHandler.h"
 
@@ -20,8 +20,9 @@ extern "C"{
 } 
 #endif 
 
-uint8_t inputSpace[32];
-RingBuffer<uint8_t> inputBuffer(inputSpace, 32);
+#define TWI_INPUT_BUFER_SIZE	32
+uint8_t inputSpace[TWI_INPUT_BUFER_SIZE];
+RingBuffer<uint8_t> inputBuffer(inputSpace, TWI_INPUT_BUFER_SIZE);
 
 static int lcd_putchar(char,FILE*);
 void recvTwiData(int);
@@ -48,8 +49,9 @@ int main(void) {
 	LcdDisplay::init(16, 2);
 
 	// Initialize TWI bus
-	Wire.begin(0x69);
-	Wire.onReceive(recvTwiData);
+	twi.init(0x69, &inputBuffer);
+
+	//Wire.onReceive(recvTwiData);
 
 	// Initialize the input handler
 	InputHandler::init();
@@ -63,18 +65,19 @@ int main(void) {
 		}
 
 		// Won't run without this, I probably really need some synchronization code
-		_delay_us(10);
+		_delay_us(5);
 
 	}
 	return 0;
 }
 
+/*
 void recvTwiData(int count) {
-	while (Wire.available()) {
+	while (twi.available()) {
 		//char c = Wire.receive();
 		// printf("\n%3d = '%c'", (unsigned char)c, c);
 		//InputHandler::recvByte(Wire.receive());
-		inputBuffer.pushBack(Wire.receive());
+		inputBuffer.pushBack(twi.receive());
 	}
 }
-
+*/
