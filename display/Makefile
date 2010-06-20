@@ -64,8 +64,8 @@ PROJECTNAME=dizplay
 # List C/C++/Assembly source files:
 # (list all files to compile, e.g. 'a.c b.cpp as.S'):
 # Use .cc, .cpp or .C suffix for C++ files, use .S 
-# (NOT .s !!!) for assembly source code files.
-PRJSRC=main.cpp twi.c TwoWireSlave.cpp LcdDisplay.cpp InputHandler.cpp 
+# (NOT .s !!!) for assembly source code files. 
+PRJSRC=main.cpp twi.c TwoWireSlave.cpp LcdDisplay.cpp InputHandler.cpp KeypadInput.cpp TimerHandler.cpp
 # RingBuffer.cpp
 
 # additional includes (e.g. -I/path/to/mydir)

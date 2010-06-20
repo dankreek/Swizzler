@@ -8,6 +8,7 @@
 #include "TwoWireSlave.h"
 #include "LcdDisplay.h"
 #include "InputHandler.h"
+#include "TimerHandler.h"
 
 #define TRUE 1
 #define FALSE 0
@@ -51,7 +52,10 @@ int main(void) {
 	// Initialize TWI bus
 	twi.init(0x69, &inputBuffer);
 
-	//Wire.onReceive(recvTwiData);
+	// Initialize the timer interrupt
+	TimerHandler::init();
+
+
 
 	// Initialize the input handler
 	InputHandler::init();
