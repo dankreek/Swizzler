@@ -9,6 +9,7 @@
 #include "LcdDisplay.h"
 #include "InputHandler.h"
 #include "TimerHandler.h"
+#include "KeypadInput.h"
 
 #define TRUE 1
 #define FALSE 0
@@ -52,10 +53,10 @@ int main(void) {
 	// Initialize TWI bus
 	twi.init(0x69, &inputBuffer);
 
+	KeypadInput::init();
+
 	// Initialize the timer interrupt
 	TimerHandler::init();
-
-
 
 	// Initialize the input handler
 	InputHandler::init();
@@ -68,9 +69,9 @@ int main(void) {
 			InputHandler::recvByte(inputBuffer.popFront());
 		}
 
-		// Won't run without this, I probably really need some synchronization code
-		_delay_us(5);
+		KeypadInput::getKeys();
 
+		_delay_us(10);
 	}
 	return 0;
 }

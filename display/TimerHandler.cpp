@@ -13,12 +13,17 @@
 #include <avr/io.h>
 #include <avr/pgmspace.h>
 #include "TimerHandler.h"
+#include "LcdDisplay.h"
+#include "KeypadInput.h"
 
 // 1ms timer interrupt vector
 ISR(TIMER0_OVF_vect) {
-
+  KeypadInput::decCounters();
 }
 
+/**
+ * Set the timer interrupt handler to fire off once every millisecond
+ */
 void TimerHandler::init() {
   // this needs to be called before setup() or some functions won't
   // work there
