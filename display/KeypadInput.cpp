@@ -8,20 +8,26 @@
 #include <avr/io.h>
 #include <stdio.h>
 #include "KeypadInput.h"
+#include <util/delay.h>
 
-uint16_t KeypadInput::keysPressed;
-int16_t KeypadInput::debounceCounters[3][4];
+int8_t KeypadInput::debounceCounter;
 uint16_t KeypadInput::debounceTime;
+uint8_t KeypadInput::lastKey;
+bool KeypadInput::keyDown;
+
+uint8_t KeypadInput::padChars[][3]  = {
+    {'1', '2', '3'},
+    {'4', '5', '6'},
+    {'7', '8', '9'},
+    {'*', '0', '#'}
+};
+
 
 void KeypadInput::init() {
-  keysPressed = 0;
+  lastKey = 0;
 
-  for (int i=0; i < 3; i++)
-    for (int j=0; j < 4; j++)
-      debounceCounters[i][j] = -1;
-
-  // Thedefault debounce time in ms
-  debounceTime = 10;
+  // The default debounce time in ms
+  debounceTime = 20;
 
   // Set all column lines to output
   KEYPAD_COL_DDR |= _BV(COL_0_BIT) | _BV(COL_1_BIT) | _BV(COL_2_BIT);
@@ -33,33 +39,25 @@ void KeypadInput::init() {
   KEYPAD_ROW_PORT |= _BV(ROW_0_BIT)|_BV(ROW_1_BIT)|_BV(ROW_2_BIT)|_BV(ROW_3_BIT);
 }
 
-void KeypadInput::testKey(uint8_t col, uint8_t row) {
-  // This is a new keypress
-  if (debounceCounters[col][row] < 0) {
-    // Start new debounce timer
-    debounceCounters[col][row] = debounceTime;
-
-    // Mark key in the bitmask
-    keysPressed |= _BV(row*3+col);
-  }
-}
-
-void KeypadInput::testRow(uint8_t rowMask, uint8_t columnBit, uint8_t columnNum) {
+int16_t KeypadInput::testRow(uint8_t rowMask, uint8_t columnBit, uint8_t columnNum) {
   if (rowMask & _BV(ROW_0_BIT)) {
-    testKey(columnNum, 0);
+    return padChars[0][columnNum];
   }
 
   if (rowMask & _BV(ROW_1_BIT)) {
-    testKey(columnNum, 1);
+    return padChars[1][columnNum];
   }
 
   if (rowMask & _BV(ROW_2_BIT)) {
-    testKey(columnNum, 2);
+    return padChars[2][columnNum];
   }
 
   if (rowMask & _BV(ROW_3_BIT)) {
-    testKey(columnNum, 3);
+    return padChars[3][columnNum];
   }
+
+
+  return 0;
 }
 
 /**
@@ -67,54 +65,64 @@ void KeypadInput::testRow(uint8_t rowMask, uint8_t columnBit, uint8_t columnNum)
  *
  * NOTE: This function depends on the current pin configuration.
  */
-void KeypadInput::getKeys() {
+uint8_t KeypadInput::getKey() {
   uint8_t rowMask;
+  uint8_t gotKey;
 
-  // Save the old keys pressed for comparing to new keypressed. Decide which events to fire.
-  uint16_t oldKeysPresed=keysPressed;
+  // If waiting for debounce, just skip this
+  if (debounceCounter < 0) {
+    // Test column 0
+    KEYPAD_COL_PORT |= _BV(COL_1_BIT) | _BV(COL_2_BIT);
+    KEYPAD_COL_PORT &= ~(_BV(COL_0_BIT));
 
-  keysPressed = 0;
+    _delay_us(10);
 
-  // Test column 0
-  KEYPAD_COL_PORT |= _BV(COL_1_BIT) | _BV(COL_2_BIT);
-  KEYPAD_COL_PORT &= ~(_BV(COL_0_BIT));
+    rowMask = ~(KEYPAD_ROW_PIN | ~(_BV(ROW_0_BIT)|_BV(ROW_1_BIT)|_BV(ROW_2_BIT)|_BV(ROW_3_BIT)) );
 
-  rowMask = ~(KEYPAD_ROW_PIN | ~(_BV(ROW_0_BIT)|_BV(ROW_1_BIT)|_BV(ROW_2_BIT)|_BV(ROW_3_BIT)) );
-
-  testRow(rowMask, COL_0_BIT, 0);
-
-  // Test column 1
-  KEYPAD_COL_PORT |= _BV(COL_0_BIT) | _BV(COL_2_BIT);
-  KEYPAD_COL_PORT &= ~(_BV(COL_1_BIT));
-
-  rowMask = ~(KEYPAD_ROW_PIN | ~(_BV(ROW_0_BIT)|_BV(ROW_1_BIT)|_BV(ROW_2_BIT)|_BV(ROW_3_BIT)) );
-
-  testRow(rowMask, COL_1_BIT, 1);
-
-  // Test column 2
-  KEYPAD_COL_PORT |= _BV(COL_0_BIT) | _BV(COL_1_BIT);
-  KEYPAD_COL_PORT &= ~(_BV(COL_2_BIT));
-
-  rowMask = ~(KEYPAD_ROW_PIN | ~(_BV(ROW_0_BIT)|_BV(ROW_1_BIT)|_BV(ROW_2_BIT)|_BV(ROW_3_BIT)) );
-
-  testRow(rowMask, COL_2_BIT, 2);
-
-  // Test mask for differences
-  for (int i=0; i < 3; i++)
-    for (int j=0; j < 4; j++) {
-      uint8_t mask = _BV(j*3+i);
-      if ((mask&oldKeysPresed) != (mask&keysPressed)) {
-        printf("\n%x", keysPressed);
-
-        // Key pressed event
-        if (keysPressed & mask) {
-
-        }
-        // Key released event
-        else {
-
-        }
-      }
-
+    gotKey = testRow(rowMask, COL_0_BIT, 0);
+    if (gotKey && (gotKey != lastKey)) {
+      lastKey = gotKey;
+      debounceCounter = debounceTime;
+      keyDown = true;
+      return gotKey;
     }
+
+    // Test column 1
+    KEYPAD_COL_PORT |= _BV(COL_0_BIT) | _BV(COL_2_BIT);
+    KEYPAD_COL_PORT &= ~(_BV(COL_1_BIT));
+
+    _delay_us(10);
+
+    rowMask = ~(KEYPAD_ROW_PIN | ~(_BV(ROW_0_BIT)|_BV(ROW_1_BIT)|_BV(ROW_2_BIT)|_BV(ROW_3_BIT)) );
+
+    gotKey = testRow(rowMask, COL_1_BIT, 1);
+    if (gotKey && (gotKey != lastKey)) {
+      lastKey = gotKey;
+      debounceCounter = debounceTime;
+      keyDown = true;
+      return gotKey;
+    }
+
+    // Test column 2
+    KEYPAD_COL_PORT |= _BV(COL_0_BIT) | _BV(COL_1_BIT);
+    KEYPAD_COL_PORT &= ~(_BV(COL_2_BIT));
+
+    _delay_us(10);
+
+    rowMask = ~(KEYPAD_ROW_PIN | ~(_BV(ROW_0_BIT)|_BV(ROW_1_BIT)|_BV(ROW_2_BIT)|_BV(ROW_3_BIT)) );
+
+    gotKey = testRow(rowMask, COL_2_BIT, 2);
+    if (gotKey && (gotKey != lastKey)) {
+      lastKey = gotKey;
+      debounceCounter = debounceTime;
+      keyDown = true;
+      return gotKey;
+    }
+
+
+    lastKey = 0;
+    return 0;
+  }
+  else
+    return 0;
 }

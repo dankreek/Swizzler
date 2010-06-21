@@ -18,7 +18,7 @@
 
 // 1ms timer interrupt vector
 ISR(TIMER0_OVF_vect) {
-  KeypadInput::decCounters();
+  KeypadInput::decCounter();
 }
 
 /**

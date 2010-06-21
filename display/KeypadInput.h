@@ -34,29 +34,32 @@ class KeypadInput {
     /**
      * Read the keypad and fire off events if they have occured
      */
-    static void getKeys();
+    static uint8_t getKey();
 
     /**
      * Decrement all the debounce counters
      */
-    static inline void decCounters() {
-      for (int i=0; i < 3; i++)
-        for (int j=0; j < 4; j++)
-          if (debounceCounters[i][j] >= 0) debounceCounters[i][j]--;
+    static inline void decCounter() {
+      if (debounceCounter >=0) debounceCounter--;
     }
 
     static uint16_t debounceTime;
 
   private:
-    static void testRow(uint8_t rowMask, uint8_t columnBit, uint8_t columnNum);
+    static int16_t testRow(uint8_t rowMask, uint8_t columnBit, uint8_t columnNum);
 
-    static void testKey(uint8_t col, uint8_t row);
+    // Keep track of last key pressed to remove repeats
+    static uint8_t lastKey;
 
-    // Bitmap the stores which keys are currently pressed
-    static uint16_t keysPressed;
+    // The de-bounce counter
+    static int8_t  debounceCounter;
 
-    // The de-bounce counters for each key
-    static int16_t  debounceCounters[3][4];
+    // true if a key is currently being held down
+    static bool keyDown;
+
+    // Array of which keys map to which ascii characters
+    static uint8_t padChars[][3];
+
 };
 
 #endif /* KEYPADINPUT_H_ */
