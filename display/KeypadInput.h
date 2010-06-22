@@ -46,6 +46,9 @@ class KeypadInput {
     static uint16_t debounceTime;
 
   private:
+    // The default debounce time, set during init()
+    static const uint16_t defaultDebounceTime = 10;
+
     static int16_t testRow(uint8_t rowMask, uint8_t columnBit, uint8_t columnNum);
 
     // Keep track of last key pressed to remove repeats

@@ -65,17 +65,15 @@ int main(void) {
 	sei();
 
 	while(TRUE) {
-                /*
 		if (inputBuffer.hasData()) {
 			InputHandler::recvByte(inputBuffer.popFront());
 		}
-                */
 
 		uint8_t k = KeypadInput::getKey();
 
 		if (k>0) printf("%c", k);
 
-		_delay_us(10);
+		//_delay_us(10);
 	}
 	return 0;
 }

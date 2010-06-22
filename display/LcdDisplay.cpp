@@ -16,7 +16,7 @@ void LcdDisplay::init(uint8_t w, uint8_t h) {
 	width = w;
 	height = h;		
 
-	autoScroll = false;
+	autoScroll = true;
 	
 	// Set the position counter to 0
 	position = 0;

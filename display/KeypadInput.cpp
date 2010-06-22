@@ -27,7 +27,7 @@ void KeypadInput::init() {
   lastKey = 0;
 
   // The default debounce time in ms
-  debounceTime = 20;
+  debounceTime = defaultDebounceTime;
 
   // Set all column lines to output
   KEYPAD_COL_DDR |= _BV(COL_0_BIT) | _BV(COL_1_BIT) | _BV(COL_2_BIT);
@@ -55,7 +55,6 @@ int16_t KeypadInput::testRow(uint8_t rowMask, uint8_t columnBit, uint8_t columnN
   if (rowMask & _BV(ROW_3_BIT)) {
     return padChars[3][columnNum];
   }
-
 
   return 0;
 }
@@ -86,6 +85,7 @@ uint8_t KeypadInput::getKey() {
       keyDown = true;
       return gotKey;
     }
+    else if (gotKey && (gotKey == lastKey)) return 0;
 
     // Test column 1
     KEYPAD_COL_PORT |= _BV(COL_0_BIT) | _BV(COL_2_BIT);
@@ -102,6 +102,7 @@ uint8_t KeypadInput::getKey() {
       keyDown = true;
       return gotKey;
     }
+    else if (gotKey && (gotKey == lastKey)) return 0;
 
     // Test column 2
     KEYPAD_COL_PORT |= _BV(COL_0_BIT) | _BV(COL_1_BIT);
@@ -118,9 +119,16 @@ uint8_t KeypadInput::getKey() {
       keyDown = true;
       return gotKey;
     }
+    else if (gotKey && (gotKey == lastKey)) return 0;
 
+    // Handle a key-up event
+    if (lastKey != 0) {
+      printf("%c", lastKey+0x20);
+      lastKey = 0;
+      // Key-up events need to be debounced as well
+      debounceCounter = debounceTime;
+    }
 
-    lastKey = 0;
     return 0;
   }
   else
