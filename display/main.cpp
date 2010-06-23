@@ -10,85 +10,63 @@
 #include "InputHandler.h"
 #include "TimerHandler.h"
 #include "KeypadInput.h"
-
-#define TRUE 1
-#define FALSE 0
-
 #include "RingBuffer.cpp"
 
-#ifdef __cplusplus 
-extern "C"{ 
- FILE * uart_str; 
-} 
-#endif 
-
+// Needed for the i2c input buffer. I should probably stick it in the class somewhere.
 #define TWI_INPUT_BUFER_SIZE	32
 uint8_t inputSpace[TWI_INPUT_BUFER_SIZE];
 RingBuffer<uint8_t> inputBuffer(inputSpace, TWI_INPUT_BUFER_SIZE);
 
+// --- Needed to output a character to the LCD if using printf.
+#ifdef __cplusplus
+extern "C"{
+ FILE * uart_str;
+}
+#endif
 static int lcd_putchar(char,FILE*);
-void recvTwiData(int);
 #undef FDEV_SETUP_STREAM 
 #define FDEV_SETUP_STREAM(p, g, f) { 0, 0, f, 0, 0, p, g, 0 }
 FILE lcd_out = FDEV_SETUP_STREAM(lcd_putchar, NULL, _FDEV_SETUP_WRITE);
-
-/*
-**	Function to output a character to the LCD if using printf.  Uncomment
-**	if needed
-*/
 static int lcd_putchar(char ch, FILE *unused) {
-	LcdDisplay::write(ch);
-	return 0;
+  LcdDisplay::write(ch);
+  return 0;
 }
+// --- End printf code
 
-/*
-**	Main Function
-*/
 int main(void) {	
-	stdout = &lcd_out;
+  stdout = &lcd_out;
 
-	// Initialize the LCD
-	LcdDisplay::init(16, 2);
+  // Initialize the LCD
+  LcdDisplay::init(16, 2);
 
-	// Initialize TWI bus
-	twi.init(0x69, &inputBuffer);
+  // Initialize TWI bus
+  twi.init(0x69, &inputBuffer);
 
-	KeypadInput::init();
+  KeypadInput::init();
 
-	// Initialize the timer interrupt
-	TimerHandler::init();
+  // Initialize the timer interrupt
+  TimerHandler::init();
 
-	// Initialize the input handler
-	InputHandler::init();
+  // Initialize the input handler
+  InputHandler::init();
 
-	// Enable interrupts
-	sei();
+  // Enable interrupts
+  sei();
 
-	while(TRUE) {
-		if (inputBuffer.hasData()) {
-			InputHandler::recvByte(inputBuffer.pop());
-		}
+  while(true) {
+    // Poll the keypad for keys pressed
+    KeypadInput::pollKeypad();
 
-		KeypadInput::pollKeypad();
+    // See if the i2c bus has any incomming data
+    if (inputBuffer.hasData()) {
+      InputHandler::recvByte(inputBuffer.pop());
+    }
 
-		if (KeypadInput::keyPressBuffer.hasData()) {
-		  printf("%c", KeypadInput::keyPressBuffer.pop());
-		}
+    // See if the keypad has any data
+    if (KeypadInput::keyPressBuffer.hasData()) {
+      printf("%c", KeypadInput::keyPressBuffer.pop());
+    }
+  }
 
-		//if (k>0) printf("%c", k);
-
-		//_delay_us(10);
-	}
-	return 0;
+  return 0;
 }
-
-/*
-void recvTwiData(int count) {
-	while (twi.available()) {
-		//char c = Wire.receive();
-		// printf("\n%3d = '%c'", (unsigned char)c, c);
-		//InputHandler::recvByte(Wire.receive());
-		inputBuffer.pushBack(twi.receive());
-	}
-}
-*/
