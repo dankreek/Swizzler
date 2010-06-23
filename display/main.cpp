@@ -71,7 +71,7 @@ int main(void) {
 
 		uint8_t k = KeypadInput::getKey();
 
-		if (k>0) printf("%c", k);
+		//if (k>0) printf("%c", k);
 
 		//_delay_us(10);
 	}

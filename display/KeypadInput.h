@@ -37,7 +37,7 @@ class KeypadInput {
     static uint8_t getKey();
 
     /**
-     * Decrement all the debounce counters
+     * Decrement the debounce counter
      */
     static inline void decCounter() {
       if (debounceCounter >=0) debounceCounter--;
@@ -49,6 +49,10 @@ class KeypadInput {
     // The default debounce time, set during init()
     static const uint16_t defaultDebounceTime = 10;
 
+    static void keyDownHandler(uint8_t key);
+    static void keyUpHandler(uint8_t key);
+
+    // Test a keypad row to see if a key had been struck
     static int16_t testRow(uint8_t colBitLow, uint8_t colBitHi1, uint8_t colBitHi2, uint8_t columnNum);
 
     // Keep track of last key pressed to remove repeats

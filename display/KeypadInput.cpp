@@ -66,7 +66,7 @@ int16_t KeypadInput::testRow(uint8_t colBitLow, uint8_t colBitHi1, uint8_t colBi
 }
 
 /**
- * This function reads all keys and stores their status in the keysPressed bitmap
+ * Read the keypad and fire a key-down or key-up event
  *
  * NOTE: This function depends on the current pin configuration. I know its begging
  */
@@ -75,13 +75,14 @@ uint8_t KeypadInput::getKey() {
 
   // If waiting for debounce, just skip this
   if (debounceCounter < 0) {
-    // Note that this "loop" is unrolled because it's WAY smaller than using a for loop
+    // Note that this "loop" is unrolled because it's WAY smaller than using a for-loop
 
     // Test column 0
     gotKey = testRow(COL_0_BIT, COL_1_BIT, COL_2_BIT, 0);
     if (gotKey && (gotKey != lastKey)) {
       lastKey = gotKey;
       debounceCounter = debounceTime;
+      keyDownHandler(gotKey);
       return gotKey;
     }
     else if (gotKey && (gotKey == lastKey)) return 0;
@@ -91,6 +92,7 @@ uint8_t KeypadInput::getKey() {
     if (gotKey && (gotKey != lastKey)) {
       lastKey = gotKey;
       debounceCounter = debounceTime;
+      keyDownHandler(gotKey);
       return gotKey;
     }
     else if (gotKey && (gotKey == lastKey)) return 0;
@@ -100,13 +102,16 @@ uint8_t KeypadInput::getKey() {
     if (gotKey && (gotKey != lastKey)) {
       lastKey = gotKey;
       debounceCounter = debounceTime;
+      keyDownHandler(gotKey);
       return gotKey;
     }
     else if (gotKey && (gotKey == lastKey)) return 0;
 
+    // At this point no key is pressed
+
     // Handle a key-up event
     if (lastKey != 0) {
-      printf("%c", lastKey+0x20);
+      keyUpHandler(lastKey);
       lastKey = 0;
       // Key-up events need to be debounced as well
       debounceCounter = debounceTime;
@@ -117,4 +122,12 @@ uint8_t KeypadInput::getKey() {
   // Waiting for debounce, so return no-data
   else
     return 0;
+}
+
+void KeypadInput::keyDownHandler(uint8_t k) {
+  printf("%c", k);
+}
+
+void KeypadInput::keyUpHandler(uint8_t k) {
+  printf("%c", k+0x20);
 }
