@@ -240,7 +240,7 @@ void TwoWireSlave::onReceiveService(uint8_t* inBytes, int numBytes) {
     // this enables new reads to happen in parallel
     for(uint8_t i = 0; i < numBytes; ++i){
         //rxBuffer[i] = inBytes[i];
-    	inputBuffer->pushBack(inBytes[i]);
+    	inputBuffer->push(inBytes[i]);
     }
     // set rx iterator vars
     //rxBufferIndex = 0;

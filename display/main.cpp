@@ -66,10 +66,14 @@ int main(void) {
 
 	while(TRUE) {
 		if (inputBuffer.hasData()) {
-			InputHandler::recvByte(inputBuffer.popFront());
+			InputHandler::recvByte(inputBuffer.pop());
 		}
 
-		uint8_t k = KeypadInput::getKey();
+		KeypadInput::pollKeypad();
+
+		if (KeypadInput::keyPressBuffer.hasData()) {
+		  printf("%c", KeypadInput::keyPressBuffer.pop());
+		}
 
 		//if (k>0) printf("%c", k);
 

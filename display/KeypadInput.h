@@ -25,7 +25,10 @@
 #define COL_1_BIT       1
 #define COL_2_BIT       2
 
+#define KEYPRESS_BUFFER_SIZE    12
+
 #include <inttypes.h>
+#include "RingBuffer.cpp"
 
 class KeypadInput {
   public:
@@ -34,7 +37,7 @@ class KeypadInput {
     /**
      * Read the keypad and fire off events if they have occurred
      */
-    static uint8_t getKey();
+    static void pollKeypad();
 
     /**
      * Decrement the debounce counter
@@ -45,10 +48,17 @@ class KeypadInput {
 
     static uint16_t debounceTime;
 
+    // Buffer to hold which keys have been pressed
+    static RingBuffer<uint8_t> keyPressBuffer;
+
   private:
     // The default debounce time, set during init()
     static const uint16_t defaultDebounceTime = 10;
 
+    static uint8_t keyPressSpace[];
+    static const uint8_t keyPressSpaceSize = 12;
+
+    // Key event handlers
     static void keyDownHandler(uint8_t key);
     static void keyUpHandler(uint8_t key);
 

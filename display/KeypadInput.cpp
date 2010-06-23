@@ -13,6 +13,8 @@
 int8_t KeypadInput::debounceCounter;
 uint16_t KeypadInput::debounceTime;
 uint8_t KeypadInput::lastKey;
+uint8_t KeypadInput::keyPressSpace[keyPressSpaceSize];
+RingBuffer<uint8_t> KeypadInput::keyPressBuffer(keyPressSpace, keyPressSpaceSize);
 
 uint8_t KeypadInput::padChars[][3]  = {
     {'1', '2', '3'},
@@ -70,7 +72,7 @@ int16_t KeypadInput::testRow(uint8_t colBitLow, uint8_t colBitHi1, uint8_t colBi
  *
  * NOTE: This function depends on the current pin configuration. I know its begging
  */
-uint8_t KeypadInput::getKey() {
+void KeypadInput::pollKeypad() {
   uint8_t gotKey;
 
   // If waiting for debounce, just skip this
@@ -83,9 +85,9 @@ uint8_t KeypadInput::getKey() {
       lastKey = gotKey;
       debounceCounter = debounceTime;
       keyDownHandler(gotKey);
-      return gotKey;
+      return;
     }
-    else if (gotKey && (gotKey == lastKey)) return 0;
+    else if (gotKey && (gotKey == lastKey)) return;
 
     // Test column 1
     gotKey = testRow(COL_1_BIT, COL_0_BIT, COL_2_BIT, 1);
@@ -93,9 +95,9 @@ uint8_t KeypadInput::getKey() {
       lastKey = gotKey;
       debounceCounter = debounceTime;
       keyDownHandler(gotKey);
-      return gotKey;
+      return;
     }
-    else if (gotKey && (gotKey == lastKey)) return 0;
+    else if (gotKey && (gotKey == lastKey)) return;
 
     // Test column 2
     gotKey = testRow(COL_2_BIT, COL_0_BIT, COL_1_BIT, 2);
@@ -103,9 +105,9 @@ uint8_t KeypadInput::getKey() {
       lastKey = gotKey;
       debounceCounter = debounceTime;
       keyDownHandler(gotKey);
-      return gotKey;
+      return;
     }
-    else if (gotKey && (gotKey == lastKey)) return 0;
+    else if (gotKey && (gotKey == lastKey)) return;
 
     // At this point no key is pressed
 
@@ -116,18 +118,13 @@ uint8_t KeypadInput::getKey() {
       // Key-up events need to be debounced as well
       debounceCounter = debounceTime;
     }
-
-    return 0;
   }
-  // Waiting for debounce, so return no-data
-  else
-    return 0;
 }
 
 void KeypadInput::keyDownHandler(uint8_t k) {
-  printf("%c", k);
+  keyPressBuffer.push(k);
 }
 
 void KeypadInput::keyUpHandler(uint8_t k) {
-  printf("%c", k+0x20);
+  keyPressBuffer.push(k+0x20);
 }

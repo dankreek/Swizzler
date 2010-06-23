@@ -25,8 +25,8 @@ class RingBuffer {
 	 */
 	RingBuffer(T* buffer, uint8_t sizeInElements);
 
-    T popFront();
-    bool pushBack(T);
+    T pop();
+    bool push(T);
     bool isFull();
     bool hasData();
 
@@ -55,18 +55,18 @@ inline bool RingBuffer<T>::hasData() {
 }
 
 template<typename T>
-T RingBuffer<T>::popFront() {
+T RingBuffer<T>::pop() {
 	if (hasData()) {
 		T data = buf[head];
 		head = (head+1) % bufSize;
 		return data;
 	}
 
-	return NULL;
+	return 0;
 }
 
 template<typename T>
-bool RingBuffer<T>::pushBack(T data) {
+bool RingBuffer<T>::push(T data) {
 	if (!isFull()) {
 		buf[tail] = data;
 		tail = (tail+1) % bufSize;
