@@ -32,7 +32,7 @@ class KeypadInput {
     static void init();
 
     /**
-     * Read the keypad and fire off events if they have occured
+     * Read the keypad and fire off events if they have occurred
      */
     static uint8_t getKey();
 
@@ -49,16 +49,13 @@ class KeypadInput {
     // The default debounce time, set during init()
     static const uint16_t defaultDebounceTime = 10;
 
-    static int16_t testRow(uint8_t rowMask, uint8_t columnBit, uint8_t columnNum);
+    static int16_t testRow(uint8_t colBitLow, uint8_t colBitHi1, uint8_t colBitHi2, uint8_t columnNum);
 
     // Keep track of last key pressed to remove repeats
     static uint8_t lastKey;
 
-    // The de-bounce counter
+    // The debounce counter
     static int8_t  debounceCounter;
-
-    // true if a key is currently being held down
-    static bool keyDown;
 
     // Array of which keys map to which ascii characters
     static uint8_t padChars[][3];

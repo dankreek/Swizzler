@@ -13,7 +13,6 @@
 int8_t KeypadInput::debounceCounter;
 uint16_t KeypadInput::debounceTime;
 uint8_t KeypadInput::lastKey;
-bool KeypadInput::keyDown;
 
 uint8_t KeypadInput::padChars[][3]  = {
     {'1', '2', '3'},
@@ -39,21 +38,28 @@ void KeypadInput::init() {
   KEYPAD_ROW_PORT |= _BV(ROW_0_BIT)|_BV(ROW_1_BIT)|_BV(ROW_2_BIT)|_BV(ROW_3_BIT);
 }
 
-int16_t KeypadInput::testRow(uint8_t rowMask, uint8_t columnBit, uint8_t columnNum) {
+int16_t KeypadInput::testRow(uint8_t colBitLow, uint8_t colBitHi1, uint8_t colBitHi2, uint8_t colNum) {
+  KEYPAD_COL_PORT |= _BV(colBitHi1) | _BV(colBitHi2);
+  KEYPAD_COL_PORT &= ~(_BV(colBitLow));
+
+  _delay_us(10);
+
+  uint8_t rowMask = ~(KEYPAD_ROW_PIN | ~(_BV(ROW_0_BIT)|_BV(ROW_1_BIT)|_BV(ROW_2_BIT)|_BV(ROW_3_BIT)) );
+
   if (rowMask & _BV(ROW_0_BIT)) {
-    return padChars[0][columnNum];
+    return padChars[0][colNum];
   }
 
   if (rowMask & _BV(ROW_1_BIT)) {
-    return padChars[1][columnNum];
+    return padChars[1][colNum];
   }
 
   if (rowMask & _BV(ROW_2_BIT)) {
-    return padChars[2][columnNum];
+    return padChars[2][colNum];
   }
 
   if (rowMask & _BV(ROW_3_BIT)) {
-    return padChars[3][columnNum];
+    return padChars[3][colNum];
   }
 
   return 0;
@@ -62,61 +68,38 @@ int16_t KeypadInput::testRow(uint8_t rowMask, uint8_t columnBit, uint8_t columnN
 /**
  * This function reads all keys and stores their status in the keysPressed bitmap
  *
- * NOTE: This function depends on the current pin configuration.
+ * NOTE: This function depends on the current pin configuration. I know its begging
  */
 uint8_t KeypadInput::getKey() {
-  uint8_t rowMask;
   uint8_t gotKey;
 
   // If waiting for debounce, just skip this
   if (debounceCounter < 0) {
+    // Note that this "loop" is unrolled because it's WAY smaller than using a for loop
+
     // Test column 0
-    KEYPAD_COL_PORT |= _BV(COL_1_BIT) | _BV(COL_2_BIT);
-    KEYPAD_COL_PORT &= ~(_BV(COL_0_BIT));
-
-    _delay_us(10);
-
-    rowMask = ~(KEYPAD_ROW_PIN | ~(_BV(ROW_0_BIT)|_BV(ROW_1_BIT)|_BV(ROW_2_BIT)|_BV(ROW_3_BIT)) );
-
-    gotKey = testRow(rowMask, COL_0_BIT, 0);
+    gotKey = testRow(COL_0_BIT, COL_1_BIT, COL_2_BIT, 0);
     if (gotKey && (gotKey != lastKey)) {
       lastKey = gotKey;
       debounceCounter = debounceTime;
-      keyDown = true;
       return gotKey;
     }
     else if (gotKey && (gotKey == lastKey)) return 0;
 
     // Test column 1
-    KEYPAD_COL_PORT |= _BV(COL_0_BIT) | _BV(COL_2_BIT);
-    KEYPAD_COL_PORT &= ~(_BV(COL_1_BIT));
-
-    _delay_us(10);
-
-    rowMask = ~(KEYPAD_ROW_PIN | ~(_BV(ROW_0_BIT)|_BV(ROW_1_BIT)|_BV(ROW_2_BIT)|_BV(ROW_3_BIT)) );
-
-    gotKey = testRow(rowMask, COL_1_BIT, 1);
+    gotKey = testRow(COL_1_BIT, COL_0_BIT, COL_2_BIT, 1);
     if (gotKey && (gotKey != lastKey)) {
       lastKey = gotKey;
       debounceCounter = debounceTime;
-      keyDown = true;
       return gotKey;
     }
     else if (gotKey && (gotKey == lastKey)) return 0;
 
     // Test column 2
-    KEYPAD_COL_PORT |= _BV(COL_0_BIT) | _BV(COL_1_BIT);
-    KEYPAD_COL_PORT &= ~(_BV(COL_2_BIT));
-
-    _delay_us(10);
-
-    rowMask = ~(KEYPAD_ROW_PIN | ~(_BV(ROW_0_BIT)|_BV(ROW_1_BIT)|_BV(ROW_2_BIT)|_BV(ROW_3_BIT)) );
-
-    gotKey = testRow(rowMask, COL_2_BIT, 2);
+    gotKey = testRow(COL_2_BIT, COL_0_BIT, COL_1_BIT, 2);
     if (gotKey && (gotKey != lastKey)) {
       lastKey = gotKey;
       debounceCounter = debounceTime;
-      keyDown = true;
       return gotKey;
     }
     else if (gotKey && (gotKey == lastKey)) return 0;
@@ -131,6 +114,7 @@ uint8_t KeypadInput::getKey() {
 
     return 0;
   }
+  // Waiting for debounce, so return no-data
   else
     return 0;
 }
