@@ -54,17 +54,15 @@ int main(void) {
   sei();
 
   while(true) {
-    // Poll the keypad for keys pressed
+    // Scan the keypad for key presses
     KeypadInput::pollKeypad();
 
-    // See if the i2c bus has any incomming data
-    if (inputBuffer.hasData()) {
-      InputHandler::recvByte(inputBuffer.pop());
-    }
+    // See if the i2c bus has any incoming data
+    if (inputBuffer.hasData()) InputHandler::recvByte(inputBuffer.get());
 
     // See if the keypad has any data
     if (KeypadInput::keyPressBuffer.hasData()) {
-      printf("%c", KeypadInput::keyPressBuffer.pop());
+      printf("%c", KeypadInput::keyPressBuffer.get());
     }
   }
 

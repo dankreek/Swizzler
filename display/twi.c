@@ -15,6 +15,11 @@
   You should have received a copy of the GNU Lesser General Public
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+  This code was modified on July 3, 2010 by Justin May to remove all twi master
+  functionality and make this function only as a twi slave. I also modified it to use my
+  Ring Buffer to directly store incoming data as opposed to the old double-
+  buffering method which was wasteful of RAM.
 */
 
 #include <math.h>
@@ -35,7 +40,6 @@
 #include "twi.h"
 
 static volatile uint8_t twi_state;
-static uint8_t twi_slarw;
 
 static void (*twi_onSlaveTransmit)(void);
 static void (*twi_onSlaveReceive)(uint8_t*, int);

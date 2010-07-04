@@ -25,25 +25,14 @@ ISR(TIMER0_OVF_vect) {
  * Set the timer interrupt handler to fire off once every millisecond
  */
 void TimerHandler::init() {
-  // this needs to be called before setup() or some functions won't
-  // work there
+  // this needs to be called before setup() or some functions won't work there
   sei();
 
   TCCR0A |= _BV(WGM01) | _BV(WGM00);
 
-  /*
-  sbi(TCCR0A, WGM01);
-  sbi(TCCR0A, WGM00);
-  */
-
   // set timer 0 prescale factor to 64
   TCCR0B |= _BV(CS01) | _BV(CS00);
-  /*
-  sbi(TCCR0B, CS01);
-  sbi(TCCR0B, CS00);
-   */
 
   // enable timer 0 overflow interrupt
   TIMSK0 |= _BV(TOIE0);
-  //sbi(TIMSK0, TOIE0);
 }
