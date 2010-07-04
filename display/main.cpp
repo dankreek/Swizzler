@@ -12,10 +12,14 @@
 #include "KeypadInput.h"
 #include "RingBuffer.cpp"
 
-// Needed for the i2c input buffer. I should probably stick it in the class somewhere.
+// Space for the i2c input buffer.
 #define TWI_INPUT_BUFER_SIZE	32
 uint8_t inputSpace[TWI_INPUT_BUFER_SIZE];
+
+// The ring buffer class that wraps the space
 RingBuffer<uint8_t> inputBuffer(inputSpace, TWI_INPUT_BUFER_SIZE);
+
+void handleOutputRequest();
 
 // --- Needed to output a character to the LCD if using printf.
 #ifdef __cplusplus
@@ -41,6 +45,7 @@ int main(void) {
 
   // Initialize TWI bus
   twi.init(0x69, &inputBuffer);
+  twi.onRequest(handleOutputRequest);
 
   KeypadInput::init();
 
@@ -67,4 +72,8 @@ int main(void) {
   }
 
   return 0;
+}
+
+void handleOutputRequest() {
+
 }

@@ -20,15 +20,20 @@
 template <typename T>
 class RingBuffer {
   public:
-	/**
-	 * Be sure and pass in the size in number of elements NOT size in bytes.
-	 */
-	RingBuffer(T* buffer, uint8_t sizeInElements);
+    /**
+     * Be sure and pass in the size in number of elements NOT size in bytes.
+     */
+    RingBuffer(T* buffer, uint8_t sizeInElements);
 
     T get();
     bool push(T);
     bool isFull();
     bool hasData();
+
+    /**
+     * Flush all buffer contents down the toilet
+     */
+    void flush();
 
   private:
     T* buf;
@@ -52,6 +57,11 @@ inline bool RingBuffer<T>::isFull() {
 template<typename T>
 inline bool RingBuffer<T>::hasData() {
 	return !(head == tail);
+}
+
+template<typename T>
+inline void RingBuffer<T>::flush() {
+  head = tail = 0;
 }
 
 template<typename T>
