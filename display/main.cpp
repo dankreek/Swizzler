@@ -59,21 +59,28 @@ int main(void) {
   sei();
 
   while(true) {
-    // Scan the keypad for key presses
+    // Scan the keypad for key presses (and store them in the buffer if there are any)
     KeypadInput::pollKeypad();
 
     // See if the i2c bus has any incoming data
     if (inputBuffer.hasData()) InputHandler::recvByte(inputBuffer.get());
 
     // See if the keypad has any data
+    /*
     if (KeypadInput::keyPressBuffer.hasData()) {
       printf("%c", KeypadInput::keyPressBuffer.get());
     }
+    */
   }
 
   return 0;
 }
 
 void handleOutputRequest() {
-
+  if (KeypadInput::keyPressBuffer.hasData()) {
+    twi.send(KeypadInput::keyPressBuffer.get());
+  }
+  else {
+    twi.send(0);
+  }
 }

@@ -217,7 +217,7 @@ uint8_t TwoWireSlave::receive(void)
 // behind the scenes function that is called when data is received
 void TwoWireSlave::onReceiveService(uint8_t* inBytes, int numBytes) {
     // don't bother if user hasn't registered a callback
-	/*
+   /*
     if(!user_onReceive){
         return;
     }

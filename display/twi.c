@@ -48,6 +48,7 @@ static void (*twi_onSlaveReceive)(uint8_t*, int);
 static uint8_t* twi_masterBuffer;
 static volatile uint8_t twi_masterBufferIndex;
 static uint8_t twi_masterBufferLength;
+static uint8_t twi_slarw;
 */
 
 static uint8_t* twi_txBuffer;
@@ -416,7 +417,7 @@ SIGNAL(TWI_vect)
         twi_reply(0);
       }
       break;
-    case TW_ST_DATA_NACK: // received nack, we are done 
+    case TW_ST_DATA_NACK: // received nack, we are done
     case TW_ST_LAST_DATA: // received ack, but we are done already!
       // ack future responses
       twi_reply(1);
