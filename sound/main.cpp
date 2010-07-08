@@ -1,6 +1,7 @@
 #include <avr/io.h>
 #include <inttypes.h>
 #include <avr/interrupt.h>
+#include <util/delay.h>
 
 void setup_pwm();
 void setup_waveform();
@@ -19,10 +20,22 @@ uint16_t calc_freq(uint16_t);
 int8_t waveform[WAVE_SIZE];
 
 uint16_t freq_coef=0;
+uint8_t wave_i=0;
 
 // Timer handler
 ISR(TIMER0_OVF_vect) {
-	// Output sound
+	static uint8_t flag=0;
+	
+	// Output sound every other interrupt
+	flag^=1;
+	if (flag) {
+		// Output sound
+		OCR1A = waveform[wave_i];
+	}
+	else {
+		// Mix sound
+		wave_i += freq_coef;
+	}
 }
 
 int main() {
@@ -30,6 +43,10 @@ int main() {
 	freq_coef = calc_freq(440);
 	setup_pwm();
 	setup_timer();
+
+	while(true) {
+		_delay_ms(100);
+	}
 }
 
 void setup_pwm() {
