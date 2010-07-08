@@ -41,7 +41,7 @@ TARGET = main
 PORT = /dev/ttyUSB1
 UPLOAD_RATE = 19200
 AVRDUDE_PROGRAMMER = stk500v1
-MCU = atmega168
+MCU = atmega328
 F_CPU = 16000000
 ARDUINO = ./arduino
 
