@@ -44,13 +44,6 @@ static volatile uint8_t twi_state;
 static void (*twi_onSlaveTransmit)(void);
 static void (*twi_onSlaveReceive)(uint8_t*, int);
 
-/*
-static uint8_t* twi_masterBuffer;
-static volatile uint8_t twi_masterBufferIndex;
-static uint8_t twi_masterBufferLength;
-static uint8_t twi_slarw;
-*/
-
 static uint8_t* twi_txBuffer;
 static volatile uint8_t twi_txBufferIndex;
 static volatile uint8_t twi_txBufferLength;

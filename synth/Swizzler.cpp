@@ -41,6 +41,9 @@ void Swizzler::init() {
 	// Initialize Frequency Manager
 	FrequencyManager::init();
 
+	// Initialize the surface controls
+	SurfaceControlManager::init();
+
 	// Reset all presets
 	/*
 	for (int i=0; i < 128; i++) {

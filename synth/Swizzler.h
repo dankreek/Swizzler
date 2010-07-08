@@ -18,6 +18,7 @@
 #include "Wire.h"
 #include "SetParameters.h"
 #include "ExternalEeprom.h"
+#include "SurfaceControlManager.h"
 
 class Swizzler {
   public:
