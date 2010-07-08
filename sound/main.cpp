@@ -25,12 +25,15 @@ uint8_t wave_i=0;
 // Timer handler
 ISR(TIMER0_OVF_vect) {
 	static uint8_t flag=0;
-	
+	static int16_t out_sample;
+
 	// Output sound every other interrupt
 	flag^=1;
 	if (flag) {
+		out_sample = waveform[wave_i] + 128;
+
 		// Output sound
-		OCR1A = waveform[wave_i];
+		OCR1A = out_sample;
 	}
 	else {
 		// Mix sound
