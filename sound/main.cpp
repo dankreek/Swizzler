@@ -61,6 +61,7 @@ void setup_pwm() {
 void setup_timer() {
   sei();
 
+  // Set CTC mode (count TCNT0 up to OCR0A, signal an interrupt, then set TCNT0 back to 0)
   TCCR0A |= _BV(WGM01) | _BV(WGM00);
 
   // set timer 0 prescale factor to 64
@@ -68,6 +69,10 @@ void setup_timer() {
 
   // enable timer 0 overflow interrupt
   TIMSK0 |= _BV(TOIE0);	
+
+  // The counter value where an interrupt occurs, so in effect there is an interrupt signalled
+  // every 512 clock cycles (64*8)
+  OCR0A = 8;
 }
 
 void setup_waveform() {
