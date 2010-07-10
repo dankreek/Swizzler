@@ -26,6 +26,8 @@ public:
     Wire.send(c);
     Wire.endTransmission();
   }
+
+  static void print(char*);
 private:
   static const uint8_t twiAddress = 0x69;
 };

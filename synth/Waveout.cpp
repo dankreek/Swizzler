@@ -14,8 +14,8 @@ ISR(TIMER1_COMPA_vect) {
 	// Calculate the output sample (signed 8bit sample)
 	int16_t out;
 
-	// Output the next sample 
-	out = Wavetable::outputTable[Wavetable::wtIndex];
+	// Output the next sample (convert accumulator from 16 to 4 bits)
+	out = Wavetable::outputTable[Waveout::rootAccumulator>>12];
 
 	// Apply envelope scaling
 	out *= swizzler.envelope.scalar;
@@ -25,13 +25,20 @@ ISR(TIMER1_COMPA_vect) {
 	OCR2A = out+128;
 
 	// Go to the next sample
-	Wavetable::incWtIndex();
+	//Wavetable::incWtIndex();
+        Waveout::incAccumulator();
 }
+
+uint16_t Waveout::rootIncrementor;
+uint16_t Waveout::rootAccumulator;
 
 /**
  * Initialize the sound output
  */
 void Waveout::start() {
+    rootIncrementor = 0;
+    rootAccumulator = 0;
+
     pinMode(WAVEOUT_PIN, OUTPUT);
 
     // Set up Timer 2 to do pulse width modulation on the speaker pin.
@@ -66,7 +73,11 @@ void Waveout::start() {
     // No prescaler (p.134)
     TCCR1B = (TCCR1B & ~(_BV(CS12) | _BV(CS11))) | _BV(CS10);
 
-    setFreq(440);
+    // Set the compare register (OCR1A).
+    // OCR1A is a 16-bit register, so we have to do this with
+    // interrupts disabled to be safe.
+    OCR1A = F_CPU / SAMPLE_RATE;    // 16e6 / 16000 = 1000
+
 	
     // Enable interrupt when TCNT1 == OCR1A (p.136)
     TIMSK1 |= _BV(OCIE1A);
@@ -98,5 +109,5 @@ void Waveout::stop() {
  * Note that at 16Mhz there are 16 clock cycles in a microsecond
  */
 void Waveout::setFreq(uint16_t freq) {
-	OCR1A = (unsigned long)1000000 / (unsigned long)freq;
+  rootIncrementor = freq*0x10000/SAMPLE_RATE;
 }

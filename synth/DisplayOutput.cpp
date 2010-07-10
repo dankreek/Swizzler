@@ -10,9 +10,20 @@
 #include <stdio.h>
 
 void DisplayOutput::init() {
-  //printf("Welcome to swizzler");
+  /*
   Wire.beginTransmission(0x69);
   Wire.send('!');
   Wire.endTransmission();
+  */
 
+}
+
+void DisplayOutput::print(char s[]) {
+  char* c;
+
+  Wire.beginTransmission(twiAddress);
+  for (c=s; *c; c++) {
+    Wire.send(*c);
+  }
+  Wire.endTransmission();
 }
