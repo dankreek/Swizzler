@@ -35,7 +35,10 @@ void Waveform::generateSawtoothWave() {
 void Waveform::setPulseWidth(uint8_t pw) {
   pulseWidth = pw;
   for (int i=0; i < waveformLength; i++) {
-    squareBuffer[i] = (i < pulseWidth) ? -128 : 127;
+    if (i < pulseWidth)
+      squareBuffer[i] = -64;
+    else
+      squareBuffer[i] = 64;
   }
 }
 

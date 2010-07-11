@@ -10,6 +10,7 @@
 
 void Voice::init() {
   envelope.init();
+  waveform.setWaveform(triangleWave);
   phaseAccumulator = 0;
 }
 
