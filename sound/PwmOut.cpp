@@ -19,7 +19,7 @@ ISR(TIMER1_COMPA_vect) {
     out_sample += Sound::voices[i].renderSample();
   }
 
-  // Average all the voices together
+  // Average (mix) all the voices together
   out_sample /= Sound::numVoices;
 
   // Convert 8bit signed to 8bit unsigned, and output

@@ -52,7 +52,7 @@ public:
         curWave = sawtoothBuffer;
         break;
       case noiseWave:
-        curWave = NULL;
+        curWave = 0;
         break;
     }
 
@@ -62,7 +62,7 @@ public:
   /**
    * Get the sample which lies at the provided index for the currently selected waveform
    */
-  inline void getSample(uint8_t i) {
+  inline int8_t getSample(uint8_t i) {
     if (curWaveType == noiseWave) {
       // TODO : Need to generate noise!
     }

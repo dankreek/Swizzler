@@ -22,6 +22,8 @@ public:
 
 	Envelope envelope;
 	Waveform waveform;
+
+
 };
 
 #endif /* VOICE_H_ */
