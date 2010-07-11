@@ -8,7 +8,7 @@
 #include "Sound.h"
 
 Voice Sound::voices[Sound::numVoices];
-volatile uint8_t Sound::msCounter;
+volatile uint16_t Sound::msCounter;
 
 void Sound::init() {
   // Initialize each voice
@@ -22,7 +22,7 @@ void Sound::init() {
 
 void Sound::mainLoop() {
   while (true) {
-    uint8_t now = Sound::msCounter;
+    uint16_t now = Sound::msCounter;
 
     // Service each envelope generator
     for (int i=0; i < numVoices; i++) {

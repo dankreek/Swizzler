@@ -20,7 +20,7 @@ public:
   static void mainLoop();
 
   // This number is incremented every millisecond
-  volatile static uint8_t  msCounter;
+  volatile static uint16_t  msCounter;
 
   // The number of voices to output
   static const uint8_t numVoices=3;
