@@ -28,7 +28,7 @@ void Waveform::generateSawtoothWave() {
   int8_t val = -128;
   for (int i=0; i < waveformLength; i++) {
     sawtoothBuffer[i] = val;
-    val += 2;
+    val += (256/waveformLength);
   }
 }
 
@@ -45,11 +45,11 @@ void Waveform::generateTriangleWave() {
 
   for (i=0; i < waveformLength/2; i++) {
     triangleBuffer[i] = val;
-    val += 4;
+    val += (256*2)/waveformLength;
   }
 
   for (; i < waveformLength; i++) {
     triangleBuffer[i] = val;
-    val -= 4;
+    val -= (256*2)/waveformLength;
   }
 }

@@ -37,9 +37,45 @@ public:
    */
   static void setPulseWidth(uint8_t pw);
 
+  /**
+   * Set this instance's waveform type
+   */
+  inline void setWaveform(WaveformType wt) {
+    switch (wt) {
+      case triangleWave:
+        curWave = triangleBuffer;
+        break;
+      case squareWave:
+        curWave = squareBuffer;
+        break;
+      case sawtoothWave:
+        curWave = sawtoothBuffer;
+        break;
+      case noiseWave:
+        curWave = NULL;
+        break;
+    }
+
+    curWaveType = wt;
+  }
+
+  /**
+   * Get the sample which lies at the provided index for the currently selected waveform
+   */
+  inline void getSample(uint8_t i) {
+    if (curWaveType == noiseWave) {
+      // TODO : Need to generate noise!
+    }
+    else
+      return curWave[i];
+  }
+
 private:
   // Pointer to this instance's current wavetable
   int8_t *curWave;
+
+  // Current waveform type
+  WaveformType curWaveType;
 
   // Generate the wave forms in memory
   static void generateTriangleWave();
