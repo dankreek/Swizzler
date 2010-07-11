@@ -65,6 +65,7 @@ public:
   inline int8_t getSample(uint8_t i) {
     if (curWaveType == noiseWave) {
       // TODO : Need to generate noise!
+      return 0;
     }
     else
       return curWave[i];

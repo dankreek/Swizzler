@@ -27,7 +27,7 @@ public:
   void msTickHandler();
 
   // Current envelope level (0=quietest, 0xffff=loudest)
-  uint16_t envelopeLevel;
+  uint16_t level;
 
   // Attack, decay and release times
   uint16_t attack, decay, release;

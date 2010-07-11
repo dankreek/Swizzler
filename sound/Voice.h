@@ -14,16 +14,33 @@
 
 class Voice {
 public:
-	// Calculate the next sample and apply the envelope
-	int8_t renderSample();
+  // Calculate the next sample and apply the envelope
+  inline int8_t renderNextSample() {
+    int16_t sample = waveform.getSample(phaseAccumulator>>8);
 
-        // Initialize this voice
-        void init();
+    // Scale the sample using the current envelope level
+    sample = (sample*(envelope.level>>8))/0xff;
 
-	Envelope envelope;
-	Waveform waveform;
+    // Increment accumulator
+    phaseAccumulator += phaseChangeRate;
 
+    return sample;
+  }
 
+  // Initialize this voice
+  void init();
+
+  Envelope envelope;
+  Waveform waveform;
+
+  // Calculate the phaseChangeRate by frequency (in Hz)
+  void setFrequency(uint16_t freq);
+
+private:
+  uint16_t phaseAccumulator;
+
+  // The rate at which the phase accumulator increments
+  uint16_t phaseChangeRate;
 };
 
 #endif /* VOICE_H_ */

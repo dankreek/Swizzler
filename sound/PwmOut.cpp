@@ -16,7 +16,7 @@ ISR(TIMER1_COMPA_vect) {
 
   // Apply each envelope and mix each voice
   for (int i=0; i < Sound::numVoices; i++) {
-    out_sample += Sound::voices[i].renderSample();
+    out_sample += Sound::voices[i].renderNextSample();
   }
 
   // Average (mix) all the voices together

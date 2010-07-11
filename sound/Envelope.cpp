@@ -13,31 +13,34 @@ void Envelope::init() {
   sustain = 0xffff;
   release = 0;
   envelopeState = inactive;
-  envelopeLevel = 0;
+  level = 0;
 }
 
 void Envelope::msTickHandler() {
   switch (envelopeState) {
     case attackPhase:
-      envelopeLevel += changeRate;
+      level += changeRate;
       phaseTime++;
       if (phaseTime >= attack) setState(decayPhase);
       break;
 
     case decayPhase:
-      envelopeLevel -= changeRate;
+      level -= changeRate;
       phaseTime++;
       if (phaseTime >= decay) setState(sustainPhase);
       break;
 
     case sustainPhase:
-      envelopeLevel = sustain;
+      level = sustain;
       break;
 
     case releasePhase:
-      envelopeLevel -= changeRate;
+      level -= changeRate;
       phaseTime++;
       if (phaseTime >= release) setState(inactive);
+      break;
+
+    case inactive:
       break;
   }
 }
@@ -60,15 +63,15 @@ void Envelope::setState(EnvelopeState newState) {
     case attackPhase:
       // Calculate attack rate
       changeRate = 0xffff/attack;
-      envelopeLevel = 0;
+      level = 0;
       break;
     case decayPhase:
       changeRate = (0xffff-sustain)/decay;
-      envelopeLevel = 0xffff;
+      level = 0xffff;
       break;
     case sustainPhase:
       changeRate = 0;
-      envelopeLevel = sustain;
+      level = sustain;
       break;
     case releasePhase:
       changeRate = sustain/release;
@@ -76,7 +79,7 @@ void Envelope::setState(EnvelopeState newState) {
       break;
     case inactive:
       changeRate = 0;
-      envelopeLevel = 0;
+      level = 0;
   }
 
   phaseTime = 0;

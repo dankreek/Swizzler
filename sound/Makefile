@@ -250,7 +250,7 @@ $(TRG): $(OBJDEPS)
 
 
 # object from C++ (.cc, .cpp, .C files)
-.cc.o .cpp.o .C.o :
+.cpp.o:
 	$(CPPC) $(CPPFLAGS) -c $< -o $@
 
 # object from asm
