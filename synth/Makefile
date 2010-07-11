@@ -48,7 +48,6 @@ ARDUINO = ./arduino
 ############################################################################
 # Below here nothing should be changed...
 
-AVR_TOOLS_PATH = /usr/bin
 BIN = ./bin
 SRC =  $(ARDUINO)/pins_arduino.c $(ARDUINO)/wiring.c \
 $(ARDUINO)/wiring_analog.c $(ARDUINO)/wiring_digital.c \
@@ -100,13 +99,13 @@ AVRDUDE_FLAGS = -V -F \
 -b $(UPLOAD_RATE)
 
 # Program settings
-CC = $(AVR_TOOLS_PATH)/avr-gcc
-CXX = $(AVR_TOOLS_PATH)/avr-g++
-OBJCOPY = $(AVR_TOOLS_PATH)/avr-objcopy
-OBJDUMP = $(AVR_TOOLS_PATH)/avr-objdump
-AR  = $(AVR_TOOLS_PATH)/avr-ar
-SIZE = $(AVR_TOOLS_PATH)/avr-size
-NM = $(AVR_TOOLS_PATH)/avr-nm
+CC = avr-gcc
+CXX = avr-g++
+OBJCOPY = avr-objcopy
+OBJDUMP = avr-objdump
+AR  = avr-ar
+SIZE = avr-size
+NM = avr-nm
 #AVRDUDE = $(AVR_TOOLS_PATH)/avrdude
 AVRDUDE = avrdude
 REMOVE = rm -f
