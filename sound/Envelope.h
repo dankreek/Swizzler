@@ -20,6 +20,9 @@ enum EnvelopeState {
 
 class Envelope {
 public:
+  // Initialize this envelope generator
+  void init();
+
   // Adjust envelope level every millisecond (called by main loop)
   void msTickHandler();
 
@@ -37,7 +40,7 @@ public:
 
 private:
   // The current envelope phase
-  EnvelopeState state;
+  EnvelopeState envelopeState;
 
   // The state of the gate. true=closed, false=opened
   bool gateState;

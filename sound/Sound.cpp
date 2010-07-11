@@ -24,6 +24,11 @@ void Sound::mainLoop() {
   while (true) {
     uint8_t now = Sound::msCounter;
 
+    // Service each envelope generator
+    for (int i=0; i < numVoices; i++) {
+      voices[i].envelope.msTickHandler();
+    }
+
     // Wait for a full millisecond to go by before looping again
     while(now == Sound::msCounter) {}
   }

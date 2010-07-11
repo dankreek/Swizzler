@@ -8,7 +8,7 @@
 #include "Voice.h"
 
 void Voice::init() {
-  // TODO : Write this function
+  envelope.init();
 }
 
 int8_t Voice::renderSample() {

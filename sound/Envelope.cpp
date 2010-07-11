@@ -7,8 +7,17 @@
 
 #include "Envelope.h"
 
+void Envelope::init() {
+  attack = 0;
+  decay = 0;
+  sustain = 0xffff;
+  release = 0;
+  envelopeState = inactive;
+  envelopeLevel = 0;
+}
+
 void Envelope::msTickHandler() {
-  switch (state) {
+  switch (envelopeState) {
     case attackPhase:
       envelopeLevel += changeRate;
       phaseTime++;
@@ -71,5 +80,5 @@ void Envelope::setState(EnvelopeState newState) {
   }
 
   phaseTime = 0;
-  state = newState;
+  envelopeState = newState;
 }
