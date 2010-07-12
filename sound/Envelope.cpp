@@ -56,6 +56,8 @@ void Envelope::setGate(bool isClosed) {
       setState(releasePhase);
     }
   }
+
+  gateState = isClosed;
 }
 
 void Envelope::setState(EnvelopeState newState) {
