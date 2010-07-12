@@ -20,15 +20,12 @@ ISR(TIMER1_COMPA_vect) {
   for (int i=0; i < Sound::numVoices; i++) {
     out_sample += Sound::voices[i].renderNextSample();
   }
-/*
+
   // Average (mix) all the voices together
   out_sample = (out_sample/Sound::numVoices)+128;
-   */
 
   // Convert 8bit signed to 8bit unsigned, and output
-
   OCR2A = out_sample;
-
 
   // At 16,000hz, every 16th cycle indicates a millisecond
   cycleCounter++;
