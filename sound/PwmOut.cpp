@@ -13,19 +13,16 @@ volatile uint8_t test=0;
 
 // Handle the PWM output
 ISR(TIMER1_COMPA_vect) {
-  static uint16_t cycleCounter=0;
+  static volatile uint16_t cycleCounter=0;
   int16_t out_sample=0;
 
   // Apply each envelope and mix each voice
   for (int i=0; i < Sound::numVoices; i++) {
-    out_sample += Sound::voices[i].renderNextSample();
+    out_sample += (Sound::voices[i].renderNextSample()/2);
   }
 
-  // Average (mix) all the voices together
-  out_sample = (out_sample/Sound::numVoices)+128;
-
   // Convert 8bit signed to 8bit unsigned, and output
-  OCR2A = out_sample;
+  OCR2A = (out_sample+128);
 
   // At 16,000hz, every 16th cycle indicates a millisecond
   cycleCounter++;
