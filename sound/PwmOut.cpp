@@ -26,7 +26,7 @@ ISR(TIMER1_COMPA_vect) {
 
   // At 16,000hz, every 16th cycle indicates a millisecond
   cycleCounter++;
-  if (cycleCounter >= 16) {
+  if (cycleCounter >= PwmOut::sampleRate/1000) {
     cycleCounter = 0;
     Sound::msCounter++;
   }

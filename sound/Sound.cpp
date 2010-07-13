@@ -45,8 +45,10 @@ void Sound::mainLoop() {
 
   voices[0].envelope.setGate(true);
 
-  uint16_t now = Sound::msCounter;
+
   while (true) {
+    uint16_t now = Sound::msCounter;
+
     if (msCounter == 500) voices[1].envelope.setGate(true);
 
     if (msCounter == 1000) voices[0].envelope.setGate(false);
@@ -60,6 +62,5 @@ void Sound::mainLoop() {
 
     // Wait for a full millisecond to go by before looping again
     while (now == Sound::msCounter);
-    now = Sound::msCounter;
   }
 }
