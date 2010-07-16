@@ -22,16 +22,16 @@ ISR(TIMER1_COMPA_vect) {
   // Apply each envelope and mix each voice
   for (int i=0; i < Sound::numVoices; i++) {
     // Using a 5 bit envelope resolution so >> 11 to convert from 16 to 5 bits
-    out_sample += Sound::voices[i].getNextSample() * (Sound::voices[i].envelope.level>>(16-ENVELOPE_RESOLUTION));
+    out_sample += (Sound::voices[i].getNextSample() * (Sound::voices[i].envelope.level>>(16-ENVELOPE_RESOLUTION)));
   }
 
   // Divide by 32 for the final 8-bit output level (using 5 bit envelope resolution)
-  out_sample >>= ENVELOPE_RESOLUTION;
+  out_sample >>= (ENVELOPE_RESOLUTION+1);
 
   // Convert 8bit signed to 8bit unsigned, and output
   OCR2A = (out_sample+128);
 
-  // At 16,000hz, every 16th cycle indicates a millisecond
+  // Keep track of milliseconds depending upon the current sample rate
   cycleCounter++;
   if (cycleCounter >= PwmOut::sampleRate/1000) {
     cycleCounter = 0;
