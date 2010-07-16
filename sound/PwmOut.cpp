@@ -9,7 +9,7 @@
 #include "PwmOut.h"
 #include "Sound.h"
 
-volatile uint8_t test=0;
+uint16_t PwmOut::sampleRate;
 
 // Envelope resolution (in bits)
 #define ENVELOPE_RESOLUTION     5
@@ -21,11 +21,12 @@ ISR(TIMER1_COMPA_vect) {
 
   // Apply each envelope and mix each voice
   for (int i=0; i < Sound::numVoices; i++) {
-    // Using a 5 bit envelope resolution so >> 11 to convert from 16 to 5 bits
+    // Convert envelope from 16 bit resolution to the set resolution
     out_sample += (Sound::voices[i].getNextSample() * (Sound::voices[i].envelope.level>>(16-ENVELOPE_RESOLUTION)));
   }
 
-  // Divide by 32 for the final 8-bit output level (using 5 bit envelope resolution)
+  // Scale down to final 8-bit output level
+  // (note that one more right shift is being done to prevent clipping from mixing)
   out_sample >>= (ENVELOPE_RESOLUTION+1);
 
   // Convert 8bit signed to 8bit unsigned, and output
@@ -40,6 +41,8 @@ ISR(TIMER1_COMPA_vect) {
 }
 
 void PwmOut::init() {
+  sampleRate = initialSampleRate;
+
   DDRB = _BV(PB3);
 
   // Set up Timer 2 to do pulse width modulation on the speaker pin.
