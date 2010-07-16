@@ -11,6 +11,9 @@
 
 volatile uint8_t test=0;
 
+// Envelope resolution (in bits)
+#define ENVELOPE_RESOLUTION     5
+
 // Handle the PWM output
 ISR(TIMER1_COMPA_vect) {
   static volatile uint16_t cycleCounter=0;
@@ -18,8 +21,12 @@ ISR(TIMER1_COMPA_vect) {
 
   // Apply each envelope and mix each voice
   for (int i=0; i < Sound::numVoices; i++) {
-    out_sample += (Sound::voices[i].renderNextSample()/2);
+    // Using a 5 bit envelope resolution so >> 11 to convert from 16 to 5 bits
+    out_sample += Sound::voices[i].getNextSample() * (Sound::voices[i].envelope.level>>(16-ENVELOPE_RESOLUTION));
   }
+
+  // Divide by 32 for the final 8-bit output level (using 5 bit envelope resolution)
+  out_sample >>= ENVELOPE_RESOLUTION;
 
   // Convert 8bit signed to 8bit unsigned, and output
   OCR2A = (out_sample+128);

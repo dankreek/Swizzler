@@ -15,17 +15,12 @@
 class Voice {
 public:
   // Calculate the next sample and apply the envelope
-  inline int8_t renderNextSample() {
-    // Phase accumulator needs to be scaled from 16 to 7 bits (the length of the wavetable)
-    int16_t sample = waveform.getSample(phaseAccumulator>>9);
-
-    // Scale the sample using the current envelope level
-    sample = (sample*(envelope.level>>8))/0xff;
-
+  inline int8_t getNextSample() {
     // Increment accumulator
     phaseAccumulator += phaseChangeRate;
 
-    return sample;
+    // Phase accumulator needs to be scaled from 16 to 7 bits (the length of the wavetable)
+    return waveform.getSample(phaseAccumulator>>9);
   }
 
   // Initialize this voice
