@@ -23,7 +23,7 @@ public:
   volatile static uint16_t  msCounter;
 
   // The number of voices to output
-  static const uint8_t numVoices=4;
+  static const uint8_t numVoices=6;
 
   // All the voices to be mixed and output
   static Voice voices[numVoices];
