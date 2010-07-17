@@ -13,6 +13,8 @@ Voice Sound::voices[Sound::numVoices];
 volatile uint16_t Sound::msCounter;
 
 void Sound::init() {
+  Waveform::initNoiseGenerator();
+
   // Initialize each voice
   for (int i=0; i < numVoices; i++) {
     voices[i].init();
@@ -31,12 +33,12 @@ void Sound::mainLoop() {
   voices[0].envelope.release = 1000;
 
   voices[0].setFrequency(440);
-  voices[0].waveform.curWaveType = triangleWave;
+  voices[0].waveform.curWaveType = noiseWave;
 
   voices[1].envelope.attack = 250;
   voices[1].envelope.decay = 250;
   voices[1].envelope.sustain = 128<<8;
-  voices[1].envelope.release = 100;
+  voices[1].envelope.release = 1000;
 
   voices[1].setFrequency(523);
   voices[1].waveform.pulseWidth = 0x8000;
@@ -46,7 +48,6 @@ void Sound::mainLoop() {
 
 
   while (true) {
-    uint8_t noiseI=0;
     uint16_t now = Sound::msCounter;
 
     if (msCounter == 500) voices[1].envelope.setGate(true);
@@ -62,9 +63,10 @@ void Sound::mainLoop() {
       }
 
       now = Sound::msCounter;
-      Waveform::noiseWaveTable[++noiseI] =  random();
     }
 
+    Waveform::pollNoiseGenerator();
 
+    //if ((Sound::msCounter % 200)==0) Waveform::pollNoiseGenerator();
   }
 }

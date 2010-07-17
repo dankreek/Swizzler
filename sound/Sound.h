@@ -10,6 +10,8 @@
 
 #include "PwmOut.h"
 #include "Voice.h"
+#include "TwoWireSlave.h"
+#include "RingBuffer.cpp"
 
 class Sound {
 public:
