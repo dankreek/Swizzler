@@ -7,6 +7,7 @@
 
 #include "Sound.h"
 #include <util/delay.h>
+#include <stdlib.h>
 
 Voice Sound::voices[Sound::numVoices];
 volatile uint16_t Sound::msCounter;
@@ -30,7 +31,7 @@ void Sound::mainLoop() {
   voices[0].envelope.release = 1000;
 
   voices[0].setFrequency(440);
-  voices[0].waveform.curWaveType = squareWave;
+  voices[0].waveform.curWaveType = triangleWave;
 
   voices[1].envelope.attack = 250;
   voices[1].envelope.decay = 250;
@@ -45,6 +46,7 @@ void Sound::mainLoop() {
 
 
   while (true) {
+    uint8_t noiseI=0;
     uint16_t now = Sound::msCounter;
 
     if (msCounter == 500) voices[1].envelope.setGate(true);
@@ -54,11 +56,15 @@ void Sound::mainLoop() {
     if (msCounter == 2000) voices[1].envelope.setGate(false);
 
     // Service each envelope generator
-    for (int i=0; i < numVoices; i++) {
-      voices[i].envelope.msTickHandler();
+    if (now != Sound::msCounter) {
+      for (int i=0; i < numVoices; i++) {
+        voices[i].envelope.msTickHandler();
+      }
+
+      now = Sound::msCounter;
+      Waveform::noiseWaveTable[++noiseI] =  random();
     }
 
-    // Wait for a full millisecond to go by before looping again
-    while (now == Sound::msCounter);
+
   }
 }
