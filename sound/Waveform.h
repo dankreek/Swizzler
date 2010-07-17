@@ -21,9 +21,6 @@ class Waveform {
 public:
   Waveform();
 
-  // Generate the wavetables
-  static void init();
-
   // Length of a wavetable
   static const uint8_t waveformLength = 128;
 
@@ -33,56 +30,42 @@ public:
   static int8_t sawtoothBuffer[waveformLength];
 
   /**
-   * Set (and redraw) the pulse width of the pulse wave (7 bits are significant)
+   * Set the pulse width of the pulse wave
    */
-  static void setPulseWidth(uint8_t pw);
+  void setPulseWidth(uint16_t pw);
 
   /**
-   * Set this instance's waveform type
+   * This waveform type
    */
-  inline void setWaveform(WaveformType wt) {
-    switch (wt) {
-      case triangleWave:
-        curWave = triangleBuffer;
-        break;
-      case squareWave:
-        curWave = squareBuffer;
-        break;
-      case sawtoothWave:
-        curWave = sawtoothBuffer;
-        break;
-      case noiseWave:
-        curWave = 0;
-        break;
-    }
-
-    curWaveType = wt;
-  }
+  WaveformType curWaveType;
 
   /**
    * Get the sample which lies at the provided index for the currently selected waveform
    */
-  inline int8_t getSample(uint8_t i) {
-    if (curWaveType == noiseWave) {
-      // TODO : Need to generate noise!
-      return 0;
+  inline int8_t getSample(uint16_t i) {
+    // All triangle all the time
+    switch (curWaveType) {
+    case sawtoothWave:
+      return (i >> 8)-128;
+      break;
+    case triangleWave:
+      i >>= 7;
+      return ((i <= 255) ? i : 511-i)-128;
+      break;
+    case squareWave:
+      return (i < pulseWidth) ? -64 : 64;
+      break;
+    case noiseWave:
+      return noiseWaveTable[i>>8];
+      break;
     }
-    else
-      return curWave[i];
+
+    return 0;
   }
 
-private:
-  // Pointer to this instance's current wavetable
-  int8_t *curWave;
+  uint16_t pulseWidth;
 
-  // Current waveform type
-  WaveformType curWaveType;
-
-  // Generate the wave forms in memory
-  static void generateTriangleWave();
-  static void generateSawtoothWave();
-
-  static uint8_t pulseWidth;
+  static int8_t noiseWaveTable[waveformLength];
 };
 
 #endif /* WAVEFORM_H_ */

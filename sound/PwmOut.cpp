@@ -9,8 +9,6 @@
 #include "PwmOut.h"
 #include "Sound.h"
 
-uint16_t PwmOut::sampleRate;
-
 // Envelope resolution (in bits)
 #define ENVELOPE_RESOLUTION     5
 
@@ -41,8 +39,6 @@ ISR(TIMER1_COMPA_vect) {
 }
 
 void PwmOut::init() {
-  sampleRate = initialSampleRate;
-
   DDRB = _BV(PB3);
 
   // Set up Timer 2 to do pulse width modulation on the speaker pin.

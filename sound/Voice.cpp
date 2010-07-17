@@ -10,7 +10,8 @@
 
 void Voice::init() {
   envelope.init();
-  waveform.setWaveform(triangleWave);
+  waveform.curWaveType = triangleWave;
+  waveform.pulseWidth = 0x8000;
   phaseAccumulator = 0;
 }
 

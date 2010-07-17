@@ -20,7 +20,8 @@ public:
     phaseAccumulator += phaseChangeRate;
 
     // Phase accumulator needs to be scaled from 16 to 7 bits (the length of the wavetable)
-    return waveform.getSample(phaseAccumulator>>9);
+    //return waveform.getSample(phaseAccumulator>>9);
+    return waveform.getSample(phaseAccumulator);
   }
 
   // Initialize this voice

@@ -12,9 +12,6 @@ Voice Sound::voices[Sound::numVoices];
 volatile uint16_t Sound::msCounter;
 
 void Sound::init() {
-  // Draw and initialize all wave forms
-  Waveform::init();
-
   // Initialize each voice
   for (int i=0; i < numVoices; i++) {
     voices[i].init();
@@ -33,7 +30,7 @@ void Sound::mainLoop() {
   voices[0].envelope.release = 1000;
 
   voices[0].setFrequency(440);
-  voices[0].waveform.setWaveform(sawtoothWave);
+  voices[0].waveform.curWaveType = squareWave;
 
   voices[1].envelope.attack = 250;
   voices[1].envelope.decay = 250;
@@ -41,7 +38,8 @@ void Sound::mainLoop() {
   voices[1].envelope.release = 100;
 
   voices[1].setFrequency(523);
-  voices[1].waveform.setWaveform(sawtoothWave);
+  voices[1].waveform.pulseWidth = 0x8000;
+  voices[1].waveform.curWaveType = triangleWave;
 
   voices[0].envelope.setGate(true);
 
