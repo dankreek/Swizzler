@@ -9,9 +9,11 @@
 #include <util/delay.h>
 #include <stdlib.h>
 
-uint8_t Sound::twiData[twiBufferSize];
 Voice Sound::voices[numVoices];
 volatile uint16_t Sound::msCounter;
+
+// Needed for the TWI slave input data
+uint8_t Sound::twiData[twiBufferSize];
 RingBuffer<uint8_t> Sound::twiInputBuffer(twiData, twiBufferSize);
 
 void Sound::init() {

@@ -36,7 +36,7 @@ public:
         break;
       case triangleWave:
         i >>= 7;
-        return ((i <= 255) ? i : 511-i)-128;
+        return (i <= 255) ? (i-128) : (511-i-128);
         break;
       case squareWave:
         return (i < pulseWidth) ? -64 : 64;
