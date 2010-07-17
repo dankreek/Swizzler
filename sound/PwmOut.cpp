@@ -36,6 +36,8 @@ ISR(TIMER1_COMPA_vect) {
     cycleCounter = 0;
     Sound::msCounter++;
   }
+
+  Waveform::pollNoiseGenerator();
 }
 
 void PwmOut::init() {

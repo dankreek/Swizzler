@@ -33,6 +33,7 @@ public:
   // Calculate the phaseChangeRate by frequency (in Hz)
   void setFrequency(uint16_t freq);
 
+  bool isFiltered;
 private:
   uint16_t phaseAccumulator;
 

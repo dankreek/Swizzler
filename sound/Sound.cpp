@@ -30,7 +30,7 @@ void Sound::mainLoop() {
   voices[0].envelope.attack = 250;
   voices[0].envelope.decay = 250;
   voices[0].envelope.sustain = 128<<8;
-  voices[0].envelope.release = 1000;
+  voices[0].envelope.release = 500;
 
   voices[0].setFrequency(440);
   voices[0].waveform.curWaveType = noiseWave;
@@ -38,35 +38,27 @@ void Sound::mainLoop() {
   voices[1].envelope.attack = 250;
   voices[1].envelope.decay = 250;
   voices[1].envelope.sustain = 128<<8;
-  voices[1].envelope.release = 1000;
+  voices[1].envelope.release = 100;
 
   voices[1].setFrequency(523);
   voices[1].waveform.pulseWidth = 0x8000;
-  voices[1].waveform.curWaveType = triangleWave;
-
-  voices[0].envelope.setGate(true);
-
+  voices[1].waveform.curWaveType = noiseWave;
 
   while (true) {
     uint16_t now = Sound::msCounter;
 
+    if (msCounter == 0) voices[0].envelope.setGate(true);
     if (msCounter == 500) voices[1].envelope.setGate(true);
-
     if (msCounter == 1000) voices[0].envelope.setGate(false);
-
     if (msCounter == 2000) voices[1].envelope.setGate(false);
 
     // Service each envelope generator
-    if (now != Sound::msCounter) {
-      for (int i=0; i < numVoices; i++) {
-        voices[i].envelope.msTickHandler();
-      }
-
-      now = Sound::msCounter;
+    for (int i=0; i < numVoices; i++) {
+      voices[i].envelope.msTickHandler();
     }
 
-    Waveform::pollNoiseGenerator();
+    now = Sound::msCounter;
 
-    //if ((Sound::msCounter % 200)==0) Waveform::pollNoiseGenerator();
+    while (now == Sound::msCounter);
   }
 }

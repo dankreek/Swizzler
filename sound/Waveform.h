@@ -54,10 +54,20 @@ public:
   // Fill the noise table with a bunch random noise
   static void initNoiseGenerator();
 
-  static void pollNoiseGenerator();
+  static inline
+  void pollNoiseGenerator() {
+    int16_t temp;
+
+    temp=noise;
+    noise <<= 1;
+
+    temp ^= noise;
+    if ((temp & 0x4000) == 0x4000) noise |= 1;
+    noiseOut = noise >> 6;
+  }
 
 private:
-  static uint16_t noiseOut;
+  static int8_t noiseOut;
   static uint16_t noise;
 };
 
