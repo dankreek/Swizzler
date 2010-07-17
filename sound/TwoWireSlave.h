@@ -37,7 +37,6 @@ extern "C" {
 
 #define BUFFER_LENGTH 32
 
-// TODO: Make this class an all static service class
 class TwoWireSlave {
   private:
     static RingBuffer<uint8_t> *inputBuffer;

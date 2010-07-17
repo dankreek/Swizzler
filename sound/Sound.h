@@ -18,8 +18,18 @@ public:
   // Initialize the sound module
   static void init();
 
-  // Enter the main loop
+  // The main thread loop
   static void mainLoop();
+
+  // This chip's TWI slave address
+  static const uint8_t twiSlaveAddress = 0x70;
+
+  // Buffer where the incoming TWI data is stored
+  static const uint8_t twiBufferSize = 64;
+  static uint8_t twiData[twiBufferSize];
+
+  // Ring buffer wrapper around the twiData array
+  static RingBuffer<uint8_t> twiInputBuffer;
 
   // This number is incremented every millisecond
   volatile static uint16_t  msCounter;

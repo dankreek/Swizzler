@@ -49,20 +49,20 @@ public:
     return 0;
   }
 
+  // The pulse width of this voice's square wave (0-0xffff)
   uint16_t pulseWidth;
 
-  // Fill the noise table with a bunch random noise
   static void initNoiseGenerator();
 
   static inline
   void pollNoiseGenerator() {
-    int16_t temp;
+    int16_t oldNoise;
 
-    temp=noise;
+    oldNoise=noise;
     noise <<= 1;
 
-    temp ^= noise;
-    if ((temp & 0x4000) == 0x4000) noise |= 1;
+    oldNoise ^= noise;
+    if ((oldNoise & 0x4000) == 0x4000) noise |= 1;
     noiseOut = noise >> 6;
   }
 

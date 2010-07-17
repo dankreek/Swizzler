@@ -9,8 +9,10 @@
 #include <util/delay.h>
 #include <stdlib.h>
 
-Voice Sound::voices[Sound::numVoices];
+uint8_t Sound::twiData[twiBufferSize];
+Voice Sound::voices[numVoices];
 volatile uint16_t Sound::msCounter;
+RingBuffer<uint8_t> Sound::twiInputBuffer(twiData, twiBufferSize);
 
 void Sound::init() {
   Waveform::initNoiseGenerator();
@@ -23,42 +25,30 @@ void Sound::init() {
   // Start the sound output going
   msCounter = 0;
   PwmOut::init();
+
+  // Start up the TWI bus
+  twi.init(twiSlaveAddress, &twiInputBuffer);
 }
 
 void Sound::mainLoop() {
-  // Output a triangle wave a 440hz as a demo
-  voices[0].envelope.attack = 250;
-  voices[0].envelope.decay = 250;
-  voices[0].envelope.sustain = 128<<8;
-  voices[0].envelope.release = 500;
-
-  voices[0].setFrequency(440);
-  voices[0].waveform.curWaveType = noiseWave;
-
-  voices[1].envelope.attack = 250;
-  voices[1].envelope.decay = 250;
-  voices[1].envelope.sustain = 128<<8;
-  voices[1].envelope.release = 100;
-
-  voices[1].setFrequency(523);
-  voices[1].waveform.pulseWidth = 0x8000;
-  voices[1].waveform.curWaveType = noiseWave;
+  uint16_t now = 0;
 
   while (true) {
-    uint16_t now = Sound::msCounter;
+    // Update the envelopes every millisecond
+    if (now != Sound::msCounter) {
+      // Service each envelope generator
+      for (int i=0; i < numVoices; i++) {
+        voices[i].envelope.msTickHandler();
+      }
 
-    if (msCounter == 0) voices[0].envelope.setGate(true);
-    if (msCounter == 500) voices[1].envelope.setGate(true);
-    if (msCounter == 1000) voices[0].envelope.setGate(false);
-    if (msCounter == 2000) voices[1].envelope.setGate(false);
-
-    // Service each envelope generator
-    for (int i=0; i < numVoices; i++) {
-      voices[i].envelope.msTickHandler();
+      now = Sound::msCounter;
     }
 
-    now = Sound::msCounter;
+    // Handle all twi data
+    while (twiInputBuffer.hasData()) {
+      uint8_t twiData = twiInputBuffer.get();
 
-    while (now == Sound::msCounter);
+
+    }
   }
 }
