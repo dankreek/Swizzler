@@ -10,14 +10,6 @@
 
 #include <inttypes.h>
 
-enum EnvelopeState {
-  inactive,
-  attackPhase,
-  decayPhase,
-  sustainPhase,
-  releasePhase
-};
-
 class Envelope {
 public:
   // Initialize this envelope generator
@@ -39,6 +31,14 @@ public:
   void setGate(bool isClosed);
 
 private:
+  enum EnvelopeState {
+      inactive,
+      attackPhase,
+      decayPhase,
+      sustainPhase,
+      releasePhase
+    };
+
   // The current envelope phase
   EnvelopeState envelopeState;
 

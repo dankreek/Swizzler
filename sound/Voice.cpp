@@ -10,12 +10,9 @@
 
 void Voice::init() {
   envelope.init();
-  /*
-  waveform.curWaveType = triangleWave;
-  waveform.pulseWidth = 0x8000;
-  */
   phaseAccumulator = 0;
   isFiltered=false;
+  outputVolume=0xff;
 }
 
 void Voice::setFrequency(uint16_t freq) {

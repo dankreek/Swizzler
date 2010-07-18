@@ -43,20 +43,20 @@ class RingBuffer {
 
 template<typename T>
 RingBuffer<T>::RingBuffer(T* bufferPtr, uint8_t sizeInElements) {
-	buf = bufferPtr;
-	bufSize = sizeInElements;
-	head = 0;
-	tail = 0;
+  buf = bufferPtr;
+  bufSize = sizeInElements;
+  head = 0;
+  tail = 0;
 }
 
 template<typename T>
 inline bool RingBuffer<T>::isFull() {
-	return ((tail+1)%bufSize) == head;
+  return ((tail+1)%bufSize) == head;
 }
 
 template<typename T>
 inline bool RingBuffer<T>::hasData() {
-	return !(head == tail);
+  return !(head == tail);
 }
 
 template<typename T>
@@ -66,24 +66,24 @@ inline void RingBuffer<T>::flush() {
 
 template<typename T>
 T RingBuffer<T>::get() {
-	if (hasData()) {
-		T data = buf[head];
-		head = (head+1) % bufSize;
-		return data;
-	}
+  if (hasData()) {
+          T data = buf[head];
+          head = (head+1) % bufSize;
+          return data;
+  }
 
-	return 0;
+  return 0;
 }
 
 template<typename T>
 bool RingBuffer<T>::push(T data) {
-	if (!isFull()) {
-		buf[tail] = data;
-		tail = (tail+1) % bufSize;
-		return true;
-	}
+  if (!isFull()) {
+          buf[tail] = data;
+          tail = (tail+1) % bufSize;
+          return true;
+  }
 
-	return false;
+  return false;
 }
 
 #endif /* RINGBUFFER_H_ */

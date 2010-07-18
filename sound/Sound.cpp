@@ -5,9 +5,9 @@
  *      Author: justin
  */
 
-#include "Sound.h"
 #include <util/delay.h>
-#include <stdlib.h>
+#include "Sound.h"
+#include "InputHandler.h"
 
 Voice Sound::voices[numVoices];
 volatile uint16_t Sound::msCounter;
@@ -46,11 +46,11 @@ void Sound::mainLoop() {
       now = Sound::msCounter;
     }
 
-    // Handle all twi data
+    // Geet data from the TWI interface and pass it into the input handler
     while (twiInputBuffer.hasData()) {
-      uint8_t twiData = twiInputBuffer.get();
-
-
+      InputHandler::handleInput(twiInputBuffer.get());
     }
+
+
   }
 }
