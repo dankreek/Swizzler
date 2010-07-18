@@ -126,6 +126,9 @@ void InputHandler::handleChannelCommand() {
     case setReleaseTime:
       setVoiceRelease(commandVoiceNumber-1, data);
       break;
+    case setFrequency:
+      setVoiceFrequency(commandVoiceNumber-1, data);
+      break;
     default:
       return;
     }
@@ -176,5 +179,7 @@ void InputHandler::setVoiceRelease(uint8_t voiceNumber, uint16_t releaseTime) {
   Sound::voices[voiceNumber].envelope.release = releaseTime;
 }
 
-
+void InputHandler::setVoiceFrequency(uint8_t voiceNumber, uint16_t frequency) {
+  Sound::voices[voiceNumber].setFrequency(frequency);
+}
 

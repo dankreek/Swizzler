@@ -37,6 +37,8 @@ void Sound::init() {
 void Sound::mainLoop() {
   uint16_t now = 0;
 
+  voices[0].setFrequency(440);
+
   while (true) {
     // Update the envelopes every millisecond
     if (now != Sound::msCounter) {

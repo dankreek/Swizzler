@@ -72,6 +72,10 @@
  *  (NOT YET IMPLEMENTED)
  *  -------------------------------
  *
+ *  Set voice's oscillator frequency: <voice number> 0x09 <frequency high byte> <frequency low byte>
+ *  --------------------------------
+ *  Set the voice's oscillator frequency (in hz).
+ *
  */
 
 #ifndef INPUTHANDLER_H_
@@ -99,6 +103,7 @@ public:
   static void setVoiceAttack(uint8_t, uint16_t);
   static void setVoiceDecay(uint8_t, uint16_t);
   static void setVoiceRelease(uint8_t, uint16_t);
+  static void setVoiceFrequency(uint8_t, uint16_t);
 
 private:
   /**
@@ -122,7 +127,8 @@ private:
     setSustainLevel = 0x05,
     setReleaseTime  = 0x06,
     setGateState    = 0x07,
-    setFilterOnOff  = 0x08
+    setFilterOnOff  = 0x08,
+    setFrequency    = 0x09
   };
 
   /**
