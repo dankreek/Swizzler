@@ -39,6 +39,8 @@ public:
 
   // All the voices to be mixed and output
   static Voice voices[numVoices];
+
+  static uint8_t masterVolume;
 };
 
 #endif /* SOUND_H_ */

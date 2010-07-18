@@ -11,12 +11,14 @@
 
 Voice Sound::voices[numVoices];
 volatile uint16_t Sound::msCounter;
+uint8_t Sound::masterVolume;
 
 // Needed for the TWI slave input data
 uint8_t Sound::twiData[twiBufferSize];
 RingBuffer<uint8_t> Sound::twiInputBuffer(twiData, twiBufferSize);
 
 void Sound::init() {
+  masterVolume = 0xff;
   Waveform::initNoiseGenerator();
 
   // Initialize each voice
@@ -46,7 +48,7 @@ void Sound::mainLoop() {
       now = Sound::msCounter;
     }
 
-    // Geet data from the TWI interface and pass it into the input handler
+    // Get data from the TWI interface and pass it into the input handler
     while (twiInputBuffer.hasData()) {
       InputHandler::handleInput(twiInputBuffer.get());
     }
