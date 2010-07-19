@@ -12,8 +12,9 @@
 
 enum WaveformType {
   triangleWave,
-  squareWave,
   sawtoothWave,
+  reverseSawtoothWave,
+  squareWave,
   noiseWave
 };
 
@@ -52,17 +53,16 @@ inline int8_t Waveform::getSample(uint16_t i) {
   switch (curWaveType) {
     case sawtoothWave:
       return (i >> 8)-128;
-      break;
+    case reverseSawtoothWave:
+      return 255-(i >> 8)-128;
     case triangleWave:
       i >>= 7;
       return (i <= 255) ? (i-128) : (511-i-128);
-      break;
     case squareWave:
       return (i < pulseWidth) ? -64 : 64;
-      break;
     case noiseWave:
       return noiseOut;
-      break;
+
   }
 
   return 0;

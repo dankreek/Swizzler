@@ -34,10 +34,11 @@
  *  -------------------
  *  Change the waveform of the voice to one of the following waveform types:
  *
- *  0x00 = Triangle wave
- *  0x01 = Square wave
- *  0x02 = Sawtooth
- *  0x03 = Noise (random)
+ *  0x00 = Triangle
+ *  0x01 = Sawtooth
+ *  0x02 = Reverse Sawtooth
+ *  0x03 = Square
+ *  0x04 = Noise
  *
  *  Set voice's square pulse width: <voice number> 0x02 <pulse width high byte> <pulse width low byte>
  *  -------------------------------
