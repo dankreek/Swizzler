@@ -15,6 +15,9 @@
 
 class Sound {
 public:
+  // The number of voices to output
+  static const uint8_t numVoices=3;
+
   // Initialize the sound module
   static void init();
 
@@ -33,9 +36,6 @@ public:
 
   // This number is incremented every millisecond
   volatile static uint16_t  msCounter;
-
-  // The number of voices to output
-  static const uint8_t numVoices=8;
 
   // All the voices to be mixed and output
   static Voice voices[numVoices];

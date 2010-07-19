@@ -34,9 +34,14 @@ public:
 
   // This voice's output volume
   uint8_t outputVolume;
-private:
+
+  // Is another voice synced to this one
+  // -1 signifies no sync
+  int8_t slaveSyncVoice;
+
   uint16_t phaseAccumulator;
 
+private:
   // The rate at which the phase accumulator increments
   uint16_t phaseChangeRate;
 };

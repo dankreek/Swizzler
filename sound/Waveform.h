@@ -11,11 +11,11 @@
 #include <inttypes.h>
 
 enum WaveformType {
-  triangleWave,
-  sawtoothWave,
-  reverseSawtoothWave,
-  squareWave,
-  noiseWave
+  triangleWave         = 0x00,
+  sawtoothWave         = 0x01,
+  reverseSawtoothWave  = 0x02,
+  squareWave           = 0x03,
+  noiseWave            = 0x04
 };
 
 class Waveform {

@@ -13,6 +13,7 @@ void Voice::init() {
   phaseAccumulator = 0;
   isFiltered=false;
   outputVolume=0xff;
+  slaveSyncVoice=-1;
 }
 
 void Voice::setFrequency(uint16_t freq) {
