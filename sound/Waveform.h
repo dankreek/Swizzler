@@ -51,13 +51,13 @@ private:
 
 inline int8_t Waveform::getSample(uint16_t i) {
   switch (curWaveType) {
+    case triangleWave:
+      i >>= 7;
+      return (i <= 255) ? (i-128) : (511-i-128);
     case sawtoothWave:
       return (i >> 8)-128;
     case reverseSawtoothWave:
       return 255-(i >> 8)-128;
-    case triangleWave:
-      i >>= 7;
-      return (i <= 255) ? (i-128) : (511-i-128);
     case squareWave:
       return (i < pulseWidth) ? -64 : 64;
     case noiseWave:
@@ -69,9 +69,7 @@ inline int8_t Waveform::getSample(uint16_t i) {
 }
 
 inline void Waveform::pollNoiseGenerator() {
-  int16_t oldNoise;
-
-  oldNoise=noise;
+  int16_t oldNoise=noise;
   noise <<= 1;
 
   oldNoise ^= noise;

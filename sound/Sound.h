@@ -16,7 +16,7 @@
 class Sound {
 public:
   // The number of voices to output
-  static const uint8_t numVoices=3;
+  static const uint8_t numVoices=4;
 
   // Initialize the sound module
   static void init();

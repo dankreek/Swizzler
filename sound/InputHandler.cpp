@@ -105,6 +105,8 @@ void InputHandler::handleChannelCommand() {
       case setFilterOnOff:
         setVoiceFilterState(commandVoiceNumber-1, commandData[0]);
         break;
+      case setSlaveSync:
+        setVoiceSlaveSync(commandVoiceNumber-1, commandData[0]);
       default:
         return;
     }
@@ -143,7 +145,7 @@ void InputHandler::resetCommand() {
 }
 
 void InputHandler::setVoiceVolume(uint8_t voiceNumber, uint8_t volume) {
-  Sound::voices[voiceNumber].outputVolume = volume;
+  Sound::voices[voiceNumber].outputVolume = (volume >> 3);
 }
 
 void InputHandler::setVoiceWaveform(uint8_t voiceNumber, uint8_t waveFormNumber) {
@@ -161,6 +163,10 @@ void InputHandler::setVoiceSustain(uint8_t voiceNumber, uint8_t sustainLevel) {
 
 void InputHandler::setVoiceFilterState(uint8_t voiceNumber, uint8_t filterState) {
   Sound::voices[voiceNumber].isFiltered = (filterState == 0) ? false : true;
+}
+
+void InputHandler::setVoiceSlaveSync(uint8_t voiceNumber, uint8_t slaveSyncVoice) {
+  Sound::voices[voiceNumber].slaveSyncVoice = slaveSyncVoice;
 }
 
 void InputHandler::setVoiceAttack(uint8_t voiceNumber, uint16_t attackTime) {

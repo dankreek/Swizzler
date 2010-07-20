@@ -32,7 +32,7 @@ public:
   // If this voice being sent through the filter
   bool isFiltered;
 
-  // This voice's output volume
+  // This voice's output volume (0-32)
   uint8_t outputVolume;
 
   // Is another voice synced to this one
@@ -50,9 +50,10 @@ inline int8_t Voice::getNextSample() {
   // Increment accumulator
   phaseAccumulator += phaseChangeRate;
 
-  // Phase accumulator needs to be scaled from 16 to 7 bits (the length of the wavetable)
-  //return waveform.getSample(phaseAccumulator>>9);
-  return waveform.getSample(phaseAccumulator);
+  // Calculate outsample scaled by envelope (which is scaled to 8 bits from 16)
+  int16_t outSample = waveform.getSample(phaseAccumulator)*(envelope.level>>8);
+
+  return (outSample >> 8);
 }
 
 

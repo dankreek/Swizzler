@@ -77,6 +77,10 @@
  *  --------------------------------
  *  Set the voice's oscillator frequency (in hz).
  *
+ *  Set the voice to sync another voice: <voice number> 0x0a <slave voice>
+ *  ------------------------------------
+ *  Sync the <slave voice> to <voice number>. If <slave voice> is 0xff then sync is turned off.
+ *
  */
 
 #ifndef INPUTHANDLER_H_
@@ -99,6 +103,7 @@ public:
   static void setVoiceSustain(uint8_t, uint8_t);
   static void setVoiceGateState(uint8_t, uint8_t);
   static void setVoiceFilterState(uint8_t, uint8_t);
+  static void setVoiceSlaveSync(uint8_t, uint8_t);
 
   static void setVoicePulseWidth(uint8_t, uint16_t);
   static void setVoiceAttack(uint8_t, uint16_t);
@@ -129,7 +134,8 @@ private:
     setReleaseTime  = 0x06,
     setGateState    = 0x07,
     setFilterOnOff  = 0x08,
-    setFrequency    = 0x09
+    setFrequency    = 0x09,
+    setSlaveSync    = 0x0a
   };
 
   /**

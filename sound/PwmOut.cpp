@@ -9,8 +9,8 @@
 #include "PwmOut.h"
 #include "Sound.h"
 
-// Envelope resolution (in bits)
-#define ENVELOPE_RESOLUTION     5
+// Voice volume resolution (in bits)
+#define VOICE_VOLUME_RESOLUTION     5
 
 // Handle the PWM output
 ISR(TIMER1_COMPA_vect) {
@@ -19,19 +19,23 @@ ISR(TIMER1_COMPA_vect) {
 
   // Apply each envelope and mix each voice
   for (int i=0; i < Sound::numVoices; i++) {
+#ifdef SYNC_ENABLED
     uint16_t oldPhase = Sound::voices[i].phaseAccumulator;
+#endif
 
-    // Convert envelope from 16 bit resolution to the set resolution
-    out_sample += (Sound::voices[i].getNextSample() * (Sound::voices[i].envelope.level>>(16-ENVELOPE_RESOLUTION)));
+    // Convert level from 8 bit resolution to the set resolution
+    out_sample += (Sound::voices[i].getNextSample() * (Sound::voices[i].outputVolume));
 
-    // If this voice is synced to a slave voice then restart its oscillation
+#ifdef SYNC_ENABLED
+    // If this voice is synced to a slave voice then restart its oscillator
     if ((Sound::voices[i].slaveSyncVoice > -1) && (oldPhase > Sound::voices[i].phaseAccumulator))
       Sound::voices[Sound::voices[i].slaveSyncVoice].phaseAccumulator = 0;
+#endif
   }
 
   // Scale down to final 8-bit output level
   // (note that one more right shift is being done to prevent clipping from mixing)
-  out_sample >>= (ENVELOPE_RESOLUTION+1);
+  out_sample >>= (VOICE_VOLUME_RESOLUTION+1);
 
   // Convert 8bit signed to 8bit unsigned, and output
   OCR2A = (out_sample+128);
