@@ -9,7 +9,6 @@
 #define SWIZZLER_H_
 
 #include <WProgram.h>
-#include "Envelope.h"
 #include "Wavetable.h"
 #include "MidiInput.h"
 #include "FrequencyManager.h"
@@ -31,8 +30,6 @@ class Swizzler {
 	 * Send the processor into an infinite blinking loop to indicate a run-time error
 	 */
 	void setErrorState();
-
-	Envelope envelope;
 };
 
 extern Swizzler swizzler;

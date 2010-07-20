@@ -20,9 +20,6 @@ void Swizzler::init() {
 	// 31.250kbps is the speed a which MIDI travels in a vacuum.
 	Serial.begin(31250);
 
-	// Intialize the envelope generator
-	envelope.init();
-
 	// Generate wavetables
 	Wavetable::init();
 
