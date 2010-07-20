@@ -17,14 +17,13 @@ ISR(TIMER1_COMPA_vect) {
   static volatile uint16_t cycleCounter=0;
   int16_t out_sample=0;
 
-  // Apply each envelope and mix each voice
+  // Mix each voice (and partially calculate voice output level)
   for (int i=0; i < Sound::numVoices; i++) {
 #ifdef SYNC_ENABLED
     uint16_t oldPhase = Sound::voices[i].phaseAccumulator;
 #endif
 
-    // Convert level from 8 bit resolution to the set resolution
-    out_sample += (Sound::voices[i].getNextSample() * (Sound::voices[i].outputVolume));
+    out_sample += (Sound::voices[i].getNextSample() * Sound::voices[i].outputVolume);
 
 #ifdef SYNC_ENABLED
     // If this voice is synced to a slave voice then restart its oscillator
@@ -33,7 +32,7 @@ ISR(TIMER1_COMPA_vect) {
 #endif
   }
 
-  // Scale down to final 8-bit output level
+  // Finish calculating voice output levels (divide by common denominator)
   // (note that one more right shift is being done to prevent clipping from mixing)
   out_sample >>= (VOICE_VOLUME_RESOLUTION+1);
 
