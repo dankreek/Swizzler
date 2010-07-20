@@ -4,7 +4,6 @@
 #include "PortamentoManager.h"
 #include "Bresenham.h"
 #include "MidiNoteBuffer.h"
-#include "Waveout.h"
 #include "Swizzler.h"
 
 PortamentoManager FrequencyManager::portMan;
@@ -123,5 +122,5 @@ void FrequencyManager::setBaseFrequency(uint16_t freq) {
 }
 
 void FrequencyManager::sendFrequency() {
-	Waveout::setFreq(curFreq+bendOffset);
+	//Waveout::setFreq(curFreq+bendOffset);
 }

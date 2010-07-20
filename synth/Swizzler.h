@@ -11,7 +11,6 @@
 #include <WProgram.h>
 #include "Envelope.h"
 #include "Wavetable.h"
-#include "Waveout.h"
 #include "MidiInput.h"
 #include "FrequencyManager.h"
 #include "NoteManager.h"

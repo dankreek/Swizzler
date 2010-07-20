@@ -26,12 +26,6 @@ void Swizzler::init() {
 	// Generate wavetables
 	Wavetable::init();
 
-	// Startup the wave output (PWM generator)
-	Waveout::start();
-
-	// The oscillator will startup at 440hz
-	Waveout::setFreq(440);
-
 	// Initialize MIDI input
 	MidiInput::init();
 

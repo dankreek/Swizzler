@@ -145,6 +145,8 @@ void InputHandler::resetCommand() {
 }
 
 void InputHandler::setVoiceVolume(uint8_t voiceNumber, uint8_t volume) {
+  // The spec lists voice volume as an 8-bit number, but internally 
+  // I'm only using 5-bit resolution
   Sound::voices[voiceNumber].outputVolume = (volume >> 3);
 }
 
