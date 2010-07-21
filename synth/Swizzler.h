@@ -17,11 +17,14 @@
 #include "SetParameters.h"
 #include "ExternalEeprom.h"
 #include "SurfaceControlManager.h"
+#include "SoundDriver.h"
 
 class Swizzler {
   public:
 	static const int ledPin = 13;
 	static const uint8_t eepromAddress = 0x50;
+
+	static SoundDriver soundChip;
 
 	void init();
 	void mainLoop();

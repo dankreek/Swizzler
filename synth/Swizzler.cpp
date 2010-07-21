@@ -7,6 +7,8 @@
 #include "Swizzler.h"
 #include "PresetManager.h"
 
+SoundDriver Swizzler::soundChip = SoundDriver(0x70);
+
 void Swizzler::init() {
 	Wire.begin();
 	//PresetEeprom.performSelfTest();
