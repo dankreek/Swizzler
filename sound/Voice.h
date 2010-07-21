@@ -32,6 +32,9 @@ public:
   // If this voice being sent through the filter
   bool isFiltered;
 
+  // Voice output volume is 5bits
+  static const uint8_t outputVolumeResolution = 5;
+
   // This voice's output volume (0-32)
   uint8_t outputVolume;
 

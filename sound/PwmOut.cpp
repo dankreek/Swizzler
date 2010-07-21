@@ -9,9 +9,6 @@
 #include "PwmOut.h"
 #include "Sound.h"
 
-// Voice volume resolution (in bits)
-#define VOICE_VOLUME_RESOLUTION     5
-
 // Handle the PWM output
 ISR(TIMER1_COMPA_vect) {
   static volatile uint16_t cycleCounter=0;
@@ -34,7 +31,7 @@ ISR(TIMER1_COMPA_vect) {
 
   // Finish calculating voice output levels (divide by common denominator)
   // (note that one more right shift is being done to prevent clipping from mixing)
-  out_sample >>= (VOICE_VOLUME_RESOLUTION+1);
+  out_sample >>= (Voice::outputVolumeResolution+1);
 
   // Convert 8bit signed to 8bit unsigned, and output
   OCR2A = (out_sample+128);

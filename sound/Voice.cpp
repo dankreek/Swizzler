@@ -12,7 +12,7 @@ void Voice::init() {
   envelope.init();
   phaseAccumulator = 0;
   isFiltered=false;
-  outputVolume=0xff;
+  outputVolume=0x1f;    // 5 bit resolution
   slaveSyncVoice=-1;
 }
 
