@@ -44,6 +44,9 @@ public:
 
   uint16_t phaseAccumulator;
 
+  // Apply power-on defaults
+  void resetVoice();
+
 private:
   // The rate at which the phase accumulator increments
   uint16_t phaseChangeRate;
