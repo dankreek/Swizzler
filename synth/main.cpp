@@ -54,7 +54,7 @@ int main(void) {
 
       _delay_ms(100);
       //MidiInput::pushByte(Serial.read());
-      byte a = Serial.read();
+      uint8_t a = Serial.read();
     }
   }
 }
