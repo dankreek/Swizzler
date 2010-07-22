@@ -44,18 +44,12 @@ class HardwareSerial
       volatile uint8_t *ucsra, volatile uint8_t *ucsrb,
       volatile uint8_t *udr,
       uint8_t rxen, uint8_t txen, uint8_t rxcie, uint8_t udre, uint8_t u2x);
-    void begin(long);
+    void init(long);
     uint8_t available(void);
     int read(void);
     virtual void write(uint8_t);
 };
 
 extern HardwareSerial Serial;
-
-#if defined(__AVR_ATmega1280__)
-extern HardwareSerial Serial1;
-extern HardwareSerial Serial2;
-extern HardwareSerial Serial3;
-#endif
 
 #endif

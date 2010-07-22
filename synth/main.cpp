@@ -25,25 +25,23 @@ static int lcd_putchar(char ch, FILE *unused) {
 */
 
 int main(void) {
-  // Initialize Arduino library
-  //init();
   //pinMode(13, OUTPUT);
   DDRB = _BV(PB5);
 
-  Serial.begin(31250);
+  Serial.init(31250);
 
   sei();
 
   //digitalWrite(13, HIGH)
   PORTB |= _BV(PB5);
 
-	// Initialize the swizzler!
-	/*
-	swizzler.init();
+  // Initialize the swizzler!
+  /*
+  swizzler.init();
 
-	// Enter the main loop
-	swizzler.mainLoop();
-	*/
+  // Enter the main loop
+  swizzler.mainLoop();
+  */
 
   while (true) {
     if (Serial.available() > 0) {

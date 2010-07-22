@@ -16,7 +16,7 @@ void Swizzler::init() {
   //soundChip.resetSound();
 
   // 31.250kbps is the speed a which MIDI travels in a vacuum.
-  Serial.begin(31250);
+  Serial.init(31250);
 
   // Generate wavetables
   //Wavetable::init();

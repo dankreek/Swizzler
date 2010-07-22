@@ -15,7 +15,7 @@
   You should have received a copy of the GNU Lesser General Public
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-  
+
   Modified 23 November 2006 by David A. Mellis
   Modified 9 March 2010 by Justin May: Removed unnecessary code for my project
 */
@@ -26,10 +26,6 @@
 #include <inttypes.h>
 #include <avr/io.h>
 #include <avr/interrupt.h>
-
-//#include "wiring.h"
-//#include "wiring_private.h"
-
 #include "HardwareSerial.h"
 
 // Define constants and variables for buffering incoming serial data.  We're
@@ -45,12 +41,6 @@ struct ring_buffer {
 };
 
 ring_buffer rx_buffer = { { 0 }, 0, 0 };
-
-#if defined(__AVR_ATmega1280__)
-ring_buffer rx_buffer1 = { { 0 }, 0, 0 };
-ring_buffer rx_buffer2 = { { 0 }, 0, 0 };
-ring_buffer rx_buffer3 = { { 0 }, 0, 0 };
-#endif
 
 inline void store_char(unsigned char c, ring_buffer *rx_buffer)
 {
@@ -94,7 +84,7 @@ HardwareSerial::HardwareSerial(ring_buffer *rx_buffer,
 
 // Public Methods //////////////////////////////////////////////////////////////
 
-void HardwareSerial::begin(long baud)
+void HardwareSerial::init(long baud)
 {
   uint16_t baud_setting;
   bool use_u2x;
@@ -104,16 +94,16 @@ void HardwareSerial::begin(long baud)
     use_u2x = true;
   } else {
     // figure out if U2X mode would allow for a better connection
-    
+
     // calculate the percent difference between the baud-rate specified and
     // the real baud rate for both U2X and non-U2X mode (0-255 error percent)
     uint8_t nonu2x_baud_error = abs((int)(255-((F_CPU/(16*(((F_CPU/8/baud-1)/2)+1))*255)/baud)));
     uint8_t u2x_baud_error = abs((int)(255-((F_CPU/(8*(((F_CPU/4/baud-1)/2)+1))*255)/baud)));
-    
+
     // prefer non-U2X mode because it handles clock skew better
     use_u2x = (nonu2x_baud_error > u2x_baud_error);
   }
-  
+
   if (use_u2x) {
     *_ucsra = 1 << _u2x;
     baud_setting = (F_CPU / 4 / baud - 1) / 2;
@@ -161,15 +151,4 @@ void HardwareSerial::write(uint8_t c)
 }
 
 // Preinstantiate Objects //////////////////////////////////////////////////////
-
-#if defined(__AVR_ATmega8__)
-HardwareSerial Serial(&rx_buffer, &UBRRH, &UBRRL, &UCSRA, &UCSRB, &UDR, RXEN, TXEN, RXCIE, UDRE, U2X);
-#else
 HardwareSerial Serial(&rx_buffer, &UBRR0H, &UBRR0L, &UCSR0A, &UCSR0B, &UDR0, RXEN0, TXEN0, RXCIE0, UDRE0, U2X0);
-#endif
-
-#if defined(__AVR_ATmega1280__)
-HardwareSerial Serial1(&rx_buffer1, &UBRR1H, &UBRR1L, &UCSR1A, &UCSR1B, &UDR1, RXEN1, TXEN1, RXCIE1, UDRE1, U2X1);
-HardwareSerial Serial2(&rx_buffer2, &UBRR2H, &UBRR2L, &UCSR2A, &UCSR2B, &UDR2, RXEN2, TXEN2, RXCIE2, UDRE2, U2X2);
-HardwareSerial Serial3(&rx_buffer3, &UBRR3H, &UBRR3L, &UCSR3A, &UCSR3B, &UDR3, RXEN3, TXEN3, RXCIE3, UDRE3, U2X3);
-#endif
