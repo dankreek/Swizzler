@@ -56,7 +56,7 @@ inline void store_char(unsigned char c, ring_buffer *rx_buffer)
   }
 }
 
-SIGNAL(USART_RX_vect) {
+ISR(USART_RX_vect) {
   unsigned char c = UDR0;
   store_char(c, &rx_buffer);
 }
