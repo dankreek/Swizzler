@@ -32,6 +32,8 @@ int main(void) {
 
   Serial.begin(31250);
 
+  sei();
+
   //digitalWrite(13, HIGH)
   PORTB |= _BV(PB5);
 
