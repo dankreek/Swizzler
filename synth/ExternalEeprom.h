@@ -33,7 +33,7 @@ class ExternalEeprom {
      * @buffer A pointer to the data buffer that is to be written to the chip
      * @size the size (in bytes) of the data buffer
      */
-    void writeBlock(uint16_t address, byte* buffer, uint8_t size);
+    void writeBlock(uint16_t address, uint8_t* buffer, uint8_t size);
 
     /**
      * Read a block of memory from the EEPROM into the Atmega's ram
@@ -41,7 +41,7 @@ class ExternalEeprom {
      * @buffer A pointer to the data buffer that will be written to
      * @size the number of bytes to be written into the buffer
      */
-    void readBlock(uint16_t address, byte* buffer, uint8_t size);
+    void readBlock(uint16_t address, uint8_t* buffer, uint8_t size);
 
   private:
     uint8_t i2cAddress;

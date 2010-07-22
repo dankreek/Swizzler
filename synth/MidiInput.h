@@ -2,6 +2,7 @@
 #define MIDIINPUT_H_
 
 #include "Swizzler.h"
+#include <inttypes.h>
 
 class MidiInput {
 public:
@@ -9,7 +10,7 @@ public:
 	static int midiCmd;
 	static int midiData1;
 	static int midiData2;
-	
+
 	static const unsigned char noteOff = 0x80;
 	static const unsigned char noteOn = 0x90;
 	static const unsigned char polyAfterTouch = 0xa0;
@@ -18,7 +19,7 @@ public:
 	static const unsigned char afterTouch = 0xd0;
 	static const unsigned char pitchbend = 0xe0;
 	static const unsigned char sysExMsg = 0xf0;
-		
+
 	/**
 	 * Initialize it
 	 */
@@ -28,7 +29,7 @@ public:
 		midiData1=-1;
 		midiData2=-1;
 	}
-		
+
 	/**
 	 * Push a byte onto the Midi stack. This will be called by an interrupt routine or some shits.
 	 */
@@ -56,7 +57,7 @@ public:
 		else if ((midiCmd > -1) && (midiData2 == -1)) {
 			midiData2 = byte;
 		}
-		
+
 		// If a status byte is set, see if it's a complete command
 		if (midiCmd >= 0x80)
 			handleMidiCommand();
@@ -78,8 +79,8 @@ public:
 				handleControlChange();
 			else if (isCommandByte(noteOff))
 				handleNoteOff();
-				
-			// Ignoring aftertouch commands for now 
+
+			// Ignoring aftertouch commands for now
 			resetCommand();
 		}
 		// One byte commands
@@ -90,7 +91,7 @@ public:
 			}
 			// Ignore aftertouch
 			else if (isCommandByte(afterTouch))
-				resetCommand(); 
+				resetCommand();
 		}
 		// No data commands
 		else {
@@ -98,9 +99,9 @@ public:
 			if (midiCmd >= 0xf0)
 				resetCommand();
 		}
-	}	
-	
-	
+	}
+
+
 	/**
 	 * If the passed-in byte the command type of
 	 */
@@ -108,7 +109,7 @@ public:
 	bool isCommandByte(int command) {
 		return ((midiCmd & 0xf0) == command);
 	}
-	
+
 	/**
 	 * Clear the current midi command
 	 */
@@ -117,7 +118,7 @@ public:
 		midiData1 = -1;
 		midiData2 = -1;
 	}
-	
+
 	// Handle MIDI events
 	static void handleNoteOff();
 	static void handleNoteOn();

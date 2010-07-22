@@ -16,27 +16,27 @@ KnobKnee decRelTimeKnee = KnobKnee(24000, 95, 2400);	// Decay/release time knee
 KnobKnee arpTimeKnee = KnobKnee(1000, 95, 250);			// Arpeggio time (ms per note)
 
 void SetParameters::setTriLevel(uint8_t p) {
-	Wavetable::triLevel = (p >> 3);
+//	Wavetable::triLevel = (p >> 3);
 	PresetManager::curSettings.triLevel = p;
 }
 
 void SetParameters::setSawtoothLevel(uint8_t p) {
-	Wavetable::sawLevel = (p >> 3);
+//	Wavetable::sawLevel = (p >> 3);
 	PresetManager::curSettings.sawLevel = p;
 }
 
 void SetParameters::setSquareLevel(uint8_t p) {
-	Wavetable::sqLevel = (p >> 3);
+//	Wavetable::sqLevel = (p >> 3);
 	PresetManager::curSettings.sqLevel = p;
 }
 
 void SetParameters::setRandomLevel(uint8_t p) {
-	Wavetable::randLevel = (p >> 3);
+//	Wavetable::randLevel = (p >> 3);
 	PresetManager::curSettings.randLevel = p;
 }
 
 void SetParameters::setNoiseLevel(uint8_t p) {
-	Wavetable::noiseLevel = (p >> 3);
+//	Wavetable::noiseLevel = (p >> 3);
 	PresetManager::curSettings.noiseLevel = p;
 }
 
@@ -52,8 +52,8 @@ void SetParameters::setPortamentoTime(uint8_t p) {
 
 void SetParameters::setPulseWidth(uint8_t p) {
 	//Pulse width is a 4 bit value because the wavetables are 4bits long
-	Wavetable::pulseWidth = (p >> 3);
-	Wavetable::genSquare();
+//	Wavetable::pulseWidth = (p >> 3);
+//	Wavetable::genSquare();
 	PresetManager::curSettings.pulseWidth = p;
 }
 

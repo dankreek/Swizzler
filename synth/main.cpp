@@ -3,6 +3,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <util/delay.h>
+#include <avr/io.h>
+#include "HardwareSerial.h"
+#include <avr/interrupt.h>
 
 extern "C" void __cxa_pure_virtual() {}
 
@@ -33,7 +36,7 @@ int main(void) {
   sei();
 
   //digitalWrite(13, HIGH)
-  PORTB |= _BV(PB5);
+  swizzler.setLed(true);
 
   // Initialize the swizzler!
   /*
@@ -46,11 +49,11 @@ int main(void) {
   while (true) {
     if (Serial.available() > 0) {
       //digitalWrite(13, LOW);
-      PORTB &= ~_BV(PB5);
+      swizzler.setLed(false);
 
       _delay_ms(250);
       //digitalWrite(13, HIGH);
-      PORTB |= _BV(PB5);
+      swizzler.setLed(true);
 
       _delay_ms(100);
       //MidiInput::pushByte(Serial.read());

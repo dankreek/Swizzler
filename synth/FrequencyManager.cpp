@@ -1,5 +1,4 @@
 #include <inttypes.h>
-#include <WProgram.h>
 #include "FrequencyManager.h"
 #include "PortamentoManager.h"
 #include "Bresenham.h"
@@ -37,7 +36,7 @@ int note_lookup[] = {
 void FrequencyManager::init() {
 	portamentoOn = false;
 	portMan.init();
-	
+
 	bendOffset = 0;
 	bendRange = 2;
 }
@@ -88,7 +87,7 @@ uint16_t FrequencyManager::noteToFreq(uint8_t noteNum) {
 	 */
 	int octave = noteNum / 12;
 	int note = noteNum % 12;
-	
+
 	// Divides in half for the proper number of octaves
 	// (every right shift is one less octave)
 	return (note_lookup[note] >> (8-octave));

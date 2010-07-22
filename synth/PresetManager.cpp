@@ -21,11 +21,11 @@ void PresetManager::setInitialSettings() {
 }
 
 void PresetManager::storePreset() {
-	const byte* p = (const byte*)(const void*)&curSettings;
+	const uint8_t* p = (const uint8_t*)(const void*)&curSettings;
 	uint16_t presetOfs = curPreset*sizeof(Preset);
 
 	// Store preset to external EEPROM
-	PresetEeprom.writeBlock(curPreset*ExternalEeprom::pageSize, (byte*)(void*)&curSettings, sizeof(Preset));
+	PresetEeprom.writeBlock(curPreset*ExternalEeprom::pageSize, (uint8_t*)(void*)&curSettings, sizeof(Preset));
 
 	/*
 	// Store preset to internal EEPROM

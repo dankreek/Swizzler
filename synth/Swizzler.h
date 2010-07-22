@@ -8,8 +8,6 @@
 #ifndef SWIZZLER_H_
 #define SWIZZLER_H_
 
-#include <WProgram.h>
-#include "Wavetable.h"
 #include "MidiInput.h"
 #include "FrequencyManager.h"
 #include "NoteManager.h"
@@ -33,6 +31,8 @@ class Swizzler {
 	 * Send the processor into an infinite blinking loop to indicate a run-time error
 	 */
 	void setErrorState();
+
+	void setLed(bool onOff);
 };
 
 extern Swizzler swizzler;

@@ -6,11 +6,14 @@
  */
 #include "Swizzler.h"
 #include "PresetManager.h"
+#include <avr/io.h>
+#include "HardwareSerial.h"
+#include <util/delay.h>
 
 SoundDriver Swizzler::soundChip = SoundDriver(0x70);
 
 void Swizzler::init() {
-  pinMode(ledPin, OUTPUT);
+  DDRB = _BV(PB5);
 
   //Wire.begin();
   //soundChip.resetSound();
@@ -45,7 +48,12 @@ void Swizzler::init() {
   //PresetManager::loadPreset(0);
 
   // Turn the on-board LED off
-  digitalWrite(ledPin, HIGH);
+  setLed(false);
+}
+
+void Swizzler::setLed(bool onOff) {
+  if (onOff)   PORTB |= _BV(PB5);
+  else PORTB &= ~_BV(PB5);
 }
 
 /**
@@ -57,12 +65,12 @@ void Swizzler::mainLoop() {
   while (true) {
     // Shove everything that's read by the serial port into the MIDI input
     if (Serial.available() > 0) {
-      digitalWrite(13, LOW);
-      delay(250);
-      digitalWrite(13, HIGH);
-      delay(100);
+      setLed(false);
+      _delay_ms(250);
+      setLed(true);
+      _delay_ms(100);
       //MidiInput::pushByte(Serial.read());
-      byte a = Serial.read();
+      uint8_t a = Serial.read();
     }
 
   }
