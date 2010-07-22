@@ -27,24 +27,31 @@ static int lcd_putchar(char ch, FILE *unused) {
 int main(void) {
   // Initialize Arduino library
   //init();
+  //pinMode(13, OUTPUT);
+  DDRB = _BV(PB5);
 
-  pinMode(13, OUTPUT);
   Serial.begin(31250);
-  digitalWrite(13, HIGH);
+
+  //digitalWrite(13, HIGH)
+  PORTB |= _BV(PB5);
 
 	// Initialize the swizzler!
 	/*
 	swizzler.init();
-	
+
 	// Enter the main loop
 	swizzler.mainLoop();
 	*/
 
   while (true) {
     if (Serial.available() > 0) {
-      digitalWrite(13, LOW);
+      //digitalWrite(13, LOW);
+      PORTB &= ~_BV(PB5);
+
       _delay_ms(250);
-      digitalWrite(13, HIGH);
+      //digitalWrite(13, HIGH);
+      PORTB |= _BV(PB5);
+
       _delay_ms(100);
       //MidiInput::pushByte(Serial.read());
       byte a = Serial.read();
