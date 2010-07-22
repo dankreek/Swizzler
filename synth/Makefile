@@ -49,11 +49,12 @@ ARDUINO = ./arduino
 # Below here nothing should be changed...
 
 BIN = ./bin
-SRC =  $(ARDUINO)/pins_arduino.c $(ARDUINO)/wiring.c \
-$(ARDUINO)/wiring_analog.c $(ARDUINO)/wiring_digital.c \
-$(ARDUINO)/wiring_pulse.c \
-$(ARDUINO)/wiring_shift.c $(ARDUINO)/WInterrupts.c $(wildcard *.c) $(ARDUINO)/twi.c
-CXXSRC = $(ARDUINO)/HardwareSerial.cpp $(ARDUINO)/WMath.cpp $(ARDUINO)/Wire.cpp $(wildcard *.cpp)
+SRC = twi.c  
+#$(ARDUINO)/pins_arduino.c $(ARDUINO)/wiring.c \
+#$(ARDUINO)/wiring_analog.c $(ARDUINO)/wiring_digital.c \
+#$(ARDUINO)/wiring_pulse.c \
+#$(ARDUINO)/wiring_shift.c $(ARDUINO)/WInterrupts.c $(wildcard *.c) $(ARDUINO)/twi.c
+CXXSRC = $(wildcard *.cpp)
 FORMAT = ihex
 
 # Name of this Makefile (used for "make depend").

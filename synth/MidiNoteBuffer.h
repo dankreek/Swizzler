@@ -19,7 +19,7 @@ class MidiNoteBuffer {
   	static int8_t lastNote;
   
   	// Initialize the Note Buffer
-  	static void begin();
+  	static void init();
   	
   	// Add a new midi note in-order
 	static void putMidiNote(uint8_t noteNumber);

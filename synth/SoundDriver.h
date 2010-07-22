@@ -22,6 +22,7 @@ public:
     noiseWave            = 0x04
   };
 
+  void resetSound();
   void setVoiceLevel(uint8_t voiceNum, uint8_t level);
   void setWaveform(uint8_t voiceNum, WaveformType waveform);
   void setFrequency(uint8_t voiceNum, uint16_t frequency);

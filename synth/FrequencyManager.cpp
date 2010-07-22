@@ -117,10 +117,10 @@ void FrequencyManager::recalculateBendOffset() {
 }
 
 void FrequencyManager::setBaseFrequency(uint16_t freq) {
-	curFreq = freq;
-	sendFrequency();
+  curFreq = freq;
+  sendFrequency();
 }
 
 void FrequencyManager::sendFrequency() {
-	//Waveout::setFreq(curFreq+bendOffset);
+  Swizzler::soundChip.setFrequency(0, curFreq+bendOffset);
 }

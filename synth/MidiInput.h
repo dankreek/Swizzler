@@ -1,6 +1,8 @@
 #ifndef MIDIINPUT_H_
 #define MIDIINPUT_H_
 
+#include "Swizzler.h"
+
 class MidiInput {
 public:
 	// Current MIDI command data

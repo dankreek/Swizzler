@@ -11,7 +11,7 @@
 int8_t Waveform::noiseOut;
 uint16_t Waveform::noise;
 
-Waveform::Waveform() {
+void Waveform::init() {
   curWaveType = triangleWave;
   pulseWidth = 0x8000;
 }

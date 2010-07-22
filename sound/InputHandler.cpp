@@ -42,8 +42,16 @@ void InputHandler::handleReadingVoiceNumber(uint8_t data) {
 
 void InputHandler::handleReadingCommandType(uint8_t data) {
   // This is a global command
-  if (commandVoiceNumber == 0)
+  if (commandVoiceNumber == 0) {
     globalCommand = (GlobalCommand)data;
+
+    // This is the only command with no data
+    if (globalCommand == resetVoices) {
+      Sound::initVoices();
+      resetCommand();
+      return;
+    }
+  }
   // This is a voice command
   else
     voiceCommand = (VoiceCommand)data;

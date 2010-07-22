@@ -6,58 +6,58 @@ bool NoteManager::arpOn;
 ArpManager NoteManager::arpManager;
 
 void NoteManager::init()  {
-	MidiNoteBuffer::begin();
+  MidiNoteBuffer::init();
 
-	// Initialize the arpeggio manager
-	arpManager.init();
+  // Initialize the arpeggio manager
+  arpManager.init();
 
-	// Arpeggios are turned off by default
-	enableArpeggio(false);
+  // Arpeggios are turned off by default
+  enableArpeggio(false);
 }
 
 // TODO: There really doesn't need to be a setter here, just make arpOn public
 void NoteManager::enableArpeggio(bool onOff) {
-	arpOn = onOff;
+  arpOn = onOff;
 }
 
 void NoteManager::noteOn(uint8_t noteNumber) {
-	// Put the note into the notes-on Arpbuffer
-	MidiNoteBuffer::putMidiNote(noteNumber);
+  // Put the note into the notes-on Arpbuffer
+  MidiNoteBuffer::putMidiNote(noteNumber);
 
-	// If the arpeggiator is running
-	if (arpOn) {
-		// If there's enough notes being held down start a new arpeggio
-		if (MidiNoteBuffer::size  >= arpManager.minNotes) {
-			reloadArpeggiator();
-			restartGate();
-		}
-	}
-	// If arpeggiator is off simply restart the gate
-	else {
-		FrequencyManager::newNote(noteNumber);
-		restartGate();
-	}
+  // If the arpeggiator is running
+  if (arpOn) {
+    // If there's enough notes being held down start a new arpeggio
+    if (MidiNoteBuffer::size  >= arpManager.minNotes) {
+            reloadArpeggiator();
+            restartGate();
+    }
+  }
+  // If arpeggiator is off simply restart the gate
+  else {
+    FrequencyManager::newNote(noteNumber);
+    restartGate();
+  }
 }
 
 void NoteManager::restartGate() {
-	Swizzler::soundChip.setEnvelopeGate(0, false);
-	Swizzler::soundChip.setEnvelopeGate(0, true);
+  Swizzler::soundChip.setEnvelopeGate(0, false);
+  Swizzler::soundChip.setEnvelopeGate(0, true);
 }
 
 void NoteManager::reloadArpeggiator() {
-	// Make sure the nextTick() routine doesn't do anything until the next arp is setup
-	arpManager.arpRunning = false;
-	
-	// Copy currently held notes into arpeggio buffer
-	// (This might be factored out later to allow for different arpeggio directions,
-	// currently only bottom-to-top is supported)
-	for (int i=0; i < MidiNoteBuffer::buffer[i]; i++) {
-		arpManager.noteList[i] = MidiNoteBuffer::buffer[i];
-	}
-	arpManager.noteListSize=MidiNoteBuffer::size;
-				
-	// Start a new arpeggio from the beginning
-	arpManager.restartArpeggio();
+  // Make sure the nextTick() routine doesn't do anything until the next arp is setup
+  arpManager.arpRunning = false;
+
+  // Copy currently held notes into arpeggio buffer
+  // (This might be factored out later to allow for different arpeggio directions,
+  // currently only bottom-to-top is supported)
+  for (int i=0; i < MidiNoteBuffer::buffer[i]; i++) {
+    arpManager.noteList[i] = MidiNoteBuffer::buffer[i];
+  }
+  arpManager.noteListSize=MidiNoteBuffer::size;
+
+  // Start a new arpeggio from the beginning
+  arpManager.restartArpeggio();
 }	
 
 void NoteManager::noteOff(uint8_t noteNumber) {

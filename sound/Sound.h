@@ -16,10 +16,13 @@
 class Sound {
 public:
   // The number of voices to output
-  static const uint8_t numVoices=4;
+  static const uint8_t numVoices=9;
 
   // Initialize the sound module
   static void init();
+
+  // Reset each voice to power-on defaults
+  static void initVoices();
 
   // The main thread loop
   static void mainLoop();

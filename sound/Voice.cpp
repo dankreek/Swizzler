@@ -10,6 +10,7 @@
 
 void Voice::init() {
   envelope.init();
+  waveform.init();
   phaseAccumulator = 0;
   isFiltered=false;
   outputVolume=0x1f;    // 5 bit resolution
@@ -19,4 +20,3 @@ void Voice::init() {
 void Voice::setFrequency(uint16_t freq) {
   phaseChangeRate = (freq*0x10000)/PwmOut::sampleRate;
 }
-

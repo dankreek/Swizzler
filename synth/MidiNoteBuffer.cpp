@@ -4,7 +4,7 @@ uint8_t MidiNoteBuffer::buffer[MIDI_NOTE_BUF_SIZE];
 uint8_t MidiNoteBuffer::size;
 int8_t MidiNoteBuffer::lastNote;
 
-void MidiNoteBuffer::begin() {	
+void MidiNoteBuffer::init() {	
 	size=0;
 	lastNote=-1;
 }

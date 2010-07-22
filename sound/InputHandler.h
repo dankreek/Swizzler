@@ -13,15 +13,20 @@
  *  Global Commands:
  *  ================
  *
- *  Set output volume: 0x00 0x00 <volume>
+ *  Reset sound output: 0x00 0x00
+ *  -------------------
+ *  Reset each voice and the master output to power-on defaults
+ *
+ *  Set output volume: 0x00 0x01 <volume>
  *  (NOT YET IMPLEMENTED)
  *  ------------------
  *  Sets the master output volume of the sound chip, where <volume>==0x00 is complete silence
  *  and 0xff is the loudest possible volume. Default is 0xff.
  *
- *  Set filter cutoff frequency: 0x00 0x01 <cutoff>
+ *  Set filter cutoff frequency: 0x00 0x02 <cutoff>
  *  (NOT YET IMPLEMENTED)
  *  ----------------------------
+ *
  *
  *  Voice Commands:
  *  ===============
@@ -142,8 +147,9 @@ private:
    * Different global commands available
    */
   enum GlobalCommand {
-    setMasterVolume = 0x00,
-    setFilterCutoff = 0x01
+    resetVoices     = 0x00,
+    setMasterVolume = 0x01,
+    setFilterCutoff = 0x02
   };
 
   // Current input handler state

@@ -21,10 +21,14 @@
 */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <inttypes.h>
-#include "wiring.h"
-#include "wiring_private.h"
+#include <avr/io.h>
+#include <avr/interrupt.h>
+
+//#include "wiring.h"
+//#include "wiring_private.h"
 
 #include "HardwareSerial.h"
 
@@ -62,17 +66,8 @@ inline void store_char(unsigned char c, ring_buffer *rx_buffer)
   }
 }
 
-#if defined(__AVR_ATmega8__)
-SIGNAL(SIG_UART_RECV)
-#else
-SIGNAL(USART_RX_vect)
-#endif
-{
-#if defined(__AVR_ATmega8__)
-  unsigned char c = UDR;
-#else
+SIGNAL(USART_RX_vect) {
   unsigned char c = UDR0;
-#endif
   store_char(c, &rx_buffer);
 }
 
@@ -131,9 +126,12 @@ void HardwareSerial::begin(long baud)
   *_ubrrh = baud_setting >> 8;
   *_ubrrl = baud_setting;
 
-  sbi(*_ucsrb, _rxen);
-  sbi(*_ucsrb, _txen);
-  sbi(*_ucsrb, _rxcie);
+  *_ucsrb |= _BV(_rxen);
+  //sbi(*_ucsrb, _rxen);
+  *_ucsrb |= _BV(_txen);
+  //sbi(*_ucsrb, _txen);
+  *_ucsrb |= _BV(_rxcie);
+  //sbi(*_ucsrb, _rxcie);
 }
 
 uint8_t HardwareSerial::available(void)

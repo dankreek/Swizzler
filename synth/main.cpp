@@ -2,10 +2,12 @@
 #include "DisplayOutput.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include <util/delay.h>
 
 extern "C" void __cxa_pure_virtual() {}
 
 // --- Needed to output a character to the LCD if using printf.
+/*
 #ifdef __cplusplus
 extern "C"{
  FILE * uart_str;
@@ -20,14 +22,32 @@ static int lcd_putchar(char ch, FILE *unused) {
   return 0;
 }
 // --- End printf code
+*/
 
 int main(void) {
-	// Initialize Arduino library
-	init();
+  // Initialize Arduino library
+  //init();
+
+  pinMode(13, OUTPUT);
+  Serial.begin(31250);
+  digitalWrite(13, HIGH);
 
 	// Initialize the swizzler!
+	/*
 	swizzler.init();
 	
 	// Enter the main loop
 	swizzler.mainLoop();
+	*/
+
+  while (true) {
+    if (Serial.available() > 0) {
+      digitalWrite(13, LOW);
+      _delay_ms(250);
+      digitalWrite(13, HIGH);
+      _delay_ms(100);
+      //MidiInput::pushByte(Serial.read());
+      byte a = Serial.read();
+    }
+  }
 }

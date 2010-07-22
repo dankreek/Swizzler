@@ -18,13 +18,9 @@ uint8_t Sound::twiData[twiBufferSize];
 RingBuffer<uint8_t> Sound::twiInputBuffer(twiData, twiBufferSize);
 
 void Sound::init() {
-  masterVolume = 0xff;
-  Waveform::initNoiseGenerator();
+  initVoices();
 
-  // Initialize each voice
-  for (int i=0; i < numVoices; i++) {
-    voices[i].init();
-  }
+  Waveform::initNoiseGenerator();
 
   // Start the sound output going
   msCounter = 0;
@@ -34,10 +30,16 @@ void Sound::init() {
   twi.init(twiSlaveAddress, &twiInputBuffer);
 }
 
+void Sound::initVoices() {
+  masterVolume = 0xff;
+
+  for (int i=0; i < numVoices; i++) {
+    voices[i].init();
+  }
+}
+
 void Sound::mainLoop() {
   uint16_t now = 0;
-
-  voices[0].setFrequency(440);
 
   while (true) {
     // Update the envelopes every millisecond

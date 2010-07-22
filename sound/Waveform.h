@@ -20,7 +20,7 @@ enum WaveformType {
 
 class Waveform {
 public:
-  Waveform();
+  void init();
 
   /**
    * This waveform type

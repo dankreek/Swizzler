@@ -10,47 +10,42 @@
 SoundDriver Swizzler::soundChip = SoundDriver(0x70);
 
 void Swizzler::init() {
-	Wire.begin();
-	//PresetEeprom.performSelfTest();
+  pinMode(ledPin, OUTPUT);
 
-	pinMode(ledPin, OUTPUT);
-	pinMode(8, OUTPUT);
+  //Wire.begin();
+  //soundChip.resetSound();
 
-	// Try and make sure our noise pattern is different every bootup!
-	randomSeed(analogRead(0));
+  // 31.250kbps is the speed a which MIDI travels in a vacuum.
+  Serial.begin(31250);
 
-	// 31.250kbps is the speed a which MIDI travels in a vacuum.
-	Serial.begin(31250);
+  // Generate wavetables
+  //Wavetable::init();
 
-	// Generate wavetables
-	Wavetable::init();
+  // Initialize MIDI input
+  //MidiInput::init();
 
-	// Initialize MIDI input
-	MidiInput::init();
+  // Initialize the Note Manager
+  //NoteManager::init();
 
-	// Initialize the Note Manager
-	NoteManager::init();
+  // Initialize Frequency Manager
+  //FrequencyManager::init();
 
-	// Initialize Frequency Manager
-	FrequencyManager::init();
+  // Initialize the surface controls
+  //SurfaceControlManager::init();
 
-	// Initialize the surface controls
-	SurfaceControlManager::init();
+  // Reset all presets
+  /*
+  for (int i=0; i < 128; i++) {
+          PresetManager::curPreset = i;
+          PresetManager::storePreset();
+  }
+  */
 
-	// Reset all presets
-	/*
-	for (int i=0; i < 128; i++) {
-		PresetManager::curPreset = i;
-		PresetManager::storePreset();
-	}
-	*/
+  // Begin with initial preset of 0
+  //PresetManager::loadPreset(0);
 
-
-	// Begin with initial preset of 0
-	PresetManager::loadPreset(0);
-
-	// Turn the on-board LED off
-	digitalWrite(ledPin, HIGH);
+  // Turn the on-board LED off
+  digitalWrite(ledPin, HIGH);
 }
 
 /**
@@ -59,26 +54,26 @@ void Swizzler::init() {
  * time-keeping ISR's.
  */
 void Swizzler::mainLoop() {
-	while (true) {
-		// Shove everything that's read by the serial port into the MIDI input
-		if (Serial.available() > 0) {
-			MidiInput::pushByte(Serial.read());
-		}
-		else {
-			// If new noise isn't constantly generated then the output will be
-			// a very interesting (but non-noise) waveform
-			Wavetable::genNoise();
+  while (true) {
+    // Shove everything that's read by the serial port into the MIDI input
+    if (Serial.available() > 0) {
+      digitalWrite(13, LOW);
+      delay(250);
+      digitalWrite(13, HIGH);
+      delay(100);
+      //MidiInput::pushByte(Serial.read());
+      byte a = Serial.read();
+    }
 
-			// Remix the wavetables (since the waveform mix could be constantly changing)
-			Wavetable::mixWaves();
-		}
-	}
+  }
 }
 
+/*
 void Swizzler::setErrorState() {
 	while (true) {
 		digitalWrite(ledPin, 0);
 	}
 }
+*/
 
 Swizzler swizzler = Swizzler();
