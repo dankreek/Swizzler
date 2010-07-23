@@ -59,24 +59,23 @@ void SetParameters::setPulseWidth(uint8_t p) {
 }
 
 void SetParameters::setAttackTime(uint8_t p) {
-	//swizzler.envelope.attackTime = attackTimeKnee.getValue(p);
   Swizzler::soundChip.setAttackTime(0, attackTimeKnee.getValue(p));
-	PresetManager::curSettings.attackTime = p;
+  PresetManager::curSettings.attackTime = p;
 }
 
 void SetParameters::setDecayTime(uint8_t p) {
-	//swizzler.envelope.decayTime = decRelTimeKnee.getValue(p);
-	PresetManager::curSettings.decayTime = p;
+  Swizzler::soundChip.setDecayTime(0, decRelTimeKnee.getValue(p));
+  PresetManager::curSettings.decayTime = p;
 }
 
 void SetParameters::setSustainLevel(uint8_t p) {
-	//swizzler.envelope.sustainLevel = p;
-	PresetManager::curSettings.sustainLevel = p;
+  Swizzler::soundChip.setSustainLevel(0, p<<1);
+  PresetManager::curSettings.sustainLevel = p;
 }
 
 void SetParameters::setReleaseTime(uint8_t p) {
-	//swizzler.envelope.releaseTime = decRelTimeKnee.getValue(p);
-	PresetManager::curSettings.releaseTime = p;
+  Swizzler::soundChip.setReleaseTime(0, decRelTimeKnee.getValue(p));
+  PresetManager::curSettings.releaseTime = p;
 }
 
 void SetParameters::enableArpeggio(uint8_t p) {

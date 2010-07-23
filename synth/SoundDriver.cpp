@@ -8,9 +8,9 @@ enum VoiceCommandType {
   setVoiceWaveform  = 0x01,
   setPulseWidth     = 0x02,
   setVoiceAttackTime = 0x03,
-  setDecayTime      = 0x04,
-  setSustainLevel   = 0x05,
-  setReleaseTime    = 0x06,
+  setVoiceDecayTime      = 0x04,
+  setVoiceSustainLevel   = 0x05,
+  setVoiceReleaseTime    = 0x06,
   setGateState      = 0x07,
   setFilterOnOff    = 0x08,
   setVoiceFrequency = 0x09,
@@ -71,5 +71,31 @@ void SoundDriver::setAttackTime(uint8_t voiceNum, uint16_t attackTime) {
   Wire.send((uint8_t)setVoiceAttackTime);
   Wire.send((uint8_t)(attackTime>>8));
   Wire.send((uint8_t)(attackTime&0xff));
+  Wire.endTransmission();
+}
+
+void SoundDriver::setDecayTime(uint8_t voiceNum, uint16_t decayTime) {
+  Wire.beginTransmission(this->twiAddress);
+  Wire.send(voiceNum+1);
+  Wire.send((uint8_t)setVoiceDecayTime);
+  Wire.send((uint8_t)(decayTime>>8));
+  Wire.send((uint8_t)(decayTime&0xff));
+  Wire.endTransmission();
+}
+
+void SoundDriver::setReleaseTime(uint8_t voiceNum, uint16_t releaseTime) {
+  Wire.beginTransmission(this->twiAddress);
+  Wire.send(voiceNum+1);
+  Wire.send((uint8_t)setVoiceReleaseTime);
+  Wire.send((uint8_t)(releaseTime>>8));
+  Wire.send((uint8_t)(releaseTime&0xff));
+  Wire.endTransmission();
+}
+
+void SoundDriver::setSustainLevel(uint8_t voiceNum, uint8_t sustainLevel) {
+  Wire.beginTransmission(this->twiAddress);
+  Wire.send(voiceNum+1);
+  Wire.send((uint8_t)setVoiceSustainTime);
+  Wire.send(sustainLevel);
   Wire.endTransmission();
 }
