@@ -27,8 +27,8 @@ int16_t MidiInput::midiData2;
 
 #define ATTACK_TIME     75
 #define DECAY_TIME      76
-#define SUSTAIN_LEVEL   77
-#define RELEASE_TIME    14
+#define SUSTAIN_LEVEL   92
+#define RELEASE_TIME    95
 
 #define SAVE_POWERON	84
 

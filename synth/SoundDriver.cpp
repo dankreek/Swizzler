@@ -95,7 +95,7 @@ void SoundDriver::setReleaseTime(uint8_t voiceNum, uint16_t releaseTime) {
 void SoundDriver::setSustainLevel(uint8_t voiceNum, uint8_t sustainLevel) {
   Wire.beginTransmission(this->twiAddress);
   Wire.send(voiceNum+1);
-  Wire.send((uint8_t)setVoiceSustainTime);
+  Wire.send((uint8_t)setVoiceSustainLevel);
   Wire.send(sustainLevel);
   Wire.endTransmission();
 }
