@@ -1,11 +1,4 @@
 #include "Swizzler.h"
-#include "DisplayOutput.h"
-#include <stdlib.h>
-#include <stdio.h>
-#include <util/delay.h>
-#include <avr/io.h>
-#include "HardwareSerial.h"
-#include <avr/interrupt.h>
 
 extern "C" void __cxa_pure_virtual() {}
 
@@ -28,36 +21,9 @@ static int lcd_putchar(char ch, FILE *unused) {
 */
 
 int main(void) {
-  //pinMode(13, OUTPUT);
-  DDRB = _BV(PB5);
-
-  Serial.init(31250);
-
-  sei();
-
-  //digitalWrite(13, HIGH)
-  swizzler.setLed(true);
-
   // Initialize the swizzler!
-  /*
   swizzler.init();
 
   // Enter the main loop
   swizzler.mainLoop();
-  */
-
-  while (true) {
-    if (Serial.available() > 0) {
-      //digitalWrite(13, LOW);
-      swizzler.setLed(false);
-
-      _delay_ms(250);
-      //digitalWrite(13, HIGH);
-      swizzler.setLed(true);
-
-      _delay_ms(100);
-      //MidiInput::pushByte(Serial.read());
-      uint8_t a = Serial.read();
-    }
-  }
 }
