@@ -29,6 +29,8 @@ int16_t MidiInput::midiData2;
 #define OSC_1_WF        74
 #define OSC_1_LEVEL     71
 
+#define NOISE_LEVEL     7
+
 void MidiInput::handleNoteOn() {
   /**
    * Most MIDI input devices send a NOTE ON message with a velocity of 0
@@ -57,9 +59,9 @@ void MidiInput::handleControlChange() {
    * the 2nd byte (midiData2) is the value of the controller (7bits)
    */
   switch (midiData1) {
-    /**
-     * Osc1 Controlls
-     */
+  /**
+   * Osc1 Controlls
+   */
   case OSC_1_WF:
     SetParameters::setWaveform(0, midiData2);
     break;
@@ -67,6 +69,9 @@ void MidiInput::handleControlChange() {
     SetParameters::setVoiceLevel(0, midiData2);
     break;
 
+  case NOISE_LEVEL:
+    SetParameters::setVoiceLevel(3, midiData2);
+    break;
 
     /**
      * Portamento Controls

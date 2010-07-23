@@ -121,5 +121,5 @@ void FrequencyManager::setBaseFrequency(uint16_t freq) {
 }
 
 void FrequencyManager::sendFrequency() {
-  Swizzler::soundChip.setFrequency(0, curFreq+bendOffset);
+  for (int i=0;i<4;i++) Swizzler::soundChip.setFrequency(i, curFreq+bendOffset);
 }

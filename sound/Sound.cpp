@@ -35,6 +35,7 @@ void Sound::initVoices() {
 
   for (int i=0; i < numVoices; i++) {
     voices[i].init();
+    voices[i].phaseAccumulator=i*10;
   }
 }
 

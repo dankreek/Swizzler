@@ -79,16 +79,14 @@ void SetParameters::setBendRange(uint8_t p) {
 
 void SetParameters::setWaveform(uint8_t voiceNum, uint8_t wf) {
   SoundDriver::WaveformType waveForm;
-  if (wf < 25)
+  if (wf < 32)
     waveForm = SoundDriver::triangleWave;
-  else if (wf < 50)
+  else if (wf < 64)
     waveForm = SoundDriver::sawtoothWave;
-  else if (wf < 75)
+  else if (wf < 96)
     waveForm = SoundDriver::reverseSawtoothWave;
-  else if (wf < 100)
-    waveForm = SoundDriver::squareWave;
   else
-    waveForm = SoundDriver::noiseWave;
+    waveForm = SoundDriver::squareWave;
 
   Swizzler::soundChip.setWaveform(voiceNum,waveForm);
 }

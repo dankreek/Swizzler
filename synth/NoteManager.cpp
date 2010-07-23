@@ -40,8 +40,8 @@ void NoteManager::noteOn(uint8_t noteNumber) {
 }
 
 void NoteManager::restartGate() {
-  Swizzler::soundChip.setEnvelopeGate(0, false);
-  Swizzler::soundChip.setEnvelopeGate(0, true);
+  for (int i=0;i<4;i++) Swizzler::soundChip.setEnvelopeGate(i, false);
+  for (int i=0;i<4;i++) Swizzler::soundChip.setEnvelopeGate(i, true);
 }
 
 void NoteManager::reloadArpeggiator() {
@@ -67,7 +67,7 @@ void NoteManager::noteOff(uint8_t noteNumber) {
 		if (!arpOn) {
 			// If this note is the current note that's playing then open the gate
 			if (MidiNoteBuffer::getLastNote() == noteNumber) {
-				Swizzler::soundChip.setEnvelopeGate(0, false);
+			  for (int i=0;i<4;i++) Swizzler::soundChip.setEnvelopeGate(i, false);
 			}
 		}
 
@@ -76,7 +76,7 @@ void NoteManager::noteOff(uint8_t noteNumber) {
 		if (arpOn) {
 			// If there are less notes being held down than the min. needed for an arp, close the gate
 			if (MidiNoteBuffer::size < arpManager.minNotes) {
-				Swizzler::soundChip.setEnvelopeGate(0, true);
+			  for (int i=0;i<4;i++) Swizzler::soundChip.setEnvelopeGate(i, true);
 			}
 			// If there is still enough notes, restart the arpeggio
 			else {
