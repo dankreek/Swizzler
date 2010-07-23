@@ -21,9 +21,6 @@ static int lcd_putchar(char ch, FILE *unused) {
 */
 
 int main(void) {
-  // Initialize the swizzler!
   swizzler.init();
-
-  // Enter the main loop
   swizzler.mainLoop();
 }

@@ -17,9 +17,6 @@ void Swizzler::init() {
   // Set the LED pin to output
   DDRB = _BV(PB5);
 
-  //Wire.begin();
-  //soundChip.resetSound();
-
   // 31.250kbps is the speed a which MIDI travels in a vacuum.
   Serial.init(31250);
 
@@ -27,13 +24,13 @@ void Swizzler::init() {
   //Wavetable::init();
 
   // Initialize MIDI input
-  //MidiInput::init();
+  MidiInput::init();
 
   // Initialize the Note Manager
-  //NoteManager::init();
+  NoteManager::init();
 
   // Initialize Frequency Manager
-  //FrequencyManager::init();
+  FrequencyManager::init();
 
   // Initialize the surface controls
   //SurfaceControlManager::init();
@@ -52,8 +49,18 @@ void Swizzler::init() {
   // Turn on interrupts (let the games begin)
   sei();
 
+  Wire.begin();
+  soundChip.resetSound();
+  soundChip.setWaveform(0, SoundDriver::squareWave);
+  /*
+  soundChip.setVoiceLevel(0, 0xff);
+
+  soundChip.setFrequency(0, 440);
+  soundChip.setEnvelopeGate(0, true);
+   */
+
   // Turn the on-board LED off
-  setLed(false);
+  setLed(true);
 }
 
 void Swizzler::setLed(bool onOff) {

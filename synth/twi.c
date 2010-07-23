@@ -459,7 +459,7 @@ SIGNAL(TWI_vect)
         twi_reply(0);
       }
       break;
-    case TW_ST_DATA_NACK: // received nack, we are done
+    case TW_ST_DATA_NACK: // received nack, we are done 
     case TW_ST_LAST_DATA: // received ack, but we are done already!
       // ack future responses
       twi_reply(1);

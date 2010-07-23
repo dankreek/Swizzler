@@ -12,7 +12,7 @@ int8_t Waveform::noiseOut;
 uint16_t Waveform::noise;
 
 void Waveform::init() {
-  curWaveType = triangleWave;
+  curWaveType = reverseSawtoothWave;
   pulseWidth = 0x8000;
 }
 

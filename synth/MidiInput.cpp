@@ -33,24 +33,24 @@ int16_t MidiInput::midiData2;
 #define SAVE_POWERON	84
 
 void MidiInput::handleNoteOn() {
-	/**
-	 * Most MIDI input devices send a NOTE ON message with a velocity of 0
-	 * to signal the note ending.
-	 */
-	if (midiData2 == 0) NoteManager::noteOff(midiData1);
-	else NoteManager::noteOn(midiData1);
+  /**
+   * Most MIDI input devices send a NOTE ON message with a velocity of 0
+   * to signal the note ending.
+   */
+  if (midiData2 == 0) NoteManager::noteOff(midiData1);
+  else NoteManager::noteOn(midiData1);
 }
 
 void MidiInput::handleNoteOff() {	
-	NoteManager::noteOff(midiData1);
+  NoteManager::noteOff(midiData1);
 }
 
 void MidiInput::handlePitchBend() {
-	// I'm going to ignore the least significant byte of this message for now
-	// (my controller only sends 0 for the LSB anyway, so who cares)
-	// This number comes in as an unsigned 7bit number, but internally I store it
-	// as a signed 7 bit number. The -64 is to convert to signed.
-	FrequencyManager::setBendAmount((int8_t)midiData2-64);
+  // I'm going to ignore the least significant byte of this message for now
+  // (my controller only sends 0 for the LSB anyway, so who cares)
+  // This number comes in as an unsigned 7bit number, but internally I store it
+  // as a signed 7 bit number. The -64 is to convert to signed.
+  FrequencyManager::setBendAmount((int8_t)midiData2-64);
 }
 
 // Lots of fun with controllers!

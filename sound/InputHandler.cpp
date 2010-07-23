@@ -159,7 +159,7 @@ void InputHandler::setVoiceVolume(uint8_t voiceNumber, uint8_t volume) {
 }
 
 void InputHandler::setVoiceWaveform(uint8_t voiceNumber, uint8_t waveFormNumber) {
-  if (waveFormNumber > 3) return;
+  //if (waveFormNumber > 5) return;
   Sound::voices[voiceNumber].waveform.curWaveType = (WaveformType)waveFormNumber;
 }
 

@@ -8,6 +8,7 @@
 #include "SetParameters.h"
 #include "KnobKnee.h"
 #include "PresetManager.h"
+#include "Swizzler.h"
 
 // Knees to define how midi controls work, and the range for the control
 KnobKnee portTimeKnee = KnobKnee(2000, 95, 500);
@@ -59,6 +60,7 @@ void SetParameters::setPulseWidth(uint8_t p) {
 
 void SetParameters::setAttackTime(uint8_t p) {
 	//swizzler.envelope.attackTime = attackTimeKnee.getValue(p);
+  Swizzler::soundChip.setAttackTime(0, attackTimeKnee.getValue(p));
 	PresetManager::curSettings.attackTime = p;
 }
 
