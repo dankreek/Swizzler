@@ -49,13 +49,6 @@ void PresetManager::loadPreset(uint8_t patchNum) {
 	SetParameters::setSustainLevel(readStorage.sustainLevel);
 	SetParameters::setReleaseTime(readStorage.releaseTime);
 
-	SetParameters::setTriLevel(readStorage.triLevel);
-	SetParameters::setSawtoothLevel(readStorage.sawLevel);
-	SetParameters::setSquareLevel(readStorage.sqLevel);
-	SetParameters::setRandomLevel(readStorage.randLevel);
-	SetParameters::setNoiseLevel(readStorage.noiseLevel);
-	SetParameters::setPulseWidth(readStorage.pulseWidth);
-
 	SetParameters::setPortamentoTime(readStorage.portamentoTime);
 	SetParameters::enablePortamento(readStorage.portamentoOn);
 

@@ -6,7 +6,7 @@
 enum VoiceCommandType {
   setVolume         = 0x00,
   setVoiceWaveform  = 0x01,
-  setPulseWidth     = 0x02,
+  setVoicePulseWidth     = 0x02,
   setVoiceAttackTime = 0x03,
   setVoiceDecayTime      = 0x04,
   setVoiceSustainLevel   = 0x05,
@@ -97,5 +97,14 @@ void SoundDriver::setSustainLevel(uint8_t voiceNum, uint8_t sustainLevel) {
   Wire.send(voiceNum+1);
   Wire.send((uint8_t)setVoiceSustainLevel);
   Wire.send(sustainLevel);
+  Wire.endTransmission();
+}
+
+void SoundDriver::setPuleseWidth(uint8_t voiceNum, uint16_t pw) {
+  Wire.beginTransmission(this->twiAddress);
+  Wire.send(voiceNum+1);
+  Wire.send((uint8_t)setVoicePulseWidth);
+  Wire.send((uint8_t)(pw >> 8));
+  Wire.send((uint8_t)(pw & 0xff));
   Wire.endTransmission();
 }

@@ -31,6 +31,7 @@ public:
   void setDecayTime(uint8_t voiceNum, uint16_t time);
   void setSustainLevel(uint8_t voiceNum, uint8_t level);
   void setReleaseTime(uint8_t voiceNum, uint16_t time);
+  void setPuleseWidth(uint8_t voiceNum, uint16_t pw);
 
 private:
   uint8_t twiAddress;

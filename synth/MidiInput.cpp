@@ -19,12 +19,6 @@ int16_t MidiInput::midiData2;
 
 #define PULSE_WIDTH	 12
 
-#define TRI_LEVEL    74
-#define SAW_LEVEL	 71
-#define SQUARE_LEVEL 70
-#define RAND_LEVEL   20
-#define NOISE_LEVEL  21
-
 #define ATTACK_TIME     75
 #define DECAY_TIME      76
 #define SUSTAIN_LEVEL   92
@@ -60,25 +54,6 @@ void MidiInput::handleControlChange() {
 	 * the 2nd byte (midiData2) is the value of the controller (7bits)
 	 */
 	switch (midiData1) {
-		/**
-		 * All the oscillator level settings are 4bit values
-		 */
-		case TRI_LEVEL:
-			SetParameters::setTriLevel(midiData2);
-			break;
-		case SAW_LEVEL:
-			SetParameters::setSawtoothLevel(midiData2);
-			break;
-		case SQUARE_LEVEL:
-			SetParameters::setSquareLevel(midiData2);
-			break;
-		case RAND_LEVEL:
-			SetParameters::setRandomLevel(midiData2);
-			break;
-		case NOISE_LEVEL:
-			SetParameters::setNoiseLevel(midiData2);
-			break;
-
 		/**
 		 * Portamento Controls
 		 */

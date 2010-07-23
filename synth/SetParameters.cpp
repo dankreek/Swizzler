@@ -15,89 +15,64 @@ KnobKnee portTimeKnee = KnobKnee(2000, 95, 500);
 KnobKnee attackTimeKnee = KnobKnee(8000, 95, 1000);
 KnobKnee decRelTimeKnee = KnobKnee(24000, 95, 2400);	// Decay/release time knee
 KnobKnee arpTimeKnee = KnobKnee(1000, 95, 250);			// Arpeggio time (ms per note)
-
-void SetParameters::setTriLevel(uint8_t p) {
-//	Wavetable::triLevel = (p >> 3);
-	PresetManager::curSettings.triLevel = p;
-}
-
-void SetParameters::setSawtoothLevel(uint8_t p) {
-//	Wavetable::sawLevel = (p >> 3);
-	PresetManager::curSettings.sawLevel = p;
-}
-
-void SetParameters::setSquareLevel(uint8_t p) {
-//	Wavetable::sqLevel = (p >> 3);
-	PresetManager::curSettings.sqLevel = p;
-}
-
-void SetParameters::setRandomLevel(uint8_t p) {
-//	Wavetable::randLevel = (p >> 3);
-	PresetManager::curSettings.randLevel = p;
-}
-
-void SetParameters::setNoiseLevel(uint8_t p) {
-//	Wavetable::noiseLevel = (p >> 3);
-	PresetManager::curSettings.noiseLevel = p;
-}
-
 void SetParameters::enablePortamento(uint8_t p) {
-	FrequencyManager::enablePortamento((p > 0) ? true : false);
-	PresetManager::curSettings.portamentoOn = p;
+  FrequencyManager::enablePortamento((p > 0) ? true : false);
+  PresetManager::curSettings.portamentoOn = p;
 }
 
 void SetParameters::setPortamentoTime(uint8_t p) {
-	FrequencyManager::portMan.time = portTimeKnee.getValue(p);
-	PresetManager::curSettings.portamentoTime = p;
+  FrequencyManager::portMan.time = portTimeKnee.getValue(p);
+  PresetManager::curSettings.portamentoTime = p;
 }
 
 void SetParameters::setPulseWidth(uint8_t p) {
-	//Pulse width is a 4 bit value because the wavetables are 4bits long
+  //Pulse width is a 4 bit value because the wavetables are 4bits long
 //	Wavetable::pulseWidth = (p >> 3);
 //	Wavetable::genSquare();
-	PresetManager::curSettings.pulseWidth = p;
+  for (int i=0; i < 4; i++) Swizzler::soundChip.setPuleseWidth(i, (uint16_t)p<<9);
+  PresetManager::curSettings.pulseWidth = p;
 }
 
 void SetParameters::setAttackTime(uint8_t p) {
-  Swizzler::soundChip.setAttackTime(0, attackTimeKnee.getValue(p));
+  for (int i=0; i < 4; i++) Swizzler::soundChip.setAttackTime(i, attackTimeKnee.getValue(p));
   PresetManager::curSettings.attackTime = p;
 }
 
 void SetParameters::setDecayTime(uint8_t p) {
-  Swizzler::soundChip.setDecayTime(0, decRelTimeKnee.getValue(p));
+  for (int i=0; i < 4; i++) Swizzler::soundChip.setDecayTime(i, decRelTimeKnee.getValue(p));
   PresetManager::curSettings.decayTime = p;
 }
 
 void SetParameters::setSustainLevel(uint8_t p) {
-  Swizzler::soundChip.setSustainLevel(0, p<<1);
+  for (int i=0; i < 4; i++) Swizzler::soundChip.setSustainLevel(i, p<<1);
   PresetManager::curSettings.sustainLevel = p;
 }
 
 void SetParameters::setReleaseTime(uint8_t p) {
-  Swizzler::soundChip.setReleaseTime(0, decRelTimeKnee.getValue(p));
+  for (int i=0; i < 4; i++) Swizzler::soundChip.setReleaseTime(i, decRelTimeKnee.getValue(p));
   PresetManager::curSettings.releaseTime = p;
 }
 
 void SetParameters::enableArpeggio(uint8_t p) {
-	NoteManager::enableArpeggio((p > 0) ? true : false);
-	PresetManager::curSettings.arpeggioOn = p;
+  NoteManager::enableArpeggio((p > 0) ? true : false);
+  PresetManager::curSettings.arpeggioOn = p;
 }
 
 void SetParameters::setArpeggioTime(uint8_t p) {
-	// Tweaked to make 10 the minimum value.
-	// XXX: Is this the best way to go about it?
-	NoteManager::arpManager.arpTime = arpTimeKnee.getValue(p)+10;
-	PresetManager::curSettings.arpeggioTime = p;
+  // Tweaked to make 10 the minimum value.
+  // XXX: Is this the best way to go about it?
+  NoteManager::arpManager.arpTime = arpTimeKnee.getValue(p)+10;
+  PresetManager::curSettings.arpeggioTime = p;
 }
 
 void SetParameters::setArpeggioMinNotes(uint8_t p) {
-	// Ranges from 1-16
-	NoteManager::arpManager.minNotes = (p >> 3)+1;
-	PresetManager::curSettings.arpeggioMinNotes = p;
+  // Ranges from 1-16
+  NoteManager::arpManager.minNotes = (p >> 3)+1;
+  PresetManager::curSettings.arpeggioMinNotes = p;
 }
 
 void SetParameters::setBendRange(uint8_t p) {
-	// Bend range (in +/- half-steps) ranges from 0-15
-	FrequencyManager::bendRange = (p >> 3);
-	PresetManager::curSettings.bendRange = p;
+  // Bend range (in +/- half-steps) ranges from 0-15
+  FrequencyManager::bendRange = (p >> 3);
+  PresetManager::curSettings.bendRange = p;
 }
