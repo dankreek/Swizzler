@@ -9,15 +9,15 @@ int16_t MidiInput::midiData2;
 
 // Midi controller numbers
 #define PORT_ON_OFF 67
-#define PORT_TIME	5
+#define PORT_TIME	10
 
 #define ARP_ON_OFF	  26
-#define ARP_TIME      13
-#define ARP_MIN_NOTES 91
+#define ARP_TIME      12
+#define ARP_MIN_NOTES 13
 
 #define PITCH_BEND_RANGE  15
 
-#define PULSE_WIDTH	 12
+#define PULSE_WIDTH	 2
 
 #define ATTACK_TIME     75
 #define DECAY_TIME      76
@@ -28,6 +28,14 @@ int16_t MidiInput::midiData2;
 
 #define OSC_1_WF        74
 #define OSC_1_LEVEL     71
+
+#define OSC_2_WF        91
+#define OSC_2_LEVEL     93
+
+#define OSC_3_WF        72
+#define OSC_3_LEVEL     5
+
+
 
 #define NOISE_LEVEL     7
 
@@ -69,7 +77,22 @@ void MidiInput::handleControlChange() {
     SetParameters::setVoiceLevel(0, midiData2);
     break;
 
+  case OSC_2_WF:
+    SetParameters::setWaveform(1, midiData2);
+    break;
+  case OSC_2_LEVEL:
+    SetParameters::setVoiceLevel(1, midiData2);
+    break;
+
+  case OSC_3_WF:
+    SetParameters::setWaveform(2, midiData2);
+    break;
+  case OSC_3_LEVEL:
+    SetParameters::setVoiceLevel(2, midiData2);
+    break;
+
   case NOISE_LEVEL:
+    Swizzler::soundChip.setWaveform(3,SoundDriver::noiseWave);
     SetParameters::setVoiceLevel(3, midiData2);
     break;
 
