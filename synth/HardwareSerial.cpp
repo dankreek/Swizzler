@@ -118,9 +118,9 @@ void HardwareSerial::init(long baud)
 
   *_ucsrb |= _BV(_rxen);
   //sbi(*_ucsrb, _rxen);
-  *_ucsrb |= _BV(_txen);
+  *_ucsrb |= _BV(_txen) | _BV(_rxcie);
   //sbi(*_ucsrb, _txen);
-  *_ucsrb |= _BV(_rxcie);
+  //*_ucsrb |= _BV(_rxcie);
   //sbi(*_ucsrb, _rxcie);
 }
 

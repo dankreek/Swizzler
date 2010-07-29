@@ -19,18 +19,18 @@ int8_t FrequencyManager::bendAmount;
  * found by dividing.
  */
 int note_lookup[] = {
-	2093,	// C
-	2217, 	// C#
-	2349,	// D
-	2489,	// D#
-	2637,	// E
-	2794,	// F
-	2960,	// F#
-	3136,	// G
-	3322,	// G#
-	3520,	// A
-	3729,	// A#
-	3951,	// B
+	4186,	// C
+	4435, 	// C#
+	4699,	// D
+	4978,	// D#
+	5274,	// E
+	5588,	// F
+	5920,	// F#
+	6272,	// G
+	6645,	// G#
+	7040,	// A
+	7459,	// A#
+	7902,	// B
 };
 
 void FrequencyManager::init() {
@@ -90,7 +90,7 @@ uint16_t FrequencyManager::noteToFreq(uint8_t noteNum) {
 
 	// Divides in half for the proper number of octaves
 	// (every right shift is one less octave)
-	return (note_lookup[note] >> (8-octave));
+	return (note_lookup[note] >> (9-octave));
 }
 
 void FrequencyManager::setBendAmount(int8_t ba) {

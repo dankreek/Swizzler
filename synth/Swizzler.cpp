@@ -75,6 +75,7 @@ void Swizzler::setLed(bool onOff) {
  * ISR.
  */
 void Swizzler::mainLoop() {
+  _delay_ms(1000);
   soundChip.setWaveform(3, SoundDriver::noiseWave);
   soundChip.setVoiceLevel(3, 0xff);
 
