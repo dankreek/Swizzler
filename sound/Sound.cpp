@@ -8,14 +8,19 @@
 #include <util/delay.h>
 #include "Sound.h"
 #include "InputHandler.h"
+#include "HardwareSerial.h"
 
 Voice Sound::voices[numVoices];
 volatile uint16_t Sound::msCounter;
 uint8_t Sound::masterVolume;
 
+//#define USE_TWI_INPUT
+
+#ifdef USE_TWI_INPUT
 // Needed for the TWI slave input data
 uint8_t Sound::twiData[twiBufferSize];
 RingBuffer<uint8_t> Sound::twiInputBuffer(twiData, twiBufferSize);
+#endif
 
 void Sound::init() {
   initVoices();
@@ -27,7 +32,11 @@ void Sound::init() {
   PwmOut::init();
 
   // Start up the TWI bus
+#ifdef USE_TWI_INPUT
   twi.init(twiSlaveAddress, &twiInputBuffer);
+#else
+  Serial.init(31250);
+#endif
 }
 
 void Sound::initVoices() {
@@ -54,10 +63,15 @@ void Sound::mainLoop() {
     }
 
     // Get data from the TWI interface and pass it into the input handler
+#ifdef USE_TWI_INPUT
     while (twiInputBuffer.hasData()) {
       InputHandler::handleInput(twiInputBuffer.get());
     }
-
+#else
+    while (Serial.available() > 0) {
+      InputHandler::handleInput(Serial.read());
+    }
+#endif
 
   }
 }

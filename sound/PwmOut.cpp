@@ -30,8 +30,8 @@ ISR(TIMER1_COMPA_vect) {
   }
 
   // Finish calculating voice output levels (divide by common denominator)
-  // (note that one more right shift is being done to prevent clipping from mixing)
-  out_sample >>= (Voice::outputVolumeResolution+1);
+  // (note that more right shifts are being done to prevent clipping from mixing)
+  out_sample >>= (Voice::outputVolumeResolution+2);
 
   // Convert 8bit signed to 8bit unsigned, and output
   OCR2A = (out_sample+128);

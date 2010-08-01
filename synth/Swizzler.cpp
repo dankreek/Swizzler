@@ -50,13 +50,8 @@ void Swizzler::init() {
   sei();
 
   Wire.begin();
-  soundChip.resetSound();
-  /*
-  soundChip.setVoiceLevel(0, 0xff);
 
-  soundChip.setFrequency(0, 440);
-  soundChip.setEnvelopeGate(0, true);
-   */
+  //soundChip.resetSound();
 
   // Turn the on-board LED off
   setLed(true);
@@ -75,10 +70,6 @@ void Swizzler::setLed(bool onOff) {
  * ISR.
  */
 void Swizzler::mainLoop() {
-  _delay_ms(1000);
-  soundChip.setWaveform(3, SoundDriver::noiseWave);
-  soundChip.setVoiceLevel(3, 0xff);
-
   while (true) {
     // Shove everything that's read by the serial port into the MIDI input
     while (Serial.available() > 0) {

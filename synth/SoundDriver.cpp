@@ -1,4 +1,5 @@
 #include "SoundDriver.h"
+#include "HardwareSerial.h"
 
 /**
  * Different types of commands available for a voice
@@ -26,85 +27,65 @@ SoundDriver::SoundDriver(uint8_t addy) {
 }
 
 void SoundDriver::setFrequency(uint8_t voiceNum, uint16_t freq) {
-  Wire.beginTransmission(this->twiAddress);
-  Wire.send(voiceNum+1);
-  Wire.send((uint8_t)setVoiceFrequency);
-  Wire.send((uint8_t)(freq>>8));
-  Wire.send((uint8_t)(freq&0xff));
-  Wire.endTransmission();
+  Serial.write(voiceNum+1);
+  Serial.write((uint8_t)setVoiceFrequency);
+  Serial.write((uint8_t)(freq>>8));
+  Serial.write((uint8_t)(freq&0xff));
 }
 
 void SoundDriver::setEnvelopeGate(uint8_t voiceNum, bool isClosed) {
-  Wire.beginTransmission(this->twiAddress);
-  Wire.send(voiceNum+1); 
-  Wire.send((uint8_t)setGateState);
-  Wire.send((uint8_t)isClosed ? 1 : 0);
-  Wire.endTransmission();
+  Serial.write(voiceNum+1);
+  Serial.write((uint8_t)setGateState);
+  Serial.write((uint8_t)isClosed ? 1 : 0);
 }
 
 void SoundDriver::resetSound() {
-  Wire.beginTransmission(this->twiAddress);
-  Wire.send(0x00);
-  Wire.send(0x00);
-  Wire.endTransmission();
+  Serial.write(0x00);
+  Serial.write(0x00);
 }
 
 void SoundDriver::setVoiceLevel(uint8_t voiceNum, uint8_t level) {
-  Wire.beginTransmission(this->twiAddress);
-  Wire.send(voiceNum+1);
-  Wire.send((uint8_t)setVolume);
-  Wire.send(level);
-  Wire.endTransmission();
+  Serial.write(voiceNum+1);
+  Serial.write((uint8_t)setVolume);
+  Serial.write(level);
 }
 
 void SoundDriver::setWaveform(uint8_t voiceNum, WaveformType waveform) {
- Wire.beginTransmission(this->twiAddress);
- Wire.send(voiceNum+1);
- Wire.send((uint8_t)setVoiceWaveform);
- Wire.send((uint8_t)waveform);
- Wire.endTransmission();
+ Serial.write(voiceNum+1);
+ Serial.write((uint8_t)setVoiceWaveform);
+ Serial.write((uint8_t)waveform);
 }
 
 void SoundDriver::setAttackTime(uint8_t voiceNum, uint16_t attackTime) {
-  Wire.beginTransmission(this->twiAddress);
-  Wire.send(voiceNum+1);
-  Wire.send((uint8_t)setVoiceAttackTime);
-  Wire.send((uint8_t)(attackTime>>8));
-  Wire.send((uint8_t)(attackTime&0xff));
-  Wire.endTransmission();
+  Serial.write(voiceNum+1);
+  Serial.write((uint8_t)setVoiceAttackTime);
+  Serial.write((uint8_t)(attackTime>>8));
+  Serial.write((uint8_t)(attackTime&0xff));
 }
 
 void SoundDriver::setDecayTime(uint8_t voiceNum, uint16_t decayTime) {
-  Wire.beginTransmission(this->twiAddress);
-  Wire.send(voiceNum+1);
-  Wire.send((uint8_t)setVoiceDecayTime);
-  Wire.send((uint8_t)(decayTime>>8));
-  Wire.send((uint8_t)(decayTime&0xff));
-  Wire.endTransmission();
+  Serial.write(voiceNum+1);
+  Serial.write((uint8_t)setVoiceDecayTime);
+  Serial.write((uint8_t)(decayTime>>8));
+  Serial.write((uint8_t)(decayTime&0xff));
 }
 
 void SoundDriver::setReleaseTime(uint8_t voiceNum, uint16_t releaseTime) {
-  Wire.beginTransmission(this->twiAddress);
-  Wire.send(voiceNum+1);
-  Wire.send((uint8_t)setVoiceReleaseTime);
-  Wire.send((uint8_t)(releaseTime>>8));
-  Wire.send((uint8_t)(releaseTime&0xff));
-  Wire.endTransmission();
+  Serial.write(voiceNum+1);
+  Serial.write((uint8_t)setVoiceReleaseTime);
+  Serial.write((uint8_t)(releaseTime>>8));
+  Serial.write((uint8_t)(releaseTime&0xff));
 }
 
 void SoundDriver::setSustainLevel(uint8_t voiceNum, uint8_t sustainLevel) {
-  Wire.beginTransmission(this->twiAddress);
-  Wire.send(voiceNum+1);
-  Wire.send((uint8_t)setVoiceSustainLevel);
-  Wire.send(sustainLevel);
-  Wire.endTransmission();
+  Serial.write(voiceNum+1);
+  Serial.write((uint8_t)setVoiceSustainLevel);
+  Serial.write(sustainLevel);
 }
 
 void SoundDriver::setPuleseWidth(uint8_t voiceNum, uint16_t pw) {
-  Wire.beginTransmission(this->twiAddress);
-  Wire.send(voiceNum+1);
-  Wire.send((uint8_t)setVoicePulseWidth);
-  Wire.send((uint8_t)(pw >> 8));
-  Wire.send((uint8_t)(pw & 0xff));
-  Wire.endTransmission();
+  Serial.write(voiceNum+1);
+  Serial.write((uint8_t)setVoicePulseWidth);
+  Serial.write((uint8_t)(pw >> 8));
+  Serial.write((uint8_t)(pw & 0xff));
 }
