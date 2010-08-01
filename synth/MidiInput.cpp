@@ -8,7 +8,7 @@ int16_t MidiInput::midiData1;
 int16_t MidiInput::midiData2;
 
 // Midi controller numbers
-#define PORT_ON_OFF 67
+#define PORT_ON_OFF 20
 #define PORT_TIME	10
 
 #define ARP_ON_OFF	  26

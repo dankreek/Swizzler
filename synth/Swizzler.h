@@ -18,23 +18,25 @@
 #include "SoundDriver.h"
 
 class Swizzler {
-  public:
-	static const int ledPin = 13;
-	static const uint8_t eepromAddress = 0x50;
+public:
+  static uint16_t msCounter;    // Incremented once every millisecond
+  static const int ledPin = 13;
+  static const uint8_t eepromAddress = 0x50;
 
-	static SoundDriver soundChip;
+  static SoundDriver soundChip;
 
-	void init();
-	void mainLoop();
+  void init();
+  void mainLoop();
 
-	/**
-	 * Send the processor into an infinite blinking loop to indicate a run-time error
-	 */
-	void setErrorState();
+  /**
+   * Send the processor into an infinite blinking loop to indicate a run-time error
+   */
+  void setErrorState();
 
-	void setLed(bool onOff);
+  void setLed(bool onOff);
 };
 
 extern Swizzler swizzler;
 
 #endif /* SWIZZLER_H_ */
+

@@ -19,7 +19,7 @@ void PortamentoManager::nextGlideFreq(uint16_t freq) {
 	curFreq = prevFreq;
 	destFreq = freq;
 	done = false;
-	timeLine.init(prevFreq, destFreq, time);
+	timeLine.start(prevFreq, destFreq, time, 14);
 }
 
 bool PortamentoManager::nextTick() {
@@ -31,8 +31,8 @@ bool PortamentoManager::nextTick() {
 			return true;
 		}
 		else {
-			int16_t nextFreq;
-			bool stillGoing = timeLine.next(&nextFreq);
+			uint16_t nextFreq;
+			bool stillGoing = timeLine.next(nextFreq);
 
 			if (!stillGoing) {
 				curFreq = destFreq;

@@ -8,10 +8,12 @@
 #include "PresetManager.h"
 #include <avr/io.h>
 #include "HardwareSerial.h"
+#include "Timer.h"
 #include <util/delay.h>
 #include <avr/interrupt.h>
 
 SoundDriver Swizzler::soundChip = SoundDriver(0x70);
+uint16_t Swizzler::msCounter = 0;
 
 void Swizzler::init() {
   // Set the LED pin to output
@@ -47,9 +49,9 @@ void Swizzler::init() {
   //PresetManager::loadPreset(0);
 
   // Turn on interrupts (let the games begin)
-  sei();
 
-  Wire.begin();
+  //Wire.begin();
+  Timer::init();
 
   //soundChip.resetSound();
 
@@ -70,7 +72,16 @@ void Swizzler::setLed(bool onOff) {
  * ISR.
  */
 void Swizzler::mainLoop() {
+  uint16_t lastMs=msCounter;
+
   while (true) {
+    // Only call these services once every millisecond
+    if (lastMs != msCounter) {
+      NoteManager::nextTick();
+      FrequencyManager::nextTick();
+      lastMs = msCounter;
+    }
+
     // Shove everything that's read by the serial port into the MIDI input
     while (Serial.available() > 0) {
       MidiInput::pushByte(Serial.read());

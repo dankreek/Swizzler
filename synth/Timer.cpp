@@ -3,13 +3,23 @@
 #include <avr/pgmspace.h>
 #include "Swizzler.h"
 #include "PresetManager.h"
+#include "Timer.h"
 
-// Update the envelope every millisecond
-// This routine is no longer envelope-specific, it should be moved
+// Call timer services
 ISR(TIMER0_OVF_vect) {
-	//NoteManager::nextTick();
-	//FrequencyManager::nextTick();
+  Swizzler::msCounter++;
 
-  // Call the arduino library's time keeping functions. May not be needed later.
-  //timerhook();
+}
+
+void Timer::init() {
+  // this needs to be called before setup() or some functions won't work there
+  sei();
+
+  TCCR0A |= _BV(WGM01) | _BV(WGM00);
+
+  // set timer 0 prescale factor to 64
+  TCCR0B |= _BV(CS01) | _BV(CS00);
+
+  // enable timer 0 overflow interrupt
+  TIMSK0 |= _BV(TOIE0);
 }
