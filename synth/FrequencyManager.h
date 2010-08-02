@@ -1,8 +1,8 @@
 #ifndef FREQMAN_H
 #define FREQMAN_H
 
-#include "PortamentoManager.h"
 #include "Swizzler.h"
+#include "PortamentoManager.h"
 
 /**
  * The frequency manager takes in control messages (via MIDI) like note on, note off
@@ -10,73 +10,90 @@
  * put out at.
  */
 class FrequencyManager {
-  public:
-	static PortamentoManager portMan;
+public:
+  FrequencyManager();
 
-	/**
-	 * Initialize the frequency manager
-	 */
-	static void init();
+  // Which oscillator number is this (0-4, 4 is always noise)
+  uint8_t oscNumber;
 
-	/**
-	 * The note manager is sending a new note
-	 */
-	static void newNote(uint8_t noteNumber);
+  PortamentoManager portMan;
 
-	/**
-	 * This is called once every millisecond to handle all the business.
-	 * Currently only the portamento manager needs a timer hook.
-	 */
-	static inline void nextTick() {
-		// If portamento's on and running then output a new frequency
-		if (portamentoOn && !portMan.done) {
-			// only change frequency if it's necessary
-			if (portMan.nextTick()) setBaseFrequency(portMan.curFreq);
-		}
-	}
+  /**
+   * Initialize the static components of the frequency manager
+   */
+  static void init();
 
-	/**
-	 * Set a new bend value 0 is max bend low, 64 is no bend, 127 is max high bend
-	 */
-	static void setBendAmount(int8_t ba);
+  /**
+   * The note manager is sending a new keyboard note which is then turned
+   * into a frequency and sent to the proper voice on the sound chip
+   */
+  static void newNote(uint8_t noteNumber);
 
-	/**
-	 * Turn on/off portamento
-	 * @onOff true to turn on portamento, false to turn off portamento
-	 */
-	static void enablePortamento(bool onOff);
+  /**
+   * This is called once every millisecond to handle all the business.
+   * Currently only the portamento manager needs a timer hook.
+   */
+  static void nextTick();
 
-	/**
-	 * Convert a Midi note to a frequency
-	 */
-	static uint16_t noteToFreq(uint8_t noteNum);
+  /**
+   * Set a new bend value 0 is max bend low, 64 is no bend, 127 is max high bend
+   */
+  static void setBendAmount(int8_t ba);
 
-	// The range that the pitch bend swings between (in +/- half-steps)
-	static uint8_t bendRange;
+  /**
+   * Turn on/off portamento
+   * @onOff true to turn on portamento, false to turn off portamento
+   */
+  static void enablePortamento(bool onOff);
 
-	static void setBaseFrequency(uint16_t freq);
+  /**
+   * Convert a Midi note to a frequency
+   */
+  static uint16_t noteToFreq(uint8_t noteNum);
 
-  private:
-	// Is portamento currently on?
-	static bool portamentoOn;
+  // The range that the pitch bend swings between (in +/- half-steps)
+  static uint8_t bendRange;
 
-	// Recalculate and send the current frequency to the frequency managers
-	static void sendFrequency();
+  // Set's the current base frequency (later modified with bends, LFO's, etc)
+  void setBaseFrequency(uint16_t freq);
 
-	// Use the bendAmount and the current note number to recalculate the bendOffset
-	static void recalculateBendOffset();
+  // Set a new note offset for this oscillator (the offset by which the base is modified, in half-steps)
+  void setNoteOffset(int8_t offset);
+  uint8_t getNoteOffset();
 
-	// How much to increment (or decrement) the output frequency (in hz) as set by recalculateBendOffset()
-	static int16_t bendOffset;
+  // A NoteManager for every voice (stored IN the note manager, it seemes logical)
+  static FrequencyManager managers[];
 
-	// The last note that was sent
-	static uint8_t curMidiNote;
+private:
+  // Number of half-steps more or less then the basenote that should be played
+  int8_t noteOffset;
 
-	// The current base frequency to be output
-	static uint16_t curFreq;
+  // Is portamento currently on?
+  static bool portamentoOn;
 
-	// The current bend mount (-64-63)
-	static int8_t bendAmount;
+  // Recalculate and send the current frequency modified by the pitch bender to the sound chip
+  void sendFrequency();
+
+  // Use the bendAmount and the current note number to recalculate the bendOffset
+  void recalculateBendOffset();
+
+  // How much to increment (or decrement) the output frequency (in hz) as set by recalculateBendOffset()
+  int16_t bendOffset;
+
+  // The last note that was sent
+  uint8_t curMidiNote;
+
+  // The current base frequency to be output
+  uint16_t curFreq;
+
+  // The current bend mount (-64-63)
+  static int8_t bendAmount;
+
+
 };
+
+inline uint8_t FrequencyManager::getNoteOffset() {
+  return noteOffset;
+}
 
 #endif

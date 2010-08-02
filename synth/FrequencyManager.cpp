@@ -4,13 +4,10 @@
 #include "MidiNoteBuffer.h"
 #include "Swizzler.h"
 
-PortamentoManager FrequencyManager::portMan;
 bool FrequencyManager::portamentoOn;
 uint8_t FrequencyManager::bendRange;
-uint8_t FrequencyManager::curMidiNote;
-int16_t FrequencyManager::bendOffset;
-uint16_t FrequencyManager::curFreq;
 int8_t FrequencyManager::bendAmount;
+FrequencyManager FrequencyManager::managers[Swizzler::numOscillators];
 
 /**
  * Frequency -> Note lookup table. These are the frequencies for
@@ -32,86 +29,99 @@ int note_lookup[] = {
 	7902,	// B
 };
 
-void FrequencyManager::init() {
-	portamentoOn = false;
-	portMan.init();
-
-	bendOffset = 0;
-	bendRange = 2;
+FrequencyManager::FrequencyManager() {
+  bendOffset = 0;
+  portMan.init();
+  noteOffset = 0;
 }
 
-void FrequencyManager::newNote(uint8_t noteNumber) {
-	curMidiNote = noteNumber;
+void FrequencyManager::init() {
+  portamentoOn = false;
+  bendRange = 2;
 
-	if (bendAmount != 0) recalculateBendOffset();
+  for (uint8_t i=0; i < Swizzler::numOscillators; i++) {
+    managers[i].oscNumber = i;
+  }
+}
 
-	// If portamento's on, start the glide
-	if (portamentoOn) {
-		// If no previous note in the buffer then just play the note at its frequency
-		if (MidiNoteBuffer::isEmpty()) {
-			portMan.nextDirectFreq(noteToFreq(noteNumber));
-		}
-		// If there is a previous note setup the glide
-		else {
-			portMan.nextGlideFreq(noteToFreq(noteNumber));
-		}
-	}
-	// If no portamento then set the frequency directly
-	else {
-		setBaseFrequency(noteToFreq(noteNumber));
-	}
+void FrequencyManager::newNote(uint8_t baseNoteNumber) {
+  for (uint8_t i; i < Swizzler::numOscillators; i++) {
+    managers[i].curMidiNote = (baseNoteNumber += managers[i].getNoteOffset());
+    if (bendAmount != 0) {
+      managers[i].recalculateBendOffset();
+    }
+
+    // If portamento's on, start the glide
+    if (portamentoOn) {
+      // If no previous note in the buffer then just play the note at its frequency
+      if (MidiNoteBuffer::isEmpty()) {
+        managers[i].portMan.nextDirectFreq(noteToFreq(managers[i].curMidiNote));
+      }
+      // If there is a previous note setup the glide
+      else {
+        managers[i].portMan.nextGlideFreq(noteToFreq(managers[i].curMidiNote));
+      }
+    }
+    // If no portamento then set the frequency directly
+    else {
+      managers[i].setBaseFrequency(noteToFreq(managers[i].curMidiNote));
+    }
+  } // End For-Each oscillator
 }
 
 void FrequencyManager::enablePortamento(bool onOff) {
-	// Turn portamento on
-	if (onOff && !portamentoOn) {
-		portamentoOn = true;
-		portMan.init();
-	}
-	// Turn portamento off
-	else if (!onOff && portamentoOn) {
-		portamentoOn = false;
-		// If a destination frequency has been defined from a previous glide, jump directly to it
-		if (portMan.destFreq > -1) setBaseFrequency(portMan.destFreq);
-	}
+  // Turn portamento on
+  if (onOff && !portamentoOn) {
+    portamentoOn = true;
+    for (uint8_t i=0; i < Swizzler::numOscillators; i++) managers[i].portMan.init();
+  }
+  // Turn portamento off
+  else if (!onOff && portamentoOn) {
+    portamentoOn = false;
+    // If a destination frequency has been defined from a previous glide, jump directly to it
+    for (uint8_t i=0; i < Swizzler::numOscillators; i++)
+      if (managers[i].portMan.destFreq > -1) {
+        managers[i].setBaseFrequency(managers[i].portMan.destFreq);
+      }
+  }
 }
 
 uint16_t FrequencyManager::noteToFreq(uint8_t noteNum) {
-	// TODO: Find the max frequency this thing will safely run at
-	//if (noteNum > 83) return 1047;
-	/**
-	 * The MIDI standard defines note #0 as a 'C', so
-	 * divide the note number by 12 to get the octave the note is in
-	 * and take the remainder the find the note name.
-	 */
-	int octave = noteNum / 12;
-	int note = noteNum % 12;
+  /**
+   * The MIDI standard defines note #0 as a 'C', so
+   * divide the note number by 12 to get the octave the note is in
+   * and take the remainder the find the note name.
+   */
+  int octave = noteNum / 12;
+  int note = noteNum % 12;
 
-	// Divides in half for the proper number of octaves
-	// (every right shift is one less octave)
-	return (note_lookup[note] >> (9-octave));
+  // Divides in half for the proper number of octaves
+  // (every right shift is one less octave)
+  return (note_lookup[note] >> (9-octave));
 }
 
 void FrequencyManager::setBendAmount(int8_t ba) {
-	bendAmount = ba;
-	recalculateBendOffset();
-	sendFrequency();
+  bendAmount = ba;
+  for (int i=0; i < Swizzler::numOscillators;i++) {
+    managers[i].recalculateBendOffset();
+    managers[i].sendFrequency();
+  }
 }
 
 void FrequencyManager::recalculateBendOffset() {
-	// Bend up
-	if (bendAmount > 0) {
-		bendOffset = (bendAmount * (int16_t)(noteToFreq(curMidiNote+bendRange)-noteToFreq(curMidiNote)))/63;
-	}
-	// Bend down
-	else if (bendAmount < 0) {
-		//digitalWrite(8, true);
-		bendOffset = (bendAmount * (int16_t)(noteToFreq(curMidiNote)-noteToFreq(curMidiNote-bendRange)))/64;
-	}
-	// No bend
-	else {
-		bendOffset = 0;
-	}
+  // Bend up
+  if (bendAmount > 0) {
+    bendOffset = (bendAmount * (int16_t)(noteToFreq(curMidiNote+bendRange)-noteToFreq(curMidiNote)))/63;
+  }
+  // Bend down
+  else if (bendAmount < 0) {
+    //digitalWrite(8, true);
+    bendOffset = (bendAmount * (int16_t)(noteToFreq(curMidiNote)-noteToFreq(curMidiNote-bendRange)))/64;
+  }
+  // No bend
+  else {
+    bendOffset = 0;
+  }
 }
 
 void FrequencyManager::setBaseFrequency(uint16_t freq) {
@@ -120,5 +130,21 @@ void FrequencyManager::setBaseFrequency(uint16_t freq) {
 }
 
 void FrequencyManager::sendFrequency() {
-  for (int i=0;i<4;i++) Swizzler::soundChip.setFrequency(i, curFreq+bendOffset);
+  Swizzler::soundChip.setFrequency(oscNumber, curFreq+bendOffset);
+}
+
+void FrequencyManager::nextTick() {
+  // If portamento's on and running then output a new frequency
+  for (uint8_t i; i < Swizzler::numOscillators; i++) {
+    if (portamentoOn && !managers[i].portMan.done) {
+      // only change frequency if it's necessary
+      if (managers[i].portMan.nextTick()) managers[i].setBaseFrequency(managers[i].portMan.curFreq);
+    }
+  }
+}
+
+void FrequencyManager::setNoteOffset(int8_t offs) {
+  noteOffset = offs;
+  recalculateBendOffset();
+
 }
