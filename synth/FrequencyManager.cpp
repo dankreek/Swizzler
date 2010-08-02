@@ -137,9 +137,15 @@ void FrequencyManager::nextTick() {
   // If portamento's on and running then output a new frequency
   for (uint8_t i; i < Swizzler::numOscillators; i++) {
     if (portamentoOn && !managers[i].portMan.done) {
-      // only change frequency if it's necessary
+      // only change frequency if it's necessary (save bandwidth on the wire)
       if (managers[i].portMan.nextTick()) managers[i].setBaseFrequency(managers[i].portMan.curFreq);
     }
+  }
+}
+
+void FrequencyManager::setPortamentoTime(uint16_t time) {
+  for (uint8_t i=0; i < Swizzler::numOscillators; i++) {
+    managers[i].portMan.time = time;
   }
 }
 

@@ -21,8 +21,10 @@ void SetParameters::enablePortamento(uint8_t p) {
 }
 
 void SetParameters::setPortamentoTime(uint8_t p) {
-  for (uint8_t i; i < Swizzler::numOscillators; i++)
-    FrequencyManager::managers[i].portMan.time = portTimeKnee.getValue(p);
+  //for (uint8_t i; i < Swizzler::numOscillators; i++)
+  //  FrequencyManager::managers[i].portMan.time = portTimeKnee.getValue(p);
+  FrequencyManager::setPortamentoTime(portTimeKnee.getValue(p));
+
   PresetManager::curSettings.portamentoTime = p;
 }
 

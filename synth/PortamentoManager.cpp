@@ -5,7 +5,7 @@ void PortamentoManager::init() {
 	destFreq = -1;
 	curFreq = -1;
 	time = 100;
-	done = true;	
+	done = true;
 }
 
 void PortamentoManager::nextDirectFreq(uint16_t freq) {
@@ -23,32 +23,32 @@ void PortamentoManager::nextGlideFreq(uint16_t freq) {
 }
 
 bool PortamentoManager::nextTick() {
-	if (!done) {
-		// If prev and dest are the same just go there directly
-		if (destFreq == prevFreq) {
-			curFreq = destFreq;
-			done = true;
-			return true;
-		}
-		else {
-			uint16_t nextFreq;
-			bool stillGoing = timeLine.next(nextFreq);
+  if (!done) {
+    // If prev and dest are the same just go there directly
+    if (destFreq == prevFreq) {
+      curFreq = destFreq;
+      done = true;
+      return true;
+    }
+    else {
+      uint16_t nextFreq;
+      bool stillGoing = timeLine.next(nextFreq);
 
-			if (!stillGoing) {
-				curFreq = destFreq;
-				done = true;
-				return true;
-			}
-			else if (curFreq != nextFreq) {
-				curFreq = nextFreq;
-				return true;
-			}
-			else {
-				return false;
-			}
-		}
-	}
-	else {
-		return false;
-	}
+      if (!stillGoing) {
+        curFreq = destFreq;
+        done = true;
+        return true;
+      }
+      else if (curFreq != nextFreq) {
+        curFreq = nextFreq;
+        return true;
+      }
+      else {
+        return false;
+      }
+    }
+  }
+  else {
+    return false;
+  }
 }
