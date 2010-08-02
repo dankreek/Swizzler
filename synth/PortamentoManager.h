@@ -3,7 +3,6 @@
 
 #include <inttypes.h>
 #include "LinearIncrementor.h"
-#include "Bresenham.h"
 
 class PortamentoManager {
 public:

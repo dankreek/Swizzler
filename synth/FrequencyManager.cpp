@@ -1,7 +1,6 @@
 #include <inttypes.h>
 #include "FrequencyManager.h"
 #include "PortamentoManager.h"
-#include "Bresenham.h"
 #include "MidiNoteBuffer.h"
 #include "Swizzler.h"
 
