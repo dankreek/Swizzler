@@ -20,7 +20,7 @@ Preset readStorage;
 void PresetManager::setInitialSettings() {
 }
 
-void PresetManager::storePreset() {
+void PresetManager::storePreset(uint8_t shim) {
 	const uint8_t* p = (const uint8_t*)(const void*)&curSettings;
 	uint16_t presetOfs = curPreset*sizeof(Preset);
 

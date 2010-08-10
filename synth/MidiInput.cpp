@@ -9,23 +9,23 @@ int16_t MidiInput::midiData1;
 int16_t MidiInput::midiData2;
 
 // Midi controller numbers
-#define PORT_ON_OFF 20
-#define PORT_TIME	10
+//#define PORT_ON_OFF 20
+//#define PORT_TIME	10
 
-#define ARP_ON_OFF	  26
-#define ARP_TIME      12
-#define ARP_MIN_NOTES 13
+//#define ARP_ON_OFF	  26
+//#define ARP_TIME      12
+//#define ARP_MIN_NOTES 13
 
-#define PITCH_BEND_RANGE  15
+//#define PITCH_BEND_RANGE  15
 
-#define PULSE_WIDTH	 2
+//#define PULSE_WIDTH	 2
 
-#define ATTACK_TIME     75
-#define DECAY_TIME      76
-#define SUSTAIN_LEVEL   92
-#define RELEASE_TIME    95
+//#define ATTACK_TIME     75
+//#define DECAY_TIME      76
+//#define SUSTAIN_LEVEL   92
+//#define RELEASE_TIME    95
 
-#define SAVE_POWERON	84
+//#define SAVE_POWERON	84
 
 #define OSC_1_WF        74
 #define OSC_1_LEVEL     71
@@ -64,7 +64,7 @@ void MidiInput::handlePitchBend() {
 // Launch a controller change hook
 void MidiInput::handleControlChange() {
   MidiControllerMapping::executeController(midiData1, midiData2);
-
+//}
   // TODO : Replace all of these with a properly setup MidiControllerMapping
 
   /**
@@ -101,9 +101,7 @@ void MidiInput::handleControlChange() {
     SetParameters::setVoiceLevel(3, midiData2);
     break;
 
-    /**
-     * Portamento Controls
-     */
+    /* *** Replaced with a MidiController Mapping ****
     case PORT_ON_OFF:
             SetParameters::enablePortamento(midiData2);
             break;
@@ -115,9 +113,6 @@ void MidiInput::handleControlChange() {
             SetParameters::setPulseWidth(midiData2);
             break;
 
-    /**
-     * Envelope value ares calculated using a knee
-     */
     case ATTACK_TIME:
             SetParameters::setAttackTime(midiData2);
             break;
@@ -146,9 +141,9 @@ void MidiInput::handleControlChange() {
     case PITCH_BEND_RANGE:
             SetParameters::setBendRange(midiData2);
             break;
-
     case SAVE_POWERON:
             PresetManager::storePreset();
+            */
   }
 }
 

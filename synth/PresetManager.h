@@ -22,8 +22,9 @@ class PresetManager {
 	// Load and set a preset by its number (0-127)
 	static void loadPreset(uint8_t);
 
-	// Save the current settings in curSettings to a preset number (0-127)
-	static void storePreset();
+	// Save the current settings in curSettings to the currently selected preset
+	// (the parameter's a dummy parameter so that the function can be hooked into a MidiControllerMapping
+	static void storePreset(uint8_t);
 
 	// If this is the first boot of the swizzler, set the default settings
 	static void setInitialSettings();

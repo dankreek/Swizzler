@@ -33,11 +33,13 @@ private:
   uint8_t controllerNumber;
   void (*executeFunction)(uint8_t);
 
-  // This needs to be statically defined in the MidiControllerMapping source file
+  /**
+   * This needs to be statically defined in the MidiControllerMapping source file
+   * See MidiControllerMapping.cpp for a deeper explanation of these
+   */
   static MidiControllerMapping controllerList[];
-  static uint8_t listLength;
-
-
+  static const uint8_t endOfMappingList = 0xff;
+  //static uint8_t listLength;
 };
 
 inline MidiControllerMapping::MidiControllerMapping(uint8_t ctrlNum, void (*func)(uint8_t)) {
@@ -46,10 +48,14 @@ inline MidiControllerMapping::MidiControllerMapping(uint8_t ctrlNum, void (*func
 }
 
 inline bool MidiControllerMapping::executeController(uint8_t ctrlNum, uint8_t data) {
-  for (uint8_t i=0; i < listLength; i++) {
+  for (uint8_t i=0; i < 0x80; i++) {
     if (controllerList[i].controllerNumber == ctrlNum) {
       controllerList[i].executeFunction(data);
       return true;
+    }
+    else if (controllerList[i].controllerNumber >= 0x80) {
+      // Reached the end of the list, return false
+      return false;
     }
   }
 
