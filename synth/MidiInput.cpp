@@ -147,6 +147,7 @@ void MidiInput::handleControlChange() {
   }
 }
 
+// TODO : Make this function a statically compiled reference in MidiControllerMapping
 void MidiInput::handleProgramChange() {
-	PresetManager::loadPreset(midiData1);
+  PresetManager::loadPreset(midiData1);
 }
