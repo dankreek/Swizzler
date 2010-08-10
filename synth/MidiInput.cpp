@@ -2,6 +2,7 @@
 #include "MidiInput.h"
 #include "Swizzler.h"
 #include "PresetManager.h"
+#include "MidiControllerMapping.h"
 
 int16_t MidiInput::midiCmd;
 int16_t MidiInput::midiData1;
@@ -48,7 +49,7 @@ void MidiInput::handleNoteOn() {
   else NoteManager::noteOn(midiData1);
 }
 
-void MidiInput::handleNoteOff() {	
+void MidiInput::handleNoteOff() {
   NoteManager::noteOff(midiData1);
 }
 
@@ -60,8 +61,12 @@ void MidiInput::handlePitchBend() {
   FrequencyManager::setBendAmount((int8_t)midiData2-64);
 }
 
-// Lots of fun with controllers!
+// Launch a controller change hook
 void MidiInput::handleControlChange() {
+  MidiControllerMapping::executeController(midiData1, midiData2);
+
+  // TODO : Replace all of these with a properly setup MidiControllerMapping
+
   /**
    * In the MIDI protocol the 1st byte (midiData1) is the controller number and
    * the 2nd byte (midiData2) is the value of the controller (7bits)

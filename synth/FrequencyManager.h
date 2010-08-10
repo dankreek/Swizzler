@@ -6,8 +6,10 @@
 
 /**
  * The frequency manager takes in control messages (via MIDI) like note on, note off
- * portamento on/off, and arpeggio on/off and tells the oscillator what frequency to
- * put out at.
+ * portamento on/off, and arpeggio on/off and tells the oscillators what frequency to
+ * put out at. This class contains 4 static members (one for each oscillator). that
+ * are each modified by newNote() which is really the only public method that needs
+ * to be called here. TODO: I should probably modify the header file to reflect this.
  */
 class FrequencyManager {
 public:
