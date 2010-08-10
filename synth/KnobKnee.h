@@ -19,7 +19,7 @@ public:
    *                  (kneeX, KneeY), then next line goes from (kneeX, kneeY) to (127,range).
    *                  Different types of controls feel more natural with different knees.
    */
-  inline KnobKnee(uint16_t range, uint8_t kneeX, uint16_t kneeY);
+  KnobKnee(uint16_t range, uint8_t kneeX, uint16_t kneeY);
 
   /**
    * Get the output value based up a MIDI controller value
@@ -35,10 +35,5 @@ private:
   uint16_t kneeY;
 };
 
-inline KnobKnee::KnobKnee(uint16_t range, uint8_t kneeX, uint16_t kneeY) {
-  this->range = range;
-  this->kneeX = kneeX;
-  this->kneeY = kneeY;
-}
 
 #endif
