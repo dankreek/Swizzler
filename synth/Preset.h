@@ -30,6 +30,8 @@ struct Preset {
         uint8_t waveform3;
         uint8_t voiceLevel3;
 
+        uint8_t noiseLevel;
+
 	uint8_t pulseWidth;
 
 	// Portamento
