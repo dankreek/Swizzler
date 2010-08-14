@@ -65,10 +65,10 @@ public:
 
   static void setPortamentoTime(uint16_t time);
 
-private:
   // A NoteManager for every voice (stored IN the note manager, it seems logical)
   static FrequencyManager managers[];
 
+private:
   // Number of half-steps more or less then the basenote that should be played
   int8_t noteOffset;
 

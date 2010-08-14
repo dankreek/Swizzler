@@ -34,9 +34,11 @@ public:
 
   static void setOscLevel2(uint8_t);
   static void setOscWaveform2(uint8_t);
+  static void setOscOffset2(uint8_t);
 
   static void setOscLevel3(uint8_t);
   static void setOscWaveform3(uint8_t);
+  static void setOscOffset3(uint8_t);
 
   static void setNoiseLevel(uint8_t);
 
@@ -49,6 +51,7 @@ public:
 private:
   static void setWaveform(uint8_t, uint8_t);
   static void setVoiceLevel(uint8_t, uint8_t);
+  static void setVoiceOffset(uint8_t, uint8_t);
 };
 
 #endif /* SETPARAMETERS_H_ */

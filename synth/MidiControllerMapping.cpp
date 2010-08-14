@@ -20,6 +20,7 @@
 #include <stdlib.h>
 
 MidiControllerMapping MidiControllerMapping::controllerList[] = {
+    // Oscillator settings
     MidiControllerMapping(
         MidiControllerNumbers::oscLevel1,
         SetParameters::setOscLevel1),
@@ -33,6 +34,9 @@ MidiControllerMapping MidiControllerMapping::controllerList[] = {
     MidiControllerMapping(
         MidiControllerNumbers::oscWaveform2,
         SetParameters::setOscWaveform2),
+    MidiControllerMapping(
+        MidiControllerNumbers::oscOffset2,
+        SetParameters::setOscOffset2),
 
     MidiControllerMapping(
         MidiControllerNumbers::oscLevel3,
@@ -40,6 +44,9 @@ MidiControllerMapping MidiControllerMapping::controllerList[] = {
     MidiControllerMapping(
         MidiControllerNumbers::oscWaveform3,
         SetParameters::setOscWaveform3),
+    MidiControllerMapping(
+        MidiControllerNumbers::oscOffset3,
+        SetParameters::setOscOffset3),
 
     MidiControllerMapping(
         MidiControllerNumbers::noiseLevel,

@@ -26,9 +26,11 @@ struct Preset {
 
         uint8_t waveform2;
         uint8_t voiceLevel2;
+        uint8_t freqOffset2;
 
         uint8_t waveform3;
         uint8_t voiceLevel3;
+        uint8_t freqOffset3;
 
         uint8_t noiseLevel;
 

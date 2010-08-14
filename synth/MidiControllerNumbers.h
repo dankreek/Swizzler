@@ -17,9 +17,11 @@ public:
 
   static const uint8_t oscLevel2 = 93;
   static const uint8_t oscWaveform2 = 91;
+  static const uint8_t oscOffset2 = 73;
 
   static const uint8_t oscLevel3 = 5;
   static const uint8_t oscWaveform3 = 72;
+  static const uint8_t oscOffset3 = 84;
 
   static const uint8_t noiseLevel = 7;
 

@@ -95,6 +95,12 @@ void SetParameters::setWaveform(uint8_t voiceNum, uint8_t wf) {
   Swizzler::soundChip.setWaveform(voiceNum,waveForm);
 }
 
+// @offset is the raw midi controller value (0-127)
+void SetParameters::setVoiceOffset(uint8_t voiceNum, uint8_t offset) {
+  int8_t relOfs = (int8_t)(offset >> 2)-16;
+  FrequencyManager::managers[voiceNum].setNoteOffset(relOfs);
+}
+
 void SetParameters::setVoiceLevel(uint8_t voiceNum, uint8_t level) {
   Swizzler::soundChip.setVoiceLevel(voiceNum, level<<1);
 }
@@ -132,4 +138,14 @@ void SetParameters::setOscWaveform2(uint8_t p) {
 void SetParameters::setOscWaveform3(uint8_t p) {
   setWaveform(2, p);
   PresetManager::curSettings.waveform3 = p;
+}
+
+void SetParameters::setOscOffset2(uint8_t p) {
+  setVoiceOffset(1, p);
+  PresetManager::curSettings.freqOffset2 = p;
+}
+
+void SetParameters::setOscOffset3(uint8_t p) {
+  setVoiceOffset(2, p);
+  PresetManager::curSettings.freqOffset3 = p;
 }
