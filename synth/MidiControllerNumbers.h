@@ -12,6 +12,17 @@
 
 class MidiControllerNumbers {
 public:
+  static const uint8_t oscLevel1 = 71;
+  static const uint8_t oscWaveform1 = 74;
+
+  static const uint8_t oscLevel2 = 93;
+  static const uint8_t oscWaveform2 = 91;
+
+  static const uint8_t oscLevel3 = 5;
+  static const uint8_t oscWaveform3 = 72;
+
+  static const uint8_t noiseLevel = 7;
+
   static const uint8_t portamentoOnOff = 20;
   static const uint8_t portamentoTime = 10;
 

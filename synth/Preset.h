@@ -12,7 +12,7 @@
  */
 struct Preset {
 	// Preset name
-	char name[8];
+	char name[16];
 
 	// Envelope
 	uint8_t	attackTime;
@@ -20,12 +20,16 @@ struct Preset {
 	uint8_t sustainLevel;
 	uint8_t releaseTime;
 
-	// Oscillator mix
-	uint8_t triLevel;
-	uint8_t sawLevel;
-	uint8_t sqLevel;
-	uint8_t randLevel;
-	uint8_t noiseLevel;
+	// Oscillators
+	uint8_t waveform1;
+	uint8_t voiceLevel1;
+
+        uint8_t waveform2;
+        uint8_t voiceLevel2;
+
+        uint8_t waveform3;
+        uint8_t voiceLevel3;
+
 	uint8_t pulseWidth;
 
 	// Portamento

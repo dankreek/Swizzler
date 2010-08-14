@@ -19,9 +19,32 @@
 #include "PresetManager.h"
 #include <stdlib.h>
 
-//uint8_t MidiControllerMapping::listLength = 0;
-
 MidiControllerMapping MidiControllerMapping::controllerList[] = {
+    MidiControllerMapping(
+        MidiControllerNumbers::oscLevel1,
+        SetParameters::setOscLevel1),
+    MidiControllerMapping(
+        MidiControllerNumbers::oscWaveform1,
+        SetParameters::setOscWaveform1),
+
+    MidiControllerMapping(
+        MidiControllerNumbers::oscLevel2,
+        SetParameters::setOscLevel2),
+    MidiControllerMapping(
+        MidiControllerNumbers::oscWaveform2,
+        SetParameters::setOscWaveform2),
+
+    MidiControllerMapping(
+        MidiControllerNumbers::oscLevel3,
+        SetParameters::setOscLevel3),
+    MidiControllerMapping(
+        MidiControllerNumbers::oscWaveform3,
+        SetParameters::setOscWaveform3),
+
+    MidiControllerMapping(
+        MidiControllerNumbers::noiseLevel,
+        SetParameters::setNoiseLevel),
+
     // Set pitch bending range
     MidiControllerMapping(
         MidiControllerNumbers::pitchBendRange,

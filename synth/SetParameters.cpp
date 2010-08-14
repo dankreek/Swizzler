@@ -15,6 +15,7 @@ KnobKnee portTimeKnee = KnobKnee(2000, 95, 500);
 KnobKnee attackTimeKnee = KnobKnee(8000, 95, 1000);
 KnobKnee decRelTimeKnee = KnobKnee(24000, 95, 2400);	// Decay/release time knee
 KnobKnee arpTimeKnee = KnobKnee(1000, 95, 250);			// Arpeggio time (ms per note)
+
 void SetParameters::enablePortamento(uint8_t p) {
   FrequencyManager::enablePortamento((p > 0) ? true : false);
   PresetManager::curSettings.portamentoOn = p;
@@ -96,4 +97,32 @@ void SetParameters::setWaveform(uint8_t voiceNum, uint8_t wf) {
 
 void SetParameters::setVoiceLevel(uint8_t voiceNum, uint8_t level) {
   Swizzler::soundChip.setVoiceLevel(voiceNum, level<<1);
+}
+
+void SetParameters::setOscLevel1(uint8_t p) {
+  setVoiceLevel(0, p);
+}
+
+void SetParameters::setOscLevel2(uint8_t p) {
+  setVoiceLevel(1, p);
+}
+
+void SetParameters::setOscLevel3(uint8_t p) {
+  setVoiceLevel(2, p);
+}
+
+void SetParameters::setNoiseLevel(uint8_t p) {
+  setVoiceLevel(3,p);
+}
+
+void SetParameters::setOscWaveform1(uint8_t p) {
+  setWaveform(0, p);
+}
+
+void SetParameters::setOscWaveform2(uint8_t p) {
+  setWaveform(1, p);
+}
+
+void SetParameters::setOscWaveform3(uint8_t p) {
+  setWaveform(2, p);
 }

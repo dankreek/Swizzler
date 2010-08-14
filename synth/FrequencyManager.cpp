@@ -42,6 +42,9 @@ void FrequencyManager::init() {
   for (uint8_t i=0; i < Swizzler::numOscillators; i++) {
     managers[i].oscNumber = i;
   }
+
+  managers[1].setNoteOffset(5);
+  managers[2].setNoteOffset(-12);
 }
 
 void FrequencyManager::newNote(uint8_t baseNoteNumber) {
