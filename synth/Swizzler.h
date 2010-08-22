@@ -19,6 +19,8 @@
 
 class Swizzler {
 public:
+  static NoteManager noteManager;
+
   static uint16_t msCounter;    // Incremented once every millisecond
   static const int ledPin = 13;
   static const uint8_t eepromAddress = 0x50;

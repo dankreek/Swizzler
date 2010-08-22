@@ -12,10 +12,14 @@
 #include <util/delay.h>
 #include <avr/interrupt.h>
 
+NoteManager Swizzler::noteManager;
 SoundDriver Swizzler::soundChip = SoundDriver(0x70);
 uint16_t Swizzler::msCounter = 0;
 
 void Swizzler::init() {
+  // Setup the first note receiver
+  MidiInput::noteReceiver = &noteManager;
+
   // Set the LED pin to output
   DDRB = _BV(PB5);
 
@@ -29,7 +33,7 @@ void Swizzler::init() {
   MidiInput::init();
 
   // Initialize the Note Manager
-  NoteManager::init();
+  //NoteManager::init();
 
   // Initialize Frequency Manager
   FrequencyManager::init();
@@ -55,7 +59,7 @@ void Swizzler::init() {
 
   //soundChip.resetSound();
 
-  // Turn the on-board LED off
+  // Turn the on-board LED on
   setLed(true);
 }
 
@@ -77,7 +81,7 @@ void Swizzler::mainLoop() {
   while (true) {
     // Only call these services once every millisecond
     if (lastMs != msCounter) {
-      NoteManager::nextTick();
+      //NoteManager::nextTick();
       FrequencyManager::nextTick();
       lastMs = msCounter;
     }

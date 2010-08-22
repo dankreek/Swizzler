@@ -4,6 +4,8 @@
 #include "PresetManager.h"
 #include "MidiControllerMapping.h"
 
+INoteReceiver *MidiInput::noteReceiver;
+
 int16_t MidiInput::midiCmd;
 int16_t MidiInput::midiData1;
 int16_t MidiInput::midiData2;
@@ -13,12 +15,12 @@ void MidiInput::handleNoteOn() {
    * Most MIDI input devices send a NOTE ON message with a velocity of 0
    * to signal the note ending.
    */
-  if (midiData2 == 0) NoteManager::noteOff(midiData1);
-  else NoteManager::noteOn(midiData1);
+  if (midiData2 == 0) noteReceiver->noteOff(midiData1);
+  else noteReceiver->noteOn(midiData1, midiData2);
 }
 
 void MidiInput::handleNoteOff() {
-  NoteManager::noteOff(midiData1);
+  noteReceiver->noteOff(midiData1);
 }
 
 void MidiInput::handlePitchBend() {

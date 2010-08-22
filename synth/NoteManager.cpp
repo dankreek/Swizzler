@@ -2,8 +2,9 @@
 #include "MidiNoteBuffer.h"
 #include "Swizzler.h"
 
-bool NoteManager::arpOn;
-ArpManager NoteManager::arpManager;
+NoteManager::NoteManager() {
+  init();
+}
 
 void NoteManager::init()  {
   MidiNoteBuffer::init();
@@ -20,7 +21,7 @@ void NoteManager::enableArpeggio(bool onOff) {
   arpOn = onOff;
 }
 
-void NoteManager::noteOn(uint8_t noteNumber) {
+void NoteManager::noteOn(uint8_t noteNumber, uint8_t velocity) {
   // Put the note into the notes-on Arpbuffer
   MidiNoteBuffer::putMidiNote(noteNumber);
 
