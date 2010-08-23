@@ -4,6 +4,7 @@
 #include <inttypes.h>
 #include "ArpManager.h"
 #include "INoteReceiver.h"
+#include "INoteTransmitter.h"
 
 class NoteManager : public INoteReceiver {
 public:
@@ -36,7 +37,7 @@ public:
 
   // Called every millisecond to keep the arpeggios running
   void nextTick();
-	
+
 private:
   // Is the arpeggiator on or off?
   bool arpOn;
