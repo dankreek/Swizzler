@@ -4,7 +4,7 @@
 #include "PresetManager.h"
 #include "MidiControllerMapping.h"
 
-INoteReceiver *MidiInput::noteReceiver;
+ANoteReceiver *MidiInput::noteReceiver;
 
 int16_t MidiInput::midiCmd;
 int16_t MidiInput::midiData1;

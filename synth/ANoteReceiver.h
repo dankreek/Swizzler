@@ -7,15 +7,15 @@
  *  Interface defining a class which can receive note events
  */
 
-#ifndef INOTERECEIVER_H_
-#define INOTERECEIVER_H_
+#ifndef ANOTERECEIVER_H_
+#define ANOTERECEIVER_H_
 
 #include <inttypes.h>
 
-class INoteReceiver {
+class ANoteReceiver {
 public:
   virtual void noteOn(uint8_t noteNumber, uint8_t velocity) = 0;
   virtual void noteOff(uint8_t noteNumber) = 0;
 };
 
-#endif /* INOTERECEIVER_H_ */
+#endif /* ANOTERECEIVER_H_ */

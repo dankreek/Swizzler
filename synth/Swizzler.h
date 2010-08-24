@@ -16,10 +16,13 @@
 #include "ExternalEeprom.h"
 #include "SurfaceControlManager.h"
 #include "SoundDriver.h"
+#include "ArpeggiatorNoteFilter.h"
 
 class Swizzler {
 public:
   static NoteManager noteManager;
+
+  static ArpeggiatorNoteFilter arp;
 
   static uint16_t msCounter;    // Incremented once every millisecond
   static const int ledPin = 13;

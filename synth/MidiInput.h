@@ -2,12 +2,12 @@
 #define MIDIINPUT_H_
 
 #include "Swizzler.h"
-#include "INoteReceiver.h"
+#include "ANoteReceiver.h"
 #include <inttypes.h>
 
 class MidiInput {
 public:
-  static INoteReceiver *noteReceiver;
+  static ANoteReceiver *noteReceiver;
 
   static const unsigned char noteOff = 0x80;
   static const unsigned char noteOn = 0x90;

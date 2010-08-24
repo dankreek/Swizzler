@@ -12,17 +12,27 @@
 #define INOTETRANSMITTER_H_
 
 #include <inttypes.h>
-#include "INoteReceiver.h"
+#include "ANoteReceiver.h"
 
 class ANoteTransmitter {
 public:
-  ANoteTransmitter(INoteReceiver *recv);
+  ANoteTransmitter(ANoteReceiver *recv);
 
-  // The INoteTansmitter interface allows a class to send a note to a note receiver
-  virtual void sendNote(uint8_t noteNumber, uint8_t velocity) = 0;
+  // The ANoteTansmitter interface allows a class to send a note to a note receiver
+  void sendNote(uint8_t noteNumber, uint8_t velocity);
 private:
   // Reference to the class which receives the note
-  INoteReceiver *receiver;
+  ANoteReceiver *receiver;
 };
+
+inline
+ANoteTransmitter::ANoteTransmitter(ANoteReceiver *recv) {
+  receiver = recv;
+}
+
+inline
+void ANoteTransmitter::sendNote(uint8_t noteNumber, uint8_t velocity) {
+  receiver->noteOn(noteNumber, velocity);
+}
 
 #endif /* INOTETRANSMITTER_H_ */

@@ -3,10 +3,10 @@
 
 #include <inttypes.h>
 #include "ArpManager.h"
-#include "INoteReceiver.h"
-#include "INoteTransmitter.h"
+#include "ANoteReceiver.h"
+#include "ANoteTransmitter.h"
 
-class NoteManager : public INoteReceiver {
+class NoteManager : public ANoteReceiver {
 public:
   NoteManager();
 
