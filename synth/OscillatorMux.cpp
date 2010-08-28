@@ -1,13 +1,13 @@
 #include <inttypes.h>
-#include "FrequencyManager.h"
+#include "OscillatorMux.h"
 #include "PortamentoManager.h"
 #include "MidiNoteBuffer.h"
 #include "Swizzler.h"
 
-bool FrequencyManager::portamentoOn;
-uint8_t FrequencyManager::bendRange;
-int8_t FrequencyManager::bendAmount;
-FrequencyManager FrequencyManager::managers[Swizzler::numOscillators];
+bool OscillatorMux::portamentoOn;
+uint8_t OscillatorMux::bendRange;
+int8_t OscillatorMux::bendAmount;
+OscillatorMux OscillatorMux::managers[Swizzler::numOscillators];
 
 /**
  * Frequency -> Note lookup table. These are the frequencies for
@@ -29,13 +29,13 @@ int note_lookup[] = {
 	7902,	// B
 };
 
-FrequencyManager::FrequencyManager() {
+OscillatorMux::OscillatorMux() {
   bendOffset = 0;
   portMan.init();
   noteOffset = 0;
 }
 
-void FrequencyManager::init() {
+void OscillatorMux::init() {
   portamentoOn = false;
   bendRange = 2;
 
@@ -47,7 +47,7 @@ void FrequencyManager::init() {
   managers[2].setNoteOffset(-12);
 }
 
-void FrequencyManager::newNote(uint8_t baseNoteNumber) {
+void OscillatorMux::newNote(uint8_t baseNoteNumber) {
   for (uint8_t i; i < Swizzler::numOscillators; i++) {
     managers[i].curMidiNote = (baseNoteNumber += managers[i].getNoteOffset());
     if (bendAmount != 0) {
@@ -72,7 +72,7 @@ void FrequencyManager::newNote(uint8_t baseNoteNumber) {
   } // End For-Each oscillator
 }
 
-void FrequencyManager::enablePortamento(bool onOff) {
+void OscillatorMux::enablePortamento(bool onOff) {
   // Turn portamento on
   if (onOff && !portamentoOn) {
     portamentoOn = true;
@@ -89,7 +89,7 @@ void FrequencyManager::enablePortamento(bool onOff) {
   }
 }
 
-uint16_t FrequencyManager::noteToFreq(uint8_t noteNum) {
+uint16_t OscillatorMux::noteToFreq(uint8_t noteNum) {
   /**
    * The MIDI standard defines note #0 as a 'C', so
    * divide the note number by 12 to get the octave the note is in
@@ -103,7 +103,7 @@ uint16_t FrequencyManager::noteToFreq(uint8_t noteNum) {
   return (note_lookup[note] >> (9-octave));
 }
 
-void FrequencyManager::setBendAmount(int8_t ba) {
+void OscillatorMux::setBendAmount(int8_t ba) {
   bendAmount = ba;
   for (int i=0; i < Swizzler::numOscillators;i++) {
     managers[i].recalculateBendOffset();
@@ -111,7 +111,7 @@ void FrequencyManager::setBendAmount(int8_t ba) {
   }
 }
 
-void FrequencyManager::recalculateBendOffset() {
+void OscillatorMux::recalculateBendOffset() {
   // Bend up
   if (bendAmount > 0) {
     bendOffset = (bendAmount * (int16_t)(noteToFreq(curMidiNote+bendRange)-noteToFreq(curMidiNote)))/63;
@@ -127,16 +127,16 @@ void FrequencyManager::recalculateBendOffset() {
   }
 }
 
-void FrequencyManager::setBaseFrequency(uint16_t freq) {
+void OscillatorMux::setBaseFrequency(uint16_t freq) {
   curFreq = freq;
   sendFrequency();
 }
 
-void FrequencyManager::sendFrequency() {
+void OscillatorMux::sendFrequency() {
   Swizzler::soundChip.setFrequency(oscNumber, curFreq+bendOffset);
 }
 
-void FrequencyManager::nextTick() {
+void OscillatorMux::nextTick() {
   // If portamento's on and running then output a new frequency
   for (uint8_t i; i < Swizzler::numOscillators; i++) {
     if (portamentoOn && !managers[i].portMan.done) {
@@ -146,13 +146,13 @@ void FrequencyManager::nextTick() {
   }
 }
 
-void FrequencyManager::setPortamentoTime(uint16_t time) {
+void OscillatorMux::setPortamentoTime(uint16_t time) {
   for (uint8_t i=0; i < Swizzler::numOscillators; i++) {
     managers[i].portMan.time = time;
   }
 }
 
-void FrequencyManager::setNoteOffset(int8_t offs) {
+void OscillatorMux::setNoteOffset(int8_t offs) {
   noteOffset = offs;
   recalculateBendOffset();
 

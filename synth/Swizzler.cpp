@@ -43,7 +43,7 @@ void Swizzler::init() {
   //NoteManager::init();
 
   // Initialize Frequency Manager
-  FrequencyManager::init();
+  OscillatorMux::init();
 
   // Initialize the surface controls
   //SurfaceControlManager::init();
@@ -89,7 +89,7 @@ void Swizzler::mainLoop() {
     // Only call these services once every millisecond
     if (lastMs != msCounter) {
       //NoteManager::nextTick();
-      FrequencyManager::nextTick();
+      OscillatorMux::nextTick();
       lastMs = msCounter;
     }
 

@@ -35,7 +35,7 @@ void NoteManager::noteOn(uint8_t noteNumber, uint8_t velocity) {
   }
   // If arpeggiator is off simply restart the gate
   else {
-    FrequencyManager::newNote(noteNumber);
+    OscillatorMux::newNote(noteNumber);
     restartGate();
   }
 }
@@ -92,7 +92,7 @@ void NoteManager::nextTick() {
 		// If the arpmanager says we should send a new note
 		if (arpManager.nextTick()) {
 			// Send it
-			FrequencyManager::newNote(arpManager.curNote());
+			OscillatorMux::newNote(arpManager.curNote());
 		}
 	}
 }

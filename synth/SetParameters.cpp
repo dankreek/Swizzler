@@ -17,14 +17,14 @@ KnobKnee decRelTimeKnee = KnobKnee(24000, 95, 2400);	// Decay/release time knee
 KnobKnee arpTimeKnee = KnobKnee(1000, 95, 250);			// Arpeggio time (ms per note)
 
 void SetParameters::enablePortamento(uint8_t p) {
-  FrequencyManager::enablePortamento((p > 0) ? true : false);
+  OscillatorMux::enablePortamento((p > 0) ? true : false);
   PresetManager::curSettings.portamentoOn = p;
 }
 
 void SetParameters::setPortamentoTime(uint8_t p) {
   //for (uint8_t i; i < Swizzler::numOscillators; i++)
   //  FrequencyManager::managers[i].portMan.time = portTimeKnee.getValue(p);
-  FrequencyManager::setPortamentoTime(portTimeKnee.getValue(p));
+  OscillatorMux::setPortamentoTime(portTimeKnee.getValue(p));
 
   PresetManager::curSettings.portamentoTime = p;
 }
@@ -77,7 +77,7 @@ void SetParameters::setArpeggioMinNotes(uint8_t p) {
 
 void SetParameters::setBendRange(uint8_t p) {
   // Bend range (in +/- half-steps) ranges from 0-15
-  FrequencyManager::bendRange = (p >> 3);
+  OscillatorMux::bendRange = (p >> 3);
   PresetManager::curSettings.bendRange = p;
 }
 
@@ -98,7 +98,7 @@ void SetParameters::setWaveform(uint8_t voiceNum, uint8_t wf) {
 // @offset is the raw midi controller value (0-127)
 void SetParameters::setVoiceOffset(uint8_t voiceNum, uint8_t offset) {
   int8_t relOfs = (int8_t)(offset >> 2)-16;
-  FrequencyManager::managers[voiceNum].setNoteOffset(relOfs);
+  OscillatorMux::managers[voiceNum].setNoteOffset(relOfs);
 }
 
 void SetParameters::setVoiceLevel(uint8_t voiceNum, uint8_t level) {

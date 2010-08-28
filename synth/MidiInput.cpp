@@ -28,7 +28,7 @@ void MidiInput::handlePitchBend() {
   // (my controller only sends 0 for the LSB anyway, so who cares)
   // This number comes in as an unsigned 7bit number, but internally I store it
   // as a signed 7 bit number. The -64 is to convert to signed.
-  FrequencyManager::setBendAmount((int8_t)midiData2-64);
+  OscillatorMux::setBendAmount((int8_t)midiData2-64);
 }
 
 // Launch a controller change hook

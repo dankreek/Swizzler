@@ -9,7 +9,7 @@
 #define SWIZZLER_H_
 
 #include "MidiInput.h"
-#include "FrequencyManager.h"
+#include "OscillatorMux.h"
 #include "NoteManager.h"
 #include "Wire.h"
 #include "SetParameters.h"

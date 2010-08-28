@@ -5,24 +5,23 @@
 #include "PortamentoManager.h"
 
 /**
- * The frequency manager takes in control messages (via MIDI) like note on, note off
- * portamento on/off, and arpeggio on/off and tells the oscillators what frequency to
- * put out at. This class contains 4 static members (one for each oscillator). that
+ * The oscillator multiplexor takes in control messages (via MIDI) like note on, note off
+ * portamento on/off and then sends that information into a frequency filter chain.
+ * This class contains an array with 4 static members (one for each oscillator) that
  * are each modified by newNote() which is really the only public method that needs
- * to be called here. TODO: I should probably modify the header file to reflect this.
+ * to be called here.
  */
-class FrequencyManager {
+class OscillatorMux {
 public:
-  FrequencyManager();
+  // ********* Static Level Methods ***********
 
-  // Which oscillator number is this (0-4, 4 is always noise)
-  uint8_t oscNumber;
+  // Set the portamento time (in ms)
+  static void setPortamentoTime(uint16_t time);
 
-  PortamentoManager portMan;
+  // A NoteManager for every voice (stored IN the note manager, it seems logical)
+  static OscillatorMux managers[];
 
-  /**
-   * Initialize the static components of the frequency manager
-   */
+  // Initialize the static components of the frequency manager
   static void init();
 
   /**
@@ -56,6 +55,14 @@ public:
   // The range that the pitch bend swings between (in +/- half-steps)
   static uint8_t bendRange;
 
+  // ********* Instance Level Methods ***********
+  OscillatorMux();
+
+  // Which oscillator number is this (0-4, 4 is always noise)
+  uint8_t oscNumber;
+
+  PortamentoManager portMan;
+
   // Set's the current base frequency (later modified with bends, LFO's, etc)
   void setBaseFrequency(uint16_t freq);
 
@@ -63,17 +70,15 @@ public:
   void setNoteOffset(int8_t offset);
   uint8_t getNoteOffset();
 
-  static void setPortamentoTime(uint16_t time);
-
-  // A NoteManager for every voice (stored IN the note manager, it seems logical)
-  static FrequencyManager managers[];
-
 private:
-  // Number of half-steps more or less then the basenote that should be played
-  int8_t noteOffset;
-
   // Is portamento currently on?
   static bool portamentoOn;
+
+  // Number of half-steps more or less then the base note that should be played
+  int8_t noteOffset;
+
+  // The current bend mount (-64 - 63)
+  static int8_t bendAmount;
 
   // Recalculate and send the current frequency modified by the pitch bender to the sound chip
   void sendFrequency();
@@ -89,14 +94,9 @@ private:
 
   // The current base frequency to be output
   uint16_t curFreq;
-
-  // The current bend mount (-64-63)
-  static int8_t bendAmount;
-
-
 };
 
-inline uint8_t FrequencyManager::getNoteOffset() {
+inline uint8_t OscillatorMux::getNoteOffset() {
   return noteOffset;
 }
 
