@@ -27,6 +27,11 @@ protected:
 };
 
 inline
+void ANoteTransmitter::linkTo(ANoteReceiver *recv) {
+  receiver = recv;
+}
+
+inline
 void ANoteTransmitter::sendNoteOn(uint8_t noteNumber, uint8_t velocity) {
   receiver->noteOn(noteNumber, velocity);
 }

@@ -7,7 +7,5 @@
 
 #include "ANoteTransmitter.h"
 
-void ANoteTransmitter::linkTo(ANoteReceiver *recv) {
-  receiver = recv;
-}
+
 
