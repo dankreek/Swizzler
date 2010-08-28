@@ -2,7 +2,6 @@
 #define NOTEMANAGER_H
 
 #include <inttypes.h>
-#include "ArpManager.h"
 #include "ANoteReceiver.h"
 #include "ANoteTransmitter.h"
 
@@ -26,25 +25,10 @@ public:
    */
   void noteOff(uint8_t noteNumber);
 
-  /**
-   * Turn the arepggiator on or off
-   * @onOff True: arpeggios on, False: arepggios off
-   */
-  void enableArpeggio(bool onOff);
-
-  // Keeps track of arpeggio generation
-  ArpManager arpManager;
-
   // Called every millisecond to keep the arpeggios running
   void nextTick();
 
 private:
-  // Is the arpeggiator on or off?
-  bool arpOn;
-
-  // Stop the arpeggiator, reload it, and start it up again
-  void reloadArpeggiator();
-
   // Open then close the envelope gate again (new note is struck)
   void restartGate();
 };

@@ -16,6 +16,7 @@
 
 class ANoteTransmitter {
 public:
+  // Hook the note receiver up to the output
   void linkTo(ANoteReceiver *recv);
 
   // The ANoteTansmitter interface allows a class to send a note to a note receiver
