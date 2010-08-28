@@ -24,7 +24,8 @@ void Swizzler::init() {
   arp.linkTo(&noteManager);
 
   // Setup the first note receiver
-  MidiInput::noteReceiver = &noteManager;
+  //MidiInput::noteReceiver = &noteManager;
+  MidiInput::noteReceiver = &arp;
 
   // Set the LED pin to output
   DDRB = _BV(PB5);

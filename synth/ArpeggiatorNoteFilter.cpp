@@ -9,9 +9,9 @@
 
 
 void ArpeggiatorNoteFilter::noteOn(uint8_t noteNumber, uint8_t velocity) {
-
+  sendNoteOn(noteNumber, velocity);
 }
 
 void ArpeggiatorNoteFilter::noteOff(uint8_t noteNumber) {
-
+  sendNoteOff(noteNumber);
 }

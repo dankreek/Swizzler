@@ -19,15 +19,21 @@ public:
   void linkTo(ANoteReceiver *recv);
 
   // The ANoteTansmitter interface allows a class to send a note to a note receiver
-  void sendNote(uint8_t noteNumber, uint8_t velocity);
+  void sendNoteOn(uint8_t noteNumber, uint8_t velocity);
+  void sendNoteOff(uint8_t noteNumber);
 protected:
   // Reference to the class which receives the note
   ANoteReceiver *receiver;
 };
 
 inline
-void ANoteTransmitter::sendNote(uint8_t noteNumber, uint8_t velocity) {
+void ANoteTransmitter::sendNoteOn(uint8_t noteNumber, uint8_t velocity) {
   receiver->noteOn(noteNumber, velocity);
+}
+
+inline
+void ANoteTransmitter::sendNoteOff(uint8_t noteNumber) {
+  receiver->noteOff(noteNumber);
 }
 
 #endif /* INOTETRANSMITTER_H_ */
