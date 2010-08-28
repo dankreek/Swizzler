@@ -13,7 +13,6 @@
 
 class ArpeggiatorNoteFilter : public ANoteReceiver, public ANoteTransmitter {
 public:
-  ArpeggiatorNoteFilter(ANoteReceiver *receiver);
 
   void noteOn(uint8_t noteNumber, uint8_t velocity);
   void noteOff(uint8_t noteNumber);

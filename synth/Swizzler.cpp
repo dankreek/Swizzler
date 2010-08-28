@@ -12,11 +12,17 @@
 #include <util/delay.h>
 #include <avr/interrupt.h>
 
+
 NoteManager Swizzler::noteManager;
+ArpeggiatorNoteFilter Swizzler::arp;
+
 SoundDriver Swizzler::soundChip = SoundDriver(0x70);
 uint16_t Swizzler::msCounter = 0;
 
 void Swizzler::init() {
+  // Setup chain
+  arp.linkTo(&noteManager);
+
   // Setup the first note receiver
   MidiInput::noteReceiver = &noteManager;
 
