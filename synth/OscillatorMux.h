@@ -18,7 +18,8 @@ public:
   // Set the portamento time (in ms)
   static void setPortamentoTime(uint16_t time);
 
-  // A NoteManager for every voice (stored IN the note manager, it seems logical)
+  // I'm storing an array of OscillatorMux's inside the OscillatorMux. It may seem a little
+  // wierd, but it looks good on paper for right now...
   static OscillatorMux managers[];
 
   // Initialize the static components of the frequency manager

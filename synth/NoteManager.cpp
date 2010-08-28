@@ -13,6 +13,7 @@ void NoteManager::init()  {
 void NoteManager::noteOn(uint8_t noteNumber, uint8_t velocity) {
   MidiNoteBuffer::putMidiNote(noteNumber);
 
+  // Let the oscillator multiplexor know that a note has been started
   OscillatorMux::newNote(noteNumber);
   restartGate();
 }
