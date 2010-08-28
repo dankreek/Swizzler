@@ -75,11 +75,11 @@ private:
   // Is portamento currently on?
   static bool portamentoOn;
 
-  // Number of half-steps more or less then the base note that should be played
-  int8_t noteOffset;
-
   // The current bend mount (-64 - 63)
   static int8_t bendAmount;
+
+  // Number of half-steps more or less then the base note that should be played
+  int8_t noteOffset;
 
   // Recalculate and send the current frequency modified by the pitch bender to the sound chip
   void sendFrequency();
