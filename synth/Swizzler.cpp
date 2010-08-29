@@ -15,7 +15,6 @@
 #include <avr/interrupt.h>
 
 EnvelopeNoteFilter Swizzler::envelopeController;
-NoteManager Swizzler::noteManager;
 ArpeggiatorNoteFilter Swizzler::arp;
 Oscillators Swizzler::oscillators;
 
@@ -52,9 +51,6 @@ void Swizzler::init() {
 
   // Initialize the Note Manager
   //NoteManager::init();
-
-  // Initialize Frequency Manager
-  OscillatorMux::init();
 
   // Initialize the surface controls
   //SurfaceControlManager::init();
@@ -99,8 +95,6 @@ void Swizzler::mainLoop() {
   while (true) {
     // Only call these services once every millisecond
     if (lastMs != msCounter) {
-      //NoteManager::nextTick();
-      OscillatorMux::nextTick();
       lastMs = msCounter;
     }
 

@@ -11,8 +11,6 @@
 #include "EnvelopeNoteFilter.h"
 
 #include "MidiInput.h"
-#include "OscillatorMux.h"
-#include "NoteManager.h"
 #include "Wire.h"
 #include "SetParameters.h"
 #include "ExternalEeprom.h"
@@ -23,7 +21,6 @@
 
 class Swizzler {
 public:
-  static NoteManager noteManager;
   static EnvelopeNoteFilter envelopeController;
   static ArpeggiatorNoteFilter arp;
   static Oscillators oscillators;

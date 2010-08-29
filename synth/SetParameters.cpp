@@ -17,14 +17,14 @@ KnobKnee decRelTimeKnee = KnobKnee(24000, 95, 2400);	// Decay/release time knee
 KnobKnee arpTimeKnee = KnobKnee(1000, 95, 250);			// Arpeggio time (ms per note)
 
 void SetParameters::enablePortamento(uint8_t p) {
-  OscillatorMux::enablePortamento((p > 0) ? true : false);
+  //OscillatorMux::enablePortamento((p > 0) ? true : false);
   PresetManager::curSettings.portamentoOn = p;
 }
 
 void SetParameters::setPortamentoTime(uint8_t p) {
   //for (uint8_t i; i < Swizzler::numOscillators; i++)
   //  FrequencyManager::managers[i].portMan.time = portTimeKnee.getValue(p);
-  OscillatorMux::setPortamentoTime(portTimeKnee.getValue(p));
+  //OscillatorMux::setPortamentoTime(portTimeKnee.getValue(p));
 
   PresetManager::curSettings.portamentoTime = p;
 }
@@ -77,7 +77,7 @@ void SetParameters::setArpeggioMinNotes(uint8_t p) {
 
 void SetParameters::setBendRange(uint8_t p) {
   // Bend range (in +/- half-steps) ranges from 0-15
-  OscillatorMux::bendRange = (p >> 3);
+  //OscillatorMux::bendRange = (p >> 3);
   PresetManager::curSettings.bendRange = p;
 }
 
