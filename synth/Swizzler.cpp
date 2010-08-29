@@ -4,6 +4,8 @@
  *  Created on: Jan 31, 2010
  *      Author: justin
  */
+
+#include "Oscillators.h"
 #include "Swizzler.h"
 #include "PresetManager.h"
 #include <avr/io.h>
@@ -12,20 +14,24 @@
 #include <util/delay.h>
 #include <avr/interrupt.h>
 
-
+EnvelopeNoteFilter Swizzler::envelopeController;
 NoteManager Swizzler::noteManager;
 ArpeggiatorNoteFilter Swizzler::arp;
+Oscillators Swizzler::oscillators;
 
 SoundDriver Swizzler::soundChip = SoundDriver(0x70);
 uint16_t Swizzler::msCounter = 0;
 
 void Swizzler::init() {
   // Setup chain
-  arp.linkTo(&noteManager);
+  //arp.linkTo(&noteManager);
+  MidiInput::noteReceiver = &envelopeController;
+  envelopeController.linkTo(&arp);
+  arp.linkTo(&oscillators);
 
   // Setup the first note receiver
   //MidiInput::noteReceiver = &noteManager;
-  MidiInput::noteReceiver = &arp;
+
 
   // Set the LED pin to output
   DDRB = _BV(PB5);

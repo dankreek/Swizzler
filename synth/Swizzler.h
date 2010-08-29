@@ -8,6 +8,8 @@
 #ifndef SWIZZLER_H_
 #define SWIZZLER_H_
 
+#include "EnvelopeNoteFilter.h"
+
 #include "MidiInput.h"
 #include "OscillatorMux.h"
 #include "NoteManager.h"
@@ -17,12 +19,14 @@
 #include "SurfaceControlManager.h"
 #include "SoundDriver.h"
 #include "ArpeggiatorNoteFilter.h"
+#include "Oscillators.h"
 
 class Swizzler {
 public:
   static NoteManager noteManager;
-
+  static EnvelopeNoteFilter envelopeController;
   static ArpeggiatorNoteFilter arp;
+  static Oscillators oscillators;
 
   static uint16_t msCounter;    // Incremented once every millisecond
   static const int ledPin = 13;
