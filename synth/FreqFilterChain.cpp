@@ -6,7 +6,6 @@
  */
 
 #include "FreqFilterChain.h"
-#include "OscillatorMux.h"
 
 FreqFilterChain::FreqFilterChain() {
   prevNoteNum = -1;
@@ -15,8 +14,13 @@ FreqFilterChain::FreqFilterChain() {
   // Tell all the filters who their parent is
   oscOut.setParentContainer(this);
   directNoteFilter.setParentContainer(this);
+  pitchbendFilter.setParentContainer(this);
 
-  directNoteFilter.linkTo(&oscOut);
+
+  directNoteFilter.linkTo(&pitchbendFilter);
+  pitchbendFilter.linkTo(&oscOut);
+
+  // The start of the chain is the note->freq conversion
   chainHead = &directNoteFilter;
 }
 

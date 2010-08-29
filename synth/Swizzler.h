@@ -28,6 +28,8 @@ public:
   static ArpeggiatorNoteFilter arp;
   static Oscillators oscillators;
 
+  static const uint8_t bendRange = 2;
+
   static uint16_t msCounter;    // Incremented once every millisecond
   static const int ledPin = 13;
   static const uint8_t eepromAddress = 0x50;

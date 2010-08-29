@@ -6,7 +6,8 @@
  */
 
 #include "DirectNoteFreqFilter.h"
-#include "OscillatorMux.h"
+#include "FreqUtils.h"
+#include "FreqFilterChain.h"
 
 DirectNoteFreqFilter::DirectNoteFreqFilter()
 {
@@ -15,5 +16,5 @@ DirectNoteFreqFilter::DirectNoteFreqFilter()
 }
 
 void DirectNoteFreqFilter::updateFreq() {
-  sendFreq(OscillatorMux::noteToFreq(freqChainContainer->curNoteNum));
+  sendFreq(FreqUtils::noteToFreq(freqChainContainer->curNoteNum));
 }
