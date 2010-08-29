@@ -36,6 +36,8 @@ public:
 
   static SoundDriver soundChip;
 
+  static void handlePitchBend();
+
   void init();
   void mainLoop();
 

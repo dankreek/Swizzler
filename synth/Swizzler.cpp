@@ -22,9 +22,14 @@ Oscillators Swizzler::oscillators;
 SoundDriver Swizzler::soundChip = SoundDriver(0x70);
 uint16_t Swizzler::msCounter = 0;
 
+void Swizzler::handlePitchBend() {
+  oscillators.updateFrequencies();
+}
+
 void Swizzler::init() {
   // Setup chain
   //arp.linkTo(&noteManager);
+  MidiInput::pitchBendEventHandler = Swizzler::handlePitchBend;
   MidiInput::noteReceiver = &envelopeController;
   envelopeController.linkTo(&arp);
   arp.linkTo(&oscillators);

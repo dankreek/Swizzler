@@ -5,7 +5,9 @@
 #include "MidiControllerMapping.h"
 
 ANoteReceiver *MidiInput::noteReceiver;
+void (*MidiInput::pitchBendEventHandler)();
 
+int16_t MidiInput::pitchbendAmount;
 int16_t MidiInput::midiCmd;
 int16_t MidiInput::midiData1;
 int16_t MidiInput::midiData2;
@@ -23,12 +25,20 @@ void MidiInput::handleNoteOff() {
   noteReceiver->noteOff(midiData1);
 }
 
+void MidiInput::init() {
+  midiCmd=-1;
+  midiData1=-1;
+  midiData2=-1;
+}
+
 void MidiInput::handlePitchBend() {
   // I'm going to ignore the least significant byte of this message for now
   // (my controller only sends 0 for the LSB anyway, so who cares)
   // This number comes in as an unsigned 7bit number, but internally I store it
   // as a signed 7 bit number. The -64 is to convert to signed.
-  OscillatorMux::setBendAmount((int8_t)midiData2-64);
+  //OscillatorMux::setBendAmount((int8_t)midiData2-64);
+  pitchbendAmount = (int16_t)midiData2-64;
+  pitchBendEventHandler();
 }
 
 // Launch a controller change hook

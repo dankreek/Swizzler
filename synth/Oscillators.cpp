@@ -14,6 +14,12 @@ Oscillators::Oscillators() {
   }
 }
 
+void Oscillators::updateFrequencies() {
+  for (uint8_t i=0; i <numVoices; i++) {
+
+  }
+}
+
 void Oscillators::noteOn(uint8_t noteNumber, uint8_t velocity) {
   for (uint8_t i=0; i < numVoices; i++) oscillatorList[i].noteOn(noteNumber, velocity);
 }

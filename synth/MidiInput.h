@@ -7,7 +7,13 @@
 
 class MidiInput {
 public:
+  // Event handler for a note on/off
   static ANoteReceiver *noteReceiver;
+
+  // Event handler for pitch bending
+  static void (*pitchBendEventHandler)();
+
+  static int16_t pitchbendAmount;
 
   static const unsigned char noteOff = 0x80;
   static const unsigned char noteOn = 0x90;
@@ -21,12 +27,7 @@ public:
   /**
    * Initialize it
    */
-  static inline
-  void init() {
-    midiCmd=-1;
-    midiData1=-1;
-    midiData2=-1;
-  }
+  static void init();
 
   /**
    * Push a byte onto the Midi stack. This will be called by an interrupt routine or some shits.
