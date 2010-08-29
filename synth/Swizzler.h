@@ -44,7 +44,7 @@ public:
    */
   void setErrorState();
 
-  void setLed(bool onOff);
+  static void setLed(bool onOff);
 };
 
 extern Swizzler swizzler;
