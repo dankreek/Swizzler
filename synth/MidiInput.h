@@ -13,6 +13,7 @@ public:
   // Event handler for pitch bending
   static void (*pitchBendEventHandler)();
 
+  // The current pitch bend amount (between -64 and 63)
   static int16_t pitchbendAmount;
 
   static const unsigned char noteOff = 0x80;

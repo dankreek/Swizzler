@@ -8,11 +8,10 @@
 #ifndef OSCILLATOROUTPUT_H_
 #define OSCILLATOROUTPUT_H_
 
-#include "FreqFilterChain.h"
-#include "AFreqReceiver.h"
 #include "AFreqFilterChainMember.h"
+#include "AFreqReceiver.h"
 
-class OscillatorOutput : public AFreqReceiver, public AFreqFilterChainMember {
+class OscillatorOutput : public AFreqFilterChainMember, public AFreqReceiver {
 public:
   OscillatorOutput();
   void recvFreq(uint16_t freq);

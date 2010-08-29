@@ -9,7 +9,6 @@
 #define AFREQRECEIVER_H_
 
 #include <inttypes.h>
-#include "FreqFilterChain.h"
 
 class AFreqReceiver {
 public:

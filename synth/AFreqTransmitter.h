@@ -26,7 +26,7 @@ void AFreqTransmitter::linkTo(AFreqReceiver *output) {
 }
 
 inline
-void sendFreq(uint16_t freq) {
+void AFreqTransmitter::sendFreq(uint16_t freq) {
   receiver->recvFreq(freq);
 }
 
