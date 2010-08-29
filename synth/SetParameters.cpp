@@ -98,7 +98,7 @@ void SetParameters::setWaveform(uint8_t voiceNum, uint8_t wf) {
 // @offset is the raw midi controller value (0-127)
 void SetParameters::setVoiceOffset(uint8_t voiceNum, uint8_t offset) {
   int8_t relOfs = (int8_t)(offset >> 2)-16;
-  OscillatorMux::managers[voiceNum].setNoteOffset(relOfs);
+  Swizzler::oscillators.setNoteOffset(voiceNum, relOfs);
 }
 
 void SetParameters::setVoiceLevel(uint8_t voiceNum, uint8_t level) {
