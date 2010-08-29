@@ -27,7 +27,7 @@ public:
   void setNoteOffset(uint8_t oscNum, int8_t offset);
 
   // The number of voices with frequency (voice 4 is only white noise)
-  static const uint8_t numVoices = 1;
+  static const uint8_t numVoices = 3;
 
 private:
   FreqFilterChain oscillatorList[numVoices];

@@ -25,14 +25,20 @@ void EnvelopeNoteFilter::noteOn(uint8_t noteNumber, uint8_t velocity) {
 }
 
 void EnvelopeNoteFilter::restartGate() {
-  Swizzler::soundChip.setEnvelopeGate(0, false);
-  Swizzler::soundChip.setEnvelopeGate(0, true);
+  for (uint8_t i=0; i < Swizzler::numOscillators; i++) {
+    Swizzler::soundChip.setEnvelopeGate(i, false);
+    Swizzler::soundChip.setEnvelopeGate(i, true);
+  }
+
   swizzler.setLed(true);
 }
 
 void EnvelopeNoteFilter::noteOff(uint8_t noteNumber) {
   if (curNoteNum == noteNumber) {
-    Swizzler::soundChip.setEnvelopeGate(0, false);
+    for (uint8_t i=0; i < Swizzler::numOscillators; i++) {
+      Swizzler::soundChip.setEnvelopeGate(i, false);
+    }
+
     curNoteNum = -1;
   }
 
