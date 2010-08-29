@@ -9,9 +9,8 @@
 #define FREQFILTERCHAIN_H_
 
 #include "ANoteReceiver.h"
-#include "DirectNoteFreqFilter.h"
 #include "OscillatorOutput.h"
-
+#include "DirectNoteFreqFilter.h"
 
 class FreqFilterChain : public ANoteReceiver {
 public:

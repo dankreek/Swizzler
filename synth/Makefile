@@ -72,8 +72,8 @@ CDEFS = -DF_CPU=$(F_CPU)
 CXXDEFS = -DF_CPU=$(F_CPU)
 
 # Place -I options here
-CINCS = -I$(ARDUINO)
-CXXINCS = -I$(ARDUINO)
+CINCS = #-I$(ARDUINO)
+CXXINCS = #-I$(ARDUINO)
 
 # Compiler flag to set the C Standard level.
 # c89   - "ANSI" C

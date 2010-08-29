@@ -10,7 +10,6 @@
 
 #include <inttypes.h>
 #include "AFreqReceiver.h"
-#include "FreqFilterChain.h"
 
 class AFreqTransmitter {
 public:
