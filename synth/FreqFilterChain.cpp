@@ -23,7 +23,7 @@ void FreqFilterChain::noteOn(uint8_t noteNumber, uint8_t velocity) {
   curNoteNum = (noteNumber+noteOffset);
 
   // For now just convert to frequency and send
-  oscOut.recvFreq(OscillatorMux::noteToFreq(noteNumber));
+  oscOut.recvFreq(OscillatorMux::noteToFreq(curNoteNum));
 }
 
 
