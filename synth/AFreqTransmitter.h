@@ -15,6 +15,9 @@ class AFreqTransmitter {
 public:
   void linkTo(AFreqReceiver *recv);
   void sendFreq(uint16_t freq);
+
+  // Force a send recalculation and send of the cur frequency to the next in the chain
+  virtual void updateFreq() = 0;
 private:
   AFreqReceiver *receiver;
 };

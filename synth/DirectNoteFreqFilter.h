@@ -10,12 +10,12 @@
 
 #include "ANoteReceiver.h"
 #include "AFreqTransmitter.h"
+#include "AFreqFilterChainMember.h"
 
-class DirectNoteFreqFilter : public ANoteReceiver, public AFreqTransmitter {
+class DirectNoteFreqFilter : public AFreqTransmitter, public AFreqFilterChainMember {
 public:
   DirectNoteFreqFilter();
-  void noteOn(uint8_t noteNumber, uint8_t velocity);
-  void noteOff(uint8_t noteNumber);
+  void updateFreq();
 
 };
 

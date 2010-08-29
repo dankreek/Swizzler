@@ -14,8 +14,6 @@ DirectNoteFreqFilter::DirectNoteFreqFilter()
 
 }
 
-void DirectNoteFreqFilter::noteOn(uint8_t noteNumber, uint8_t velocity) {
-  sendFreq(OscillatorMux::noteToFreq(noteNumber));
+void DirectNoteFreqFilter::updateFreq() {
+  sendFreq(OscillatorMux::noteToFreq(freqChainContainer->curNoteNum));
 }
-
-void DirectNoteFreqFilter::noteOff(uint8_t noteNumber) {}

@@ -25,13 +25,16 @@ public:
 
   // This filter chain's voice number
   uint8_t voiceNumber;
-private:
-  int8_t noteOffset;
+
+  // Keeps track of the current and previous note numbers that have entered the filter chain
   int8_t prevNoteNum;
   int8_t curNoteNum;
 
-  // Pointer to the first note receiver in the chain
-  ANoteReceiver *chainNoteReciver;
+private:
+  int8_t noteOffset;
+
+  // Pointer to the first frequency filter in the chain
+  AFreqTransmitter *chainHead;
 
   // These are all the filters in the chain
   OscillatorOutput oscOut;
