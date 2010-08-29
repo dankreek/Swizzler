@@ -40,9 +40,9 @@ void EnvelopeNoteFilter::noteOff(uint8_t noteNumber) {
     }
 
     curNoteNum = -1;
+    Swizzler::setLed(false);
   }
 
   // Pass note off through to next filter in the chain
   sendNoteOff(noteNumber);
-  Swizzler::setLed(false);
 }

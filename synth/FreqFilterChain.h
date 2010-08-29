@@ -18,6 +18,9 @@ public:
   void noteOff(uint8_t noteNum);
 
   void setNoteOffset(int8_t ofs);
+
+  // This filter chain's voice number
+  uint8_t voiceNumber;
 private:
   int8_t noteOffset;
   int8_t prevNoteNum;

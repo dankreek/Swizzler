@@ -11,6 +11,7 @@
 FreqFilterChain::FreqFilterChain() {
   prevNoteNum = -1;
   curNoteNum = -1;
+  oscOut.setParentContainer(this);
 }
 
 void FreqFilterChain::setNoteOffset(int8_t ofs) {
