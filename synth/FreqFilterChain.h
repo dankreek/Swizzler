@@ -13,6 +13,7 @@
 #include "OscillatorOutput.h"
 #include "DirectNoteFreqFilter.h"
 #include "PitchbendFreqFilter.h"
+#include "PortamentoFreqFilter.h"
 
 class FreqFilterChain : public ANoteReceiver {
 public:
@@ -42,6 +43,7 @@ private:
   OscillatorOutput oscOut;
   PitchbendFreqFilter pitchbendFilter;          // Calculated pitch bends
   DirectNoteFreqFilter directNoteFilter;        // Directly converts a note to a frequency
+  PortamentoFreqFilter portamentoFilter;
 };
 
 #endif /* FREQFILTERCHAIN_H_ */

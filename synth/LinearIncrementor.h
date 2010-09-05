@@ -35,11 +35,11 @@ public:
   /**
    * Get the next value in the series and put it in val.
    *
-   * @return true if trip it still going, false if it is not
-   *
    */
-  bool next(uint16_t &val);
+  uint16_t next();
 
+  // Is the incremental series still running?
+  bool stillGoing();
 private:
   uint16_t endVal;
   int16_t incAmount;

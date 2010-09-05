@@ -15,13 +15,14 @@ FreqFilterChain::FreqFilterChain() {
   oscOut.setParentContainer(this);
   directNoteFilter.setParentContainer(this);
   pitchbendFilter.setParentContainer(this);
-
+  portamentoFilter.setParentContainer(this);
 
   directNoteFilter.linkTo(&pitchbendFilter);
   pitchbendFilter.linkTo(&oscOut);
 
   // The start of the chain is the note->freq conversion
-  chainHead = &directNoteFilter;
+  //chainHead = &directNoteFilter;
+  chainHead = &portamentoFilter;
 }
 
 void FreqFilterChain::setNoteOffset(int8_t ofs) {

@@ -31,6 +31,7 @@ bool PortamentoManager::nextTick() {
       return true;
     }
     else {
+      /*
       uint16_t nextFreq;
       bool stillGoing = timeLine.next(nextFreq);
 
@@ -46,6 +47,7 @@ bool PortamentoManager::nextTick() {
       else {
         return false;
       }
+      */
     }
   }
   else {
