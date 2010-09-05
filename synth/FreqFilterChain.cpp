@@ -18,6 +18,8 @@ FreqFilterChain::FreqFilterChain() {
   portamentoFilter.setParentContainer(this);
 
   directNoteFilter.linkTo(&pitchbendFilter);
+  portamentoFilter.linkTo(&pitchbendFilter);
+
   pitchbendFilter.linkTo(&oscOut);
 
   // The start of the chain is the note->freq conversion
