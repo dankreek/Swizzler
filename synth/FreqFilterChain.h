@@ -33,6 +33,9 @@ public:
   int8_t prevNoteNum;
   int8_t curNoteNum;
 
+  // Service all timer funtions of each filter
+  void nextTick();
+
 private:
   int8_t noteOffset;
 

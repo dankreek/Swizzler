@@ -96,6 +96,7 @@ void Swizzler::mainLoop() {
     // Only call these services once every millisecond
     if (lastMs != msCounter) {
       lastMs = msCounter;
+      oscillators.nextTick();
     }
 
     // Shove everything that's read by the serial port into the MIDI input

@@ -31,10 +31,17 @@ public:
 
   // The number of voices with frequency (voice 4 is only white noise)
   static const uint8_t numVoices = 3;
+
+  // This is called every ms, and it in-turn calls each filterChain's nextTick()
+  void nextTick();
 private:
   FreqFilterChain oscillatorList[numVoices];
 };
 
-
+inline
+void Oscillators::nextTick() {
+  for (uint8_t i; i < Oscillators::numVoices; i++)
+    oscillatorList[i].nextTick();
+}
 
 #endif /* OSCILLATORS_H_ */

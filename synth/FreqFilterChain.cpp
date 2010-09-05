@@ -39,4 +39,8 @@ void FreqFilterChain::noteOn(uint8_t noteNumber, uint8_t velocity) {
   updateFrequency();
 }
 
+void FreqFilterChain::nextTick() {
+  portamentoFilter.nextTick();
+}
+
 void FreqFilterChain::noteOff(uint8_t noteNumber) {}
