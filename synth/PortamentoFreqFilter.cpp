@@ -15,8 +15,8 @@ PortamentoFreqFilter::PortamentoFreqFilter() {
 }
 
 void PortamentoFreqFilter::reset() {
-  destPortNote = -1;
-  srcPortNote = -1;
+  destPortNote = 0;
+  srcPortNote = 0;
   curFrequency = 0;
 }
 
