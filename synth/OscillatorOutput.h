@@ -16,6 +16,10 @@ public:
   OscillatorOutput();
   void recvFreq(uint16_t freq);
 
+private:
+  // The last frequency that was output, this is used to make sure no unnecessary
+  // messages are sent over the wire to the sound chip
+  uint16_t      lastFreq;
 };
 
 #endif /* OSCILLATOROUTPUT_H_ */

@@ -9,8 +9,14 @@
 #include "OscillatorOutput.h"
 
 OscillatorOutput::OscillatorOutput() {
+  lastFreq = 0;
 }
 
 void OscillatorOutput::recvFreq(uint16_t freq) {
-  Swizzler::soundChip.setFrequency(freqChainContainer->voiceNumber, freq);
+  if (freq != lastFreq) {
+    Swizzler::soundChip.setFrequency(freqChainContainer->voiceNumber, freq);
+    lastFreq = freq;
+  }
+
+
 }
