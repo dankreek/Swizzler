@@ -21,7 +21,7 @@ void PortamentoFreqFilter::reset() {
 }
 
 void PortamentoFreqFilter::nextTick() {
-  if (!freqAccum.stillGoing()) {
+  if (freqAccum.stillGoing()) {
     curFrequency = freqAccum.next();
 
     // Force the recalculation of the frequency chain
@@ -35,17 +35,32 @@ void PortamentoFreqFilter::startNewGlide() {
       FreqUtils::noteToFreq(destPortNote),
       Swizzler::portamentoTime,
       freqAccumResolution);
+
+  nextTick();
 }
+
+bool PortamentoFreqFilter::isNewNoteStruck() {
+  return (
+      (destPortNote != freqChainContainer->curNoteNum) ||
+      (srcPortNote != freqChainContainer->prevNoteNum));
+}
+
+bool PortamentoFreqFilter::hasPrevNoteBeenStruck() {
+  return (freqChainContainer->prevNoteNum != -1);
+}
+
 
 void PortamentoFreqFilter::updateFreq() {
   // If no notes have changed, then simply output the current frequency
-  if ((srcPortNote == freqChainContainer->prevNoteNum) && (destPortNote == freqChainContainer->curNoteNum)) {
-    sendFreq(curFrequency);
+  if (!isNewNoteStruck()) {
+
+
   }
   // If a note has been played start a new glide
   else {
     // If there was no previous frequency, go directly to the destination frequency
-    if (freqChainContainer->prevNoteNum == -1) {
+    if (!hasPrevNoteBeenStruck()) {
+      freqChainContainer->prevNoteNum = freqChainContainer->curNoteNum;
       srcPortNote = freqChainContainer->curNoteNum;
     }
     else {
@@ -54,6 +69,10 @@ void PortamentoFreqFilter::updateFreq() {
 
     destPortNote = freqChainContainer->curNoteNum;
 
+    //curFrequency = FreqUtils::noteToFreq(destPortNote);
+
     startNewGlide();
   }
+
+  sendFreq(curFrequency);
 }

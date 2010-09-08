@@ -17,6 +17,7 @@ FreqFilterChain::FreqFilterChain() {
   pitchbendFilter.setParentContainer(this);
   portamentoFilter.setParentContainer(this);
 
+  // Link frequency filters together
   directNoteFilter.linkTo(&pitchbendFilter);
   portamentoFilter.linkTo(&pitchbendFilter);
 

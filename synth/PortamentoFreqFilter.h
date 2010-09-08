@@ -24,6 +24,12 @@ public:
   void nextTick();
 
 private:
+  // Has a new note been struck since the last frequency update
+  bool isNewNoteStruck();
+
+  // Has a note previously been struck yet
+  bool hasPrevNoteBeenStruck();
+
   void startNewGlide();
 
   uint16_t      curFrequency;
@@ -36,5 +42,6 @@ private:
   LinearIncrementor     freqAccum;      // Frequency accumulator
   static const uint8_t  freqAccumResolution = 14;
 };
+
 
 #endif /* PORTAMENTOFREQFILTER_H_ */
