@@ -1,27 +1,27 @@
 #include "Bresenham.h"
 
 void Bresenham::init(int16_t y1, int16_t y2, int16_t x2) {
-	this->initY = y1;
- 	this->diffY = y2-y1;
- 	this->diffX = x2;
- 	
- 	if (this->diffY < 0) {
- 		this->diffY = -this->diffY;
- 		this->unitY = -1;
- 	}
- 	else
- 		this->unitY = 1;	
+  initY = y1;
+  diffY = y2-y1;
+  diffX = x2;
 
-	reset();
+  if (diffY < 0) {
+    diffY = -diffY;
+    unitY = -1;
+  }
+  else
+    unitY = 1;
+
+  reset();
 }
 
 /**
  * Start the algorithm over again
  */
 void Bresenham::reset() {
-	this->plotY = this->initY;
-	this->i = 0;
-	this->error_term = 0;
+  plotY = initY;
+  count = 0;
+  error_term = 0;
 }
 
 /**
@@ -30,40 +30,39 @@ void Bresenham::reset() {
  * @output Pointer to the output of the next sample in the line
  * returns FALSE if this was the last sample in the line, or TRUE if there is still points left in the line
  */
-bool Bresenham::next(int16_t *output) {
-  if (this->diffX >= this->diffY) {
-    *output = this->plotY;
-    this->error_term += this->diffY;
+void Bresenham::next(int16_t *output) {
+  if (diffX >= diffY) {
+    *output = plotY;
+    error_term += diffY;
 
-    if (this->error_term > this->diffX) {
-      this->error_term -= this->diffX;
-      this->plotY += this->unitY;
+    if (error_term > diffX) {
+      error_term -= diffX;
+      plotY += unitY;
     }
-    this->i++;
-
-    if (this->i >= this->diffX)
-      return false;
-    else
-      return true;
+    this->count++;
   }
   else {
     //int startY = this->plotY;
-    for (; (this->error_term <= 0) && (this->i <= this->diffY); this->i++) {
-      this->plotY += this->unitY;
-      this->error_term += this->diffX;
+    for (; (error_term <= 0) && (count <= diffY); count++) {
+      plotY += unitY;
+      error_term += diffX;
     }
-    this->error_term -= this->diffY;
+    error_term -= diffY;
 
     // Put the sample in the midpoint of the verticle line
     //*output = ((this->plotY + startY)/2);
 
     // Put the sample at the top of the verticle line
-    *output = this->plotY;
-
-    if (this->i > this->diffY)
-      return false;
-    else
-      return true;
+    *output = plotY;
   }
+
+  if (!stillGoing()) *output = diffX;
+}
+
+bool Bresenham::stillGoing() {
+  if (diffX >= diffY)
+    return (count < diffX);
+  else
+    return (count <= diffY);
 }
 

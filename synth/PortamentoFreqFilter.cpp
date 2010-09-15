@@ -21,8 +21,13 @@ void PortamentoFreqFilter::reset() {
 }
 
 void PortamentoFreqFilter::nextTick() {
-  if (freqAccum.stillGoing()) {
-    curFrequency = freqAccum.next();
+  //if (freqAccum.stillGoing()) {
+  if (lineCalc.stillGoing()) {
+    //curFrequency = freqAccum.next();
+    int16_t nextF;
+    lineCalc.next(&nextF);
+
+    curFrequency = nextF;
 
     // Force the recalculation of the frequency chain
     sendFreq(curFrequency);
@@ -30,11 +35,17 @@ void PortamentoFreqFilter::nextTick() {
 }
 
 void PortamentoFreqFilter::startNewGlide() {
+  /*
   freqAccum.start(
       FreqUtils::noteToFreq(srcPortNote),
       FreqUtils::noteToFreq(destPortNote),
       Swizzler::portamentoTime,
       freqAccumResolution);
+*/
+  lineCalc.init(
+      FreqUtils::noteToFreq(srcPortNote),
+      FreqUtils::noteToFreq(destPortNote),
+      Swizzler::portamentoTime);
 
   nextTick();
 }

@@ -7,20 +7,23 @@
 /**
  * This class implements Bresenham's algorithm (optimized for audio)
  *
- * This is essentially a fast way of computing a linear function incrementally
+ * This is essentially a fast and fairly accurate way of computing a linear function incrementally
  */
 class Bresenham {
-private:
-  int16_t diffX, diffY;
-  int16_t initY, plotY, unitY;
-  int16_t i, error_term;
-
 public:
   void init(int16_t y1, int16_t y2, int16_t x2);
   void reset();
 
   // Get the next y-value in the line
-  bool next(int16_t *output);
+  void next(int16_t *output);
+
+  // Is the line still going?
+  bool stillGoing();
+private:
+  int16_t diffX, diffY;
+  int16_t initY, plotY, unitY;
+  int16_t count, error_term;
+
 };
 
 #endif

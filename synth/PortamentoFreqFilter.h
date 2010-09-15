@@ -11,6 +11,7 @@
 #include "AFreqTransmitter.h"
 #include "AFreqFilterChainMember.h"
 #include "LinearIncrementor.h"
+#include "Bresenham.h"
 
 class PortamentoFreqFilter : public AFreqTransmitter, public AFreqFilterChainMember {
 public:
@@ -39,8 +40,9 @@ private:
   int8_t        destPortNote;
   int8_t        srcPortNote;
 
-  LinearIncrementor     freqAccum;      // Frequency accumulator
-  static const uint8_t  freqAccumResolution = 14;
+  //LinearIncrementor     freqAccum;      // Frequency accumulator
+  Bresenham             lineCalc;       // Linear function calculator
+  static const uint8_t  freqAccumResolution = 13;
 };
 
 
