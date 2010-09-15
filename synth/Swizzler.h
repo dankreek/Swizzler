@@ -25,7 +25,7 @@ public:
   static ArpeggiatorNoteFilter arp;
   static Oscillators oscillators;
 
-  static const uint16_t portamentoTime = 250;
+  static const uint16_t portamentoTime = 20;
   static const uint8_t bendRange = 2;
 
   static uint16_t msCounter;    // Incremented once every millisecond

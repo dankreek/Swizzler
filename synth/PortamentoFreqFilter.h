@@ -10,7 +10,6 @@
 
 #include "AFreqTransmitter.h"
 #include "AFreqFilterChainMember.h"
-#include "LinearIncrementor.h"
 #include "Bresenham.h"
 
 class PortamentoFreqFilter : public AFreqTransmitter, public AFreqFilterChainMember {
