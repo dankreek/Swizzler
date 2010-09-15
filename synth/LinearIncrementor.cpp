@@ -20,14 +20,6 @@ void LinearIncrementor::start(uint16_t startValue, uint16_t endValue, uint16_t n
   this->endVal = endValue;
   curVal = startValue;
   this->numSteps = numSteps;
-
-  // Optimize out the trivial case
-  if (startValue == endValue) {
-    stepNum = numSteps;
-  }
-  else {
-    stepNum = 0;
-  }
 }
 
 uint16_t LinearIncrementor::next() {

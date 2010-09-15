@@ -4,6 +4,7 @@ void Bresenham::init(int16_t y1, int16_t y2, int16_t x2) {
   initY = y1;
   diffY = y2-y1;
   diffX = x2;
+  dest = y2;
 
   if (diffY < 0) {
     diffY = -diffY;
@@ -56,13 +57,13 @@ void Bresenham::next(int16_t *output) {
     *output = plotY;
   }
 
-  if (!stillGoing()) *output = diffX;
+  if (!stillGoing()) *output = dest;
 }
 
 bool Bresenham::stillGoing() {
   if (diffX >= diffY)
-    return (count < diffX);
+    return (count < (diffX+1));
   else
-    return (count <= diffY);
+    return (count <= (diffY+1));
 }
 

@@ -20,6 +20,7 @@ public:
   // Is the line still going?
   bool stillGoing();
 private:
+  int16_t dest;
   int16_t diffX, diffY;
   int16_t initY, plotY, unitY;
   int16_t count, error_term;
