@@ -34,6 +34,9 @@ public:
 
   // This is called every ms, and it in-turn calls each filterChain's nextTick()
   void nextTick();
+
+  // Turn portamento on/off for each voice
+  void setPortamento(bool onOff);
 private:
   FreqFilterChain oscillatorList[numVoices];
 };

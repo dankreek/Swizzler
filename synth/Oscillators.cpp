@@ -6,6 +6,7 @@
  */
 
 #include "Oscillators.h"
+#include "Swizzler.h"
 
 Oscillators::Oscillators() {
   for (uint8_t i=0; i < numVoices; i++) {
@@ -30,4 +31,12 @@ void Oscillators::noteOff(uint8_t noteNumber) {
 
 void Oscillators::setNoteOffset(uint8_t oscNum, int8_t offset) {
   oscillatorList[oscNum].setNoteOffset(offset);
+}
+
+void Oscillators::setPortamento(bool onOff) {
+  Swizzler::setLed(onOff);
+
+  for (uint8_t i=0; i < numVoices; i++) {
+    oscillatorList[i].setPortamento(onOff);
+  }
 }

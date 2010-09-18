@@ -25,7 +25,7 @@ public:
 
   static const uint8_t noiseLevel = 7;
 
-  static const uint8_t portamentoOnOff = 20;
+  static const uint8_t portamentoOnOff = 65;
   static const uint8_t portamentoTime = 10;
 
   static const uint8_t pitchBendRange = 15;

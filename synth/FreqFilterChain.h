@@ -36,6 +36,8 @@ public:
   // Service all timer funtions of each filter
   void nextTick();
 
+  // Turn portamento on/off
+  void setPortamento(bool onOff);
 private:
   int8_t noteOffset;
 

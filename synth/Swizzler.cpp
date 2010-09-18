@@ -17,6 +17,7 @@
 EnvelopeNoteFilter Swizzler::envelopeController;
 ArpeggiatorNoteFilter Swizzler::arp;
 Oscillators Swizzler::oscillators;
+uint16_t Swizzler::portamentoTime;
 
 SoundDriver Swizzler::soundChip = SoundDriver(0x70);
 uint16_t Swizzler::msCounter = 0;
@@ -26,12 +27,15 @@ void Swizzler::handlePitchBend() {
 }
 
 void Swizzler::init() {
+  portamentoTime = 100;
+
   // Setup chain
-  //arp.linkTo(&noteManager);
   MidiInput::pitchBendEventHandler = Swizzler::handlePitchBend;
   MidiInput::noteReceiver = &envelopeController;
   envelopeController.linkTo(&arp);
   arp.linkTo(&oscillators);
+
+
 
   // Setup the first note receiver
   //MidiInput::noteReceiver = &noteManager;
@@ -73,8 +77,7 @@ void Swizzler::init() {
 
   //soundChip.resetSound();
 
-  // Turn the on-board LED on
-  setLed(true);
+  setLed(false);
 }
 
 void Swizzler::setLed(bool onOff) {

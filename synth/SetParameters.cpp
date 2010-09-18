@@ -17,7 +17,7 @@ KnobKnee decRelTimeKnee = KnobKnee(24000, 95, 2400);	// Decay/release time knee
 KnobKnee arpTimeKnee = KnobKnee(1000, 95, 250);			// Arpeggio time (ms per note)
 
 void SetParameters::enablePortamento(uint8_t p) {
-  //OscillatorMux::enablePortamento((p > 0) ? true : false);
+  Swizzler::oscillators.setPortamento((p > 0) ? true : false);
   PresetManager::curSettings.portamentoOn = p;
 }
 
@@ -26,6 +26,7 @@ void SetParameters::setPortamentoTime(uint8_t p) {
   //  FrequencyManager::managers[i].portMan.time = portTimeKnee.getValue(p);
   //OscillatorMux::setPortamentoTime(portTimeKnee.getValue(p));
 
+  Swizzler::portamentoTime = portTimeKnee.getValue(p);
   PresetManager::curSettings.portamentoTime = p;
 }
 

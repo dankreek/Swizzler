@@ -29,8 +29,6 @@ void EnvelopeNoteFilter::restartGate() {
     Swizzler::soundChip.setEnvelopeGate(i, false);
     Swizzler::soundChip.setEnvelopeGate(i, true);
   }
-
-  Swizzler::setLed(true);
 }
 
 void EnvelopeNoteFilter::noteOff(uint8_t noteNumber) {
@@ -40,7 +38,6 @@ void EnvelopeNoteFilter::noteOff(uint8_t noteNumber) {
     }
 
     curNoteNum = -1;
-    Swizzler::setLed(false);
   }
 
   // Pass note off through to next filter in the chain

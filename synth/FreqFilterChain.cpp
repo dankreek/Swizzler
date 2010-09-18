@@ -23,9 +23,21 @@ FreqFilterChain::FreqFilterChain() {
 
   pitchbendFilter.linkTo(&oscOut);
 
+  setPortamento(false);
+
   // The start of the chain is the note->freq conversion
+  // if portamento is turned on then the chainHead points to portamentoFilter
   //chainHead = &directNoteFilter;
-  chainHead = &portamentoFilter;
+  //chainHead = &portamentoFilter;
+}
+
+void FreqFilterChain::setPortamento(bool onOff) {
+  if (onOff) {
+    chainHead = &portamentoFilter;
+  }
+  else {
+    chainHead = &directNoteFilter;
+  }
 }
 
 void FreqFilterChain::setNoteOffset(int8_t ofs) {
