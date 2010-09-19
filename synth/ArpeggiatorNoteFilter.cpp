@@ -10,7 +10,7 @@
 #include <stdlib.h>
 
 ArpeggiatorNoteFilter::ArpeggiatorNoteFilter() {
-  setArpDirection(forward);
+  setArpDirection(up);
   setArpTime(100);
   setMinNotes(3);
   curTime = 0;
@@ -46,7 +46,7 @@ void ArpeggiatorNoteFilter::noteOff(uint8_t noteNumber) {
 }
 
 void ArpeggiatorNoteFilter::restartArpeggio() {
-  if (curDir != backward) { nextNoteI = 0; }
+  if (curDir != down) { nextNoteI = 0; }
   else { nextNoteI = (noteBuffer.size-1); }
 
   curTime = arpTime;
@@ -77,20 +77,20 @@ void ArpeggiatorNoteFilter::nextTick() {
 
 void ArpeggiatorNoteFilter::incNextI() {
   switch (curDir) {
-  case forward:
+  case up:
     nextNoteI = (nextNoteI + 1) % noteBuffer.size;
     break;
 
-  case backward:
+  case down:
     nextNoteI--;
-    if (nextNoteI == -1)
-      nextNoteI = (noteBuffer.size-1);
+    if (nextNoteI == -1) nextNoteI = (noteBuffer.size-1);
     break;
 
   case random:
   default:
     uint8_t nextCandidateI;
 
+    // Make sure a different index is randomly selected
     do {
       nextCandidateI = (rand() % noteBuffer.size);
     } while (nextCandidateI == nextNoteI);
