@@ -21,7 +21,7 @@ public:
   void noteOff(uint8_t noteNumber);
 
   // Different directions that the arpeggio can travel in
-  enum ArpeggioDirection { up, down, random };
+  enum ArpeggioDirection { up=0x00, down=0x01, random=0x02 };
 
   void setArpDirection(ArpeggioDirection dir);
 
