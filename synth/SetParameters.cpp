@@ -17,7 +17,7 @@ KnobKnee decRelTimeKnee = KnobKnee(24000, 95, 2400);	// Decay/release time knee
 KnobKnee arpTimeKnee = KnobKnee(1000, 95, 250);			// Arpeggio time (ms per note)
 
 void SetParameters::enablePortamento(uint8_t p) {
-  Swizzler::oscillators.setPortamento((p > 0) ? true : false);
+  Swizzler::oscillators.setPortamento((p >= 64) ? true : false);
   PresetManager::curSettings.portamentoOn = p;
 }
 
@@ -86,14 +86,23 @@ void SetParameters::setBendRange(uint8_t p) {
 
 void SetParameters::setWaveform(uint8_t voiceNum, uint8_t wf) {
   SoundDriver::WaveformType waveForm;
-  if (wf < 32)
+
+  switch (wf) {
+  case 0:
     waveForm = SoundDriver::triangleWave;
-  else if (wf < 64)
+    break;
+  case 1:
     waveForm = SoundDriver::sawtoothWave;
-  else if (wf < 96)
+    break;
+  case 2:
     waveForm = SoundDriver::reverseSawtoothWave;
-  else
+    break;
+  case 3:
     waveForm = SoundDriver::squareWave;
+    break;
+  default:
+    waveForm = SoundDriver::noiseWave;
+  }
 
   Swizzler::soundChip.setWaveform(voiceNum,waveForm);
 }
@@ -151,4 +160,9 @@ void SetParameters::setOscOffset2(uint8_t p) {
 void SetParameters::setOscOffset3(uint8_t p) {
   setVoiceOffset(2, p);
   PresetManager::curSettings.freqOffset3 = p;
+}
+
+void SetParameters::setArpeggioDirection(uint8_t p) {
+  Swizzler::arp.setArpDirection(ArpeggiatorNoteFilter::ArpeggioDirection(p));
+  PresetManager::curSettings.arpeggioDirection = p;
 }

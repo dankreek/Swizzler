@@ -12,37 +12,38 @@
 
 class MidiControllerNumbers {
 public:
-  static const uint8_t oscLevel1 = 71;
-  static const uint8_t oscWaveform1 = 74;
-
-  static const uint8_t oscLevel2 = 93;
-  static const uint8_t oscWaveform2 = 91;
-  static const uint8_t oscOffset2 = 73;
-
-  static const uint8_t oscLevel3 = 5;
-  static const uint8_t oscWaveform3 = 72;
-  static const uint8_t oscOffset3 = 84;
-
-  static const uint8_t noiseLevel = 7;
-
   static const uint8_t portamentoOnOff = 65;
-  static const uint8_t portamentoTime = 10;
+  static const uint8_t portamentoTime = 5;
 
-  static const uint8_t pitchBendRange = 15;
+  static const uint8_t oscLevel1 = 20;
+  static const uint8_t oscWaveform1 = 21;
 
-  static const uint8_t pulseWidth = 2;
+  static const uint8_t oscLevel2 = 22;
+  static const uint8_t oscWaveform2 = 23;
+  static const uint8_t oscOffset2 = 24;
 
-  static const uint8_t attackTime = 75;
+  static const uint8_t oscLevel3 = 25;
+  static const uint8_t oscWaveform3 = 26;
+  static const uint8_t oscOffset3 = 27;
+
+  static const uint8_t noiseLevel = 28;
+
+  static const uint8_t pitchBendRange = 29;
+
+  static const uint8_t pulseWidth = 30;
+
+  static const uint8_t attackTime = 73;
   static const uint8_t decayTime = 76;
-  static const uint8_t sustainLevel = 92;
-  static const uint8_t releaseTime = 95;
+  static const uint8_t sustainLevel = 75;
+  static const uint8_t releaseTime = 74;
 
-  static const uint8_t arpOnOff = 26;
-  static const uint8_t arpTime = 12;
-  static const uint8_t arpMinNotes = 13;
+  static const uint8_t arpOnOff = 77;
+  static const uint8_t arpTime = 78;
+  static const uint8_t arpMinNotes = 79;
+  static const uint8_t arpDirection = 80;
 
   // Store the current settings in the slot of the currently selected preset
-  static const uint8_t storePreset = 84;
+  static const uint8_t storePreset = 102;
 };
 
 #endif

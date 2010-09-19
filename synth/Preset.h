@@ -6,7 +6,7 @@
 /**
  * This struct reprents one Preset stored in RAM
  * Note that all stored values are in raw MIDI controller values (0-127)
- * and will be translated to real values through the midi input shits
+ * and will be translated to real values through the midi input shits (SetParameters)
  *
  * Currently 36 bytes long
  */
@@ -44,6 +44,7 @@ struct Preset {
 	uint8_t arpeggioTime;
 	uint8_t arpeggioMinNotes;
 	uint8_t arpeggioOn;
+	uint8_t arpeggioDirection;
 
 	// Range of bend
 	uint8_t bendRange;

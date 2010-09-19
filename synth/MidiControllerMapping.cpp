@@ -94,6 +94,9 @@ MidiControllerMapping MidiControllerMapping::controllerList[] = {
     MidiControllerMapping(
         MidiControllerNumbers::arpTime,
         SetParameters::setArpeggioTime),
+    MidiControllerMapping(
+        MidiControllerNumbers::arpDirection,
+        SetParameters::setArpeggioDirection),
 
     // Store and load presets
     MidiControllerMapping(

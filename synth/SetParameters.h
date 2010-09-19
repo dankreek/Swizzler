@@ -45,6 +45,7 @@ public:
   static void enableArpeggio(uint8_t);
   static void setArpeggioTime(uint8_t);
   static void setArpeggioMinNotes(uint8_t);
+  static void setArpeggioDirection(uint8_t);
 
   static void setBendRange(uint8_t);
 
