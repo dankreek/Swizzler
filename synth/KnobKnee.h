@@ -6,8 +6,13 @@
 /**
  * This class essentially converts an integer from 0 to 127 (MIDI controller
  * range) into an integer ranging from 0 to the range specified in init.
+ *
+ * This uses a simple piecewise linear function.
+ *
  * The (kneeX, kneeY) point defines a point where the knee of the input
  * scaler changes.
+ *
+ * TODO : Make this a 3-line curve instead of 2
  */
 class KnobKnee {
 public:
