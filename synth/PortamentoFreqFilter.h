@@ -3,6 +3,8 @@
  *
  *  Created on: Aug 29, 2010
  *      Author: justin
+ *
+ * TODO : This thing is buggy as hell! There are problems when turning on and off the portamentoFreqFilter
  */
 
 #ifndef PORTAMENTOFREQFILTER_H_

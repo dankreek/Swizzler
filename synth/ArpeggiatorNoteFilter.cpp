@@ -65,7 +65,6 @@ void ArpeggiatorNoteFilter::nextTick() {
     curTime++;
 
     // Switch to the next note
-    // TODO Implement other directions of arpeggiation
     if (curTime >= arpTime) {
       curTime = 0;
       sendNoteOn(noteBuffer.buffer[nextNoteI], 127);
