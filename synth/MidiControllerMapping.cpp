@@ -93,7 +93,7 @@ MidiControllerMapping MidiControllerMapping::controllerList[] = {
         SetParameters::setArpeggioMinNotes),
     MidiControllerMapping(
         MidiControllerNumbers::arpTime,
-        SetParameters::setAttackTime),
+        SetParameters::setArpeggioTime),
 
     // Store and load presets
     MidiControllerMapping(

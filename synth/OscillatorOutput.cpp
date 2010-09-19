@@ -15,6 +15,7 @@ OscillatorOutput::OscillatorOutput() {
 void OscillatorOutput::recvFreq(uint16_t freq) {
   if (freq != lastFreq) {
     Swizzler::soundChip.setFrequency(freqChainContainer->voiceNumber, freq);
+
     lastFreq = freq;
   }
 }

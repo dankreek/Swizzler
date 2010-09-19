@@ -1,37 +1,41 @@
 #include "MidiNoteBuffer.h"
 
-uint8_t MidiNoteBuffer::buffer[MIDI_NOTE_BUF_SIZE];
-uint8_t MidiNoteBuffer::size;
-int8_t MidiNoteBuffer::lastNote;
+uint8_t MidiNoteBuffer::getLastNote() {
+ return buffer[lastNote];
+}
 
-void MidiNoteBuffer::init() {	
-	size=0;
-	lastNote=-1;
+bool MidiNoteBuffer::isEmpty() {
+  return (lastNote == -1);
+}
+
+MidiNoteBuffer::MidiNoteBuffer() {
+  size=0;
+  lastNote=-1;
 }
 
 void MidiNoteBuffer::removeMidiNote(uint8_t noteNumber) {
-	for (int i=0; i < size; i++) {
-		// If this index contains the note to be removed
-		if (buffer[i] == noteNumber) {
-			// The last note struck is unstruck, remove it
-			if (lastNote == i) lastNote = -1;
-			
-			closeHole(i);
-			size--;
+  for (int i=0; i < size; i++) {
+    // If this index contains the note to be removed
+    if (buffer[i] == noteNumber) {
+      // The last note struck is unstruck, remove it
+      if (lastNote == i) lastNote = -1;
 
-			// Update the last note pointer if it past the hole
-			if (lastNote > i) lastNote--;
+      closeHole(i);
+      size--;
 
-			return;
-		}
-	}
+      // Update the last note pointer if it past the hole
+      if (lastNote > i) lastNote--;
+
+      return;
+    }
+  }
 }
 
 void MidiNoteBuffer::putMidiNote(uint8_t noteNumber) {
 	int i;	// The index to put the data in
 	
 	// If this list is full, reject the insertion (huh huh)
-	if (size == MIDI_NOTE_BUF_SIZE) return;
+	if (size == midiNoteBufSize) return;
 	
 	// Find this note's place in the list
 	for (i=0; i < size; i++) {
@@ -68,7 +72,7 @@ void MidiNoteBuffer::makeHole(uint8_t insert) {
 void MidiNoteBuffer::closeHole(uint8_t fill) {
 	uint8_t i;
 	
-	for (i=fill; (i < size) && (i < (MIDI_NOTE_BUF_SIZE-1)); i++) {
+	for (i=fill; (i < size) && (i < (midiNoteBufSize-1)); i++) {
 		buffer[i] = buffer[i+1];
 	}
 }

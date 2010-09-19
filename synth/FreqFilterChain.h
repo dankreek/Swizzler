@@ -14,8 +14,9 @@
 #include "DirectNoteFreqFilter.h"
 #include "PitchbendFreqFilter.h"
 #include "PortamentoFreqFilter.h"
+#include "ITimerCall.h"
 
-class FreqFilterChain : public ANoteReceiver {
+class FreqFilterChain : public ANoteReceiver, public ITimerCall {
 public:
   FreqFilterChain();
   void noteOn(uint8_t noteNum, uint8_t velocity);

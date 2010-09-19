@@ -41,6 +41,8 @@ public:
   void init();
   void mainLoop();
 
+  static void enableArpeggio(bool onOff);
+
   /**
    * Send the processor into an infinite blinking loop to indicate a run-time error
    */

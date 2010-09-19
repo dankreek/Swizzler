@@ -59,7 +59,7 @@ void SetParameters::setReleaseTime(uint8_t p) {
 }
 
 void SetParameters::enableArpeggio(uint8_t p) {
-  //NoteManager::enableArpeggio((p > 0) ? true : false);
+  Swizzler::enableArpeggio((p > 0) ? true : false);
   PresetManager::curSettings.arpeggioOn = p;
 }
 
@@ -67,12 +67,14 @@ void SetParameters::setArpeggioTime(uint8_t p) {
   // Tweaked to make 10 the minimum value.
   // XXX: Is this the best way to go about it?
   //NoteManager::arpManager.arpTime = arpTimeKnee.getValue(p)+10;
+  Swizzler::arp.setArpTime(arpTimeKnee.getValue(p)+10);
   PresetManager::curSettings.arpeggioTime = p;
 }
 
 void SetParameters::setArpeggioMinNotes(uint8_t p) {
   // Ranges from 1-16
   //NoteManager::arpManager.minNotes = (p >> 3)+1;
+  Swizzler::arp.setMinNotes((p >> 3)+1);
   PresetManager::curSettings.arpeggioMinNotes = p;
 }
 

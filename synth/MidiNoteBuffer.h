@@ -3,51 +3,45 @@
 
 #include <inttypes.h>
 
-#define MIDI_NOTE_BUF_SIZE 10 
-
 /**
- * This is essentially an ordered doubly-linked list that keeps track of every MIDI note that is being pressed,
- * plus an indicator as to which note was the last note to be played. This class is used to either play arpeggios or
- * tell what the last note hit was for monophonic synthesis.
+ * An ordered buffer that stores a list of midi notes to allow for areeggiating over them
  */ 
 class MidiNoteBuffer {
-  public:  
-  	// The current size of the list (how many keys are being held down)
-  	static uint8_t size;
+public:
+  static const uint8_t midiNoteBufSize = 24;
+
+  // The current size of the list (how many keys are being held down)
+  uint8_t size;
+
+  // The index of the latest note that was struck in the buffer
+  int8_t lastNote;
+
+  // Initialize the Note Buffer
+  MidiNoteBuffer();
   
-  	// The index of the latest note that was struck in the buffer
-  	static int8_t lastNote;
-  
-  	// Initialize the Note Buffer
-  	static void init();
-  	
-  	// Add a new midi note in-order
-	static void putMidiNote(uint8_t noteNumber);
+  // Add a new midi note in-order
+  void putMidiNote(uint8_t noteNumber);
 
-	// Remove a midi note from the buffer
-	static void removeMidiNote(uint8_t noteNumber);
+  // Remove a midi note from the buffer
+  void removeMidiNote(uint8_t noteNumber);
 
-	// Macro to get the last note that was struck
-	static inline
-	uint8_t getLastNote() {
-		return buffer[lastNote];
-	}
+  // Macro to get the last note that was struck
+  uint8_t getLastNote();
 
-  	// Buffer where the notes reside
-  	static uint8_t buffer[MIDI_NOTE_BUF_SIZE];
-  	
-  	// A little macro to check if the buffer is empty
-  	static inline
-  	bool isEmpty() {
-  		return (lastNote == -1);
-  	}
+  // Buffer where the notes reside
+  uint8_t buffer[midiNoteBufSize];
 
-  private:
-  	// Create room for another element in the buffer at the given index
-  	static void makeHole(uint8_t i);
+  // A little macro to check if the buffer is empty
+  bool isEmpty();
 
-  	// Close the hole that a note left after being removed at the given index
-  	static void closeHole(uint8_t i);
+private:
+
+
+  // Create room for another element in the buffer at the given index
+  void makeHole(uint8_t i);
+
+  // Close the hole that a note left after being removed at the given index
+  void closeHole(uint8_t i);
 };
 
 #endif /*MIDINOTEBUFFER_H_*/

@@ -14,8 +14,9 @@
 
 #include "ANoteReceiver.h"
 #include "FreqFilterChain.h"
+#include "ITimerCall.h"
 
-class Oscillators : public ANoteReceiver {
+class Oscillators : public ANoteReceiver, public ITimerCall {
 public:
   Oscillators();
   void noteOn(uint8_t noteNum, uint8_t velocity);

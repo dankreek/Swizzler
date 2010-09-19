@@ -12,6 +12,7 @@ Oscillators::Oscillators() {
   for (uint8_t i=0; i < numVoices; i++) {
     oscillatorList[i].voiceNumber = i;
     oscillatorList[i].setNoteOffset(0);
+    oscillatorList[i].setPortamento(false);
   }
 }
 

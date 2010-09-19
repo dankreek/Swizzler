@@ -10,9 +10,10 @@
 
 #include "AFreqTransmitter.h"
 #include "AFreqFilterChainMember.h"
+#include "ITimerCall.h"
 #include "Bresenham.h"
 
-class PortamentoFreqFilter : public AFreqTransmitter, public AFreqFilterChainMember {
+class PortamentoFreqFilter : public AFreqTransmitter, public AFreqFilterChainMember, public ITimerCall {
 public:
   PortamentoFreqFilter();
   void updateFreq();

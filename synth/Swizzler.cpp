@@ -26,16 +26,23 @@ void Swizzler::handlePitchBend() {
   oscillators.updateFrequencies();
 }
 
+void Swizzler::enableArpeggio(bool onOff) {
+  if (onOff) MidiInput::noteReceiver = &arp;
+  else MidiInput::noteReceiver = &envelopeController;
+}
+
 void Swizzler::init() {
   portamentoTime = 100;
 
   // Setup chain
   MidiInput::pitchBendEventHandler = Swizzler::handlePitchBend;
-  MidiInput::noteReceiver = &envelopeController;
-  envelopeController.linkTo(&arp);
+  enableArpeggio(false);
+  //MidiInput::noteReceiver = &envelopeController;
+  //MidiInput::noteReceiver = &arp;
+
+  //  MidiInput::noteReceiver points to whichever one of these is controlling the notes and envelope
+  envelopeController.linkTo(&oscillators);
   arp.linkTo(&oscillators);
-
-
 
   // Setup the first note receiver
   //MidiInput::noteReceiver = &noteManager;
@@ -100,6 +107,7 @@ void Swizzler::mainLoop() {
     if (lastMs != msCounter) {
       lastMs = msCounter;
       oscillators.nextTick();
+      arp.nextTick();
     }
 
     // Shove everything that's read by the serial port into the MIDI input
