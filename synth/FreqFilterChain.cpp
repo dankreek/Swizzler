@@ -41,7 +41,12 @@ void FreqFilterChain::setPortamento(bool onOff) {
 }
 
 void FreqFilterChain::setNoteOffset(int8_t ofs) {
+  int8_t delta = ofs-noteOffset;
+
   noteOffset = ofs;
+  prevNoteNum = curNoteNum;
+  curNoteNum += delta;
+  updateFrequency();
 }
 
 void FreqFilterChain::updateFrequency() {
