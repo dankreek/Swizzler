@@ -19,9 +19,11 @@
 #include "SoundDriver.h"
 #include "ArpeggiatorNoteFilter.h"
 #include "Oscillators.h"
+#include "SineGenerator.h"
 
 class Swizzler {
 public:
+  static SineGenerator freqModSineWave;         // Frequency modulation sinewave generator
   static EnvelopeNoteFilter envelopeController;
   static ArpeggiatorNoteFilter arp;
   static Oscillators oscillators;

@@ -14,6 +14,7 @@
 #include <util/delay.h>
 #include <avr/interrupt.h>
 
+SineGenerator Swizzler::freqModSineWave;
 EnvelopeNoteFilter Swizzler::envelopeController;
 ArpeggiatorNoteFilter Swizzler::arp;
 Oscillators Swizzler::oscillators;
@@ -33,6 +34,8 @@ void Swizzler::enableArpeggio(bool onOff) {
 
 void Swizzler::init() {
   portamentoTime = 100;
+
+  freqModSineWave.setFrequency(0);
 
   // Setup chain
   MidiInput::pitchBendEventHandler = Swizzler::handlePitchBend;
@@ -108,6 +111,7 @@ void Swizzler::mainLoop() {
       lastMs = msCounter;
       oscillators.nextTick();
       arp.nextTick();
+      freqModSineWave.nextTick();
     }
 
     // Shove everything that's read by the serial port into the MIDI input

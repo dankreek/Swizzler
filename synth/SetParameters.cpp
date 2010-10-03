@@ -59,7 +59,7 @@ void SetParameters::setReleaseTime(uint8_t p) {
 }
 
 void SetParameters::enableArpeggio(uint8_t p) {
-  Swizzler::enableArpeggio((p > 0) ? true : false);
+  Swizzler::enableArpeggio((p >= 64) ? true : false);
   PresetManager::curSettings.arpeggioOn = p;
 }
 

@@ -16,6 +16,7 @@
 #include "PitchbendFreqFilter.h"
 #include "PortamentoFreqFilter.h"
 #include "ITimerCall.h"
+#include "FreqModFreqFilter.h"
 
 class FreqFilterChain : public ANoteReceiver, public ITimerCall {
 public:
@@ -51,6 +52,7 @@ private:
   PitchbendFreqFilter pitchbendFilter;          // Calculated pitch bends
   DirectNoteFreqFilter directNoteFilter;        // Directly converts a note to a frequency
   PortamentoFreqFilter portamentoFilter;
+  FreqModFreqFilter freqModFilter;              // Frequency modulation filter
 };
 
 #endif /* FREQFILTERCHAIN_H_ */
