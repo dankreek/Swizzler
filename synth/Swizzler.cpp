@@ -35,7 +35,7 @@ void Swizzler::enableArpeggio(bool onOff) {
 void Swizzler::init() {
   portamentoTime = 100;
 
-  freqModSineWave.setFrequency(0);
+  freqModSineWave.setFrequency(10);
 
   // Setup chain
   MidiInput::pitchBendEventHandler = Swizzler::handlePitchBend;
@@ -111,7 +111,7 @@ void Swizzler::mainLoop() {
       lastMs = msCounter;
       oscillators.nextTick();
       arp.nextTick();
-      //freqModSineWave.nextTick();
+      freqModSineWave.nextTick();
     }
 
     // Shove everything that's read by the serial port into the MIDI input

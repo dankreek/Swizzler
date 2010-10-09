@@ -30,7 +30,7 @@ void PortamentoFreqFilter::nextTick() {
     curFrequency = nextF;
 
     // Force the recalculation of the frequency chain
-    sendFreq(curFrequency);
+    sendSchlipOffset(curFrequency);
   }
 }
 
@@ -61,7 +61,7 @@ bool PortamentoFreqFilter::hasPrevNoteBeenStruck() {
 }
 
 
-void PortamentoFreqFilter::updateFreq() {
+void PortamentoFreqFilter::updateOffset() {
   // If no notes have changed, then simply output the current frequency
   if (!isNewNoteStruck()) {
 
@@ -85,5 +85,5 @@ void PortamentoFreqFilter::updateFreq() {
     startNewGlide();
   }
 
-  sendFreq(curFrequency);
+  sendSchlipOffset(curFrequency);
 }

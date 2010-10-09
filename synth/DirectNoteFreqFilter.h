@@ -9,14 +9,12 @@
 #define DIRECTNOTEFREQFILTER_H_
 
 #include "ANoteReceiver.h"
-#include "AFreqTransmitter.h"
+#include "AFreqOffsetTransmitter.h"
 #include "AFreqFilterChainMember.h"
 
-class DirectNoteFreqFilter : public AFreqTransmitter, public AFreqFilterChainMember {
+class DirectNoteFreqFilter : public AFreqOffsetTransmitter, public AFreqFilterChainMember {
 public:
-  DirectNoteFreqFilter();
-  void updateFreq();
-
+  void updateOffset();
 };
 
 #endif /* DIRECTNOTEFREQFILTER_H_ */

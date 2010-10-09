@@ -9,12 +9,8 @@
 #include "FreqUtils.h"
 #include "FreqFilterChain.h"
 
-DirectNoteFreqFilter::DirectNoteFreqFilter()
-{
-  // TODO Auto-generated constructor stub
-
-}
-
-void DirectNoteFreqFilter::updateFreq() {
-  sendFreq(FreqUtils::noteToFreq(freqChainContainer->curNoteNum));
+void DirectNoteFreqFilter::updateOffset() {
+  // Todo : this class is no longer needed!
+  //sendSchlipOffset(FreqUtils::noteToFreq(freqChainContainer->curNoteNum));
+  sendSchlipOffset(0);
 }

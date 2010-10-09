@@ -9,7 +9,7 @@
 #include "FreqUtils.h"
 #include "MidiInput.h"
 
-void PitchbendFreqFilter::recvFreq(uint16_t freq) {
+void PitchbendFreqFilter::recvOffset(int16_t offset) {
   int16_t numSchlips;
   if (MidiInput::pitchbendAmount == 0) {
     numSchlips=0;
@@ -21,9 +21,9 @@ void PitchbendFreqFilter::recvFreq(uint16_t freq) {
     numSchlips = MidiInput::pitchbendAmount*Swizzler::bendRange/(-MidiInput::bendMin);
   }
 
-  sendFreq(FreqUtils::modulatedFreq(freqChainContainer->curNoteNum, numSchlips));
+  sendSchlipOffset(numSchlips+offset);
 }
 
-void PitchbendFreqFilter::updateFreq() {
+void PitchbendFreqFilter::updateOffset() {
   // This shouldn't be the head of the chain, so it's not needed
 }

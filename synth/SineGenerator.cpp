@@ -16,10 +16,11 @@ void SineGenerator::nextTick() {
   idxAccum += incAmount;
 }
 
-void SineGenerator::setFrequency(uint8_t freq) {
-
+void SineGenerator::setFrequency(uint16_t freq) {
+  incAmount = (freq*0x10000)/1000;
 }
 
 int16_t SineGenerator::getCurValue() {
+  // Convert idxAccum (16 bit) to an index between 0-127 (7 bit)
   return sineTable.getSine(idxAccum>>9);
 }

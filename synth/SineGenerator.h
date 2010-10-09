@@ -20,7 +20,7 @@ public:
   // But to maintain more grandularity this function accepts (actual freq)<<3
   // as the frequency (a seven bit number that gets shifted to a 4 bit number)
   // TODO: Figure out how the hell to implement this
-  void setFrequency(uint8_t freq);
+  void setFrequency(uint16_t freq);
 
   void nextTick();
 

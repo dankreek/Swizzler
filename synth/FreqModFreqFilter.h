@@ -8,21 +8,21 @@
 #ifndef FREQMODFREQFILTER_H_
 #define FREQMODFREQFILTER_H_
 
-#include "AFreqReceiver.h"
-#include "AFreqTransmitter.h"
+#include "AFreqOffsetReceiver.h"
+#include "AFreqOffsetTransmitter.h"
 #include "AFreqFilterChainMember.h"
 #include "ITimerCall.h"
 
-class FreqModFreqFilter : public AFreqReceiver, public AFreqTransmitter, public AFreqFilterChainMember {
+class FreqModFreqFilter : public AFreqOffsetReceiver, public AFreqOffsetTransmitter, public AFreqFilterChainMember {
 public:
   FreqModFreqFilter();
 
-  void recvFreq(uint16_t freq);
-  void updateFreq();
+  void recvOffset(int16_t offset);
+  void updateOffset();
 
 private:
   // Most recently received frequency
-  uint16_t curFreq;
+  int16_t curOffset;
 };
 
 #endif /* FREQMODFREQFILTER_H_ */

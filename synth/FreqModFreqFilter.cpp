@@ -8,17 +8,17 @@
 #include "FreqModFreqFilter.h"
 
 FreqModFreqFilter::FreqModFreqFilter() {
-  curFreq = 0;
+  curOffset = 0;
 }
 
-void FreqModFreqFilter::recvFreq(uint16_t freq) {
-  curFreq = freq;
+void FreqModFreqFilter::recvOffset(int16_t offset) {
+  curOffset = offset;
 
   // Pass-thru for now
-  sendFreq(freq);
+  sendSchlipOffset(offset);
 }
 
-void FreqModFreqFilter::updateFreq() {
-  sendFreq(curFreq);
+void FreqModFreqFilter::updateOffset() {
+  sendSchlipOffset(curOffset);
 }
 

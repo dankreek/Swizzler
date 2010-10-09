@@ -10,9 +10,9 @@
 
 #include <inttypes.h>
 
-class AFreqReceiver {
+class AFreqOffsetReceiver {
 public:
-  virtual void recvFreq(uint16_t freq) = 0;
+  virtual void recvOffset(int16_t freq) = 0;
 };
 
 #endif /* AFREQRECEIVER_H_ */

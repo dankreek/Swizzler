@@ -22,10 +22,9 @@ FreqFilterChain::FreqFilterChain() {
   directNoteFilter.linkTo(&pitchbendFilter);
   portamentoFilter.linkTo(&pitchbendFilter);
 
-  pitchbendFilter.linkTo(&oscOut);
-
-//  pitchbendFilter.linkTo(&freqModFilter);
-//  freqModFilter.linkTo(&oscOut);
+//  pitchbendFilter.linkTo(&oscOut);
+  pitchbendFilter.linkTo(&freqModFilter);
+  freqModFilter.linkTo(&oscOut);
 
   setPortamento(false);
 
@@ -54,7 +53,7 @@ void FreqFilterChain::setNoteOffset(int8_t ofs) {
 }
 
 void FreqFilterChain::updateFrequency() {
-  chainHead->updateFreq();
+  chainHead->updateOffset();
 }
 
 void FreqFilterChain::noteOn(uint8_t noteNumber, uint8_t velocity) {
@@ -65,7 +64,7 @@ void FreqFilterChain::noteOn(uint8_t noteNumber, uint8_t velocity) {
 
 void FreqFilterChain::nextTick() {
   portamentoFilter.nextTick();
-  //freqModFilter.updateFreq();
+  freqModFilter.updateOffset();
 }
 
 void FreqFilterChain::noteOff(uint8_t noteNumber) {}

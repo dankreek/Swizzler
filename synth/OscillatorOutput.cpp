@@ -7,12 +7,15 @@
 
 #include "Swizzler.h"
 #include "OscillatorOutput.h"
+#include "FreqUtils.h"
 
 OscillatorOutput::OscillatorOutput() {
   lastFreq = 0;
 }
 
-void OscillatorOutput::recvFreq(uint16_t freq) {
+void OscillatorOutput::recvOffset(int16_t offset) {
+  uint16_t freq = FreqUtils::modulatedFreq(freqChainContainer->curNoteNum, offset);
+
   if (freq != lastFreq) {
     Swizzler::soundChip.setFrequency(freqChainContainer->voiceNumber, freq);
 

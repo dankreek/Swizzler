@@ -9,12 +9,12 @@
 #define OSCILLATOROUTPUT_H_
 
 #include "AFreqFilterChainMember.h"
-#include "AFreqReceiver.h"
+#include "AFreqOffsetReceiver.h"
 
-class OscillatorOutput : public AFreqFilterChainMember, public AFreqReceiver {
+class OscillatorOutput : public AFreqFilterChainMember, public AFreqOffsetReceiver {
 public:
   OscillatorOutput();
-  void recvFreq(uint16_t freq);
+  void recvOffset(int16_t offset);
 
 private:
   // The last frequency that was output, this is used to make sure no unnecessary

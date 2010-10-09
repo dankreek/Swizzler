@@ -10,15 +10,15 @@
 #ifndef PORTAMENTOFREQFILTER_H_
 #define PORTAMENTOFREQFILTER_H_
 
-#include "AFreqTransmitter.h"
+#include "AFreqOffsetTransmitter.h"
 #include "AFreqFilterChainMember.h"
 #include "ITimerCall.h"
 #include "Bresenham.h"
 
-class PortamentoFreqFilter : public AFreqTransmitter, public AFreqFilterChainMember, public ITimerCall {
+class PortamentoFreqFilter : public AFreqOffsetTransmitter, public AFreqFilterChainMember, public ITimerCall {
 public:
   PortamentoFreqFilter();
-  void updateFreq();
+  void updateOffset();
 
   // Reset the Portamento generator to its initial state
   void reset();

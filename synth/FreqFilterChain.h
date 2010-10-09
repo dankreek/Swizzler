@@ -45,7 +45,7 @@ private:
   int8_t noteOffset;
 
   // Pointer to the first frequency filter in the chain
-  AFreqTransmitter *chainHead;
+  AFreqOffsetTransmitter *chainHead;
 
   // These are all the filters in the chain
   OscillatorOutput oscOut;

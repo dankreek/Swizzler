@@ -9,28 +9,28 @@
 #define AFREQTRANSMITTER_H_
 
 #include <inttypes.h>
-#include "AFreqReceiver.h"
+#include "AFreqOffsetReceiver.h"
 
-class AFreqTransmitter {
+class AFreqOffsetTransmitter {
 public:
-  void linkTo(AFreqReceiver *recv);
-  void sendFreq(uint16_t freq);
+  void linkTo(AFreqOffsetReceiver *recv);
+  void sendSchlipOffset(int16_t schlipOffset);
 
   // Force a send recalculation and send of the cur frequency to the next in the chain
   // TODO : I really don't think this is needed... think up a better strategy
-  virtual void updateFreq() = 0;
+  virtual void updateOffset() = 0;
 private:
-  AFreqReceiver *receiver;
+  AFreqOffsetReceiver *receiver;
 };
 
 inline
-void AFreqTransmitter::linkTo(AFreqReceiver *output) {
+void AFreqOffsetTransmitter::linkTo(AFreqOffsetReceiver *output) {
   receiver = output;
 }
 
 inline
-void AFreqTransmitter::sendFreq(uint16_t freq) {
-  receiver->recvFreq(freq);
+void AFreqOffsetTransmitter::sendSchlipOffset(int16_t offset) {
+  receiver->recvOffset(offset);
 }
 
 #endif /* AFREQTRANSMITTER_H_ */

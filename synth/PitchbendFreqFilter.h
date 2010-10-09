@@ -8,14 +8,14 @@
 #ifndef PITCHBENDFREQFILTER_H_
 #define PITCHBENDFREQFILTER_H_
 
-#include "AFreqReceiver.h"
-#include "AFreqTransmitter.h"
+#include "AFreqOffsetReceiver.h"
+#include "AFreqOffsetTransmitter.h"
 #include "AFreqFilterChainMember.h"
 
-class PitchbendFreqFilter : public AFreqReceiver, public AFreqTransmitter, public AFreqFilterChainMember {
+class PitchbendFreqFilter : public AFreqOffsetReceiver, public AFreqOffsetTransmitter, public AFreqFilterChainMember {
 public:
-  void recvFreq(uint16_t);
-  void updateFreq();
+  void recvOffset(int16_t);
+  void updateOffset();
 };
 
 #endif /* PITCHBENDFREQFILTER_H_ */
