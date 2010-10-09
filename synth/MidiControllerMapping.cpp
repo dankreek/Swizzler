@@ -20,6 +20,10 @@
 #include <stdlib.h>
 
 MidiControllerMapping MidiControllerMapping::controllerList[] = {
+    MidiControllerMapping(
+        MidiControllerNumbers::modWheel,
+        SetParameters::setModWheelLevel),
+
     // Oscillator settings
     MidiControllerMapping(
         MidiControllerNumbers::oscLevel1,

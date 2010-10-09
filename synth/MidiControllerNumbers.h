@@ -12,6 +12,8 @@
 
 class MidiControllerNumbers {
 public:
+  static const uint8_t modWheel = 1;
+
   static const uint8_t lfoFreq = 85;
   static const uint8_t lfoType = 86;
 

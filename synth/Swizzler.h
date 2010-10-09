@@ -29,6 +29,9 @@ public:
   static EnvelopeNoteFilter envelopeController;
   static ArpeggiatorNoteFilter arp;
 
+  // Current level that the mod wheel is at
+  static uint8_t modWheelLevel;
+
   // Class which contains a freq. filter chain for each medlodic oscillator
   static Oscillators oscillators;
 

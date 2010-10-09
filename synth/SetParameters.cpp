@@ -166,3 +166,7 @@ void SetParameters::setArpeggioDirection(uint8_t p) {
   Swizzler::arp.setArpDirection(ArpeggiatorNoteFilter::ArpeggioDirection(p));
   PresetManager::curSettings.arpeggioDirection = p;
 }
+
+void SetParameters::setModWheelLevel(uint8_t p) {
+  Swizzler::modWheelLevel = p;
+}

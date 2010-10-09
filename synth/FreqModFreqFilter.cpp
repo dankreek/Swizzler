@@ -14,7 +14,7 @@ FreqModFreqFilter::FreqModFreqFilter() {
 
 int16_t FreqModFreqFilter::calcCurOffset() {
   int16_t sinVal = Swizzler::freqModSineWave.getCurValue();
-  return (sinVal*16)/255;
+  return (sinVal*(Swizzler::modWheelLevel>>2))/255;
 }
 
 void FreqModFreqFilter::recvOffset(int16_t offset) {
