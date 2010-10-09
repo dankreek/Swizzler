@@ -24,6 +24,11 @@ MidiControllerMapping MidiControllerMapping::controllerList[] = {
         MidiControllerNumbers::modWheel,
         SetParameters::setModWheelLevel),
 
+    // LFO controlls
+    MidiControllerMapping(
+        MidiControllerNumbers::lfoFreq,
+        SetParameters::setLfoFreq),
+
     // Oscillator settings
     MidiControllerMapping(
         MidiControllerNumbers::oscLevel1,

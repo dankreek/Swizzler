@@ -40,7 +40,7 @@ public:
   static const uint8_t attackTime = 73;
   static const uint8_t decayTime = 76;
   static const uint8_t sustainLevel = 75;
-  static const uint8_t releaseTime = 74;
+  static const uint8_t releaseTime = 76;
 
   static const uint8_t arpOnOff = 77;
   static const uint8_t arpTime = 78;

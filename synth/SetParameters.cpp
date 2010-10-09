@@ -21,6 +21,12 @@ void SetParameters::enablePortamento(uint8_t p) {
   PresetManager::curSettings.portamentoOn = p;
 }
 
+void SetParameters::setLfoFreq(uint8_t p) {
+  // Note that the actual frequency is p/4. This yields a range of between 0 and 31hz
+  Swizzler::freqModSineWave.setFrequency(p);
+  PresetManager::curSettings.lfoFreq = p;
+}
+
 void SetParameters::setPortamentoTime(uint8_t p) {
   //for (uint8_t i; i < Swizzler::numOscillators; i++)
   //  FrequencyManager::managers[i].portMan.time = portTimeKnee.getValue(p);

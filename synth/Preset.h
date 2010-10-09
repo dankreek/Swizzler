@@ -14,6 +14,9 @@ struct Preset {
 	// Preset name
 	char name[16];
 
+	// LFO effects
+	uint8_t lfoFreq;
+
 	// Envelope
 	uint8_t	attackTime;
 	uint8_t	decayTime;
