@@ -38,7 +38,7 @@ public:
   static const uint8_t pulseWidth = 30;
 
   static const uint8_t attackTime = 73;
-  static const uint8_t decayTime = 76;
+  static const uint8_t decayTime = 74;
   static const uint8_t sustainLevel = 75;
   static const uint8_t releaseTime = 76;
 

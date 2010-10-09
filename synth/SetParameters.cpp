@@ -60,6 +60,7 @@ void SetParameters::setSustainLevel(uint8_t p) {
 }
 
 void SetParameters::setReleaseTime(uint8_t p) {
+  Swizzler::setLed(true);
   for (int i=0; i < 4; i++) Swizzler::soundChip.setReleaseTime(i, decRelTimeKnee.getValue(p));
   PresetManager::curSettings.releaseTime = p;
 }
