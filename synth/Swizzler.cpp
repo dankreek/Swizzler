@@ -111,7 +111,7 @@ void Swizzler::mainLoop() {
       lastMs = msCounter;
       oscillators.nextTick();
       arp.nextTick();
-      freqModSineWave.nextTick();
+      //freqModSineWave.nextTick();
     }
 
     // Shove everything that's read by the serial port into the MIDI input

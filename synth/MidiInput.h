@@ -14,9 +14,10 @@ public:
   static void (*pitchBendEventHandler)();
 
   // The current pitch bend amount (between -64 and 63)
+  static int16_t pitchbendAmount;
   static const int16_t bendMax = 63;
   static const int16_t bendMin = -64;
-  static int16_t pitchbendAmount;
+
 
   static const unsigned char noteOff = 0x80;
   static const unsigned char noteOn = 0x90;

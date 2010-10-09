@@ -26,6 +26,7 @@ void MidiInput::handleNoteOff() {
 }
 
 void MidiInput::init() {
+  pitchbendAmount=0;
   midiCmd=-1;
   midiData1=-1;
   midiData2=-1;

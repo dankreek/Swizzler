@@ -14,13 +14,8 @@
 
 class PitchbendFreqFilter : public AFreqReceiver, public AFreqTransmitter, public AFreqFilterChainMember {
 public:
-  PitchbendFreqFilter();
-
   void recvFreq(uint16_t);
   void updateFreq();
-
-private:
-  int16_t getBendOffset();
 };
 
 #endif /* PITCHBENDFREQFILTER_H_ */

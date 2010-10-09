@@ -24,12 +24,18 @@
 class Swizzler {
 public:
   static SineGenerator freqModSineWave;         // Frequency modulation sinewave generator
+
+  // Note filters
   static EnvelopeNoteFilter envelopeController;
   static ArpeggiatorNoteFilter arp;
+
+  // Class which contains a freq. filter chain for each medlodic oscillator
   static Oscillators oscillators;
 
   static uint16_t portamentoTime;
-  static const uint8_t bendRange = 2;
+
+  // The bend range is measured in schlips (like cents but 32 divisions instead of 100 between half-steps)
+  static const int16_t bendRange = 64;
 
   static uint16_t msCounter;    // Incremented once every millisecond
   static const int ledPin = 13;

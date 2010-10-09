@@ -17,6 +17,7 @@ public:
   void sendFreq(uint16_t freq);
 
   // Force a send recalculation and send of the cur frequency to the next in the chain
+  // TODO : I really don't think this is needed... think up a better strategy
   virtual void updateFreq() = 0;
 private:
   AFreqReceiver *receiver;

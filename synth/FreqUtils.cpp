@@ -35,3 +35,26 @@ uint16_t FreqUtils::noteToFreq(uint8_t noteNum) {
   // (every right shift is one less octave)
   return (noteLookupTable[note] >> (9-octave));
 }
+
+uint16_t FreqUtils::modulatedFreq(uint8_t baseNote, int16_t numSchlips) {
+  int8_t halfSteps = numSchlips / schlipsDivs;
+  int8_t divs = numSchlips % schlipsDivs;
+
+  int8_t insideNote = baseNote + halfSteps;
+  int8_t outsideNote;
+
+  if (numSchlips >= 0) {
+    outsideNote = insideNote+1;
+  }
+  else {
+    outsideNote = insideNote-1;
+    divs = (divs*-1);
+  }
+
+  int16_t outsideNoteFreq = noteToFreq(outsideNote);
+  int16_t insideNoteFreq = noteToFreq(insideNote);
+
+  int16_t fracFreq = (outsideNoteFreq - insideNoteFreq)*divs/schlipsDivs;
+
+  return insideNoteFreq+fracFreq;
+}
