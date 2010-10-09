@@ -11,18 +11,15 @@ FreqFilterChain::FreqFilterChain() {
   prevNoteNum = -1;
   curNoteNum = -1;
 
-  // Tell all the filters who their parent is
+  // Tell all the filters who their daddy is
   oscOut.setParentContainer(this);
-  directNoteFilter.setParentContainer(this);
   pitchbendFilter.setParentContainer(this);
   portamentoFilter.setParentContainer(this);
   freqModFilter.setParentContainer(this);
 
   // Link frequency filters together
-  directNoteFilter.linkTo(&pitchbendFilter);
   portamentoFilter.linkTo(&pitchbendFilter);
 
-//  pitchbendFilter.linkTo(&oscOut);
   pitchbendFilter.linkTo(&freqModFilter);
   freqModFilter.linkTo(&oscOut);
 
@@ -39,7 +36,7 @@ void FreqFilterChain::setPortamento(bool onOff) {
     chainHead = &portamentoFilter;
   }
   else {
-    chainHead = &directNoteFilter;
+    chainHead = &pitchbendFilter;
   }
 }
 

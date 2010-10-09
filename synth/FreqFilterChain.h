@@ -9,10 +9,8 @@
 #ifndef FREQFILTERCHAIN_H_
 #define FREQFILTERCHAIN_H_
 
-#include "DirectNoteFreqFilter.h"
 #include "ANoteReceiver.h"
 #include "OscillatorOutput.h"
-#include "DirectNoteFreqFilter.h"
 #include "PitchbendFreqFilter.h"
 #include "PortamentoFreqFilter.h"
 #include "ITimerCall.h"
@@ -50,7 +48,6 @@ private:
   // These are all the filters in the chain
   OscillatorOutput oscOut;
   PitchbendFreqFilter pitchbendFilter;          // Calculated pitch bends
-  DirectNoteFreqFilter directNoteFilter;        // Directly converts a note to a frequency
   PortamentoFreqFilter portamentoFilter;
   FreqModFreqFilter freqModFilter;              // Frequency modulation filter
 };
