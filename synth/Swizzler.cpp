@@ -36,23 +36,14 @@ void Swizzler::enableArpeggio(bool onOff) {
 
 void Swizzler::init() {
   portamentoTime = 100;
-  modWheelLevel = 0;
-
   freqModSineWave.setFrequency(60);
+  MidiInput::pitchBendEventHandler = Swizzler::handlePitchBend;
+  modWheelLevel = 0;
+  enableArpeggio(false);
 
   // Setup chain
-  MidiInput::pitchBendEventHandler = Swizzler::handlePitchBend;
-  enableArpeggio(false);
-  //MidiInput::noteReceiver = &envelopeController;
-  //MidiInput::noteReceiver = &arp;
-
-  //  MidiInput::noteReceiver points to whichever one of these is controlling the notes and envelope
   envelopeController.linkTo(&oscillators);
   arp.linkTo(&oscillators);
-
-  // Setup the first note receiver
-  //MidiInput::noteReceiver = &noteManager;
-
 
   // Set the LED pin to output
   DDRB = _BV(PB5);
@@ -60,14 +51,8 @@ void Swizzler::init() {
   // 31.250kbps is the speed a which MIDI travels in a vacuum.
   Serial.init(31250);
 
-  // Generate wavetables
-  //Wavetable::init();
-
   // Initialize MIDI input
   MidiInput::init();
-
-  // Initialize the Note Manager
-  //NoteManager::init();
 
   // Initialize the surface controls
   //SurfaceControlManager::init();
@@ -82,8 +67,6 @@ void Swizzler::init() {
 
   // Begin with initial preset of 0
   //PresetManager::loadPreset(0);
-
-  // Turn on interrupts (let the games begin)
 
   //Wire.begin();
   Timer::init();

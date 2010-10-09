@@ -16,6 +16,8 @@ class PitchbendFreqFilter : public AFreqOffsetReceiver, public AFreqOffsetTransm
 public:
   void recvOffset(int16_t);
   void updateOffset();
+private:
+  int16_t lastOffset;
 };
 
 #endif /* PITCHBENDFREQFILTER_H_ */

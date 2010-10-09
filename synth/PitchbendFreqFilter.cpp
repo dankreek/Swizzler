@@ -10,6 +10,11 @@
 #include "MidiInput.h"
 
 void PitchbendFreqFilter::recvOffset(int16_t offset) {
+  lastOffset = offset;
+  updateOffset();
+}
+
+int16_t genOffset() {
   int16_t numSchlips;
   if (MidiInput::pitchbendAmount == 0) {
     numSchlips=0;
@@ -21,9 +26,9 @@ void PitchbendFreqFilter::recvOffset(int16_t offset) {
     numSchlips = MidiInput::pitchbendAmount*Swizzler::bendRange/(-MidiInput::bendMin);
   }
 
-  sendSchlipOffset(numSchlips+offset);
+  return numSchlips;
 }
 
 void PitchbendFreqFilter::updateOffset() {
-  // This shouldn't be the head of the chain, so it's not needed
+  sendSchlipOffset(lastOffset+genOffset());
 }
