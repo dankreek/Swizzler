@@ -35,7 +35,7 @@ void Swizzler::enableArpeggio(bool onOff) {
 void Swizzler::init() {
   portamentoTime = 100;
 
-  freqModSineWave.setFrequency(10);
+  freqModSineWave.setFrequency(8);
 
   // Setup chain
   MidiInput::pitchBendEventHandler = Swizzler::handlePitchBend;

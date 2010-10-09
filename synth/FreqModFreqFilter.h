@@ -21,8 +21,11 @@ public:
   void updateOffset();
 
 private:
-  // Most recently received frequency
-  int16_t curOffset;
+  // Use the sine generator to calculate the current offset
+  int16_t calcCurOffset();
+
+  // Most recently received offset
+  int16_t curBaseOffset;
 };
 
 #endif /* FREQMODFREQFILTER_H_ */

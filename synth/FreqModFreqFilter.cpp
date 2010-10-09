@@ -6,19 +6,23 @@
  */
 
 #include "FreqModFreqFilter.h"
+#include "Swizzler.h"
 
 FreqModFreqFilter::FreqModFreqFilter() {
-  curOffset = 0;
+  curBaseOffset = 0;
+}
+
+int16_t FreqModFreqFilter::calcCurOffset() {
+  int16_t sinVal = Swizzler::freqModSineWave.getCurValue();
+  return (sinVal*16)/255;
 }
 
 void FreqModFreqFilter::recvOffset(int16_t offset) {
-  curOffset = offset;
-
-  // Pass-thru for now
-  sendSchlipOffset(offset);
+  curBaseOffset = offset;
+  updateOffset();
 }
 
 void FreqModFreqFilter::updateOffset() {
-  sendSchlipOffset(curOffset);
+  sendSchlipOffset(curBaseOffset+calcCurOffset());
 }
 
