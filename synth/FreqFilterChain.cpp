@@ -61,8 +61,10 @@ void FreqFilterChain::noteOn(uint8_t noteNumber, uint8_t velocity) {
 }
 
 void FreqFilterChain::nextTick() {
-  if ((Swizzler::msCounter % 4) == 0) portamentoFilter.nextTick();
-  freqModFilter.updateOffset();
+  if ((Swizzler::msCounter % 4) == 0) {
+    portamentoFilter.nextTick();
+    freqModFilter.updateOffset();
+  }
 }
 
 void FreqFilterChain::noteOff(uint8_t noteNumber) {}
