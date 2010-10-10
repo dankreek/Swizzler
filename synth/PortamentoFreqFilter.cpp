@@ -17,7 +17,7 @@ PortamentoFreqFilter::PortamentoFreqFilter() {
 void PortamentoFreqFilter::reset() {
   destPortNote = 0;
   srcPortNote = 0;
-  curFrequency = 0;
+  curSchlipsOffset = 0;
 }
 
 void PortamentoFreqFilter::nextTick() {
@@ -27,10 +27,10 @@ void PortamentoFreqFilter::nextTick() {
     int16_t nextF;
     lineCalc.next(&nextF);
 
-    curFrequency = nextF;
+    curSchlipsOffset = nextF;
 
     // Force the recalculation of the frequency chain
-    sendSchlipOffset(curFrequency);
+    sendSchlipOffset(curSchlipsOffset);
   }
 }
 
@@ -42,10 +42,14 @@ void PortamentoFreqFilter::startNewGlide() {
       Swizzler::portamentoTime,
       freqAccumResolution);
 */
+//  lineCalc.init(
+//      FreqUtils::noteToFreq(srcPortNote),
+//      FreqUtils::noteToFreq(destPortNote),
+//      Swizzler::portamentoTime);
+
   lineCalc.init(
-      FreqUtils::noteToFreq(srcPortNote),
-      FreqUtils::noteToFreq(destPortNote),
-      Swizzler::portamentoTime);
+      (destPortNote-srcPortNote)*FreqUtils::schlipsDivs,
+      0, Swizzler::portamentoTime/4);
 
   nextTick();
 }
@@ -85,5 +89,5 @@ void PortamentoFreqFilter::updateOffset() {
     startNewGlide();
   }
 
-  sendSchlipOffset(curFrequency);
+  sendSchlipOffset(curSchlipsOffset);
 }

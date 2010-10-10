@@ -35,7 +35,7 @@ private:
 
   void startNewGlide();
 
-  uint16_t      curFrequency;
+  uint16_t      curSchlipsOffset;
 
   // Source and destination portamento note numbers. These are used to tell when a new note has been struck
   // and how fast to change frequencies
@@ -44,7 +44,7 @@ private:
 
   //LinearIncrementor     freqAccum;      // Frequency accumulator
   Bresenham             lineCalc;       // Linear function calculator
-  static const uint8_t  freqAccumResolution = 13;
+  //static const uint8_t  freqAccumResolution = 13;
 };
 
 

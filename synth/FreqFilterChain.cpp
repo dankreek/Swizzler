@@ -6,6 +6,7 @@
  */
 
 #include "FreqFilterChain.h"
+#include "Swizzler.h"
 
 FreqFilterChain::FreqFilterChain() {
   prevNoteNum = -1;
@@ -60,7 +61,7 @@ void FreqFilterChain::noteOn(uint8_t noteNumber, uint8_t velocity) {
 }
 
 void FreqFilterChain::nextTick() {
-  portamentoFilter.nextTick();
+  if ((Swizzler::msCounter % 4) == 0) portamentoFilter.nextTick();
   freqModFilter.updateOffset();
 }
 

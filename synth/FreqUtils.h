@@ -24,6 +24,11 @@ public:
    */
   static uint16_t modulatedFreq(uint8_t basenote, int16_t numSchlips);
 
+  /**
+   * Number of divisions between half-steps determining one schlip
+   */
+  static const uint8_t schlipsDivs = 32;
+
 private:
   /**
    * Frequency -> Note lookup table. These are the frequencies for
@@ -32,10 +37,7 @@ private:
    */
   static uint16_t noteLookupTable[];
 
-  /**
-   * Number of divisions between half-steps determining one schlip
-   */
-  static const uint8_t schlipsDivs = 32;
+
 };
 
 #endif /* FREQUTILS_H_ */

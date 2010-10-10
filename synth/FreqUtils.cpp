@@ -25,7 +25,7 @@ uint16_t FreqUtils::noteLookupTable[] = {
 uint16_t FreqUtils::noteToFreq(uint8_t noteNum) {
   /**
    * The MIDI standard defines note #0 as a 'C', so
-   * divide the note number by 12 to get the octave the note is in
+   * divide the note number by 12 to get the octave that the note is in
    * and take the remainder the find the note name.
    */
   int octave = noteNum / 12;
@@ -51,10 +51,9 @@ uint16_t FreqUtils::modulatedFreq(uint8_t baseNote, int16_t numSchlips) {
     divs = (divs*-1);
   }
 
-  int16_t outsideNoteFreq = noteToFreq(outsideNote);
   int16_t insideNoteFreq = noteToFreq(insideNote);
 
-  int16_t fracFreq = (outsideNoteFreq - insideNoteFreq)*divs/schlipsDivs;
+  int16_t fracFreq = (noteToFreq(outsideNote) - insideNoteFreq)*divs/schlipsDivs;
 
   return insideNoteFreq+fracFreq;
 }
