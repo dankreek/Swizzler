@@ -21,20 +21,26 @@ void PortamentoFreqFilter::reset() {
 }
 
 void PortamentoFreqFilter::nextTick() {
-  //if (freqAccum.stillGoing()) {
-  if (lineCalc.stillGoing()) {
-    //curFrequency = freqAccum.next();
-    int16_t nextF;
-    lineCalc.next(&nextF);
-
-    curSchlipsOffset = nextF;
-
-    // Force the recalculation of the frequency chain
-    sendSchlipOffset(curSchlipsOffset);
+  if (timerCount <= (Swizzler::portamentoTime/4)) {
+    curSchlipsOffset = curSchlipsOffset + offsetIncAmount;
+    timerCount++;
+  }
+  else {
+    curSchlipsOffset = 0;
   }
 }
 
+void PortamentoFreqFilter::sendEffectiveOffset() {
+  sendSchlipOffset(getEffectiveOffset());
+}
+
 void PortamentoFreqFilter::startNewGlide() {
+  timerCount=0;
+  int16_t beginSchlip = (int16_t)(srcPortNote-destPortNote)*(int16_t)FreqUtils::schlipsDivs;
+
+  offsetIncAmount = -(beginSchlip << linearResolution)/(Swizzler::portamentoTime/4);
+  curSchlipsOffset = (beginSchlip << linearResolution);
+
   /*
   freqAccum.start(
       FreqUtils::noteToFreq(srcPortNote),
@@ -47,11 +53,17 @@ void PortamentoFreqFilter::startNewGlide() {
 //      FreqUtils::noteToFreq(destPortNote),
 //      Swizzler::portamentoTime);
 
-  lineCalc.init(
-      (destPortNote-srcPortNote)*FreqUtils::schlipsDivs,
-      0, Swizzler::portamentoTime/4);
+  /*
+    lineCalc.init(
+        (int16_t)(srcPortNote-destPortNote)*(int16_t)FreqUtils::schlipsDivs,
+        0, Swizzler::portamentoTime/4);
+*/
+  // TODO : Explore this method. It's not correct but sounds cool at faster glide speeds
+//  lineCalc.init(
+//      (destPortNote-srcPortNote)*FreqUtils::schlipsDivs,
+//      0, Swizzler::portamentoTime/4);
 
-  nextTick();
+  //nextTick();
 }
 
 bool PortamentoFreqFilter::isNewNoteStruck() {
@@ -84,10 +96,8 @@ void PortamentoFreqFilter::updateOffset() {
 
     destPortNote = freqChainContainer->curNoteNum;
 
-    //curFrequency = FreqUtils::noteToFreq(destPortNote);
-
     startNewGlide();
   }
 
-  sendSchlipOffset(curSchlipsOffset);
+  sendEffectiveOffset();
 }

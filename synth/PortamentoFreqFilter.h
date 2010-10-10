@@ -27,6 +27,10 @@ public:
   void nextTick();
 
 private:
+  static const uint8_t linearResolution = 2;
+
+  void sendEffectiveOffset();
+
   // Has a new note been struck since the last frequency update
   bool isNewNoteStruck();
 
@@ -35,7 +39,13 @@ private:
 
   void startNewGlide();
 
-  uint16_t      curSchlipsOffset;
+  uint16_t      timerCount;
+
+  int16_t       getEffectiveOffset();
+
+  int16_t       curSchlipsOffset;
+  int16_t       destSchlipOffset;
+  int16_t       offsetIncAmount;
 
   // Source and destination portamento note numbers. These are used to tell when a new note has been struck
   // and how fast to change frequencies
@@ -43,9 +53,14 @@ private:
   int8_t        srcPortNote;
 
   //LinearIncrementor     freqAccum;      // Frequency accumulator
-  Bresenham             lineCalc;       // Linear function calculator
+  //Bresenham             lineCalc;       // Linear function calculator
   //static const uint8_t  freqAccumResolution = 13;
+
 };
 
+inline
+int16_t PortamentoFreqFilter::getEffectiveOffset() {
+  return (curSchlipsOffset >> linearResolution);
+}
 
 #endif /* PORTAMENTOFREQFILTER_H_ */

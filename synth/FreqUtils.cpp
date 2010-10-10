@@ -53,7 +53,7 @@ uint16_t FreqUtils::modulatedFreq(uint8_t baseNote, int16_t numSchlips) {
 
   int16_t insideNoteFreq = noteToFreq(insideNote);
 
-  int16_t fracFreq = (noteToFreq(outsideNote) - insideNoteFreq)*divs/schlipsDivs;
+  int16_t fracFreq = ((int16_t)noteToFreq(outsideNote) - insideNoteFreq)*divs/schlipsDivs;
 
   return insideNoteFreq+fracFreq;
 }
