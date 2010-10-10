@@ -12,7 +12,6 @@ class ITimerCall {
 public:
   // This method is called every ms by the timer
   virtual void nextTick() = 0;
-
 };
 
 #endif /* ITIMERCALL_H_ */

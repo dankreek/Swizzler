@@ -9,9 +9,6 @@
  * This mostly-static class contains a list of instances of itself which contain
  * the mapping from a midi controller number to a function with the signature of
  * "bool func(uint8_t ctrlNum, uint8_t crtlVal)"
- *
- * Because this list is created at compile time the length of the mapping array
- * must be recorded here by hand.
  */
 #include "MidiControllerMapping.h"
 #include "MidiControllerNumbers.h"
