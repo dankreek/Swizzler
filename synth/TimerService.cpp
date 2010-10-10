@@ -23,6 +23,7 @@ void TimerService::nextMs() {
 }
 
 void TimerService::executeServices(TimerService* serviceList[]) {
+  // Loop through each TimerService in the provided array until a null pointer is found
   for (uint8_t i=0; serviceList[i]->callback != (void*)0; i++) {
     serviceList[i]->nextMs();
   }

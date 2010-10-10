@@ -25,7 +25,10 @@ public:
    */
   void nextMs();
 
-  // TODO : Implement the timer service
+  /**
+   * Loop through a list of services and execute each one's nextMs() method.
+   * The list is terminated by a null call pointer
+   */
   static void executeServices(TimerService* serviceList[]);
 
   ITimerCall* callback;
