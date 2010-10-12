@@ -44,7 +44,7 @@ private:
 
 inline
 void Oscillators::nextTick() {
-  for (uint8_t i; i < Oscillators::numVoices; i++)
+  for (uint8_t i=0; i < Oscillators::numVoices; i++)
     oscillatorList[i].nextTick();
 }
 
