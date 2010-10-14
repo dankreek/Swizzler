@@ -18,7 +18,8 @@ void Timer::init() {
   TCCR0A |= _BV(WGM01) | _BV(WGM00);
 
   // set timer 0 prescale factor to 64
-  TCCR0B |= _BV(CS01) | _BV(CS00);
+  //TCCR0B |= _BV(CS01) | _BV(CS00);
+  TCCR0B |= _BV(CS02);
 
   // enable timer 0 overflow interrupt
   TIMSK0 |= _BV(TOIE0);

@@ -36,34 +36,11 @@ void PortamentoFreqFilter::sendEffectiveOffset() {
 
 void PortamentoFreqFilter::startNewGlide() {
   timerCount=0;
-  int16_t beginSchlip = (int16_t)(srcPortNote-destPortNote)*(int16_t)FreqUtils::schlipsDivs;
+  int16_t beginSchlip = (srcPortNote-destPortNote)*FreqUtils::schlipsDivs;
 
-  offsetIncAmount = -(beginSchlip << linearResolution)/(Swizzler::portamentoTime/4);
+
+  offsetIncAmount = -(beginSchlip << linearResolution)/((int16_t)Swizzler::portamentoTime/4);
   curSchlipsOffset = (beginSchlip << linearResolution);
-
-  /*
-  freqAccum.start(
-      FreqUtils::noteToFreq(srcPortNote),
-      FreqUtils::noteToFreq(destPortNote),
-      Swizzler::portamentoTime,
-      freqAccumResolution);
-*/
-//  lineCalc.init(
-//      FreqUtils::noteToFreq(srcPortNote),
-//      FreqUtils::noteToFreq(destPortNote),
-//      Swizzler::portamentoTime);
-
-  /*
-    lineCalc.init(
-        (int16_t)(srcPortNote-destPortNote)*(int16_t)FreqUtils::schlipsDivs,
-        0, Swizzler::portamentoTime/4);
-*/
-  // TODO : Explore this method. It's not correct but sounds cool at faster glide speeds
-//  lineCalc.init(
-//      (destPortNote-srcPortNote)*FreqUtils::schlipsDivs,
-//      0, Swizzler::portamentoTime/4);
-
-  //nextTick();
 }
 
 bool PortamentoFreqFilter::isNewNoteStruck() {

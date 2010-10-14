@@ -42,10 +42,4 @@ private:
   FreqFilterChain oscillatorList[numVoices];
 };
 
-inline
-void Oscillators::nextTick() {
-  for (uint8_t i=0; i < Oscillators::numVoices; i++)
-    oscillatorList[i].nextTick();
-}
-
 #endif /* OSCILLATORS_H_ */

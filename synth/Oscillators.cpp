@@ -16,6 +16,11 @@ Oscillators::Oscillators() {
   }
 }
 
+void Oscillators::nextTick() {
+  for (uint8_t i=0; i < Oscillators::numVoices; i++)
+    oscillatorList[i].nextTick();
+}
+
 void Oscillators::updateFrequencies() {
   for (uint8_t i=0; i <numVoices; i++) {
     oscillatorList[i].updateFrequency();

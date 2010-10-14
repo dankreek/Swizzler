@@ -13,7 +13,6 @@
 #include "AFreqOffsetTransmitter.h"
 #include "AFreqFilterChainMember.h"
 #include "ITimerCall.h"
-#include "Bresenham.h"
 
 class PortamentoFreqFilter : public AFreqOffsetTransmitter, public AFreqFilterChainMember, public ITimerCall {
 public:
@@ -41,7 +40,7 @@ private:
 
   uint16_t      timerCount;
 
-  int16_t       getEffectiveOffset();
+  int16_t getEffectiveOffset();
 
   int16_t       curSchlipsOffset;
   int16_t       destSchlipOffset;
@@ -51,11 +50,6 @@ private:
   // and how fast to change frequencies
   int8_t        destPortNote;
   int8_t        srcPortNote;
-
-  //LinearIncrementor     freqAccum;      // Frequency accumulator
-  //Bresenham             lineCalc;       // Linear function calculator
-  //static const uint8_t  freqAccumResolution = 13;
-
 };
 
 inline

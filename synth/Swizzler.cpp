@@ -95,10 +95,12 @@ void Swizzler::mainLoop() {
     // Only call these services once every millisecond
     if (lastMs != msCounter) {
       lastMs = msCounter;
-      oscillators.nextTick();
-      arp.nextTick();
 
-      if ((msCounter % 8) == 0) freqModSineWave.nextTick();
+      if ((msCounter % 2) == 0) {
+        freqModSineWave.nextTick();
+        oscillators.nextTick();
+        arp.nextTick();
+      }
     }
 
     // Shove everything that's read by the serial port into the MIDI input

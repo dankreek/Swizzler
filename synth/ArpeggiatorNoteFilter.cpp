@@ -62,7 +62,7 @@ void ArpeggiatorNoteFilter::setMinNotes(uint8_t minNotes) {
 
 void ArpeggiatorNoteFilter::nextTick() {
   if (noteBuffer.size >= minNotes) {
-    curTime++;
+    curTime += 4;
 
     // Switch to the next note
     if (curTime >= arpTime) {
