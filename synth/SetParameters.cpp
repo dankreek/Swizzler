@@ -11,7 +11,7 @@
 #include "Swizzler.h"
 
 // Knees to define how midi controls work, and the range for the control
-KnobKnee portTimeKnee = KnobKnee(2000, 95, 500);
+KnobKnee portTimeKnee = KnobKnee(2000, 64, 100);
 KnobKnee attackTimeKnee = KnobKnee(8000, 95, 1000);
 KnobKnee decRelTimeKnee = KnobKnee(24000, 95, 2400);	// Decay/release time knee
 KnobKnee arpTimeKnee = KnobKnee(1000, 95, 250);			// Arpeggio time (ms per note)

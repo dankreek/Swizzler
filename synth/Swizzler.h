@@ -44,7 +44,7 @@ public:
   static const int ledPin = 13;
   static const uint8_t eepromAddress = 0x50;
 
-  static const uint8_t numOscillators = 4;
+  static const uint8_t numOscillators = 3;
 
   static SoundDriver soundChip;
 

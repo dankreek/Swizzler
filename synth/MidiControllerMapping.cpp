@@ -54,9 +54,9 @@ MidiControllerMapping MidiControllerMapping::controllerList[] = {
         MidiControllerNumbers::oscOffset3,
         SetParameters::setOscOffset3),
 
-    MidiControllerMapping(
-        MidiControllerNumbers::noiseLevel,
-        SetParameters::setNoiseLevel),
+//    MidiControllerMapping(
+//        MidiControllerNumbers::noiseLevel,
+//        SetParameters::setNoiseLevel),
 
     // Set pitch bending range
     MidiControllerMapping(

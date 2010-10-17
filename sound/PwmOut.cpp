@@ -15,7 +15,7 @@ ISR(TIMER1_COMPA_vect) {
   int16_t out_sample=0;
 
   // Mix each voice (and partially calculate voice output level)
-  for (int i=0; i < Sound::numVoices; i++) {
+  for (int i=0; i < (Sound::numVoices); i++) {
 #ifdef SYNC_ENABLED
     uint16_t oldPhase = Sound::voices[i].phaseAccumulator;
 #endif
@@ -43,7 +43,7 @@ ISR(TIMER1_COMPA_vect) {
     Sound::msCounter++;
   }
 
-  Waveform::pollNoiseGenerator();
+  //Waveform::pollNoiseGenerator();
 }
 
 void PwmOut::init() {

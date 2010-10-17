@@ -31,7 +31,7 @@ public:
   static const uint8_t oscWaveform3 = 26;
   static const uint8_t oscOffset3 = 27;
 
-  static const uint8_t noiseLevel = 28;
+//  static const uint8_t noiseLevel = 28;
 
   static const uint8_t pitchBendRange = 29;
 
