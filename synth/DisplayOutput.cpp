@@ -8,14 +8,19 @@
 #include "DisplayOutput.h"
 #include "Swizzler.h"
 #include <stdio.h>
+#include <util/delay.h>
 
 void DisplayOutput::init() {
-  /*
-  Wire.beginTransmission(0x69);
-  Wire.send('!');
-  Wire.endTransmission();
-  */
+  setAutowrap(true);
+  clearDisplay();
+  print("   Welcome To\n");
+  print("    Swizzler");
+}
 
+void DisplayOutput::putChar(uint8_t c) {
+  Wire.beginTransmission(twiAddress);
+  Wire.send(c);
+  Wire.endTransmission();
 }
 
 void DisplayOutput::print(char s[]) {
@@ -26,4 +31,21 @@ void DisplayOutput::print(char s[]) {
     Wire.send(*c);
   }
   Wire.endTransmission();
+  _delay_ms(5);
+}
+
+void DisplayOutput::clearDisplay() {
+  sendCommand(clearHome);
+}
+
+void DisplayOutput::setAutowrap(bool onOff) {
+  sendCommand(onOff ? autoWrapOn : autoWrapOff);
+}
+
+void DisplayOutput::sendCommand(DiplayCommand cmd) {
+  Wire.beginTransmission(twiAddress);
+  Wire.send(commandByte);
+  Wire.send(cmd);
+  Wire.endTransmission();
+  _delay_ms(5);
 }

@@ -13,7 +13,7 @@
 #include "RingBuffer.cpp"
 
 // Space for the i2c input buffer.
-#define TWI_INPUT_BUFER_SIZE	32
+#define TWI_INPUT_BUFER_SIZE	64
 uint8_t inputSpace[TWI_INPUT_BUFER_SIZE];
 
 // The ring buffer class that wraps the space
@@ -63,7 +63,9 @@ int main(void) {
     KeypadInput::pollKeypad();
 
     // See if the i2c bus has any incoming data
-    if (inputBuffer.hasData()) InputHandler::recvByte(inputBuffer.get());
+    if (inputBuffer.hasData()) {
+      InputHandler::recvByte(inputBuffer.get());
+    }
 
     // See if the keypad has any data
     /*

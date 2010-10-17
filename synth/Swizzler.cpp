@@ -11,6 +11,7 @@
 #include <avr/io.h>
 #include "HardwareSerial.h"
 #include "Timer.h"
+#include "DisplayOutput.h"
 #include <util/delay.h>
 #include <avr/interrupt.h>
 
@@ -54,9 +55,6 @@ void Swizzler::init() {
   // Initialize MIDI input
   MidiInput::init();
 
-  // Initialize the surface controls
-  //SurfaceControlManager::init();
-
   // Reset all presets
   /*
   for (int i=0; i < 128; i++) {
@@ -68,10 +66,13 @@ void Swizzler::init() {
   // Begin with initial preset of 0
   //PresetManager::loadPreset(0);
 
-  //Wire.begin();
+  Wire.begin();
   Timer::init();
 
   //soundChip.resetSound();
+
+  // Initialize the surface controls
+  SurfaceControlManager::init();
 
   setLed(false);
 }

@@ -20,16 +20,24 @@ public:
    */
   static void init();
 
-  static inline
-  void putChar(uint8_t c) {
-    Wire.beginTransmission(twiAddress);
-    Wire.send(c);
-    Wire.endTransmission();
-  }
-
+  static void putChar(uint8_t c);
   static void print(char*);
+
+  static void clearDisplay();
+  static void setAutowrap(bool onOff);
+
 private:
   static const uint8_t twiAddress = 0x69;
+  static const uint8_t commandByte = 0xfe;
+
+  enum DiplayCommand {
+    clearHome = 0x58,
+    autoWrapOn  = 0x43,
+    autoWrapOff = 0x44
+  };
+
+  static void sendCommand(DiplayCommand cmd);
+
 };
 
 #endif /* DISPLAYOUTPUT_H_ */
