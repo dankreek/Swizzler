@@ -128,7 +128,7 @@ ALL_ASFLAGS = -mmcu=$(MCU) -I. -x assembler-with-cpp $(ASFLAGS)
 # Default target.
 all: bin_dir build sizeafter
 
-build: elf hex 
+build: elf hex eep
 
 bin_dir:
 	# Make the bin dir if it doesn't exist yet 
