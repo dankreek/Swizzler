@@ -9,18 +9,44 @@
 #include "Swizzler.h"
 #include <stdio.h>
 #include <util/delay.h>
+#include <avr/io.h>
+#include <avr/eeprom.h>
+
+uint8_t EEMEM DisplayOutput::eepromstring1[]={"   Welcome To\n"};
+uint8_t EEMEM DisplayOutput::eepromstring2[]={"    Swizzler"};
+
+uint8_t DisplayOutput::strBuffer[17];
 
 void DisplayOutput::init() {
   setAutowrap(true);
   clearDisplay();
-  print("   Welcome To\n");
-  print("    Swizzler");
+
+
+  printEepromString(eepromstring1);
+  printEepromString(eepromstring2);
+
+//  print("   Welcome To\n");
+//  print("    Swizzler");
 }
 
 void DisplayOutput::putChar(uint8_t c) {
   Wire.beginTransmission(twiAddress);
   Wire.send(c);
   Wire.endTransmission();
+}
+
+void DisplayOutput::printEepromString(uint8_t *eepromStrPtr) {
+  readString(eepromStrPtr, strBuffer);
+  print((char*)strBuffer);
+}
+
+void DisplayOutput::readString(uint8_t *eepromAddy, uint8_t *sramAddy) {
+  uint8_t i=0;
+
+  do {
+    sramAddy[i] = eeprom_read_byte(&eepromAddy[i]);
+    i++;
+  } while (sramAddy[i-1] != 0);
 }
 
 void DisplayOutput::print(char s[]) {
