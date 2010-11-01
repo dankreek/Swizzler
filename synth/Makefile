@@ -38,9 +38,12 @@
 
 #TARGET = $(notdir $(CURDIR))
 TARGET = main
-PORT = /dev/ttyUSB1
+#PORT = /dev/ttyUSB1
+PORT = /dev/ttyUSB*
 UPLOAD_RATE = 19200
-AVRDUDE_PROGRAMMER = stk500v1
+#AVRDUDE_PROGRAMMER = stk500v1
+AVRDUDE_PROGRAMMER = avrispv2
+BITCLOCK_DELAY = 6
 MCU = atmega168
 F_CPU = 16000000
 ARDUINO = ./arduino
@@ -97,9 +100,8 @@ AVRDUDE_PORT = $(PORT)
 AVRDUDE_WRITE_FLASH = -U flash:w:$(BIN)/$(TARGET).hex
 AVRDUDE_WRITE_EEPROM = -U eeprom:w:$(BIN)/$(TARGET).eep:i
 AVRDUDE_VERIFY_EEPROM = -U eeprom:v:$(BIN)/$(TARGET).eep:i
-AVRDUDE_FLAGS = -V -F \
--p $(MCU) -P $(AVRDUDE_PORT) -c $(AVRDUDE_PROGRAMMER) \
--b $(UPLOAD_RATE)
+AVRDUDE_FLAGS = -V -p $(MCU) -P $(AVRDUDE_PORT) -c $(AVRDUDE_PROGRAMMER) -B $(BITCLOCK_DELAY)
+#-b $(UPLOAD_RATE)
 
 # Program settings
 CC = avr-gcc
@@ -145,7 +147,11 @@ sym: $(BIN)/$(TARGET).sym
 # Program the device.  
 upload: $(BIN)/$(TARGET).hex
 	$(AVRDUDE) $(AVRDUDE_FLAGS) $(AVRDUDE_WRITE_FLASH)
+	
+upload_eeprom: $(BIN)/$(TARGET).eep
 	$(AVRDUDE) $(AVRDUDE_FLAGS) $(AVRDUDE_WRITE_EEPROM)
+	
+verify_eeprom: $(BIN)/$(TARGET).eep	
 	$(AVRDUDE) $(AVRDUDE_FLAGS) $(AVRDUDE_VERIFY_EEPROM)
 
 	# Display size of file.

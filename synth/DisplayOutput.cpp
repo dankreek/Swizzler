@@ -12,23 +12,13 @@
 #include <avr/io.h>
 #include <avr/eeprom.h>
 
-uint8_t EEMEM DisplayOutput::eepromstring1[]={"ABCDEFGHIJ"};
-uint8_t EEMEM DisplayOutput::eepromstring2[]={"KLMNOPQRST"};
-
-uint8_t EEMEM eepromstring3[] = {"POOP"};
-
-uint8_t DisplayOutput::strBuffer[17];
+uint8_t EEMEM DisplayOutput::eepromstring1[]={"   Welcome To\n    Swizzler"};
 
 void DisplayOutput::init() {
   setAutowrap(true);
   clearDisplay();
 
-
   printEepromString(eepromstring1);
-  //printEepromString(eepromstring2);
-
-//  print("   Welcome To\n");
-//  print("    Swizzler");
 }
 
 void DisplayOutput::putChar(uint8_t c) {
