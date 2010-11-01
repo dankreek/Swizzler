@@ -95,7 +95,8 @@ LDFLAGS = -lm
 # Programming support using avrdude. Settings and variables.
 AVRDUDE_PORT = $(PORT)
 AVRDUDE_WRITE_FLASH = -U flash:w:$(BIN)/$(TARGET).hex
-AVRDUDE_WRITE_EEPROM = -U eeprom:w:$(BIN)/$(TARGET).eep
+AVRDUDE_WRITE_EEPROM = -U eeprom:w:$(BIN)/$(TARGET).eep:i
+AVRDUDE_VERIFY_EEPROM = -U eeprom:v:$(BIN)/$(TARGET).eep:i
 AVRDUDE_FLAGS = -V -F \
 -p $(MCU) -P $(AVRDUDE_PORT) -c $(AVRDUDE_PROGRAMMER) \
 -b $(UPLOAD_RATE)
@@ -145,7 +146,7 @@ sym: $(BIN)/$(TARGET).sym
 upload: $(BIN)/$(TARGET).hex
 	$(AVRDUDE) $(AVRDUDE_FLAGS) $(AVRDUDE_WRITE_FLASH)
 	$(AVRDUDE) $(AVRDUDE_FLAGS) $(AVRDUDE_WRITE_EEPROM)
-
+	$(AVRDUDE) $(AVRDUDE_FLAGS) $(AVRDUDE_VERIFY_EEPROM)
 
 	# Display size of file.
 HEXSIZE = $(SIZE) --target=$(FORMAT) $(BIN)/$(TARGET).hex

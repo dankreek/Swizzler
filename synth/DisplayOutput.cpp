@@ -12,8 +12,10 @@
 #include <avr/io.h>
 #include <avr/eeprom.h>
 
-uint8_t EEMEM DisplayOutput::eepromstring1[]={"   Welcome To\n"};
-uint8_t EEMEM DisplayOutput::eepromstring2[]={"    Swizzler"};
+uint8_t EEMEM DisplayOutput::eepromstring1[]={"ABCDEFGHIJ"};
+uint8_t EEMEM DisplayOutput::eepromstring2[]={"KLMNOPQRST"};
+
+uint8_t EEMEM eepromstring3[] = {"POOP"};
 
 uint8_t DisplayOutput::strBuffer[17];
 
@@ -23,7 +25,7 @@ void DisplayOutput::init() {
 
 
   printEepromString(eepromstring1);
-  printEepromString(eepromstring2);
+  //printEepromString(eepromstring2);
 
 //  print("   Welcome To\n");
 //  print("    Swizzler");
@@ -36,8 +38,21 @@ void DisplayOutput::putChar(uint8_t c) {
 }
 
 void DisplayOutput::printEepromString(uint8_t *eepromStrPtr) {
-  readString(eepromStrPtr, strBuffer);
-  print((char*)strBuffer);
+//  readString(eepromStrPtr, strBuffer);
+//  print((char*)strBuffer);
+
+  uint8_t *cPtr = eepromStrPtr;
+  Wire.beginTransmission(twiAddress);
+  uint8_t c; // = eeprom_read_byte(cPtr);
+  eeprom_read_block(&c, cPtr, 1);
+  while(c != 0) {
+    Wire.send(c);
+    cPtr++;
+    eeprom_busy_wait();
+    eeprom_read_block(&c, cPtr, 1);
+  }
+  Wire.endTransmission();
+  _delay_ms(5);
 }
 
 void DisplayOutput::readString(uint8_t *eepromAddy, uint8_t *sramAddy) {
@@ -45,6 +60,7 @@ void DisplayOutput::readString(uint8_t *eepromAddy, uint8_t *sramAddy) {
 
   do {
     sramAddy[i] = eeprom_read_byte(&eepromAddy[i]);
+    eeprom_busy_wait();
     i++;
   } while (sramAddy[i-1] != 0);
 }

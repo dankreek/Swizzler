@@ -46,7 +46,7 @@
 MCU=atmega168
 
 # Processor speed
-F_CPU=16000000
+F_CPU=8000000
 
 # id to use with programmer
 # default: PROGRAMMER_MCU=$(MCU)
