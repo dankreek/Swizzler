@@ -14,10 +14,6 @@
 #include <stdio.h>
 #include <avr/eeprom.h>
 
-extern uint8_t *eepromstring1;
-extern uint8_t *eepromstring2;
-
-
 class DisplayOutput {
 public:
   /**
@@ -41,7 +37,6 @@ private:
   static const uint8_t commandByte = 0xfe;
 
   static uint8_t eepromstring1[];
-  static uint8_t eepromstring2[];
 
   enum DiplayCommand {
     clearHome = 0x58,

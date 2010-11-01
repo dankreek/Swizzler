@@ -14,7 +14,7 @@
  * This is a uc-friendly ring buffer template. Most of
  * the time memory is pre-allocated on a u-controller so allowing the
  * caller to pass in a buffer and it's size (in elements) makes this
- * code much more reusable.
+ * code more reusable.
  */
 
 template <typename T>
