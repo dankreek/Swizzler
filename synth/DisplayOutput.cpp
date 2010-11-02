@@ -11,14 +11,52 @@
 #include <util/delay.h>
 #include <avr/io.h>
 #include <avr/eeprom.h>
+#include <stdio.h>
 
-uint8_t EEMEM DisplayOutput::eepromstring1[]={"   Welcome To\n    Swizzler"};
+uint8_t DisplayOutput::printfBufferStorage[printfBufferSize];
+RingBuffer<uint8_t> DisplayOutput::printfBuffer(printfBufferStorage, printfBufferSize);
+
+uint8_t EEMEM DisplayOutput::greetingString[]={"   Welcome To\n    Swizzler"};
+
+// --- Needed to output a character to the LCD if using printf.
+#ifdef __cplusplus
+extern "C"{
+ FILE * uart_str;
+}
+#endif
+static int lcd_putchar(char,FILE*);
+#undef FDEV_SETUP_STREAM
+#define FDEV_SETUP_STREAM(p, g, f) { 0, 0, f, 0, 0, p, g, 0 }
+FILE lcd_out = FDEV_SETUP_STREAM(DisplayOutput::putCharBuffered, NULL, _FDEV_SETUP_WRITE);
+int DisplayOutput::putCharBuffered(char ch, FILE *unused) {
+  printfBuffer.push((uint8_t)ch);
+
+  // If the buffer is full, or if this is an end-line flush it
+  if (printfBuffer.isFull()) {
+    flushPrintfBuffer();
+  }
+
+  return 0;
+}
+
+void DisplayOutput::flushPrintfBuffer() {
+  Wire.beginTransmission(twiAddress);
+  while (printfBuffer.hasData()) {
+    Wire.send(printfBuffer.get());
+  }
+  Wire.endTransmission();
+}
+// --- End printf code
+
 
 void DisplayOutput::init() {
   setAutowrap(true);
   clearDisplay();
 
-  printEepromString(eepromstring1);
+  printf("poop (#%d)\n", 1);
+  flushPrintfBuffer();
+
+  //printEepromString(greetingString);
 }
 
 void DisplayOutput::putChar(uint8_t c) {
@@ -27,33 +65,20 @@ void DisplayOutput::putChar(uint8_t c) {
   Wire.endTransmission();
 }
 
-void DisplayOutput::printEepromString(uint8_t *eepromStrPtr) {
-//  readString(eepromStrPtr, strBuffer);
-//  print((char*)strBuffer);
-
-  uint8_t *cPtr = eepromStrPtr;
-  Wire.beginTransmission(twiAddress);
-  uint8_t c; // = eeprom_read_byte(cPtr);
-  eeprom_read_block(&c, cPtr, 1);
-  while(c != 0) {
-    Wire.send(c);
-    cPtr++;
-    eeprom_busy_wait();
-    eeprom_read_block(&c, cPtr, 1);
-  }
-  Wire.endTransmission();
-  _delay_ms(5);
-}
-
-void DisplayOutput::readString(uint8_t *eepromAddy, uint8_t *sramAddy) {
-  uint8_t i=0;
-
-  do {
-    sramAddy[i] = eeprom_read_byte(&eepromAddy[i]);
-    eeprom_busy_wait();
-    i++;
-  } while (sramAddy[i-1] != 0);
-}
+//void DisplayOutput::printEepromString(uint8_t *eepromStrPtr) {
+//  uint8_t *cPtr = eepromStrPtr;
+//  Wire.beginTransmission(twiAddress);
+//  uint8_t c; // = eeprom_read_byte(cPtr);
+//  eeprom_read_block(&c, cPtr, 1);
+//  while(c != 0) {
+//    Wire.send(c);
+//    cPtr++;
+//    eeprom_busy_wait();
+//    eeprom_read_block(&c, cPtr, 1);
+//  }
+//  Wire.endTransmission();
+//  _delay_us(5);
+//}
 
 void DisplayOutput::print(char s[]) {
   char* c;
@@ -63,7 +88,7 @@ void DisplayOutput::print(char s[]) {
     Wire.send(*c);
   }
   Wire.endTransmission();
-  _delay_ms(5);
+  _delay_us(5);
 }
 
 void DisplayOutput::clearDisplay() {
@@ -79,5 +104,5 @@ void DisplayOutput::sendCommand(DiplayCommand cmd) {
   Wire.send(commandByte);
   Wire.send(cmd);
   Wire.endTransmission();
-  _delay_ms(5);
+  _delay_us(5);
 }
