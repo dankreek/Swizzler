@@ -36,11 +36,13 @@ public:
 
   // Flushes the printf buffer out to the display
   static void flushPrintfBuffer();
+
+  static void printNumber(uint8_t n);
 private:
   static const uint8_t twiAddress = 0x69;
   static const uint8_t commandByte = 0xfe;
 
-
+  static const uint8_t twiDelay = 130;  // Time to wait after sending twi data (in microseconds)
 
   static uint8_t greetingString[];
 

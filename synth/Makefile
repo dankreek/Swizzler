@@ -43,7 +43,7 @@ PORT = /dev/ttyUSB*
 UPLOAD_RATE = 19200
 #AVRDUDE_PROGRAMMER = stk500v1
 AVRDUDE_PROGRAMMER = avrispv2
-BITCLOCK_DELAY = 6
+BITCLOCK_DELAY = 2
 MCU = atmega168
 F_CPU = 16000000
 ARDUINO = ./arduino
@@ -144,8 +144,10 @@ eep: $(BIN)/$(TARGET).eep
 lss: $(BIN)/$(TARGET).lss 
 sym: $(BIN)/$(TARGET).sym
 
-# Program the device.  
-upload: $(BIN)/$(TARGET).hex
+# Program the device.
+upload: upload_flash upload_eeprom
+  
+upload_flash: $(BIN)/$(TARGET).hex
 	$(AVRDUDE) $(AVRDUDE_FLAGS) $(AVRDUDE_WRITE_FLASH)
 	
 upload_eeprom: $(BIN)/$(TARGET).eep
