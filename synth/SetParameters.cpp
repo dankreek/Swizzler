@@ -5,6 +5,8 @@
  *      Author: justin
  */
 
+#include <inttypes.h>
+#include "DisplayOutput.h"
 #include "SetParameters.h"
 #include "KnobKnee.h"
 #include "PresetManager.h"
@@ -16,9 +18,16 @@ KnobKnee attackTimeKnee = KnobKnee(8000, 95, 1000);
 KnobKnee decRelTimeKnee = KnobKnee(24000, 95, 2400);	// Decay/release time knee
 KnobKnee arpTimeKnee = KnobKnee(1000, 95, 250);			// Arpeggio time (ms per note)
 
+uint8_t EEMEM portamentoStr[]={"Portamento"};
+
 void SetParameters::enablePortamento(uint8_t p) {
   Swizzler::oscillators.setPortamento((p >= 64) ? true : false);
   PresetManager::curSettings.portamentoOn = p;
+
+  DisplayOutput::clearDisplay();
+  DisplayOutput::printEepromString(portamentoStr);
+  DisplayOutput::print(": ");
+  DisplayOutput::printNumber(p);
 }
 
 void SetParameters::setLfoFreq(uint8_t p) {
