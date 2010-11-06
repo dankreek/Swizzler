@@ -8,6 +8,7 @@
 #include "SurfaceControlManager.h"
 #include "DisplayOutput.h"
 
+DisplayOutput SurfaceControlManager::output;
+
 void SurfaceControlManager::init() {
-  DisplayOutput::init();
 }

@@ -12,17 +12,20 @@
 #include <avr/io.h>
 #include <avr/eeprom.h>
 
-uint8_t DisplayOutput::printfBufferStorage[printfBufferSize];
-RingBuffer<uint8_t> DisplayOutput::printfBuffer(printfBufferStorage, printfBufferSize);
+uint8_t DisplayOutput::outputBufferStorage[outputBufferSize];
+RingBuffer<uint8_t> DisplayOutput::outputBuffer(outputBufferStorage, outputBufferSize);
 
 uint8_t EEMEM DisplayOutput::greetingString[]={"   Welcome To\n    Swizzler"};
 
-void DisplayOutput::init() {
+void DisplayOutput::write(uint8_t) {
+
+}
+
+DisplayOutput::DisplayOutput() {
   setAutowrap(true);
   clearDisplay();
 
   printEepromString(greetingString);
-  printNumber(25);
 }
 
 void DisplayOutput::putChar(uint8_t c) {
@@ -48,44 +51,6 @@ void DisplayOutput::printEepromString(uint8_t *eepromStrPtr) {
   Wire.endTransmission();
   _delay_us(twiDelay*len);
 }
-
-void DisplayOutput::print(char s[]) {
-  char* c;
-
-  Wire.beginTransmission(twiAddress);
-  for (c=s; *c; c++) {
-    Wire.send(*c);
-  }
-  Wire.endTransmission();
-  _delay_us(twiDelay);
-}
-
-void DisplayOutput::printNumber(uint8_t n) {
-  uint8_t num=n;
-
-  Wire.beginTransmission(twiAddress);
-  if (num >= 100) {
-    Wire.send('0'+(num/100));
-    num -= (num/100)*100;
-  }
-
-  if (num >= 10) {
-    Wire.send('0'+(num/10));
-    num -= (num/10)*10;
-  } else if (n >= 100) {
-    Wire.send('0');
-  }
-
-  if (num >= 1) {
-    Wire.send('0'+num);
-  } else {
-    Wire.send('0');
-  }
-
-  Wire.endTransmission();
-  _delay_us(twiDelay);
-}
-
 
 void DisplayOutput::clearDisplay() {
   sendCommand(clearHome);

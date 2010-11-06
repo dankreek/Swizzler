@@ -8,36 +8,29 @@
 #ifndef DISPLAYOUTPUT_H_
 #define DISPLAYOUTPUT_H_
 
-#include "DisplayOutput.h"
-#include "Swizzler.h"
+
 #include "RingBuffer.cpp"
 #include <inttypes.h>
 #include <stdio.h>
 #include <avr/eeprom.h>
-#include <stdio.h>
+#include "Print.h"
 
-class DisplayOutput {
+class DisplayOutput : public Print {
 public:
-  /**
-   * Initialize the display unit and show the power-on greeting
-   */
-  static void init();
+  DisplayOutput();
 
   static void putChar(uint8_t c);
-  static void print(char*);
 
   static void clearDisplay();
   static void setAutowrap(bool onOff);
 
   static void printEepromString(uint8_t*);
 
-  // Put a char into the printf buffer
-  static int putCharBuffered(char ch, FILE *unused);
+  // Flushes the output bugger
+  static void flush();
 
-  // Flushes the printf buffer out to the display
-  static void flushPrintfBuffer();
-
-  static void printNumber(uint8_t n);
+  void write(uint8_t);
+  using Print::write;
 private:
   static const uint8_t twiAddress = 0x69;
   static const uint8_t commandByte = 0xfe;
@@ -46,9 +39,9 @@ private:
 
   static uint8_t greetingString[];
 
-  static const int printfBufferSize = 32;
-  static uint8_t printfBufferStorage[printfBufferSize];
-  static RingBuffer<uint8_t> printfBuffer;
+  static const int outputBufferSize = 32;
+  static uint8_t outputBufferStorage[outputBufferSize];
+  static RingBuffer<uint8_t> outputBuffer;
 
   enum DiplayCommand {
     clearHome = 0x58,
