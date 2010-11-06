@@ -32,7 +32,7 @@ public:
   // Current level that the mod wheel is at
   static uint8_t modWheelLevel;
 
-  // Class which contains a freq. filter chain for each medlodic oscillator
+  // Class which contains a freq. filter chain for each oscillator
   static Oscillators oscillators;
 
   static uint16_t portamentoTime;

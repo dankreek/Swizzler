@@ -43,7 +43,7 @@
 # Name of target controller 
 # (e.g. 'at90s8515', see the available avr-gcc mmcu 
 # options for possible values)
-MCU=atmega168
+MCU=atmega328p
 
 # Processor speed
 F_CPU=16000000
@@ -54,7 +54,7 @@ F_CPU=16000000
 # accept the same MCU name as avr-gcc (for example
 # for ATmega8s, avr-gcc expects 'atmega8' and 
 # avrdude requires 'm8')
-PROGRAMMER_MCU=m168
+PROGRAMMER_MCU=atmega328p
 
 # Name of our project
 # (use a single word, e.g. 'myproject')
