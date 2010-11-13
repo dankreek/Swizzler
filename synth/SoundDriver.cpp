@@ -39,7 +39,7 @@ void SoundDriver::setEnvelopeGate(uint8_t voiceNum, bool isClosed) {
   Serial.write((uint8_t)isClosed ? 1 : 0);
 }
 
-void SoundDriver::resetSound() {
+void SoundDriver::reset() {
   Serial.write(0x00);
   Serial.write(0x00);
 }

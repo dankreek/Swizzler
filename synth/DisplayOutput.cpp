@@ -21,7 +21,7 @@ void DisplayOutput::write(uint8_t) {
 
 }
 
-DisplayOutput::DisplayOutput() {
+void DisplayOutput::init() {
   setAutowrap(true);
   clearDisplay();
 

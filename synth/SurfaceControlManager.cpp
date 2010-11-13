@@ -11,4 +11,5 @@
 DisplayOutput SurfaceControlManager::output;
 
 void SurfaceControlManager::init() {
+  DisplayOutput::init();
 }

@@ -61,6 +61,9 @@ public:
   void setErrorState();
 
   static void setLed(bool onOff);
+private:
+  // How long to wait until the display unit is fully powered up (measured in milliseconds)
+  static const uint8_t  poweronDisplayDelay = 100;
 };
 
 extern Swizzler swizzler;

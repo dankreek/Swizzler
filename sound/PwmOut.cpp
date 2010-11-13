@@ -34,7 +34,7 @@ ISR(TIMER1_COMPA_vect) {
   out_sample >>= (Voice::outputVolumeResolution+2);
 
   // Convert 8bit signed to 8bit unsigned, and output
-  OCR2A = (out_sample+128);
+  OCR0A = (out_sample+128);
 
   // Keep track of milliseconds depending upon the current sample rate
   cycleCounter++;
@@ -47,27 +47,26 @@ ISR(TIMER1_COMPA_vect) {
 }
 
 void PwmOut::init() {
-  DDRB = _BV(PB3);
+  DDRD |= _BV(PD6);
 
-  // Set up Timer 2 to do pulse width modulation on the speaker pin.
+  // Set up Timer 0 to do pulse width modulation on the speaker pin.
 
   // Use internal clock (datasheet p.160)
   ASSR &= ~(_BV(EXCLK) | _BV(AS2));
 
-  // Set fast PWM mode  (p.157)
-  TCCR2A |= _BV(WGM21) | _BV(WGM20);
-  TCCR2B &= ~_BV(WGM22);
+  // Set fast PWM mode
+  TCCR0A |= _BV(WGM21) | _BV(WGM20);
+  TCCR0B &= ~_BV(WGM22);
 
-  // Do non-inverting PWM on pin OC2A (p.155)
-  // On the Arduino this is pin 11.
-  TCCR2A = (TCCR2A | _BV(COM2A1)) & ~_BV(COM2A0);
-  TCCR2A &= ~(_BV(COM2B1) | _BV(COM2B0));
+  // Do non-inverting PWM on pin OC0A
+  TCCR0A = (TCCR0A | _BV(COM0A1)) & ~_BV(COM0A0);
+  TCCR0A &= ~(_BV(COM0B1) | _BV(COM0B0));
 
-  // No prescaler (p.158)
-  TCCR2B = (TCCR2B & ~(_BV(CS12) | _BV(CS11))) | _BV(CS10);
+  // No prescaler
+  TCCR0B = (TCCR0B & ~(_BV(CS12) | _BV(CS11))) | _BV(CS10);
 
   // Set initial pulse width to the first sample.
-  OCR2A = 0;
+  OCR0A = 0;
 
   // Set up Timer 1 to send a sample every interrupt.
   cli();

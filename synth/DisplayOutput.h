@@ -17,7 +17,7 @@
 
 class DisplayOutput : public Print {
 public:
-  DisplayOutput();
+  static void init();
 
   static void putChar(uint8_t c);
 

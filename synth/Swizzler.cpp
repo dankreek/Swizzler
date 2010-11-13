@@ -36,6 +36,8 @@ void Swizzler::enableArpeggio(bool onOff) {
 }
 
 void Swizzler::init() {
+  setLed(false);
+
   portamentoTime = 100;
   freqModSineWave.setFrequency(60);
   MidiInput::pitchBendEventHandler = Swizzler::handlePitchBend;
@@ -69,16 +71,19 @@ void Swizzler::init() {
   Wire.begin();
   Timer::init();
 
-  //soundChip.resetSound();
+  // Wait for display to power up
+  _delay_ms(poweronDisplayDelay);
+
+  soundChip.reset();
 
   // Initialize the surface controls
   SurfaceControlManager::init();
 
-  setLed(false);
+  setLed(true);
 }
 
 void Swizzler::setLed(bool onOff) {
-  if (!onOff)
+  if (onOff)
     PORTB |= _BV(PB5);
   else
     PORTB &= ~_BV(PB5);
