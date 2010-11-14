@@ -8,22 +8,22 @@
 #include "DisplayOutput.h"
 #include "Swizzler.h"
 #include <stdio.h>
+#include <string.h>
 #include <util/delay.h>
 #include <avr/io.h>
 #include <avr/eeprom.h>
 
-uint8_t DisplayOutput::outputBufferStorage[outputBufferSize];
-RingBuffer<uint8_t> DisplayOutput::outputBuffer(outputBufferStorage, outputBufferSize);
+
+TimedLineBuffer DisplayOutput::lineBuffer1 = TimedLineBuffer(0);
+TimedLineBuffer DisplayOutput::lineBuffer2 = TimedLineBuffer(1);
 
 uint8_t EEMEM DisplayOutput::greetingString[]={"   Welcome To\n    Swizzler"};
 
-void DisplayOutput::write(uint8_t) {
-
-}
+char buf[17];
 
 void DisplayOutput::init() {
-  setAutowrap(true);
   clearDisplay();
+  setAutoScroll(false);
 
   printEepromString(greetingString);
 }
@@ -32,24 +32,27 @@ void DisplayOutput::putChar(uint8_t c) {
   Wire.beginTransmission(twiAddress);
   Wire.send(c);
   Wire.endTransmission();
+  _delay_us(twiDelay);
+}
 
+void DisplayOutput::printString(char str[]) {
+  Wire.beginTransmission(twiAddress);
+  for (uint8_t i=0; str[i] != 0; i++) {
+    Wire.send(str[i]);
+    _delay_us(twiDelay);
+  }
+  Wire.endTransmission();
 }
 
 void DisplayOutput::printEepromString(uint8_t *eepromStrPtr) {
-  uint8_t len=0;
-  uint8_t *cPtr = eepromStrPtr;
   Wire.beginTransmission(twiAddress);
-  uint8_t c; // = eeprom_read_byte(cPtr);
-  eeprom_read_block(&c, cPtr, 1);
-  while(c != 0) {
-    len++;
-    Wire.send(c);
-    cPtr++;
-    eeprom_busy_wait();
-    eeprom_read_block(&c, cPtr, 1);
+  uint8_t b = eeprom_read_byte(eepromStrPtr);
+  while (b != 0) {
+    Wire.send(b); _delay_us(twiDelay);
+    eepromStrPtr++;
+    b = eeprom_read_byte(eepromStrPtr);
   }
   Wire.endTransmission();
-  _delay_us(twiDelay*len);
 }
 
 void DisplayOutput::clearDisplay() {
@@ -60,10 +63,22 @@ void DisplayOutput::setAutowrap(bool onOff) {
   sendCommand(onOff ? autoWrapOn : autoWrapOff);
 }
 
+void DisplayOutput::setAutoScroll(bool onOff) {
+  sendCommand(onOff ? autoScrollOn : autoScrollOff);
+}
+
+void DisplayOutput::moveCursor(uint8_t col, uint8_t row) {
+  Wire.beginTransmission(twiAddress);
+  Wire.send(commandByte);       _delay_us(twiDelay);
+  Wire.send(setCursorPosition); _delay_us(twiDelay);
+  Wire.send(col);               _delay_us(twiDelay);
+  Wire.send(row);               _delay_us(twiDelay);
+  Wire.endTransmission();
+}
+
 void DisplayOutput::sendCommand(DiplayCommand cmd) {
   Wire.beginTransmission(twiAddress);
-  Wire.send(commandByte);
-  Wire.send(cmd);
+  Wire.send(commandByte); _delay_us(twiDelay);
+  Wire.send(cmd);         _delay_us(twiDelay);
   Wire.endTransmission();
-  _delay_us(twiDelay);
 }

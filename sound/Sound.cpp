@@ -6,23 +6,22 @@
  */
 
 #include <util/delay.h>
+#include <avr/interrupt.h>
 #include "Sound.h"
 #include "InputHandler.h"
 #include "HardwareSerial.h"
+#include "Led.h"
 
 Voice Sound::voices[numVoices];
 volatile uint16_t Sound::msCounter;
 uint8_t Sound::masterVolume;
 
-//#define USE_TWI_INPUT
-
-#ifdef USE_TWI_INPUT
-// Needed for the TWI slave input data
-uint8_t Sound::twiData[twiBufferSize];
-RingBuffer<uint8_t> Sound::twiInputBuffer(twiData, twiBufferSize);
-#endif
+//#define USE_UART_INPUT
 
 void Sound::init() {
+  Led::init();
+  Led::setLedOn(false);
+
   initVoices();
 
   Waveform::initNoiseGenerator();
@@ -31,12 +30,9 @@ void Sound::init() {
   msCounter = 0;
   PwmOut::init();
 
-  // Start up the TWI bus
-#ifdef USE_TWI_INPUT
-  twi.init(twiSlaveAddress, &twiInputBuffer);
-#else
   Serial.init(31250);
-#endif
+
+  Led::setLedOn(true);
 }
 
 void Sound::initVoices() {

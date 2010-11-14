@@ -26,8 +26,6 @@ void SetParameters::enablePortamento(uint8_t p) {
 
   DisplayOutput::clearDisplay();
   DisplayOutput::printEepromString(portamentoStr);
-
-  SurfaceControlManager::output.print("Pop");
 }
 
 void SetParameters::setLfoFreq(uint8_t p) {
