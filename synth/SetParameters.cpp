@@ -44,10 +44,8 @@ void SetParameters::setPortamentoTime(uint8_t p) {
 }
 
 void SetParameters::setPulseWidth(uint8_t p) {
-  //Pulse width is a 4 bit value because the wavetables are 4bits long
-//	Wavetable::pulseWidth = (p >> 3);
-//	Wavetable::genSquare();
-  for (int i=0; i < 4; i++) Swizzler::soundChip.setPuleseWidth(i, (uint16_t)p<<9);
+//  for (int i=0; i < 4; i++) Swizzler::soundChip.setPuleseWidth(i, p << 1);
+  Swizzler::soundChip.setMasterPulseWidth(p << 1);
   PresetManager::curSettings.pulseWidth = p;
 }
 

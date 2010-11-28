@@ -83,6 +83,9 @@ void InputHandler::handleGlobalCommand() {
       case setFilterCutoff:
         // Not implemented yet
         break;
+      case setMasterPulsewidth:
+        for (uint8_t i=0; i < Sound::numVoices; i++) setVoicePulseWidth(i, commandData[0]<<8);
+        break;
       default:
         // Not a 1 byte command
         return;
@@ -98,6 +101,9 @@ void InputHandler::handleChannelCommand() {
 
   if (commandDataSize == 1) {
     switch (voiceCommand) {
+      case setPulseWidth:
+        setVoicePulseWidth(commandVoiceNumber-1, commandData[0]<<8);
+        break;
       case setVolume:
         setVoiceVolume(commandVoiceNumber-1, commandData[0]);
         break;
@@ -124,9 +130,6 @@ void InputHandler::handleChannelCommand() {
     uint16_t data = (commandData[0]<<8) | commandData[1];
 
     switch (voiceCommand) {
-    case setPulseWidth:
-      setVoicePulseWidth(commandVoiceNumber-1, data);
-      break;
     case setAttackTime:
       setVoiceAttack(commandVoiceNumber-1, data);
       break;

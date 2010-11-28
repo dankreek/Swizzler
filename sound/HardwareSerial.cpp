@@ -32,7 +32,8 @@
 // using a ring buffer (I think), in which rx_buffer_head is the index of the
 // location to which to write the next incoming character and rx_buffer_tail
 // is the index of the location from which to read.
-#define RX_BUFFER_SIZE 8
+// Seems like somewher between 32 and 64 is a good number. Less becomes unstable.
+#define RX_BUFFER_SIZE 256
 
 struct ring_buffer {
   unsigned char buffer[RX_BUFFER_SIZE];

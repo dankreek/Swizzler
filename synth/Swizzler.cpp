@@ -76,14 +76,25 @@ void Swizzler::init() {
   // Wait for display to power up
   _delay_ms(poweronDisplayDelay);
 
-//  SpiMaster::init(0x00);
-//  SpiUart::init();
-//  soundChip.reset();
+  SpiMaster::init(0x00);
 
   // Initialize the surface controls
   SurfaceControlManager::init();
 
-
+//  SpiUart::init();
+//
+//  SpiUart::write(1);
+//  SpiUart::write((uint8_t)0x09);
+//  SpiUart::write((uint8_t)(440>>8));
+//  SpiUart::write((uint8_t)(440&0xff));
+//
+//  SpiUart::write(1);
+//  SpiUart::write((uint8_t)0x07);
+//  SpiUart::write((uint8_t)1);
+//
+//  DisplayOutput::clearDisplay();
+//  DisplayOutput::printString("Fink");
+//  soundChip.reset();
 
   setLed(true);
 }

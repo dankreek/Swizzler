@@ -27,6 +27,10 @@
  *  (NOT YET IMPLEMENTED)
  *  ----------------------------
  *
+ *  Set master pulse width: 0x00 0x03 <pulse width>
+ *  -----------------------
+ *  Sets the pulse width for all voices. See the below.
+ *
  *
  *  Voice Commands:
  *  ===============
@@ -45,11 +49,11 @@
  *  0x03 = Square
  *  0x04 = Noise
  *
- *  Set voice's square pulse width: <voice number> 0x02 <pulse width high byte> <pulse width low byte>
+ *  Set voice's square pulse width: <voice number> 0x02 <pulse width>
  *  -------------------------------
- *  Sets the pulse width of the square wave, can be a number between 0x0000 and 0xffff
- *  which signifies the duty cycle of the square wave form. 0x0000 would mean a wave that
- *  is always low, 0xffff would be a wave that's always high, and 0x8000 would be a totally
+ *  Sets the pulse width of the square wave, can be a number between 0x00 and 0xff
+ *  which signifies the duty cycle of the square wave form. 0x00 would mean a wave that
+ *  is always low, 0xff would be a wave that's always high, and 0x80 would be a totally
  *  Symmetrical square wave.
  *
  *  Set voice attack speed: <voice number> 0x03 <attack speed high byte> <attack speed low byte>
@@ -149,7 +153,8 @@ private:
   enum GlobalCommand {
     resetVoices     = 0x00,
     setMasterVolume = 0x01,
-    setFilterCutoff = 0x02
+    setFilterCutoff = 0x02,
+    setMasterPulsewidth = 0x03
   };
 
   // Current input handler state

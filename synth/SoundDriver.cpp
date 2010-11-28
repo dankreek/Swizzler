@@ -19,7 +19,8 @@ enum VoiceCommandType {
 };
 
 enum GlobalCommandType {
-  resetVoices     = 0x00
+  resetVoices     = 0x00,
+  masterPulsewidth = 0x03
 };
 
 SoundDriver::SoundDriver(uint8_t addy) {
@@ -83,9 +84,14 @@ void SoundDriver::setSustainLevel(uint8_t voiceNum, uint8_t sustainLevel) {
   Serial.write(sustainLevel);
 }
 
-void SoundDriver::setPuleseWidth(uint8_t voiceNum, uint16_t pw) {
+void SoundDriver::setPuleseWidth(uint8_t voiceNum, uint8_t pw) {
   Serial.write(voiceNum+1);
   Serial.write((uint8_t)setVoicePulseWidth);
-  Serial.write((uint8_t)(pw >> 8));
-  Serial.write((uint8_t)(pw & 0xff));
+  Serial.write(pw);
+}
+
+void SoundDriver::setMasterPulseWidth(uint8_t pw) {
+  Serial.write(0x00);
+  Serial.write((uint8_t)masterPulsewidth);
+  Serial.write(pw);
 }

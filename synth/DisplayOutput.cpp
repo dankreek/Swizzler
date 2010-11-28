@@ -23,7 +23,7 @@ char buf[17];
 
 void DisplayOutput::init() {
   clearDisplay();
-  setAutoScroll(false);
+  //setAutoScroll(false);
 
   printEepromString(greetingString);
 }
