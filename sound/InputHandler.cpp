@@ -83,8 +83,11 @@ void InputHandler::handleGlobalCommand() {
       case setFilterCutoff:
         // Not implemented yet
         break;
-      case setMasterPulsewidth:
+      case setGlobalPulsewidth:
         for (uint8_t i=0; i < Sound::numVoices; i++) setVoicePulseWidth(i, commandData[0]<<8);
+        break;
+      case setGlobalSustain:
+        for (uint8_t i=0; i < Sound::numVoices; i++) setVoiceSustain(i, commandData[0]);
         break;
       default:
         // Not a 1 byte command
@@ -92,6 +95,23 @@ void InputHandler::handleGlobalCommand() {
     }
 
     // Reset a command since a command was executed successfully
+    resetCommand();
+  }
+  else if (commandDataSize == 2) {
+    uint16_t data = (commandData[0]<<8) | commandData[1];
+
+    switch (globalCommand) {
+      case setGlobalAttack:
+        for (uint8_t i=0; i < Sound::numVoices; i++) setVoiceAttack(i, data);
+        break;
+      case setGlobalDecay:
+        for (uint8_t i=0; i < Sound::numVoices; i++) setVoiceDecay(i, data);
+        break;
+      case setGlobalRelease:
+        for (uint8_t i=0; i < Sound::numVoices; i++) setVoiceRelease(i, data);
+        break;
+    }
+
     resetCommand();
   }
 }

@@ -151,10 +151,14 @@ private:
    * Different global commands available
    */
   enum GlobalCommand {
-    resetVoices     = 0x00,
-    setMasterVolume = 0x01,
-    setFilterCutoff = 0x02,
-    setMasterPulsewidth = 0x03
+    resetVoices         = 0x00,
+    setMasterVolume     = 0x01,
+    setFilterCutoff     = 0x02,
+    setGlobalPulsewidth = 0x03,
+    setGlobalAttack     = 0x04,
+    setGlobalDecay      = 0x05,
+    setGlobalSustain    = 0x06,
+    setGlobalRelease    = 0x07
   };
 
   // Current input handler state

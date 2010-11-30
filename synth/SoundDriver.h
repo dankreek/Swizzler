@@ -36,7 +36,12 @@ public:
   void setSustainLevel(uint8_t voiceNum, uint8_t level);
   void setReleaseTime(uint8_t voiceNum, uint16_t time);
   void setPuleseWidth(uint8_t voiceNum, uint8_t pw);
-  void setMasterPulseWidth(uint8_t pw);
+  void setGlobalPulseWidth(uint8_t pw);
+
+  void setGlobalAttackTime(uint16_t time);
+  void setGlobalDecayTime(uint16_t time);
+  void setGlobalSustainLevel(uint8_t level);
+  void setGlobalReleaseTime(uint16_t time);
 
 private:
   uint8_t twiAddress;

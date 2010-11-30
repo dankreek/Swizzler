@@ -45,28 +45,31 @@ void SetParameters::setPortamentoTime(uint8_t p) {
 
 void SetParameters::setPulseWidth(uint8_t p) {
 //  for (int i=0; i < 4; i++) Swizzler::soundChip.setPuleseWidth(i, p << 1);
-  Swizzler::soundChip.setMasterPulseWidth(p << 1);
+  Swizzler::soundChip.setGlobalPulseWidth(p << 1);
   PresetManager::curSettings.pulseWidth = p;
 }
 
 void SetParameters::setAttackTime(uint8_t p) {
-  for (int i=0; i < 4; i++) Swizzler::soundChip.setAttackTime(i, attackTimeKnee.getValue(p));
+//  for (int i=0; i < 4; i++) Swizzler::soundChip.setAttackTime(i, attackTimeKnee.getValue(p));
+  Swizzler::soundChip.setGlobalAttackTime(attackTimeKnee.getValue(p));
   PresetManager::curSettings.attackTime = p;
 }
 
 void SetParameters::setDecayTime(uint8_t p) {
-  for (int i=0; i < 4; i++) Swizzler::soundChip.setDecayTime(i, decRelTimeKnee.getValue(p));
+//  for (int i=0; i < 4; i++) Swizzler::soundChip.setDecayTime(i, decRelTimeKnee.getValue(p));
+  Swizzler::soundChip.setGlobalDecayTime(decRelTimeKnee.getValue(p));
   PresetManager::curSettings.decayTime = p;
 }
 
 void SetParameters::setSustainLevel(uint8_t p) {
-  for (int i=0; i < 4; i++) Swizzler::soundChip.setSustainLevel(i, p<<1);
+//  for (int i=0; i < 4; i++) Swizzler::soundChip.setSustainLevel(i, p<<1);
+  Swizzler::soundChip.setGlobalSustainLevel(p<<1);
   PresetManager::curSettings.sustainLevel = p;
 }
 
 void SetParameters::setReleaseTime(uint8_t p) {
-  Swizzler::setLed(true);
-  for (int i=0; i < 4; i++) Swizzler::soundChip.setReleaseTime(i, decRelTimeKnee.getValue(p));
+//  for (int i=0; i < 4; i++) Swizzler::soundChip.setReleaseTime(i, decRelTimeKnee.getValue(p));
+  Swizzler::soundChip.setGlobalReleaseTime(decRelTimeKnee.getValue(p));
   PresetManager::curSettings.releaseTime = p;
 }
 
