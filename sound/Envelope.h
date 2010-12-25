@@ -18,13 +18,15 @@ public:
   // Adjust envelope level every millisecond (called by main loop)
   void msTickHandler();
 
-  // Current envelope level (0=quietest, 0xffff=loudest)
+  static const uint16_t maxLevel = 0xffff;
+
+  // Current envelope level (0=quietest, maxLevel=loudest)
   uint16_t level;
 
   // Attack, decay and release times
   uint16_t attack, decay, release;
 
-  // Sustain level (0-0xffff)
+  // Sustain level (0- maxLevel)
   uint16_t sustain;
 
   // Operate the gate. true=closed, false=open
@@ -36,8 +38,7 @@ private:
       attackPhase,
       decayPhase,
       sustainPhase,
-      releasePhase
-    };
+      releasePhase};
 
   // The current envelope phase
   EnvelopeState envelopeState;

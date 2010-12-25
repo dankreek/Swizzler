@@ -9,11 +9,7 @@
 #include "EnvelopeNoteFilter.h"
 #include "EnvelopeUtility.h"
 
-EnvelopeNoteFilter::EnvelopeNoteFilter()
-{
-  // TODO Auto-generated constructor stub
-
-}
+EnvelopeNoteFilter::EnvelopeNoteFilter() {}
 
 void EnvelopeNoteFilter::noteOn(uint8_t noteNumber, uint8_t velocity) {
   if (curNoteNum != noteNumber) {

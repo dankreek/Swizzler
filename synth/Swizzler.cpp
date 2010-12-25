@@ -14,8 +14,6 @@
 #include "DisplayOutput.h"
 #include <util/delay.h>
 #include <avr/interrupt.h>
-#include "SpiUart.h"
-#include "SpiMaster.h"
 
 SineGenerator Swizzler::freqModSineWave;
 EnvelopeNoteFilter Swizzler::envelopeController;
@@ -75,8 +73,6 @@ void Swizzler::init() {
 
   // Wait for display to power up
   _delay_ms(poweronDisplayDelay);
-
-  SpiMaster::init(0x00);
 
   // Initialize the surface controls
   SurfaceControlManager::init();

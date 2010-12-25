@@ -10,7 +10,7 @@
 void Envelope::init() {
   attack = 0;
   decay = 0;
-  sustain = 0xffff;
+  sustain = maxLevel;
   release = 0;
   envelopeState = inactive;
   level = 0;
@@ -64,12 +64,12 @@ void Envelope::setState(EnvelopeState newState) {
   switch (newState) {
     case attackPhase:
       // Calculate attack rate
-      changeRate = 0xffff/attack;
+      changeRate = maxLevel/attack;
       level = 0;
       break;
     case decayPhase:
-      changeRate = (0xffff-sustain)/decay;
-      level = 0xffff;
+      changeRate = (maxLevel-sustain)/decay;
+      level = maxLevel;
       break;
     case sustainPhase:
       changeRate = 0;

@@ -15,7 +15,7 @@
 class Voice {
 public:
   // Calculate the next sample and apply the envelope
-  int8_t getNextSample();
+  int16_t getNextSample();
 
   // Initialize this voice
   void init();
@@ -35,7 +35,9 @@ public:
   // Voice output volume is 5bits
   static const uint8_t outputVolumeResolution = 5;
 
-  // This voice's output volume (0-32)
+  static const uint8_t envelopeOutputResolution = 8;
+
+  // This voice's output volume (0, 2^outputVolumeResolution)
   uint8_t outputVolume;
 
   // Is another voice synced to this one
@@ -49,14 +51,15 @@ private:
   uint16_t phaseChangeRate;
 };
 
-inline int8_t Voice::getNextSample() {
+inline int16_t Voice::getNextSample() {
   // Increment accumulator
   phaseAccumulator += phaseChangeRate;
 
-  // Calculate outsample scaled by envelope (which is scaled to 8 bits from 16)
-  int16_t outSample = waveform.getSample(phaseAccumulator)*(envelope.level>>8);
+  // Calculate outsample scaled by envelope (which is scaled down to the correct resolution)
+  int16_t outSample =
+    waveform.getSample(phaseAccumulator) * (envelope.level >> (sizeof(outSample) - envelopeOutputResolution));
 
-  return (outSample >> 8);
+  return (outSample >> (sizeof(outSample) - envelopeOutputResolution));
 }
 
 
