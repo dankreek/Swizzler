@@ -57,9 +57,9 @@ inline int16_t Voice::getNextSample() {
 
   // Calculate outsample scaled by envelope (which is scaled down to the correct resolution)
   int16_t outSample =
-    waveform.getSample(phaseAccumulator) * (envelope.level >> (sizeof(outSample) - envelopeOutputResolution));
+    waveform.getSample(phaseAccumulator) * (envelope.level >> (sizeof(outSample)*8 - envelopeOutputResolution));
 
-  return (outSample >> (sizeof(outSample) - envelopeOutputResolution));
+  return (outSample >> (sizeof(outSample)*8 - envelopeOutputResolution));
 }
 
 
