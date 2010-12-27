@@ -77,6 +77,12 @@ void InputHandler::handleGlobalCommand() {
   // Check and see if a 1 byte command needs execution
   if (commandDataSize == 1) {
     switch (globalCommand) {
+      case setGlobalGateState:
+        Sound::envelope.setGate( (commandData[0] > 0) ? true : false);
+        break;
+      case setGlobalSustain:
+        setSustain(commandData[0]);
+        break;
       case setMasterVolume:
         Sound::masterVolume = commandData[0];
         break;
@@ -86,9 +92,7 @@ void InputHandler::handleGlobalCommand() {
       case setGlobalPulsewidth:
         for (uint8_t i=0; i < Sound::numVoices; i++) setVoicePulseWidth(i, commandData[0]<<8);
         break;
-      case setGlobalSustain:
-        for (uint8_t i=0; i < Sound::numVoices; i++) setVoiceSustain(i, commandData[0]);
-        break;
+
       default:
         // Not a 1 byte command
         return;
@@ -102,13 +106,13 @@ void InputHandler::handleGlobalCommand() {
 
     switch (globalCommand) {
       case setGlobalAttack:
-        for (uint8_t i=0; i < Sound::numVoices; i++) setVoiceAttack(i, data);
+        setAttack(data);
         break;
       case setGlobalDecay:
-        for (uint8_t i=0; i < Sound::numVoices; i++) setVoiceDecay(i, data);
+        setDecay(data);
         break;
       case setGlobalRelease:
-        for (uint8_t i=0; i < Sound::numVoices; i++) setVoiceRelease(i, data);
+        setRelease(data);
         break;
     }
 
@@ -130,12 +134,6 @@ void InputHandler::handleChannelCommand() {
       case setWaveform:
         setVoiceWaveform(commandVoiceNumber-1, commandData[0]);
         break;
-      case setSustainLevel:
-        setVoiceSustain(commandVoiceNumber-1, commandData[0]);
-        break;
-      case setGateState:
-        setVoiceGateState(commandVoiceNumber-1, commandData[0]);
-        break;
       case setFilterOnOff:
         setVoiceFilterState(commandVoiceNumber-1, commandData[0]);
         break;
@@ -150,15 +148,6 @@ void InputHandler::handleChannelCommand() {
     uint16_t data = (commandData[0]<<8) | commandData[1];
 
     switch (voiceCommand) {
-    case setAttackTime:
-      setVoiceAttack(commandVoiceNumber-1, data);
-      break;
-    case setDecayTime:
-      setVoiceDecay(commandVoiceNumber-1, data);
-      break;
-    case setReleaseTime:
-      setVoiceRelease(commandVoiceNumber-1, data);
-      break;
     case setFrequency:
       setVoiceFrequency(commandVoiceNumber-1, data);
       break;
@@ -186,12 +175,12 @@ void InputHandler::setVoiceWaveform(uint8_t voiceNumber, uint8_t waveFormNumber)
   Sound::voices[voiceNumber].waveform.curWaveType = (WaveformType)waveFormNumber;
 }
 
-void InputHandler::setVoiceGateState(uint8_t voiceNumber, uint8_t gateState) {
-  Sound::voices[voiceNumber].envelope.setGate(gateState == 0 ? false : true);
+void InputHandler::setGateState(uint8_t gateState) {
+  Sound::envelope.setGate(gateState == 0 ? false : true);
 }
 
-void InputHandler::setVoiceSustain(uint8_t voiceNumber, uint8_t sustainLevel) {
-  Sound::voices[voiceNumber].envelope.sustain = (sustainLevel << 8);
+void InputHandler::setSustain(uint8_t sustainLevel) {
+  Sound::envelope.sustain = (sustainLevel << 8);
 }
 
 void InputHandler::setVoiceFilterState(uint8_t voiceNumber, uint8_t filterState) {
@@ -202,20 +191,20 @@ void InputHandler::setVoiceSlaveSync(uint8_t voiceNumber, uint8_t slaveSyncVoice
   Sound::voices[voiceNumber].slaveSyncVoice = slaveSyncVoice;
 }
 
-void InputHandler::setVoiceAttack(uint8_t voiceNumber, uint16_t attackTime) {
-  Sound::voices[voiceNumber].envelope.attack = attackTime;
+void InputHandler::setAttack(uint16_t attackTime) {
+  Sound::envelope.attack = attackTime;
 }
 
-void InputHandler::setVoiceDecay(uint8_t voiceNumber, uint16_t decayTime) {
-  Sound::voices[voiceNumber].envelope.decay = decayTime;
+void InputHandler::setDecay(uint16_t decayTime) {
+  Sound::envelope.decay = decayTime;
 }
 
 void InputHandler::setVoicePulseWidth(uint8_t voiceNumber, uint16_t pulseWidth) {
   Sound::voices[voiceNumber].waveform.pulseWidth = pulseWidth;
 }
 
-void InputHandler::setVoiceRelease(uint8_t voiceNumber, uint16_t releaseTime) {
-  Sound::voices[voiceNumber].envelope.release = releaseTime;
+void InputHandler::setRelease(uint16_t releaseTime) {
+  Sound::envelope.release = releaseTime;
 }
 
 void InputHandler::setVoiceFrequency(uint8_t voiceNumber, uint16_t frequency) {

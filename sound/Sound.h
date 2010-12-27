@@ -39,6 +39,9 @@ public:
   // This number is incremented every millisecond
   volatile static uint16_t  msCounter;
 
+  // The one envelope generator to bind them all
+  static Envelope envelope;
+
   // All the voices to be mixed and output
   static Voice voices[numVoices];
 

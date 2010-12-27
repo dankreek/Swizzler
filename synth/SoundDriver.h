@@ -30,18 +30,16 @@ public:
   void setVoiceLevel(uint8_t voiceNum, uint8_t level);
   void setWaveform(uint8_t voiceNum, WaveformType waveform);
   void setFrequency(uint8_t voiceNum, uint16_t frequency);
-  void setEnvelopeGate(uint8_t voiceNum, bool isClosed);
-  void setAttackTime(uint8_t voiceNum, uint16_t time);
-  void setDecayTime(uint8_t voiceNum, uint16_t time);
-  void setSustainLevel(uint8_t voiceNum, uint8_t level);
-  void setReleaseTime(uint8_t voiceNum, uint16_t time);
+
   void setPuleseWidth(uint8_t voiceNum, uint8_t pw);
   void setGlobalPulseWidth(uint8_t pw);
 
-  void setGlobalAttackTime(uint16_t time);
-  void setGlobalDecayTime(uint16_t time);
-  void setGlobalSustainLevel(uint8_t level);
-  void setGlobalReleaseTime(uint16_t time);
+  // Envelope commands
+  void setAttackTime(uint16_t time);
+  void setDecayTime(uint16_t time);
+  void setSustainLevel(uint8_t level);
+  void setReleaseTime(uint16_t time);
+  void setEnvelopeGate(bool isClosed);
 
 private:
   uint8_t twiAddress;

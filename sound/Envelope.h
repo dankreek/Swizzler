@@ -32,6 +32,9 @@ public:
   // Operate the gate. true=closed, false=open
   void setGate(bool isClosed);
 
+  // Get the sample after being scaled by the envelope generator
+  uint8_t scaleSample(uint8_t sample);
+
 private:
   enum EnvelopeState {
       inactive,
@@ -56,5 +59,14 @@ private:
   // Put envelope generator in new state
   void setState(EnvelopeState newState);
 };
+
+inline
+uint8_t Envelope::scaleSample(uint8_t sample) {
+  // Calculate outsample scaled by envelope (which is scaled down to the correct resolution)
+    int16_t outSample =
+      (int16_t)sample * (int16_t)(level >> 8);
+
+    return (outSample >> 8);
+}
 
 #endif /* ENVELOPE_H_ */

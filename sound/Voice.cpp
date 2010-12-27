@@ -9,7 +9,6 @@
 #include "PwmOut.h"
 
 void Voice::init() {
-  envelope.init();
   waveform.init();
   phaseAccumulator = 0;
   isFiltered=false;

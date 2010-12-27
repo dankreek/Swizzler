@@ -20,9 +20,6 @@ public:
   // Initialize this voice
   void init();
 
-  // This voice's envelope generator
-  Envelope envelope;
-
   // This voice's waveform generator
   Waveform waveform;
 
@@ -54,12 +51,7 @@ private:
 inline int16_t Voice::getNextSample() {
   // Increment accumulator
   phaseAccumulator += phaseChangeRate;
-
-  // Calculate outsample scaled by envelope (which is scaled down to the correct resolution)
-  int16_t outSample =
-    waveform.getSample(phaseAccumulator) * (envelope.level >> (sizeof(outSample)*8 - envelopeOutputResolution));
-
-  return (outSample >> (sizeof(outSample)*8 - envelopeOutputResolution));
+  return waveform.getSample(phaseAccumulator);
 }
 
 

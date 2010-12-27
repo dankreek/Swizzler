@@ -8,11 +8,6 @@ enum VoiceCommandType {
   setVolume         = 0x00,
   setVoiceWaveform  = 0x01,
   setVoicePulseWidth     = 0x02,
-  setVoiceAttackTime = 0x03,
-  setVoiceDecayTime      = 0x04,
-  setVoiceSustainLevel   = 0x05,
-  setVoiceReleaseTime    = 0x06,
-  setGateState      = 0x07,
   setFilterOnOff    = 0x08,
   setVoiceFrequency = 0x09,
   setSlaveSync      = 0x0a
@@ -24,7 +19,8 @@ enum GlobalCommandType {
   globalAttack     = 0x04,
   globalDecay      = 0x05,
   globalSustain    = 0x06,
-  globalRelease    = 0x07
+  globalRelease    = 0x07,
+  globalGateState  = 0x08
 };
 
 SoundDriver::SoundDriver(uint8_t addy) {
@@ -38,9 +34,9 @@ void SoundDriver::setFrequency(uint8_t voiceNum, uint16_t freq) {
   Serial.write((uint8_t)(freq&0xff));
 }
 
-void SoundDriver::setEnvelopeGate(uint8_t voiceNum, bool isClosed) {
-  Serial.write(voiceNum+1);
-  Serial.write((uint8_t)setGateState);
+void SoundDriver::setEnvelopeGate(bool isClosed) {
+  Serial.write(0);
+  Serial.write((uint8_t)globalGateState);
   Serial.write((uint8_t)isClosed ? 1 : 0);
 }
 
@@ -61,58 +57,31 @@ void SoundDriver::setWaveform(uint8_t voiceNum, WaveformType waveform) {
  Serial.write((uint8_t)waveform);
 }
 
-void SoundDriver::setAttackTime(uint8_t voiceNum, uint16_t attackTime) {
-  Serial.write(voiceNum+1);
-  Serial.write((uint8_t)setVoiceAttackTime);
-  Serial.write((uint8_t)(attackTime>>8));
-  Serial.write((uint8_t)(attackTime&0xff));
-}
-
-void SoundDriver::setDecayTime(uint8_t voiceNum, uint16_t decayTime) {
-  Serial.write(voiceNum+1);
-  Serial.write((uint8_t)setVoiceDecayTime);
-  Serial.write((uint8_t)(decayTime>>8));
-  Serial.write((uint8_t)(decayTime&0xff));
-}
-
-void SoundDriver::setReleaseTime(uint8_t voiceNum, uint16_t releaseTime) {
-  Serial.write(voiceNum+1);
-  Serial.write((uint8_t)setVoiceReleaseTime);
-  Serial.write((uint8_t)(releaseTime>>8));
-  Serial.write((uint8_t)(releaseTime&0xff));
-}
-
-void SoundDriver::setGlobalAttackTime(uint16_t time) {
+void SoundDriver::setAttackTime(uint16_t time) {
   Serial.write(0x00);
   Serial.write((uint8_t)globalAttack);
   Serial.write((uint8_t)(time>>8));
   Serial.write((uint8_t)(time&0xff));
 }
 
-void SoundDriver::setGlobalDecayTime(uint16_t time) {
+void SoundDriver::setDecayTime(uint16_t time) {
   Serial.write(0x00);
   Serial.write((uint8_t)globalDecay);
   Serial.write((uint8_t)(time>>8));
   Serial.write((uint8_t)(time&0xff));
 }
 
-void SoundDriver::setGlobalSustainLevel(uint8_t level) {
+void SoundDriver::setSustainLevel(uint8_t level) {
   Serial.write(0x00);
   Serial.write((uint8_t)globalSustain);
   Serial.write(level);
 }
 
-void SoundDriver::setGlobalReleaseTime(uint16_t time) {
+void SoundDriver::setReleaseTime(uint16_t time) {
   Serial.write(0x00);
   Serial.write((uint8_t)globalRelease);
   Serial.write((uint8_t)(time>>8));
   Serial.write((uint8_t)(time&0xff));
-}
-
-void SoundDriver::setSustainLevel(uint8_t voiceNum, uint8_t sustainLevel) {
-  Serial.write(voiceNum+1);
-  Serial.write((uint8_t)setVoiceSustainLevel);
-  Serial.write(sustainLevel);
 }
 
 void SoundDriver::setPuleseWidth(uint8_t voiceNum, uint8_t pw) {

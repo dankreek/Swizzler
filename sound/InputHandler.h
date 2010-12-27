@@ -32,6 +32,8 @@
  *  Sets the pulse width for all voices. See the below.
  *
  *
+ *
+ *
  *  Voice Commands:
  *  ===============
  *
@@ -109,15 +111,15 @@ public:
 
   static void setVoiceVolume(uint8_t, uint8_t);
   static void setVoiceWaveform(uint8_t, uint8_t);
-  static void setVoiceSustain(uint8_t, uint8_t);
-  static void setVoiceGateState(uint8_t, uint8_t);
+  static void setSustain(uint8_t);
+  static void setGateState(uint8_t);
   static void setVoiceFilterState(uint8_t, uint8_t);
   static void setVoiceSlaveSync(uint8_t, uint8_t);
 
   static void setVoicePulseWidth(uint8_t, uint16_t);
-  static void setVoiceAttack(uint8_t, uint16_t);
-  static void setVoiceDecay(uint8_t, uint16_t);
-  static void setVoiceRelease(uint8_t, uint16_t);
+  static void setAttack(uint16_t);
+  static void setDecay(uint16_t);
+  static void setRelease(uint16_t);
   static void setVoiceFrequency(uint8_t, uint16_t);
 
 private:
@@ -137,11 +139,6 @@ private:
     setVolume       = 0x00,
     setWaveform     = 0x01,
     setPulseWidth   = 0x02,
-    setAttackTime   = 0x03,
-    setDecayTime    = 0x04,
-    setSustainLevel = 0x05,
-    setReleaseTime  = 0x06,
-    setGateState    = 0x07,
     setFilterOnOff  = 0x08,
     setFrequency    = 0x09,
     setSlaveSync    = 0x0a
@@ -158,7 +155,8 @@ private:
     setGlobalAttack     = 0x04,
     setGlobalDecay      = 0x05,
     setGlobalSustain    = 0x06,
-    setGlobalRelease    = 0x07
+    setGlobalRelease    = 0x07,
+    setGlobalGateState  = 0x08
   };
 
   // Current input handler state

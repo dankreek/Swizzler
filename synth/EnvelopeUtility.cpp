@@ -9,15 +9,10 @@
 #include "Swizzler.h"
 
 void EnvelopeUtility::restartGate() {
-  for (uint8_t i=0; i < Swizzler::numOscillators; i++) {
-    Swizzler::soundChip.setEnvelopeGate(i, false);
-    Swizzler::soundChip.setEnvelopeGate(i, true);
-  }
-
+  Swizzler::soundChip.setEnvelopeGate(false);
+  Swizzler::soundChip.setEnvelopeGate(true);
 }
 
 void EnvelopeUtility::setGate(bool openClosed) {
-  for (uint8_t i=0; i < Swizzler::numOscillators; i++) {
-    Swizzler::soundChip.setEnvelopeGate(i, openClosed);
-  }
+  Swizzler::soundChip.setEnvelopeGate(openClosed);
 }

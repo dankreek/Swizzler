@@ -15,6 +15,7 @@
 Voice Sound::voices[numVoices];
 volatile uint16_t Sound::msCounter;
 uint8_t Sound::masterVolume;
+Envelope Sound::envelope;
 
 //#define USE_UART_INPUT
 
@@ -23,6 +24,7 @@ void Sound::init() {
   Led::setLedOn(false);
 
   initVoices();
+  envelope.init();
 
   Waveform::initNoiseGenerator();
 
@@ -50,10 +52,8 @@ void Sound::mainLoop() {
   while (true) {
     // Update the envelopes every millisecond
     if (now != Sound::msCounter) {
-      // Service each envelope generator
-      for (int i=0; i < numVoices; i++) {
-        voices[i].envelope.msTickHandler();
-      }
+      // Update the envelope generator
+      envelope.msTickHandler();
 
       now = Sound::msCounter;
     }
