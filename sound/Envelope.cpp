@@ -65,7 +65,10 @@ void Envelope::setState(EnvelopeState newState) {
     case attackPhase:
       // Calculate attack rate
       changeRate = maxLevel/attack;
-      level = 0;
+
+      // Attempting to remove click
+      level = (changeRate > 0) ? 0 : maxLevel;
+
       break;
     case decayPhase:
       changeRate = (maxLevel-sustain)/decay;

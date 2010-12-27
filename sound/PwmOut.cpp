@@ -31,7 +31,7 @@ ISR(TIMER1_COMPA_vect) {
 
   // Finish calculating voice output levels (divide by common denominator)
   // (note that more right shifts are being done to prevent clipping from mixing)
-  out_sample >>= (Voice::outputVolumeResolution+3);
+  out_sample >>= (Voice::outputVolumeResolution+2);
 
   // Envelope the output sound
   out_sample = Sound::envelope.scaleSample(out_sample);

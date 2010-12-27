@@ -18,7 +18,8 @@ public:
   // Adjust envelope level every millisecond (called by main loop)
   void msTickHandler();
 
-  static const uint16_t maxLevel = 0xffff;
+  // Highest sustain level the envelope generator uses
+  static const int16_t maxLevel = 0x7fff;
 
   // Current envelope level (0=quietest, maxLevel=loudest)
   uint16_t level;
@@ -33,7 +34,7 @@ public:
   void setGate(bool isClosed);
 
   // Get the sample after being scaled by the envelope generator
-  uint8_t scaleSample(uint8_t sample);
+  int8_t scaleSample(int8_t sample);
 
 private:
   enum EnvelopeState {
@@ -61,7 +62,7 @@ private:
 };
 
 inline
-uint8_t Envelope::scaleSample(uint8_t sample) {
+int8_t Envelope::scaleSample(int8_t sample) {
   // Calculate outsample scaled by envelope (which is scaled down to the correct resolution)
     int16_t outSample =
       (int16_t)sample * (int16_t)(level >> 8);

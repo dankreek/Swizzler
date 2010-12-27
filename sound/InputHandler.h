@@ -31,7 +31,27 @@
  *  -----------------------
  *  Sets the pulse width for all voices. See the below.
  *
+ *  Set attack speed: 0x00 0x04 <attack speed high byte> <attack speed low byte>
+ *  ----------------------
+ *  Sets the duration of the attack phase of the envelope generator. Which would be the time
+ *  starting from when the gate if first closed going to when the envelop reaches max
+ *  level. Attack speed is specified in milliseconds.*
  *
+ *  Set decay speed: 0x00 0x04 <decay speed high byte> <decay speed low byte>
+ *  ----------------------
+ *  Sets the duration of the envelope generator's decay phase in milliseconds.*
+ *
+ *  Set sustain level: 0x00 0x06 <sustain level>
+ *  ------------------------
+ *  Sets the envelope generator's sustain level where 0x00 is total silence, and 0xff is maximum volume
+ *
+ *  Set release speed: 0x00 0x07 <release speed high byte> <release speed low byte>
+ *  ------------------------
+ *  Sets the duration of the envelope generator's release phase in milliseconds.
+ *
+ *  Set envelope gate state: 0x00 0x07 <gate state>
+ *  --------------------------------
+ *  Set the envelope generator's gate status. 0x00 opens the gate, 0x01 closes the gate.
  *
  *
  *  Voice Commands:
@@ -58,28 +78,6 @@
  *  is always low, 0xff would be a wave that's always high, and 0x80 would be a totally
  *  Symmetrical square wave.
  *
- *  Set voice attack speed: <voice number> 0x03 <attack speed high byte> <attack speed low byte>
- *  -----------------------
- *  Sets the duration of the attack phase of the envelope generator. Which would be the time
- *  starting from when the gate if first closed going to when the envelop reaches max
- *  level. Attack speed is specified in milliseconds.
- *
- *  Set voice decay speed: <voice number> 0x04 <decay speed high byte> <decay speed low byte>
- *  ----------------------
- *  Sets the duration of the envelope generator's decay phase in milliseconds.
- *
- *  Set voice sustain level: <voice number> 0x05 <sustain level>
- *  ------------------------
- *  Sets the envelope generator's sustain level where 0x00 is total silence, and 0xff is maximum volume
- *
- *  Set voice release speed: <voice number> 0x06 <release speed high byte> <release speed low byte>
- *  ------------------------
- *  Sets the duration of the envelope generator's release phase in milliseconds.
- *
- *  Set voice's envelope gate state: <voice number> 0x07 <gate state>
- *  --------------------------------
- *  Set the envelope generator's gate status. 0x00 opens the gate, 0x01 closes the gate.
- *
  *  Turn filter on/off for a voice: <voice number> 0x08 <filter on/off>
  *  (NOT YET IMPLEMENTED)
  *  -------------------------------
@@ -89,6 +87,7 @@
  *  Set the voice's oscillator frequency (in hz).
  *
  *  Set the voice to sync another voice: <voice number> 0x0a <slave voice>
+ *  (NOT YET IMPLEMENTED)
  *  ------------------------------------
  *  Sync the <slave voice> to <voice number>. If <slave voice> is 0xff then sync is turned off.
  *
