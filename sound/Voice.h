@@ -30,7 +30,7 @@ public:
   bool isFiltered;
 
   // Voice output volume is 5bits
-  static const uint8_t outputVolumeResolution = 5;
+  static const uint8_t outputVolumeResolution = 6;
 
   static const uint8_t envelopeOutputResolution = 8;
 

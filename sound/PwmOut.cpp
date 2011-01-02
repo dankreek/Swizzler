@@ -12,7 +12,8 @@
 // Handle the PWM output
 ISR(TIMER1_COMPA_vect) {
   static volatile uint16_t cycleCounter=0;
-  int16_t out_sample=0;
+  static volatile int16_t lastSample=0;
+  int16_t renderedSample=0;
 
   // Mix each voice (and partially calculate voice output level)
   for (int i=0; i < (Sound::numVoices); i++) {
@@ -20,7 +21,7 @@ ISR(TIMER1_COMPA_vect) {
     uint16_t oldPhase = Sound::voices[i].phaseAccumulator;
 #endif
 
-    out_sample += (Sound::voices[i].getNextSample() * Sound::voices[i].outputVolume);
+    renderedSample += (Sound::voices[i].getNextSample() * Sound::voices[i].outputVolume);
 
 #ifdef SYNC_ENABLED
     // If this voice is synced to a slave voice then restart its oscillator
@@ -31,13 +32,17 @@ ISR(TIMER1_COMPA_vect) {
 
   // Finish calculating voice output levels (divide by common denominator)
   // (note that more right shifts are being done to prevent clipping from mixing)
-  out_sample >>= (Voice::outputVolumeResolution+2);
+  renderedSample >>= (Voice::outputVolumeResolution+2);
 
   // Envelope the output sound
-  out_sample = Sound::envelope.scaleSample(out_sample);
+  renderedSample = Sound::envelope.scaleSample(renderedSample);
+
+  // Generate an interpolated output sample
+//  int16_t outputSample = (renderedSample + lastSample) >> 2;
+//  lastSample = renderedSample;
 
   // Convert 8bit signed to 8bit unsigned, and output
-  OCR0A = (out_sample+128);
+  OCR0A = (renderedSample + 128);
 
   // Keep track of milliseconds depending upon the current sample rate
   cycleCounter++;
@@ -45,6 +50,7 @@ ISR(TIMER1_COMPA_vect) {
     cycleCounter = 0;
     Sound::msCounter++;
   }
+
 
   //Waveform::pollNoiseGenerator();
 }

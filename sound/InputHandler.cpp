@@ -180,7 +180,7 @@ void InputHandler::setGateState(uint8_t gateState) {
 }
 
 void InputHandler::setSustain(uint8_t sustainLevel) {
-  Sound::envelope.sustain = (sustainLevel << 8);
+  Sound::envelope.sustain = (sustainLevel << 7)|0x7f;
 }
 
 void InputHandler::setVoiceFilterState(uint8_t voiceNumber, uint8_t filterState) {

@@ -25,10 +25,10 @@ public:
   uint16_t level;
 
   // Attack, decay and release times
-  uint16_t attack, decay, release;
+  int16_t attack, decay, release;
 
   // Sustain level (0- maxLevel)
-  uint16_t sustain;
+  int16_t sustain;
 
   // Operate the gate. true=closed, false=open
   void setGate(bool isClosed);
@@ -52,10 +52,10 @@ private:
 
   // The current rate (per millisecond) at which the envelope level is changing
   // Change is incremental during attack, and decremental during decay and release
-  uint16_t changeRate;
+  int16_t changeRate;
 
   // How long (in milliseconds) that current envelope phase has been running
-  uint16_t phaseTime;
+  int16_t phaseTime;
 
   // Put envelope generator in new state
   void setState(EnvelopeState newState);

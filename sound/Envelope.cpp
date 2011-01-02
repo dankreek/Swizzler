@@ -25,7 +25,7 @@ void Envelope::msTickHandler() {
       break;
 
     case decayPhase:
-      level -= changeRate;
+      level += changeRate;
       phaseTime++;
       if (phaseTime >= decay) setState(sustainPhase);
       break;
@@ -35,7 +35,7 @@ void Envelope::msTickHandler() {
       break;
 
     case releasePhase:
-      level -= changeRate;
+      level += changeRate;
       phaseTime++;
       if (phaseTime >= release) setState(inactive);
       break;
@@ -66,12 +66,10 @@ void Envelope::setState(EnvelopeState newState) {
       // Calculate attack rate
       changeRate = maxLevel/attack;
 
-      // Attempting to remove click
-      level = (changeRate > 0) ? 0 : maxLevel;
-
+      level = 0;
       break;
     case decayPhase:
-      changeRate = (maxLevel-sustain)/decay;
+      changeRate = (maxLevel-sustain)/(int16_t)decay;
       level = maxLevel;
       break;
     case sustainPhase:
@@ -79,7 +77,7 @@ void Envelope::setState(EnvelopeState newState) {
       level = sustain;
       break;
     case releasePhase:
-      changeRate = sustain/release;
+      changeRate = -sustain/release;
       // Level should be at sustain level already
       break;
     case inactive:
