@@ -9,6 +9,7 @@
 #define LFOCONTROLLER_H_
 
 #include "ITimerCall.h"
+#include "SineGenerator.h"
 
 /**
  * This class contains all the code that controls which LFO effects are currently
@@ -23,9 +24,14 @@ public:
     amplitudeModulation
   };
 
+  SineGenerator sinGenerator;
+
   void setLfoMode(LfoMode mode);
 
   void nextTick();
+
+private:
+  LfoMode curMode;
 };
 
 #endif /* LFOCONTROLLER_H_ */

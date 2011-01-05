@@ -26,9 +26,6 @@ class Swizzler {
 public:
   static LfoController lfoController;           // Controls LFO generation
 
-  // TODO : Put this into the LfoController class
-  static SineGenerator lfoSineGenerator;        // Generates the sine wave used for modulation effects
-
   // Note filters
   static EnvelopeNoteFilter envelopeController;
   static ArpeggiatorNoteFilter arp;

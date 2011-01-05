@@ -8,6 +8,8 @@
 #include "Swizzler.h"
 
 void LfoController::setLfoMode(LfoMode mode) {
+  curMode = mode;
+
   switch (mode) {
     case frequencyModulation:
       Swizzler::oscillators.setFrequencyModulation(true);
@@ -25,5 +27,5 @@ void LfoController::setLfoMode(LfoMode mode) {
 }
 
 void LfoController::nextTick() {
-
+  sinGenerator.nextTick();
 }

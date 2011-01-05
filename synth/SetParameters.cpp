@@ -30,7 +30,7 @@ void SetParameters::enablePortamento(uint8_t p) {
 
 void SetParameters::setLfoFreq(uint8_t p) {
   // Note that the actual frequency is p/4. This yields a range of between 0 and 31hz
-  Swizzler::lfoSineGenerator.setFrequency(p);
+  Swizzler::lfoController.sinGenerator.setFrequency(p);
   PresetManager::curSettings.lfoFreq = p;
 }
 

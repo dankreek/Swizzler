@@ -15,7 +15,6 @@
 #include <util/delay.h>
 #include <avr/interrupt.h>
 
-SineGenerator Swizzler::lfoSineGenerator;
 LfoController Swizzler::lfoController;
 EnvelopeNoteFilter Swizzler::envelopeController;
 ArpeggiatorNoteFilter Swizzler::arp;
@@ -40,7 +39,7 @@ void Swizzler::init() {
   setLed(false);
 
   portamentoTime = 100;
-  lfoSineGenerator.setFrequency(60);
+  lfoController.sinGenerator.setFrequency(60);
   MidiInput::pitchBendEventHandler = Swizzler::handlePitchBend;
   modWheelLevel = 0;
   enableArpeggio(false);
@@ -78,29 +77,17 @@ void Swizzler::init() {
   // Initialize the surface controls
   SurfaceControlManager::init();
 
-//  SpiUart::init();
-//
-//  SpiUart::write(1);
-//  SpiUart::write((uint8_t)0x09);
-//  SpiUart::write((uint8_t)(440>>8));
-//  SpiUart::write((uint8_t)(440&0xff));
-//
-//  SpiUart::write(1);
-//  SpiUart::write((uint8_t)0x07);
-//  SpiUart::write((uint8_t)1);
-//
-//  DisplayOutput::clearDisplay();
-//  DisplayOutput::printString("Fink");
-//  soundChip.reset();
+  soundChip.reset();
 
   setLed(true);
 }
 
 void Swizzler::setLed(bool onOff) {
-  if (onOff)
+  if (onOff) {
     PORTB |= _BV(PB5);
-  else
+  } else {
     PORTB &= ~_BV(PB5);
+  }
 }
 
 /**
@@ -117,7 +104,7 @@ void Swizzler::mainLoop() {
       lastMs = msCounter;
 
       if ((msCounter % 2) == 0) {
-        lfoSineGenerator.nextTick();
+        lfoController.nextTick();
         oscillators.nextTick();
         arp.nextTick();
         DisplayOutput::lineBuffer1.nextTick();
