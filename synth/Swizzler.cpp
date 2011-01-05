@@ -16,6 +16,7 @@
 #include <avr/interrupt.h>
 
 SineGenerator Swizzler::lfoSineGenerator;
+LfoController Swizzler::lfoController;
 EnvelopeNoteFilter Swizzler::envelopeController;
 ArpeggiatorNoteFilter Swizzler::arp;
 Oscillators Swizzler::oscillators;

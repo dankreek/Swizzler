@@ -20,9 +20,13 @@
 #include "ArpeggiatorNoteFilter.h"
 #include "Oscillators.h"
 #include "SineGenerator.h"
+#include "LfoController.h"
 
 class Swizzler {
 public:
+  static LfoController lfoController;           // Controls LFO generation
+
+  // TODO : Put this into the LfoController class
   static SineGenerator lfoSineGenerator;        // Generates the sine wave used for modulation effects
 
   // Note filters

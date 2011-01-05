@@ -23,6 +23,7 @@ public:
   static void setPortamentoTime(uint8_t);
 
   static void setLfoFreq(uint8_t);
+  static void setLfoType(uint8_t);
 
   static void setPulseWidth(uint8_t);
 

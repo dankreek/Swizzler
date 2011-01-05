@@ -4,7 +4,7 @@
 #include <inttypes.h>
 
 /**
- * This struct reprents one Preset stored in RAM
+ * This struct represents one Preset stored in RAM
  * Note that all stored values are in raw MIDI controller values (0-127)
  * and will be translated to real values through the midi input shits (SetParameters)
  *
@@ -16,6 +16,7 @@ struct Preset {
 
 	// LFO effects
 	uint8_t lfoFreq;
+	uint8_t lfoType;
 
 	// Envelope
 	uint8_t	attackTime;

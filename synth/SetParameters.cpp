@@ -34,6 +34,11 @@ void SetParameters::setLfoFreq(uint8_t p) {
   PresetManager::curSettings.lfoFreq = p;
 }
 
+void SetParameters::setLfoType(uint8_t p) {
+  //Swizzler::lfoController.setLfoMode();
+  PresetManager::curSettings.lfoType = p;
+}
+
 void SetParameters::setPortamentoTime(uint8_t p) {
   //for (uint8_t i; i < Swizzler::numOscillators; i++)
   //  FrequencyManager::managers[i].portMan.time = portTimeKnee.getValue(p);
