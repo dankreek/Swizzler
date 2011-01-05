@@ -22,9 +22,7 @@ public:
   void noteOn(uint8_t noteNum, uint8_t velocity);
   void noteOff(uint8_t noteNum);
 
-  /**
-   * Set an oscillator's note offset
-   */
+  // Set an oscillator's note offset
   void setNoteOffset(uint8_t oscNum, int8_t offset);
 
   // Signal an update to all oscillators
@@ -38,6 +36,10 @@ public:
 
   // Turn portamento on/off for each voice
   void setPortamento(bool onOff);
+
+  // Turn on/off frequency modulation
+  void setFrequencyModulation(bool onOff);
+
 private:
   FreqFilterChain oscillatorList[numVoices];
 };

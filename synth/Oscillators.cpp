@@ -46,3 +46,9 @@ void Oscillators::setPortamento(bool onOff) {
     oscillatorList[i].setPortamento(onOff);
   }
 }
+
+void Oscillators::setFrequencyModulation(bool onOff) {
+  for (uint8_t i=0; i < numVoices; i++) {
+    oscillatorList[i].setFrequencyModulation(onOff);
+  }
+}

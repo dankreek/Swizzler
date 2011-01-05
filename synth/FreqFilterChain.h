@@ -39,6 +39,9 @@ public:
 
   // Turn portamento on/off
   void setPortamento(bool onOff);
+
+  // Turn frequency modulation on/off
+  void setFrequencyModulation(bool onOff);
 private:
   int8_t noteOffset;
 

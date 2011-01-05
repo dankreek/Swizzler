@@ -30,7 +30,7 @@ void SetParameters::enablePortamento(uint8_t p) {
 
 void SetParameters::setLfoFreq(uint8_t p) {
   // Note that the actual frequency is p/4. This yields a range of between 0 and 31hz
-  Swizzler::freqModSineWave.setFrequency(p);
+  Swizzler::lfoSineGenerator.setFrequency(p);
   PresetManager::curSettings.lfoFreq = p;
 }
 
@@ -44,7 +44,6 @@ void SetParameters::setPortamentoTime(uint8_t p) {
 }
 
 void SetParameters::setPulseWidth(uint8_t p) {
-//  for (int i=0; i < 4; i++) Swizzler::soundChip.setPuleseWidth(i, p << 1);
   Swizzler::soundChip.setGlobalPulseWidth(p << 1);
   PresetManager::curSettings.pulseWidth = p;
 }

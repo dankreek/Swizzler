@@ -23,7 +23,7 @@
 
 class Swizzler {
 public:
-  static SineGenerator freqModSineWave;         // Frequency modulation sinewave generator
+  static SineGenerator lfoSineGenerator;        // Generates the sine wave used for modulation effects
 
   // Note filters
   static EnvelopeNoteFilter envelopeController;

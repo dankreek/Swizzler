@@ -35,8 +35,7 @@ FreqFilterChain::FreqFilterChain() {
 void FreqFilterChain::setPortamento(bool onOff) {
   if (onOff) {
     chainHead = &portamentoFilter;
-  }
-  else {
+  } else {
     chainHead = &pitchbendFilter;
   }
 }
@@ -61,8 +60,16 @@ void FreqFilterChain::noteOn(uint8_t noteNumber, uint8_t velocity) {
 }
 
 void FreqFilterChain::nextTick() {
-    portamentoFilter.nextTick();
-    updateFrequency();
+  portamentoFilter.nextTick();
+  updateFrequency();
+}
+
+void FreqFilterChain::setFrequencyModulation(bool onOff) {
+  if (onOff) {
+    pitchbendFilter.linkTo(&freqModFilter);
+  } else {
+    pitchbendFilter.linkTo(&oscOut);
+  }
 }
 
 void FreqFilterChain::noteOff(uint8_t noteNumber) {}

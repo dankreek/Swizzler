@@ -51,7 +51,16 @@ private:
 inline int16_t Voice::getNextSample() {
   // Increment accumulator
   phaseAccumulator += phaseChangeRate;
+<<<<<<< TREE
+
+  // Calculate outsample scaled by envelope (which is scaled down to the correct resolution)
+  int16_t outSample =
+    (int16_t)waveform.getSample(phaseAccumulator) * (envelope.level >> (sizeof(outSample)*8 - envelopeOutputResolution));
+
+  return (outSample >> (sizeof(outSample)*8 - envelopeOutputResolution));
+=======
   return waveform.getSample(phaseAccumulator);
+>>>>>>> MERGE-SOURCE
 }
 
 

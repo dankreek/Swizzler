@@ -15,7 +15,7 @@
 #include <util/delay.h>
 #include <avr/interrupt.h>
 
-SineGenerator Swizzler::freqModSineWave;
+SineGenerator Swizzler::lfoSineGenerator;
 EnvelopeNoteFilter Swizzler::envelopeController;
 ArpeggiatorNoteFilter Swizzler::arp;
 Oscillators Swizzler::oscillators;
@@ -39,7 +39,7 @@ void Swizzler::init() {
   setLed(false);
 
   portamentoTime = 100;
-  freqModSineWave.setFrequency(60);
+  lfoSineGenerator.setFrequency(60);
   MidiInput::pitchBendEventHandler = Swizzler::handlePitchBend;
   modWheelLevel = 0;
   enableArpeggio(false);
@@ -116,7 +116,7 @@ void Swizzler::mainLoop() {
       lastMs = msCounter;
 
       if ((msCounter % 2) == 0) {
-        freqModSineWave.nextTick();
+        lfoSineGenerator.nextTick();
         oscillators.nextTick();
         arp.nextTick();
         DisplayOutput::lineBuffer1.nextTick();
