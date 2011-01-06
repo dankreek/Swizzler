@@ -53,6 +53,7 @@ public:
   static void setBendRange(uint8_t);
 
   static void setModWheelLevel(uint8_t);
+
 private:
   static void setWaveform(uint8_t, uint8_t);
   static void setVoiceLevel(uint8_t, uint8_t);
