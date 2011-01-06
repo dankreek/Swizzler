@@ -24,7 +24,7 @@ public:
 
   void nextTick();
 
-  // Get the current sine value
+  // Get the current sine value (between -255 and 255)
   int16_t getCurValue();
 
 private:
