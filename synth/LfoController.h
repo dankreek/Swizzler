@@ -10,6 +10,7 @@
 
 #include "ITimerCall.h"
 #include "SineGenerator.h"
+#include "PulseWidthModulationEffect.h"
 
 /**
  * This class contains all the code that controls which LFO effects are currently
@@ -32,6 +33,7 @@ public:
 
 private:
   LfoMode curMode;
+  PulseWidthModulationEffect pwModulation;
 };
 
 #endif /* LFOCONTROLLER_H_ */
