@@ -17,7 +17,7 @@ public:
   SineGenerator();
 
   // Note that this is for LFO generator that can generate from 0-32hz.
-  // But to maintain more grandularity this function accepts (actual freq)<<3
+  // But to maintain more granularity this function accepts (actual freq)<<3
   // as the frequency (a seven bit number that gets shifted to a 4 bit number)
   // TODO: Figure out how the hell to implement this
   void setFrequency(uint16_t freq);

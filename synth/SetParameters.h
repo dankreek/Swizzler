@@ -43,8 +43,6 @@ public:
   static void setOscWaveform3(uint8_t);
   static void setOscOffset3(uint8_t);
 
-  static void setNoiseLevel(uint8_t);
-
   static void enableArpeggio(uint8_t);
   static void setArpeggioTime(uint8_t);
   static void setArpeggioMinNotes(uint8_t);

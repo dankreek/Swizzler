@@ -25,9 +25,11 @@ public:
     amplitudeModulation
   };
 
+  // The sine generator is public so that the freq. modulation filters can read it
   SineGenerator sinGenerator;
 
   void setLfoMode(LfoMode mode);
+
 
   void nextTick();
 

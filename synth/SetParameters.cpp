@@ -143,11 +143,6 @@ void SetParameters::setOscLevel3(uint8_t p) {
   PresetManager::curSettings.voiceLevel3 = p;
 }
 
-void SetParameters::setNoiseLevel(uint8_t p) {
-  setVoiceLevel(3, p);
-  PresetManager::curSettings.noiseLevel = p;
-}
-
 void SetParameters::setOscWaveform1(uint8_t p) {
   setWaveform(0, p);
   PresetManager::curSettings.waveform1 = p;
