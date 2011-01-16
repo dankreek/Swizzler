@@ -13,12 +13,13 @@
 #include "Swizzler.h"
 
 // Knees to define how midi controls work, and the range for the control
-KnobKnee portTimeKnee = KnobKnee(2000, 64, 100);
-KnobKnee attackTimeKnee = KnobKnee(8000, 95, 1000);
-KnobKnee decRelTimeKnee = KnobKnee(24000, 95, 2400);	// Decay/release time knee
-KnobKnee arpTimeKnee = KnobKnee(1000, 95, 250);			// Arpeggio time (ms per note)
+KnobKnee portTimeKnee = KnobKnee(71, 50, 103, 500, 2000);
+KnobKnee attackTimeKnee = KnobKnee(71, 100, 103, 1000, 8000);
+KnobKnee decRelTimeKnee = KnobKnee(71, 300, 103, 3000, 24000);	// Decay/release time knee
+KnobKnee arpTimeKnee = KnobKnee(71, 25, 103, 250, 1000);		// Arpeggio time (ms per note)
 
-uint8_t EEMEM portamentoStr[]={"Portamento"};
+uint8_t EEMEM portamentoStr[] = {"Portamento"};
+uint8_t EEMEM ArpeggioStr[] = {"Arpeggiator"};
 
 void SetParameters::enablePortamento(uint8_t p) {
   Swizzler::oscillators.setPortamento((p >= 64) ? true : false);

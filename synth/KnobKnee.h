@@ -5,26 +5,19 @@
 
 /**
  * This class essentially converts an integer from 0 to 127 (MIDI controller
- * range) into an integer ranging from 0 to the range specified in init.
+ * range) into an integer ranging from 0 to the maxValue specified in init.
  *
- * This uses a simple piecewise linear function.
+ * This uses a simple piecewise linear function made up of lines connecting the points
+ * (0,0) -> (x1, y1) -> (x2, y2) ->(127, maxRange)
  *
- * The (kneeX, kneeY) point defines a point where the knee of the input
- * scaler changes.
- *
- * TODO : Make this a 3-line curve instead of 2
+
  */
 class KnobKnee {
 public:
   /**
-   * @range The range knob's (from 0-range, inclusive)
-   * (@kneeX, @kneeY) Where the "knee" is, think of it as a graph where
-   *                  the X axis goes from 0-127 and the Y axis goes from 0-range.
-   *                  The output Y value is determined by two lines. The first line goes from (0,0) to
-   *                  (kneeX, KneeY), then next line goes from (kneeX, kneeY) to (127,range).
-   *                  Different types of controls feel more natural with different knees.
+   * @maxValue The range knob's (from 0-range, inclusive)*
    */
-  KnobKnee(uint16_t range, uint8_t kneeX, uint16_t kneeY);
+  KnobKnee(uint8_t x1, uint16_t y1, uint8_t x2, uint16_t y2, uint16_t maxValue);
 
   /**
    * Get the output value based up a MIDI controller value
@@ -33,11 +26,11 @@ public:
 
 private:
   // The output range
-  uint16_t range;
+  uint16_t maxValue;
 
-  // The knee point
-  uint8_t kneeX;
-  uint16_t kneeY;
+  // The knee points
+  uint8_t x1,x2;
+  uint16_t y1,y2;
 };
 
 
