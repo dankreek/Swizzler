@@ -77,7 +77,7 @@ void Envelope::setState(EnvelopeState newState) {
       level = sustain;
       break;
     case releasePhase:
-      changeRate = -sustain/release;
+      changeRate = (0 - level)/release;
       // Level should be at sustain level already
       break;
     case inactive:

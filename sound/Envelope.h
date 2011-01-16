@@ -22,7 +22,7 @@ public:
   static const int16_t maxLevel = 0x7fff;
 
   // Current envelope level (0=quietest, maxLevel=loudest)
-  uint16_t level;
+  int16_t level;
 
   // Attack, decay and release times
   int16_t attack, decay, release;

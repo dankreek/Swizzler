@@ -59,7 +59,7 @@ inline int8_t Waveform::getSample(uint16_t i) {
     case reverseSawtoothWave:
       return 255-(i >> 8)-128;
     case squareWave:
-      return (i < pulseWidth) ? -64 : 64;
+      return (i < pulseWidth) ? -70 : 70;
     case noiseWave:
       return noiseOut;
 
