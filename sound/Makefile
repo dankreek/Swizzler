@@ -46,7 +46,7 @@
 MCU=atmega328p
 
 # Processor speed
-F_CPU=16000000
+F_CPU=20000000
 
 # id to use with programmer
 # default: PROGRAMMER_MCU=$(MCU)

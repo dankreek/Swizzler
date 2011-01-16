@@ -47,8 +47,7 @@ void InputHandler::handleReadingCommandType(uint8_t data) {
 
     // This is the only command with no data
     if (globalCommand == resetVoices) {
-      Sound::initVoices();
-      Sound::envelope.init();
+      Sound::initSound();
       resetCommand();
       return;
     }

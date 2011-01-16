@@ -23,10 +23,9 @@ void Sound::init() {
   Led::init();
   Led::setLedOn(false);
 
-  initVoices();
-  envelope.init();
-
   Waveform::initNoiseGenerator();
+
+  initSound();
 
   // Start the sound output going
   msCounter = 0;
@@ -35,6 +34,12 @@ void Sound::init() {
   Serial.init(31250);
 
   Led::setLedOn(true);
+}
+
+void Sound::initSound() {
+  initVoices();
+  envelope.init();
+  masterVolume = 0xff;
 }
 
 void Sound::initVoices() {
@@ -53,7 +58,7 @@ void Sound::mainLoop() {
     // Update the envelopes every millisecond
     if (now != Sound::msCounter) {
       // Update the envelope generator
-      envelope.msTickHandler();
+      envelope.nextTick();
 
       now = Sound::msCounter;
     }

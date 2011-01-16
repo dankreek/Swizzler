@@ -37,6 +37,9 @@ ISR(TIMER1_COMPA_vect) {
   // Envelope the output sound
   renderedSample = Sound::envelope.scaleSample(renderedSample);
 
+  // Apply the global volume control
+//  renderedSample = (renderedSample * Sound::masterVolume) / 0xff;
+
   // Generate an interpolated output sample
 //  int16_t outputSample = (renderedSample + lastSample) >> 2;
 //  lastSample = renderedSample;

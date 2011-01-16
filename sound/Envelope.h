@@ -16,7 +16,7 @@ public:
   void init();
 
   // Adjust envelope level every millisecond (called by main loop)
-  void msTickHandler();
+  void nextTick();
 
   // Highest sustain level the envelope generator uses
   static const int16_t maxLevel = 0x7fff;

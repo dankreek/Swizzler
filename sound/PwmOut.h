@@ -13,7 +13,7 @@
 class PwmOut {
 public:
   // The current sample rate at which digital audio is mixed
-  static const uint16_t sampleRate=40000;
+  static const uint16_t sampleRate=48000;
 
   // Initialize the PWM output
   static void init();

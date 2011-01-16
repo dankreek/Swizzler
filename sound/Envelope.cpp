@@ -16,7 +16,7 @@ void Envelope::init() {
   level = 0;
 }
 
-void Envelope::msTickHandler() {
+void Envelope::nextTick() {
   switch (envelopeState) {
     case attackPhase:
       level += changeRate;
@@ -69,7 +69,7 @@ void Envelope::setState(EnvelopeState newState) {
       level = 0;
       break;
     case decayPhase:
-      changeRate = (maxLevel-sustain)/(int16_t)decay;
+      changeRate = (sustain-maxLevel)/(int16_t)decay;
       level = maxLevel;
       break;
     case sustainPhase:

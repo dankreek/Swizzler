@@ -20,21 +20,21 @@ public:
   // Initialize the sound module
   static void init();
 
-  // Reset each voice to power-on defaults
-  static void initVoices();
+  // Initialize all the noise-making parts of the chip
+  static void initSound();
 
   // The main thread loop
   static void mainLoop();
 
   // This chip's TWI slave address
-  static const uint8_t twiSlaveAddress = 0x70;
-
-  // Buffer where the incoming TWI data is stored
-  static const uint8_t twiBufferSize = 64;
-  static uint8_t twiData[twiBufferSize];
-
-  // Ring buffer wrapper around the twiData array
-  static RingBuffer<uint8_t> twiInputBuffer;
+//  static const uint8_t twiSlaveAddress = 0x70;
+//
+//  // Buffer where the incoming TWI data is stored
+//  static const uint8_t twiBufferSize = 64;
+//  static uint8_t twiData[twiBufferSize];
+//
+//  // Ring buffer wrapper around the twiData array
+//  static RingBuffer<uint8_t> twiInputBuffer;
 
   // This number is incremented every millisecond
   volatile static uint16_t  msCounter;
@@ -46,6 +46,10 @@ public:
   static Voice voices[numVoices];
 
   static uint8_t masterVolume;
+
+private:
+  // Reset each voice to power-on defaults
+  static void initVoices();
 };
 
 #endif /* SOUND_H_ */
