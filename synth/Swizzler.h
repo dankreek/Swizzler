@@ -9,8 +9,6 @@
 #ifndef SWIZZLER_H_
 #define SWIZZLER_H_
 
-#include "EnvelopeNoteFilter.h"
-
 #include "MidiInput.h"
 #include "Wire.h"
 #include "SetParameters.h"
@@ -27,7 +25,6 @@ public:
   static LfoController lfoController;           // Controls LFO generation
 
   // Note filters
-//  static EnvelopeNoteFilter envelopeController;
   static ArpeggiatorNoteFilter arp;
 
   // Current level that the mod wheel is at

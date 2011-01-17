@@ -16,7 +16,6 @@
 #include <avr/interrupt.h>
 
 LfoController Swizzler::lfoController;
-//EnvelopeNoteFilter Swizzler::envelopeController;
 ArpeggiatorNoteFilter Swizzler::arp;
 Oscillators Swizzler::oscillators;
 uint16_t Swizzler::portamentoTime;
