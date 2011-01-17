@@ -28,20 +28,41 @@ void ArpeggiatorNoteFilter::noteOn(uint8_t noteNumber, uint8_t velocity) {
   // Add note to the buffer
   noteBuffer.putMidiNote(noteNumber);
 
-  // If this note sets the minimum number of notes close the envelope gate
-  if (noteBuffer.size == minNotes) {
-    restartArpeggio();
-    Swizzler::soundChip.setEnvelopeGate(true);
+  // Simply turn the gate on if arpeggiatingif off
+  if (isBypassOn) {
+    if (noteNumber != noteBuffer.getLastNote()) {
+      Swizzler::soundChip.restartGate();
+    }
+
+    // Pass note through to next note reciever
+    sendNoteOn(noteNumber, velocity);
+  // Do the arpeggiating
+  } else {
+    // If this note sets the minimum number of notes close the envelope gate
+    if (noteBuffer.size == minNotes) {
+      restartArpeggio();
+      Swizzler::soundChip.setEnvelopeGate(true);
+    }
   }
 }
 
 void ArpeggiatorNoteFilter::noteOff(uint8_t noteNumber) {
+  uint8_t lastNote = noteBuffer.getLastNote();
   noteBuffer.removeMidiNote(noteNumber);
 
-  // If removing this note puts the number of notes held down below the minimum, open the envelope gate
-  // TODO: This needs to be more intelligent. When the user lets off on all the notes, let the arp run for envelope decay
-  if (noteBuffer.size == (minNotes-1)) {
-    Swizzler::soundChip.setEnvelopeGate(false);
+  if (isBypassOn) {
+    if (noteNumber == lastNote) {
+      Swizzler::soundChip.setEnvelopeGate(false);
+    }
+
+    // Pass note off through to next filter in the chain
+    sendNoteOff(noteNumber);
+  } else {
+    // If removing this note puts the number of notes held down below the minimum, open the envelope gate
+    // TODO: This needs to be more intelligent. When the user lets off on all the notes, let the arp run for envelope decay
+    if (noteBuffer.size == (minNotes-1)) {
+      Swizzler::soundChip.setEnvelopeGate(false);
+    }
   }
 }
 
@@ -72,6 +93,10 @@ void ArpeggiatorNoteFilter::nextTick() {
     }
 
   }
+}
+
+void ArpeggiatorNoteFilter::setBypass(bool onOff) {
+  isBypassOn = onOff;
 }
 
 void ArpeggiatorNoteFilter::incNextI() {

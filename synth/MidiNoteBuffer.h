@@ -5,7 +5,7 @@
 
 /**
  * An ordered buffer that stores a list of midi notes to allow for areeggiating over them
- */ 
+ */
 class MidiNoteBuffer {
 public:
   static const uint8_t midiNoteBufSize = 24;
@@ -18,7 +18,7 @@ public:
 
   // Initialize the Note Buffer
   MidiNoteBuffer();
-  
+
   // Add a new midi note in-order
   void putMidiNote(uint8_t noteNumber);
 
@@ -35,13 +35,21 @@ public:
   bool isEmpty();
 
 private:
-
-
   // Create room for another element in the buffer at the given index
   void makeHole(uint8_t i);
 
   // Close the hole that a note left after being removed at the given index
   void closeHole(uint8_t i);
 };
+
+inline
+uint8_t MidiNoteBuffer::getLastNote() {
+ return buffer[lastNote];
+}
+
+inline
+bool MidiNoteBuffer::isEmpty() {
+  return (lastNote == -1);
+}
 
 #endif /*MIDINOTEBUFFER_H_*/

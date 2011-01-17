@@ -33,10 +33,21 @@ public:
   // Service routine called by the timer loop
   void nextTick();
 
+  /**
+   * Turn the arepggiator on/off
+   *
+   * @onOff
+   *    Set true to bypass the arpeggiator, or false to enable the arpeggiator
+   */
+  void setBypass(bool onOff);
+
 private:
   ArpeggioDirection curDir;
   uint16_t          curTime;    // Time elapsed during
   uint8_t           minNotes;
+
+  // Is the arpeggiator still on?
+  bool isBypassOn;
 
   // Amount of time (in ms) that each note should be played
   uint16_t arpTime;

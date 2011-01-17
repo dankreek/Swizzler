@@ -27,7 +27,7 @@ public:
   static LfoController lfoController;           // Controls LFO generation
 
   // Note filters
-  static EnvelopeNoteFilter envelopeController;
+//  static EnvelopeNoteFilter envelopeController;
   static ArpeggiatorNoteFilter arp;
 
   // Current level that the mod wheel is at

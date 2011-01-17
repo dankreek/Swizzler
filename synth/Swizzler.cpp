@@ -16,7 +16,7 @@
 #include <avr/interrupt.h>
 
 LfoController Swizzler::lfoController;
-EnvelopeNoteFilter Swizzler::envelopeController;
+//EnvelopeNoteFilter Swizzler::envelopeController;
 ArpeggiatorNoteFilter Swizzler::arp;
 Oscillators Swizzler::oscillators;
 uint16_t Swizzler::portamentoTime;
@@ -31,8 +31,9 @@ void Swizzler::handlePitchBend() {
 }
 
 void Swizzler::enableArpeggio(bool onOff) {
-  if (onOff) MidiInput::noteReceiver = &arp;
-  else MidiInput::noteReceiver = &envelopeController;
+//  if (onOff) MidiInput::noteReceiver = &arp;
+//  else MidiInput::noteReceiver = &envelopeController;
+  arp.setBypass(!onOff);
 }
 
 void Swizzler::init() {
@@ -42,10 +43,11 @@ void Swizzler::init() {
   lfoController.sinGenerator.setFrequency(60);
   MidiInput::pitchBendEventHandler = Swizzler::handlePitchBend;
   modWheelLevel = 0;
+  MidiInput::noteReceiver = &arp;
   enableArpeggio(false);
 
   // Setup chain
-  envelopeController.linkTo(&oscillators);
+//  envelopeController.linkTo(&oscillators);
   arp.linkTo(&oscillators);
 
   // Set the LED pin to output
