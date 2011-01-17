@@ -6,7 +6,6 @@
  */
 
 #include "ArpeggiatorNoteFilter.h"
-#include "EnvelopeUtility.h"
 #include "Swizzler.h"
 #include <stdlib.h>
 

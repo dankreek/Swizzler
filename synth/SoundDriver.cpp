@@ -27,6 +27,11 @@ SoundDriver::SoundDriver(uint8_t addy) {
   twiAddress = addy;
 }
 
+void SoundDriver::restartGate() {
+  setEnvelopeGate(false);
+  setEnvelopeGate(true);
+}
+
 void SoundDriver::setFrequency(uint8_t voiceNum, uint16_t freq) {
   Serial.write(voiceNum+1);
   Serial.write((uint8_t)setVoiceFrequency);

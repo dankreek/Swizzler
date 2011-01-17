@@ -7,13 +7,12 @@
 
 #include "Swizzler.h"
 #include "EnvelopeNoteFilter.h"
-#include "EnvelopeUtility.h"
 
 EnvelopeNoteFilter::EnvelopeNoteFilter() {}
 
 void EnvelopeNoteFilter::noteOn(uint8_t noteNumber, uint8_t velocity) {
   if (curNoteNum != noteNumber) {
-    EnvelopeUtility::restartGate();
+    Swizzler::soundChip.restartGate();
     //restartGate();
     curNoteNum = noteNumber;
   }

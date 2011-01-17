@@ -40,6 +40,7 @@ public:
   void setSustainLevel(uint8_t level);
   void setReleaseTime(uint16_t time);
   void setEnvelopeGate(bool isClosed);
+  void restartGate();
 
 private:
   uint8_t twiAddress;
