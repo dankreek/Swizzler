@@ -41,20 +41,7 @@ void Oscillators::noteOff(uint8_t noteNumber) {
 }
 
 void Oscillators::setNoteOffset(uint8_t oscNum, int8_t offset) {
-//  oscillatorList[oscNum].setNoteOffset(offset);
   noteOffset[oscNum] = offset;
+  outputFrequency(oscNum);
 }
 
-//void Oscillators::setPortamento(bool onOff) {
-//  Swizzler::setLed(onOff);
-//
-//  for (uint8_t i=0; i < numVoices; i++) {
-//    oscillatorList[i].setPortamento(onOff);
-//  }
-//}
-//
-//void Oscillators::setFrequencyModulation(bool onOff) {
-//  for (uint8_t i=0; i < numVoices; i++) {
-//    oscillatorList[i].setFrequencyModulation(onOff);
-//  }
-//}
