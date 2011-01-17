@@ -7,6 +7,7 @@
 
 #include "ArpeggiatorNoteFilter.h"
 #include "EnvelopeUtility.h"
+#include "Swizzler.h"
 #include <stdlib.h>
 
 ArpeggiatorNoteFilter::ArpeggiatorNoteFilter() {
@@ -31,7 +32,7 @@ void ArpeggiatorNoteFilter::noteOn(uint8_t noteNumber, uint8_t velocity) {
   // If this note sets the minimum number of notes close the envelope gate
   if (noteBuffer.size == minNotes) {
     restartArpeggio();
-    EnvelopeUtility::setGate(true);
+    Swizzler::soundChip.setEnvelopeGate(true);
   }
 }
 
@@ -41,7 +42,7 @@ void ArpeggiatorNoteFilter::noteOff(uint8_t noteNumber) {
   // If removing this note puts the number of notes held down below the minimum, open the envelope gate
   // TODO: This needs to be more intelligent. When the user lets off on all the notes, let the arp run for envelope decay
   if (noteBuffer.size == (minNotes-1)) {
-    EnvelopeUtility::setGate(false);
+    Swizzler::soundChip.setEnvelopeGate(false);
   }
 }
 

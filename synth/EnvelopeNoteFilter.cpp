@@ -24,7 +24,7 @@ void EnvelopeNoteFilter::noteOn(uint8_t noteNumber, uint8_t velocity) {
 
 void EnvelopeNoteFilter::noteOff(uint8_t noteNumber) {
   if (curNoteNum == noteNumber) {
-    EnvelopeUtility::setGate(false);
+    Swizzler::soundChip.setEnvelopeGate(false);
     curNoteNum = -1;
   }
 

@@ -14,7 +14,7 @@
 #include "ITimerCall.h"
 #include <inttypes.h>
 
-class ArpeggiatorNoteFilter : public ANoteReceiver, public ANoteTransmitter, ITimerCall {
+class ArpeggiatorNoteFilter : public ANoteReceiver, public ANoteTransmitter, public ITimerCall {
 public:
   ArpeggiatorNoteFilter();
   void noteOn(uint8_t noteNumber, uint8_t velocity);

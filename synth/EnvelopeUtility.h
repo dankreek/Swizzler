@@ -12,8 +12,6 @@ class EnvelopeUtility {
 public:
   // Close and open the gate for every voice
   static void restartGate();
-
-  static void setGate(bool);
 };
 
 #endif /* ENVELOPEUTILITY_H_ */
