@@ -19,6 +19,7 @@ LfoController Swizzler::lfoController;
 ArpeggiatorNoteFilter Swizzler::arp;
 Oscillators Swizzler::oscillators;
 uint16_t Swizzler::portamentoTime;
+FreqFilterChain Swizzler::freqModEffectChain;
 
 uint8_t Swizzler::modWheelLevel;
 
@@ -42,12 +43,13 @@ void Swizzler::init() {
   lfoController.sinGenerator.setFrequency(60);
   MidiInput::pitchBendEventHandler = Swizzler::handlePitchBend;
   modWheelLevel = 0;
-  MidiInput::noteReceiver = &arp;
   arp.setBypass(true);
 
-  // Setup chain
-//  envelopeController.linkTo(&oscillators);
+  // Setup note filter chain
+  MidiInput::noteReceiver = &arp;
   arp.linkTo(&oscillators);
+//  arp.linkTo(&freqModEffectChain);
+//  freqModEffectChain.linkTo(&oscillators);
 
   // Set the LED pin to output
   DDRB = _BV(PB5);
@@ -106,7 +108,7 @@ void Swizzler::mainLoop() {
 
       if ((msCounter % 2) == 0) {
         lfoController.nextTick();
-        oscillators.nextTick();
+//        freqModEffectChain.nextTick();
         arp.nextTick();
         DisplayOutput::lineBuffer1.nextTick();
         DisplayOutput::lineBuffer2.nextTick();

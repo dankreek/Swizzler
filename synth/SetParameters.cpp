@@ -22,7 +22,7 @@ uint8_t EEMEM portamentoStr[] = {"Portamento"};
 uint8_t EEMEM ArpeggioStr[] = {"Arpeggiator"};
 
 void SetParameters::enablePortamento(uint8_t p) {
-  Swizzler::oscillators.setPortamento((p >= 64) ? true : false);
+  Swizzler::freqModEffectChain.setPortamento((p >= 64) ? true : false);
   PresetManager::curSettings.portamentoOn = p;
 
   DisplayOutput::clearDisplay();

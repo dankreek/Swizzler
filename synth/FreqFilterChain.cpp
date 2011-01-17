@@ -13,23 +13,16 @@ FreqFilterChain::FreqFilterChain() {
   curNoteNum = -1;
 
   // Tell all the filters who their daddy is
-  oscOut.setParentContainer(this);
   pitchbendFilter.setParentContainer(this);
   portamentoFilter.setParentContainer(this);
   freqModFilter.setParentContainer(this);
 
   // Link frequency filters together
   portamentoFilter.linkTo(&pitchbendFilter);
-
   pitchbendFilter.linkTo(&freqModFilter);
-  freqModFilter.linkTo(&oscOut);
+  freqModFilter.linkTo(&outputFilter);
 
   setPortamento(false);
-
-  // The start of the chain is the note->freq conversion
-  // if portamento is turned on then the chainHead points to portamentoFilter
-  //chainHead = &directNoteFilter;
-  //chainHead = &portamentoFilter;
 }
 
 void FreqFilterChain::setPortamento(bool onOff) {
@@ -40,15 +33,6 @@ void FreqFilterChain::setPortamento(bool onOff) {
   }
 }
 
-void FreqFilterChain::setNoteOffset(int8_t ofs) {
-  int8_t delta = ofs-noteOffset;
-
-  noteOffset = ofs;
-  prevNoteNum = curNoteNum;
-  curNoteNum += delta;
-  updateFrequency();
-}
-
 void FreqFilterChain::updateFrequency() {
   chainHead->updateOffset();
 }
@@ -57,6 +41,9 @@ void FreqFilterChain::noteOn(uint8_t noteNumber, uint8_t velocity) {
   prevNoteNum = curNoteNum;
   curNoteNum = (noteNumber+noteOffset);
   updateFrequency();
+
+  // Pass note information on to next node in chain
+  sendNoteOn(noteNumber, velocity);
 }
 
 void FreqFilterChain::nextTick() {
@@ -68,7 +55,7 @@ void FreqFilterChain::setFrequencyModulation(bool onOff) {
   if (onOff) {
     pitchbendFilter.linkTo(&freqModFilter);
   } else {
-    pitchbendFilter.linkTo(&oscOut);
+    pitchbendFilter.linkTo(&outputFilter);
   }
 }
 

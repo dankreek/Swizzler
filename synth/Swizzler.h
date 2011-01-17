@@ -19,10 +19,14 @@
 #include "Oscillators.h"
 #include "SineGenerator.h"
 #include "LfoController.h"
+#include "FreqFilterChain.h"
 
 class Swizzler {
 public:
   static LfoController lfoController;           // Controls LFO generation
+
+  // Calculate all the frequency modulation effects
+  static FreqFilterChain freqModEffectChain;
 
   // Note filters
   static ArpeggiatorNoteFilter arp;

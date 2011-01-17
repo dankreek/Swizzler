@@ -16,7 +16,7 @@
 #include "FreqFilterChain.h"
 #include "ITimerCall.h"
 
-class Oscillators : public ANoteReceiver, public ITimerCall {
+class Oscillators : public ANoteReceiver {
 public:
   Oscillators();
   void noteOn(uint8_t noteNum, uint8_t velocity);
@@ -32,16 +32,25 @@ public:
   static const uint8_t numVoices = 3;
 
   // This is called every timer tick, and it in-turn calls each filterChain's nextTick()
-  void nextTick();
+//  void nextTick();
 
   // Turn portamento on/off for each voice
-  void setPortamento(bool onOff);
+//  void setPortamento(bool onOff);
 
   // Turn on/off frequency modulation
-  void setFrequencyModulation(bool onOff);
+//  void setFrequencyModulation(bool onOff);
 
 private:
-  FreqFilterChain oscillatorList[numVoices];
+  uint8_t curRootNote;
+
+//  FreqFilterChain oscillatorList[numVoices];
+  int8_t noteOffset[numVoices];
+
+  // Keep track of the last frequency output so no redundant frequency is sent to the sound chip
+  uint16_t lastFreq[numVoices];
+
+  // Calculate the frequency and send out to the sound chip
+  void outputFrequency(uint8_t voiceNum);
 };
 
 #endif /* OSCILLATORS_H_ */
