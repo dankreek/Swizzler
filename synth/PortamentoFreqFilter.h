@@ -41,6 +41,7 @@ private:
   uint16_t      timerCount;
 
   int16_t getEffectiveOffset();
+  uint16_t getEffectivePortTime();
 
   int16_t       curSchlipsOffset;
   int16_t       destSchlipOffset;

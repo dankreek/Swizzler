@@ -21,7 +21,7 @@ void PortamentoFreqFilter::reset() {
 }
 
 void PortamentoFreqFilter::nextTick() {
-  if (timerCount <= (Swizzler::portamentoTime/4)) {
+  if (timerCount <= getEffectivePortTime()) {
     curSchlipsOffset = curSchlipsOffset + offsetIncAmount;
     timerCount++;
   }
@@ -39,7 +39,7 @@ void PortamentoFreqFilter::startNewGlide() {
   int16_t beginSchlip = (srcPortNote-destPortNote)*FreqUtils::schlipsDivs;
 
 
-  offsetIncAmount = -(beginSchlip << linearResolution)/((int16_t)Swizzler::portamentoTime/4);
+  offsetIncAmount = -(beginSchlip << linearResolution)/((int16_t)getEffectivePortTime());
   curSchlipsOffset = (beginSchlip << linearResolution);
 }
 
@@ -78,3 +78,9 @@ void PortamentoFreqFilter::updateOffset() {
 
   sendEffectiveOffset();
 }
+
+uint16_t PortamentoFreqFilter::getEffectivePortTime() {
+  // Note the +1 is because the timer routine gets called every 2ms (divide by 2)
+  return (Swizzler::portamentoTime >> (linearResolution+1));
+}
+

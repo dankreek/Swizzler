@@ -31,7 +31,7 @@ public:
   // The number of voices with frequency (voice 4 is only white noise)
   static const uint8_t numVoices = 3;
 
-  // This is called every ms, and it in-turn calls each filterChain's nextTick()
+  // This is called every timer tick, and it in-turn calls each filterChain's nextTick()
   void nextTick();
 
   // Turn portamento on/off for each voice

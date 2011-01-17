@@ -28,11 +28,11 @@ void ArpeggiatorNoteFilter::noteOn(uint8_t noteNumber, uint8_t velocity) {
   // Add note to the buffer
   noteBuffer.putMidiNote(noteNumber);
 
-  // Simply turn the gate on if arpeggiatingif off
+  // Simply turn the gate on if arpeggiating if off
   if (isBypassOn) {
-    if (noteNumber != noteBuffer.getLastNote()) {
+//    if (noteNumber != noteBuffer.getLastNote()) {
       Swizzler::soundChip.restartGate();
-    }
+//    }
 
     // Pass note through to next note reciever
     sendNoteOn(noteNumber, velocity);
@@ -82,16 +82,18 @@ void ArpeggiatorNoteFilter::setMinNotes(uint8_t minNotes) {
 }
 
 void ArpeggiatorNoteFilter::nextTick() {
-  if (noteBuffer.size >= minNotes) {
-    curTime += 4;
+  if (!isBypassOn) {
+    if (noteBuffer.size >= minNotes) {
+      curTime += 4;
 
-    // Switch to the next note
-    if (curTime >= arpTime) {
-      curTime = 0;
-      sendNoteOn(noteBuffer.buffer[nextNoteI], 127);
-      incNextI();
+      // Switch to the next note
+      if (curTime >= arpTime) {
+        curTime = 0;
+        sendNoteOn(noteBuffer.buffer[nextNoteI], 127);
+        incNextI();
+      }
+
     }
-
   }
 }
 

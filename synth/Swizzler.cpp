@@ -44,7 +44,7 @@ void Swizzler::init() {
   MidiInput::pitchBendEventHandler = Swizzler::handlePitchBend;
   modWheelLevel = 0;
   MidiInput::noteReceiver = &arp;
-  enableArpeggio(false);
+  arp.setBypass(true);
 
   // Setup chain
 //  envelopeController.linkTo(&oscillators);
