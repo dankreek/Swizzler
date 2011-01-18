@@ -8,7 +8,7 @@
 
 volatile bool LcdDisplay::autoScroll;
 volatile uint8_t LcdDisplay::position;
-uint8_t LcdDisplay::rowAddress[] = {FIRST_ROW_ADDRESS, SECOND_ROW_ADDRESS, THIRD_ROW_ADDRESS, FOURTH_ROW_ADDRESS};
+uint8_t LcdDisplay::rowAddress[4] = {FIRST_ROW_ADDRESS, SECOND_ROW_ADDRESS, THIRD_ROW_ADDRESS, FOURTH_ROW_ADDRESS};
 uint8_t LcdDisplay::width, LcdDisplay::height;
 bool LcdDisplay::underlineOn, LcdDisplay::blinkOn;
 
@@ -202,8 +202,8 @@ void LcdDisplay::clear() {
 }
 
 void LcdDisplay::moveCursor(uint8_t x, uint8_t y) {
-  position = (y*width) + x;
-  writeByte(COMMAND_REGISTER, 0x80|(x + rowAddress[y]));
+  writeByte(COMMAND_REGISTER, 0x80 + (x + rowAddress[y]));
+  position = y*width + x;
 }
 
 void LcdDisplay::scrollDown() {

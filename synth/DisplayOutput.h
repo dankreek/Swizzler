@@ -9,19 +9,18 @@
 #define DISPLAYOUTPUT_H_
 
 
-#include "TimedLineBuffer.h"
+#include "ITimerCall.h"
 #include <inttypes.h>
 #include <stdio.h>
 #include <avr/eeprom.h>
 
-class DisplayOutput {
+class DisplayOutput  {
 public:
   static void init();
 
+  // These functions print directly to the display
   static void putChar(uint8_t c);
-
-  static void printString(char[]);
-  static void printEepromString(uint8_t*);
+  static void printMem(uint8_t*, uint8_t len);
 
   // Display commands
   static void clearDisplay();
@@ -29,14 +28,11 @@ public:
   static void setAutowrap(bool onOff);
   static void moveCursor(uint8_t col, uint8_t row);
 
-  static TimedLineBuffer lineBuffer1;
-  static TimedLineBuffer lineBuffer2;
-
 private:
   static const uint8_t twiAddress = 0x69;
   static const uint8_t commandByte = 0xfe;
 
-  static const uint8_t twiDelay = 20;  // Time to wait after sending twi data (in microseconds)
+  static const uint8_t twiDelay = 100;  // Time to wait after sending twi data (in microseconds)
 
   static uint8_t greetingString[];
 

@@ -13,19 +13,9 @@
 #include <avr/io.h>
 #include <avr/eeprom.h>
 
-
-TimedLineBuffer DisplayOutput::lineBuffer1 = TimedLineBuffer(0);
-TimedLineBuffer DisplayOutput::lineBuffer2 = TimedLineBuffer(1);
-
-uint8_t EEMEM DisplayOutput::greetingString[]={"   Welcome To\n    Swizzler"};
-
-char buf[17];
-
 void DisplayOutput::init() {
   clearDisplay();
-  //setAutoScroll(false);
-
-  printEepromString(greetingString);
+  setAutoScroll(false);
 }
 
 void DisplayOutput::putChar(uint8_t c) {
@@ -35,22 +25,11 @@ void DisplayOutput::putChar(uint8_t c) {
   _delay_us(twiDelay);
 }
 
-void DisplayOutput::printString(char str[]) {
+void DisplayOutput::printMem(uint8_t str[], uint8_t len) {
   Wire.beginTransmission(twiAddress);
-  for (uint8_t i=0; str[i] != 0; i++) {
+  for (uint8_t i=0; i < len; i++) {
     Wire.send(str[i]);
     _delay_us(twiDelay);
-  }
-  Wire.endTransmission();
-}
-
-void DisplayOutput::printEepromString(uint8_t *eepromStrPtr) {
-  Wire.beginTransmission(twiAddress);
-  uint8_t b = eeprom_read_byte(eepromStrPtr);
-  while (b != 0) {
-    Wire.send(b); _delay_us(twiDelay);
-    eepromStrPtr++;
-    b = eeprom_read_byte(eepromStrPtr);
   }
   Wire.endTransmission();
 }

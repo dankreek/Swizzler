@@ -8,6 +8,7 @@
 #include <inttypes.h>
 #include "DisplayOutput.h"
 #include "SetParameters.h"
+#include "SurfaceControlManager.h"
 #include "KnobKnee.h"
 #include "PresetManager.h"
 #include "Swizzler.h"
@@ -25,8 +26,15 @@ void SetParameters::enablePortamento(uint8_t p) {
   Swizzler::freqModEffectChain.setPortamento((p >= 64) ? true : false);
   PresetManager::curSettings.portamentoOn = p;
 
-  DisplayOutput::clearDisplay();
-  DisplayOutput::printEepromString(portamentoStr);
+  SurfaceControlManager::displayOut.clear();
+  SurfaceControlManager::displayOut.writeEepromString(portamentoStr, 0, 0);
+  sprintf((char*)SurfaceControlManager::displayOut.frameBuffer[1], "(%d)", p);
+
+
+//  DisplayOutput::clearDisplay();
+//  DisplayOutput::printEepromString(0, portamentoStr);
+//  sprintf(DisplayOutput::lineBuffers[1].displayBuffer, "(%d)", p);
+//  DisplayOutput::lineBuffers[1].flush();
 }
 
 void SetParameters::setLfoFreq(uint8_t p) {

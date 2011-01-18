@@ -8,7 +8,7 @@
 #ifndef SURFACECONTROLMANAGER_H_
 #define SURFACECONTROLMANAGER_H_
 
-#include "DisplayOutput.h"
+#include "DisplayFrameBuffer.h"
 
 class SurfaceControlManager {
 public:
@@ -17,7 +17,8 @@ public:
    */
   static void init();
 
-  static DisplayOutput output;
+  // Frame buffer for output display
+  static DisplayFrameBuffer displayOut;
 private:
 };
 

@@ -110,8 +110,7 @@ void Swizzler::mainLoop() {
         lfoController.nextTick();
         freqModEffectChain.nextTick();
         arp.nextTick();
-        DisplayOutput::lineBuffer1.nextTick();
-        DisplayOutput::lineBuffer2.nextTick();
+        SurfaceControlManager::displayOut.nextTick();
       }
     }
 
