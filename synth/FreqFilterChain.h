@@ -26,7 +26,7 @@ public:
   void noteOff(uint8_t);
 
   // Recalculate resulting frequency
-  void updateFrequency();
+  void update();
 
   // Keeps track of the current and previous note numbers that have entered the filter chain
   int8_t prevNoteNum;

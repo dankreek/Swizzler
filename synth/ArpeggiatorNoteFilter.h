@@ -41,6 +41,8 @@ public:
    */
   void setBypass(bool onOff);
 
+  void update();
+
 private:
   ArpeggioDirection curDir;
   uint16_t          curTime;    // Time elapsed during

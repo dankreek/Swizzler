@@ -16,6 +16,11 @@ class ANoteReceiver {
 public:
   virtual void noteOn(uint8_t noteNumber, uint8_t velocity) = 0;
   virtual void noteOff(uint8_t noteNumber) = 0;
+
+  /**
+   * This note receiver should recalculate all of its data
+   */
+  virtual void update() = 0;
 };
 
 #endif /* ANOTERECEIVER_H_ */

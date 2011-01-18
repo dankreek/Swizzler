@@ -127,3 +127,5 @@ void ArpeggiatorNoteFilter::incNextI() {
 
 
 }
+
+void ArpeggiatorNoteFilter::update() {}

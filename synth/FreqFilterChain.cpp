@@ -33,22 +33,23 @@ void FreqFilterChain::setPortamento(bool onOff) {
   }
 }
 
-void FreqFilterChain::updateFrequency() {
+void FreqFilterChain::update() {
   chainHead->updateOffset();
+
+  // Tell the next guy (oscillators) to update
+  receiver->update();
 }
 
 void FreqFilterChain::noteOn(uint8_t noteNumber, uint8_t velocity) {
   prevNoteNum = curNoteNum;
   curNoteNum = (noteNumber+noteOffset);
-  updateFrequency();
-
-  // Pass note information on to next node in chain
+  update();
   sendNoteOn(noteNumber, velocity);
 }
 
 void FreqFilterChain::nextTick() {
   portamentoFilter.nextTick();
-  updateFrequency();
+  update();
 }
 
 void FreqFilterChain::setFrequencyModulation(bool onOff) {

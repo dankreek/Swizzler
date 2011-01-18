@@ -19,10 +19,10 @@ Oscillators::Oscillators() {
 
 void Oscillators::noteOn(uint8_t noteNumber, uint8_t velocity) {
   curRootNote = noteNumber;
-  updateFrequencies();
+  update();
 }
 
-void Oscillators::updateFrequencies() {
+void Oscillators::update() {
   for (uint8_t i=0; i < numVoices; i++) { outputFrequency(i); }
 }
 

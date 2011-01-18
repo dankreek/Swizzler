@@ -27,7 +27,7 @@ SoundDriver Swizzler::soundChip = SoundDriver(0x70);
 uint16_t Swizzler::msCounter = 0;
 
 void Swizzler::handlePitchBend() {
-  oscillators.updateFrequencies();
+  freqModEffectChain.update();
 }
 
 void Swizzler::enableArpeggio(bool onOff) {
@@ -47,9 +47,9 @@ void Swizzler::init() {
 
   // Setup note filter chain
   MidiInput::noteReceiver = &arp;
-  arp.linkTo(&oscillators);
-//  arp.linkTo(&freqModEffectChain);
-//  freqModEffectChain.linkTo(&oscillators);
+//  arp.linkTo(&oscillators);
+  arp.linkTo(&freqModEffectChain);
+  freqModEffectChain.linkTo(&oscillators);
 
   // Set the LED pin to output
   DDRB = _BV(PB5);
@@ -108,7 +108,7 @@ void Swizzler::mainLoop() {
 
       if ((msCounter % 2) == 0) {
         lfoController.nextTick();
-//        freqModEffectChain.nextTick();
+        freqModEffectChain.nextTick();
         arp.nextTick();
         DisplayOutput::lineBuffer1.nextTick();
         DisplayOutput::lineBuffer2.nextTick();

@@ -26,19 +26,10 @@ public:
   void setNoteOffset(uint8_t oscNum, int8_t offset);
 
   // Signal an update to all oscillators
-  void updateFrequencies();
+  void update();
 
   // The number of voices with frequency (voice 4 is only white noise)
   static const uint8_t numVoices = 3;
-
-  // This is called every timer tick, and it in-turn calls each filterChain's nextTick()
-//  void nextTick();
-
-  // Turn portamento on/off for each voice
-//  void setPortamento(bool onOff);
-
-  // Turn on/off frequency modulation
-//  void setFrequencyModulation(bool onOff);
 
 private:
   uint8_t curRootNote;
