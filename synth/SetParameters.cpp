@@ -6,7 +6,8 @@
  */
 
 #include <inttypes.h>
-#include "DisplayOutput.h"
+#include <stdio.h>
+#include <avr/eeprom.h>
 #include "SetParameters.h"
 #include "SurfaceControlManager.h"
 #include "KnobKnee.h"
@@ -19,8 +20,8 @@ KnobKnee attackTimeKnee = KnobKnee(71, 100, 103, 1000, 8000);
 KnobKnee decRelTimeKnee = KnobKnee(71, 300, 103, 3000, 24000);	// Decay/release time knee
 KnobKnee arpTimeKnee = KnobKnee(71, 25, 103, 250, 1000);		// Arpeggio time (ms per note)
 
-uint8_t EEMEM portamentoStr[] = {"Portamento"};
-uint8_t EEMEM ArpeggioStr[] = {"Arpeggiator"};
+uint8_t EEMEM portamentoStr[] = "Portamento";
+uint8_t EEMEM ArpeggioStr[] = "Arpeggiator";
 
 void SetParameters::enablePortamento(uint8_t p) {
   Swizzler::freqModEffectChain.setPortamento((p >= 64) ? true : false);

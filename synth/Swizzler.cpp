@@ -11,7 +11,6 @@
 #include <avr/io.h>
 #include "HardwareSerial.h"
 #include "Timer.h"
-#include "DisplayOutput.h"
 #include <util/delay.h>
 #include <avr/interrupt.h>
 

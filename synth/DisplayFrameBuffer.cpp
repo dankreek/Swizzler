@@ -6,7 +6,7 @@
  */
 
 #include "DisplayFrameBuffer.h"
-#include "DisplayOutput.h"
+#include "DisplayDriver.h"
 
 DisplayFrameBuffer::DisplayFrameBuffer() {
   curTime = refreshTime;
@@ -83,8 +83,8 @@ void DisplayFrameBuffer::writeChangesToDisplay() {
       int8_t firstChange = changeList[i][0];
       int8_t lastChange = changeList[i][1];
 
-      DisplayOutput::moveCursor(firstChange, i);
-      DisplayOutput::printMem(&diffBuffer[i][firstChange], lastChange - firstChange + 1);
+      DisplayDriver::moveCursor(firstChange, i);
+      DisplayDriver::printMem(&diffBuffer[i][firstChange], lastChange - firstChange + 1);
     }
   }
 }

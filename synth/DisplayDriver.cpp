@@ -5,7 +5,7 @@
  *      Author: justin
  */
 
-#include "DisplayOutput.h"
+#include "DisplayDriver.h"
 #include "Swizzler.h"
 #include <stdio.h>
 #include <string.h>
@@ -13,19 +13,19 @@
 #include <avr/io.h>
 #include <avr/eeprom.h>
 
-void DisplayOutput::init() {
+void DisplayDriver::init() {
   clearDisplay();
   setAutoScroll(false);
 }
 
-void DisplayOutput::putChar(uint8_t c) {
+void DisplayDriver::putChar(uint8_t c) {
   Wire.beginTransmission(twiAddress);
   Wire.send(c);
   Wire.endTransmission();
   _delay_us(twiDelay);
 }
 
-void DisplayOutput::printMem(uint8_t str[], uint8_t len) {
+void DisplayDriver::printMem(uint8_t str[], uint8_t len) {
   Wire.beginTransmission(twiAddress);
   for (uint8_t i=0; i < len; i++) {
     Wire.send(str[i]);
@@ -34,19 +34,19 @@ void DisplayOutput::printMem(uint8_t str[], uint8_t len) {
   Wire.endTransmission();
 }
 
-void DisplayOutput::clearDisplay() {
+void DisplayDriver::clearDisplay() {
   sendCommand(clearHome);
 }
 
-void DisplayOutput::setAutowrap(bool onOff) {
+void DisplayDriver::setAutowrap(bool onOff) {
   sendCommand(onOff ? autoWrapOn : autoWrapOff);
 }
 
-void DisplayOutput::setAutoScroll(bool onOff) {
+void DisplayDriver::setAutoScroll(bool onOff) {
   sendCommand(onOff ? autoScrollOn : autoScrollOff);
 }
 
-void DisplayOutput::moveCursor(uint8_t col, uint8_t row) {
+void DisplayDriver::moveCursor(uint8_t col, uint8_t row) {
   Wire.beginTransmission(twiAddress);
   Wire.send(commandByte);       _delay_us(twiDelay);
   Wire.send(setCursorPosition); _delay_us(twiDelay);
@@ -55,7 +55,7 @@ void DisplayOutput::moveCursor(uint8_t col, uint8_t row) {
   Wire.endTransmission();
 }
 
-void DisplayOutput::sendCommand(DiplayCommand cmd) {
+void DisplayDriver::sendCommand(DiplayCommand cmd) {
   Wire.beginTransmission(twiAddress);
   Wire.send(commandByte); _delay_us(twiDelay);
   Wire.send(cmd);         _delay_us(twiDelay);

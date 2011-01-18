@@ -14,7 +14,7 @@
 #include <stdio.h>
 #include <avr/eeprom.h>
 
-class DisplayOutput  {
+class DisplayDriver  {
 public:
   static void init();
 
