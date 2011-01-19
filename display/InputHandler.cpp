@@ -49,7 +49,6 @@ void InputHandler::recvByte(uint8_t c) {
 
     // Currently setCursorPosition is the only command supported that requires data
     if ((curCmd == SET_CURSOR_POS) && (cmdDataSize == 2)) {
-
       LcdDisplay::moveCursor(cmdData[0], cmdData[1]);
 
       curState = PRINTING;

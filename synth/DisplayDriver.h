@@ -32,7 +32,7 @@ private:
   static const uint8_t twiAddress = 0x69;
   static const uint8_t commandByte = 0xfe;
 
-  static const uint8_t twiDelay = 100;  // Time to wait after sending twi data (in microseconds)
+  static const uint8_t twiDelay = 200;  // Time to wait after sending twi data (in microseconds)
 
   static uint8_t greetingString[];
 

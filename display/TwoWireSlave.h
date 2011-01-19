@@ -35,7 +35,7 @@ extern "C" {
 
 #include "RingBuffer.cpp"
 
-#define BUFFER_LENGTH 32
+#define BUFFER_LENGTH 64
 
 // TODO: Make this class an all static service class
 class TwoWireSlave {
