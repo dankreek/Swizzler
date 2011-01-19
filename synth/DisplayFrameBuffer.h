@@ -30,6 +30,15 @@ public:
   // Direct access to the frame buffer
   uint8_t frameBuffer[height][width+1];
 
+  /**
+   * Printf wrapper
+   *
+   * @lineNum   Line number to put output on
+   * @formatStr Format string
+   * @... list of arguments
+   */
+  void printf(uint8_t lineNum, char* formatStr, ...);
+
   void nextTick();
 
 private:

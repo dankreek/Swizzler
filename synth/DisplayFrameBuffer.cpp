@@ -4,7 +4,7 @@
  *  Created on: Jan 17, 2011
  *      Author: justin
  */
-
+#include <stdarg.h>
 #include "DisplayFrameBuffer.h"
 #include "DisplayDriver.h"
 
@@ -105,4 +105,12 @@ void DisplayFrameBuffer::writeEepromString(uint8_t* eepromStrPtr, uint8_t lineNu
 
   // Write trailing spaces
   for (; i < width; i++) { frameBuffer[lineNum][i] = ' '; }
+}
+
+void DisplayFrameBuffer::printf(uint8_t lineNum, char* fmt, ...) {
+  va_list  args;
+  va_start(args,fmt);
+  vsprintf((char*)frameBuffer[lineNum], fmt, args);
+  va_end(args);
+
 }

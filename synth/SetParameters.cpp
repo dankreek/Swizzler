@@ -29,13 +29,9 @@ void SetParameters::enablePortamento(uint8_t p) {
 
   SurfaceControlManager::displayOut.clear();
   SurfaceControlManager::displayOut.writeEepromString(portamentoStr, 0, 0);
-  sprintf((char*)SurfaceControlManager::displayOut.frameBuffer[1], "(%d)", p);
+  SurfaceControlManager::displayOut.printf(1, "(%d)", p);
+//  sprintf((char*)SurfaceControlManager::displayOut.frameBuffer[1], "(%d)", p);
 
-
-//  DisplayOutput::clearDisplay();
-//  DisplayOutput::printEepromString(0, portamentoStr);
-//  sprintf(DisplayOutput::lineBuffers[1].displayBuffer, "(%d)", p);
-//  DisplayOutput::lineBuffers[1].flush();
 }
 
 void SetParameters::setLfoFreq(uint8_t p) {
