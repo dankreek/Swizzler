@@ -25,13 +25,15 @@ void DisplayDriver::putChar(uint8_t c) {
   _delay_us(twiDelay);
 }
 
-void DisplayDriver::printMem(uint8_t str[], uint8_t len) {
+void DisplayDriver::printMem(uint8_t *str, uint8_t len) {
   Wire.beginTransmission(twiAddress);
   for (uint8_t i=0; i < len; i++) {
     Wire.send(str[i]);
     _delay_us(twiDelay);
   }
   Wire.endTransmission();
+  _delay_us(twiDelay);
+  _delay_us(twiDelay);
 }
 
 void DisplayDriver::clearDisplay() {

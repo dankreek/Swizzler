@@ -53,6 +53,8 @@ public:
   static void setModWheelLevel(uint8_t);
 
 private:
+  static char* onOffStr(bool);
+
   static void setWaveform(uint8_t, uint8_t);
   static void setVoiceLevel(uint8_t, uint8_t);
   static void setVoiceOffset(uint8_t, uint8_t);

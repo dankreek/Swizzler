@@ -15,9 +15,9 @@ uint16_t KnobKnee::getValue(uint8_t midiValue) {
   if (midiValue <= x1) {
     return (y1*(uint16_t)midiValue)/x1;
   } else if (midiValue <= x2) {
-    return ((y2-y1)*(uint16_t)midiValue)/(x2-x1) + y1;
+    return ((y2-y1)*(uint16_t)(midiValue-x1+1))/(x2-x1) + y1;
   } else {
-    return ((maxValue-y2)*(uint16_t)midiValue)/(127-x2) + y2;
+    return ((maxValue-y2)*(uint16_t)(midiValue-x2+1))/(127-x2) + y1;
   }
 
 }

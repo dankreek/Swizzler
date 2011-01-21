@@ -16,10 +16,10 @@ public:
   DisplayFrameBuffer();
 
   // The number of ticks that go by before the frameBuffer is updated
-  static const uint8_t refreshTime = 16;
+  static const uint8_t refreshTime = 28;
 
-  static const uint8_t width = 16;
-  static const uint8_t height = 2;
+  static const uint8_t numColumns = 16;
+  static const uint8_t numRows = 2;
 
   // Clear the screen buffer
   void clear();
@@ -28,7 +28,7 @@ public:
   void writeEepromString(uint8_t* eeprom_str, uint8_t lineNum, uint8_t offset);
 
   // Direct access to the frame buffer
-  uint8_t frameBuffer[height][width+1];
+  uint8_t frameBuffer[numRows][numColumns+1];
 
   /**
    * Printf wrapper
@@ -44,13 +44,16 @@ public:
 private:
   uint8_t curTime;
 
-  uint8_t diffBuffer[height][width+1];
+  uint8_t diffBuffer[numRows][numColumns+1];
+
+  // Record the differences between the frame buffer and the last sent buffer
+  void recordChanges();
 
   // Write all the differences found in changeList[][] by nextTick()
   void writeChangesToDisplay();
 
   // Keeps a list of the first and last index of area of change a
-  int8_t changeList[height][2];
+  int8_t changeList[numRows][2];
 };
 
 #endif /* DOUBLEBUFFER_H_ */
