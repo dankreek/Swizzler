@@ -10,15 +10,21 @@ KnobKnee::KnobKnee(uint8_t x1, uint16_t y1, uint8_t x2, uint16_t y2, uint16_t ma
 
 
 uint16_t KnobKnee::getValue(uint8_t midiValue) {
-  uint16_t out;
+  uint32_t out;
 
   if (midiValue <= x1) {
-    return (y1*(uint16_t)midiValue)/x1;
+    out = (uint32_t)y1 * (uint32_t)midiValue;
+    out /= x1;
   } else if (midiValue <= x2) {
-    return ((y2-y1)*(uint16_t)(midiValue-x1+1))/(x2-x1) + y1;
+    out = (uint32_t)(y2 - y1) * (uint32_t)(midiValue - x1);
+    out /= (x2 - x1);
+    out += y1;
   } else {
-    return ((maxValue-y2)*(uint16_t)(midiValue-x2+1))/(127-x2) + y1;
+    out = (uint32_t)(maxValue - y2) * (uint32_t)(midiValue - x2);
+    out /= (127 - x2);
+    out += y2;
   }
 
+  return (uint16_t)out;
 }
 

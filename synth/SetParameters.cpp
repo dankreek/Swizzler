@@ -17,7 +17,7 @@
 
 // Knees to define how midi controls work, and the range for the control
 KnobKnee portTimeKnee = KnobKnee(71, 150, 103, 500, 2000);
-KnobKnee attackTimeKnee = KnobKnee(71, 100, 103, 1000, 8000);
+KnobKnee attackTimeKnee = KnobKnee(71, 100, 103, 500, 4000);
 KnobKnee decRelTimeKnee = KnobKnee(71, 300, 103, 3000, 24000);	// Decay/release time knee
 KnobKnee arpTimeKnee = KnobKnee(71, 25, 103, 250, 1000);		// Arpeggio time (ms per note)
 
