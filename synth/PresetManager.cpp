@@ -11,6 +11,11 @@
 #include "Wire.h"
 #include "ExternalEeprom.h"
 
+uint8_t EEMEM factoryDefaultsStr[] = "Factory Defaults";
+uint8_t EEMEM restoredStr[]        = "Restored";
+uint8_t EEMEM savePresetStr[]      = "Save Preset #";
+uint8_t EEMEM loadPresetStr[]      = "Preset #";
+
 ExternalEeprom PresetManager::presetEeprom = ExternalEeprom(eepromAddress);
 Preset PresetManager::curSettings;
 uint8_t	PresetManager::curPreset;
@@ -19,11 +24,18 @@ uint8_t	PresetManager::curPreset;
 Preset readStorage;
 
 void PresetManager::setFactoryDefaults() {
-  setDefaultPreset();
+  SurfaceControlManager::displayOut.isOutputOn = false;
 
-  for (uint8_t i=0; i < 128; i++) {
-
+  for (curPreset=0; curPreset < 128; curPreset++) {
+    setDefaultPreset();
+    storePreset(0);
   }
+
+  loadPreset(0);
+  SurfaceControlManager::displayOut.clear();
+  SurfaceControlManager::displayOut.writeEepromString(factoryDefaultsStr, 0, 0);
+  SurfaceControlManager::displayOut.writeEepromString(restoredStr, 1, 4);
+  SurfaceControlManager::displayOut.isOutputOn = true;
 }
 
 void PresetManager::setDefaultPreset() {
@@ -72,12 +84,9 @@ void PresetManager::storePreset(uint8_t shim) {
     (uint8_t*)(void*)&curSettings,
     sizeof(Preset));
 
-  /*
-  // Store preset to internal EEPROM
-  for (int i=0; i < sizeof(curSettings); i++) {
-          eeprom_write_byte(presetOfs+(unsigned char *)i, *p++);
-  }
-  */
+  SurfaceControlManager::displayOut.clear();
+  SurfaceControlManager::displayOut.printf(0, (char*)"%16d", curPreset);
+  SurfaceControlManager::displayOut.writeEepromString(savePresetStr, 0, 0);
 }
 
 void PresetManager::loadPreset(uint8_t patchNum) {
@@ -95,6 +104,10 @@ void PresetManager::loadPreset(uint8_t patchNum) {
   applyPreset((Preset*)p);
 
   curPreset = patchNum;
+
+  SurfaceControlManager::displayOut.clear();
+  SurfaceControlManager::displayOut.printf(0, (char*)"        %d", patchNum);
+  SurfaceControlManager::displayOut.writeEepromString(loadPresetStr, 0, 0);
 }
 
 void PresetManager::applyPreset(Preset *presetPtr) {

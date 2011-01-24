@@ -98,7 +98,7 @@ void SetParameters::setPulseWidth(uint8_t p) {
 
   SurfaceControlManager::displayOut.clear();
   SurfaceControlManager::displayOut.writeEepromString(pulseWidthStr, 0, 0);
-  SurfaceControlManager::displayOut.printf(1, (char*)"%6d/256 (%3d)", pulseWidth, p);
+  SurfaceControlManager::displayOut.printf(1, (char*)"%6d/254 (%3d)", pulseWidth, p);
 }
 
 void SetParameters::setAttackTime(uint8_t p) {
@@ -128,7 +128,7 @@ void SetParameters::setSustainLevel(uint8_t p) {
 
   SurfaceControlManager::displayOut.clear();
   SurfaceControlManager::displayOut.writeEepromString(sustainLevelStr, 0, 0);
-  SurfaceControlManager::displayOut.printf(1, (char*)"%6d/256 (%3d)", sustain, p);
+  SurfaceControlManager::displayOut.printf(1, (char*)"%6d/254 (%3d)", sustain, p);
 }
 
 void SetParameters::setReleaseTime(uint8_t p) {

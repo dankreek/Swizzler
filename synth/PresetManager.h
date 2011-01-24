@@ -18,7 +18,7 @@ public:
   static Preset curSettings;
 
   // The current preset number that's loaded
-  static uint8_t	curPreset;
+  static uint8_t curPreset;
 
   // Load and set a preset by its number (0-127)
   static void loadPreset(uint8_t);
@@ -39,6 +39,7 @@ public:
   // Replace the current patch with a default (but don't save it to EEPROM)
   static void setDefaultPreset();
 private:
+  // Apply each parameter in the passed-in preset
   static void applyPreset(Preset*);
 
   static ExternalEeprom presetEeprom;

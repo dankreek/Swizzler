@@ -84,10 +84,11 @@ void Swizzler::init() {
   soundChip.reset();
 
   SurfaceControlManager::displayOut.isOutputOn = false;
-  PresetManager::setDefaultPreset();
-
+  PresetManager::loadPreset(0);
   SurfaceControlManager::displayGreeting();
   SurfaceControlManager::displayOut.isOutputOn = true;
+
+//  PresetManager::setFactoryDefaults();
 
   setLed(true);
 }

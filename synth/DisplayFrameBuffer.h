@@ -24,7 +24,7 @@ public:
   // Clear the screen buffer
   void clear();
 
-  // Write a string from EEPOM to a line
+  // Write a string from EEPROM to a line
   void writeEepromString(uint8_t* eeprom_str, uint8_t lineNum, uint8_t offset);
 
   // Direct access to the frame buffer
