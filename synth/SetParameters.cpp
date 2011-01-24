@@ -37,6 +37,7 @@ uint8_t EEMEM releaseTimeStr[]  = "Release";
 uint8_t EEMEM setWaveformStr[]  = "Set Waveform";
 uint8_t EEMEM setOscOffset[]    = "Pitch Offset";
 uint8_t EEMEM setOscLevel[]     = "Osc. Level";
+uint8_t EEMEM bendRangeStr[]      = "Bend Range";
 
 char onStr[] = "On";
 char offStr[] = "Off";
@@ -162,9 +163,14 @@ void SetParameters::setArpeggioMinNotes(uint8_t p) {
 }
 
 void SetParameters::setBendRange(uint8_t p) {
-  // Bend range (in +/- half-steps) ranges from 0-15
-  //OscillatorMux::bendRange = (p >> 3);
+  // Bend range (in +/- schlips). There's 32 schlips in every half step
+  uint8_t bendRange = p >> 3;
   PresetManager::curSettings.bendRange = p;
+  Swizzler::bendRange = bendRange * 32;
+
+  SurfaceControlManager::displayOut.clear();
+  SurfaceControlManager::displayOut.writeEepromString(bendRangeStr, 0, 0);
+  SurfaceControlManager::displayOut.printf(1, "%5d semi-tones", bendRange);
 }
 
 void SetParameters::setWaveform(uint8_t voiceNum, uint8_t wf) {

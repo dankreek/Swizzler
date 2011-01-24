@@ -19,7 +19,7 @@ ArpeggiatorNoteFilter Swizzler::arp;
 Oscillators Swizzler::oscillators;
 uint16_t Swizzler::portamentoTime;
 FreqFilterChain Swizzler::freqModEffectChain;
-
+int16_t Swizzler::bendRange;
 uint8_t Swizzler::modWheelLevel;
 
 SoundDriver Swizzler::soundChip = SoundDriver(0x70);
@@ -38,6 +38,7 @@ void Swizzler::enableArpeggio(bool onOff) {
 void Swizzler::init() {
   setLed(false);
 
+  bendRange = 64;
   portamentoTime = 100;
   lfoController.sinGenerator.setFrequency(60);
   MidiInput::pitchBendEventHandler = Swizzler::handlePitchBend;

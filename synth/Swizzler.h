@@ -40,7 +40,7 @@ public:
   static uint16_t portamentoTime;
 
   // The bend range is measured in schlips (like cents but 32 divisions instead of 100 between half-steps)
-  static const int16_t bendRange = 64;
+  static int16_t bendRange;
 
   static uint16_t msCounter;    // Incremented once every millisecond
   static const int ledPin = 13;
