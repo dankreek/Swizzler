@@ -37,7 +37,7 @@ uint8_t EEMEM releaseTimeStr[]  = "Release";
 uint8_t EEMEM setWaveformStr[]  = "Set Waveform";
 uint8_t EEMEM setOscOffset[]    = "Pitch Offset";
 uint8_t EEMEM setOscLevel[]     = "Osc. Level";
-uint8_t EEMEM bendRangeStr[]      = "Bend Range";
+uint8_t EEMEM bendRangeStr[]    = "Bend Range";
 
 char onStr[] = "On";
 char offStr[] = "Off";

@@ -14,7 +14,7 @@
 #include <util/delay.h>
 #include <avr/interrupt.h>
 
-ExternalEeprom Swizzler::presetEeprom = ExternalEeprom(eepromAddress);
+
 LfoController Swizzler::lfoController;
 ArpeggiatorNoteFilter Swizzler::arp;
 Oscillators Swizzler::oscillators;
@@ -82,6 +82,7 @@ void Swizzler::init() {
   SurfaceControlManager::init();
 
   soundChip.reset();
+  PresetManager::setDefaultPreset();
 
   setLed(true);
 }

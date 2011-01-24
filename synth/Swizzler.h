@@ -9,19 +9,15 @@
 #ifndef SWIZZLER_H_
 #define SWIZZLER_H_
 
-#include "ExternalEeprom.h"
 #include "MidiInput.h"
 #include "Wire.h"
 #include "SetParameters.h"
-#include "ExternalEeprom.h"
 #include "SurfaceControlManager.h"
 #include "SoundDriver.h"
 #include "ArpeggiatorNoteFilter.h"
 #include "Oscillators.h"
-#include "SineGenerator.h"
 #include "LfoController.h"
 #include "FreqFilterChain.h"
-
 
 class Swizzler {
 public:
@@ -46,7 +42,7 @@ public:
 
   static uint16_t msCounter;    // Incremented once every millisecond
   static const int ledPin = 13;
-  static const uint8_t eepromAddress = 0x50;
+
 
   static const uint8_t numOscillators = 3;
 
@@ -57,19 +53,19 @@ public:
   void init();
   void mainLoop();
 
-  static ExternalEeprom presetEeprom;
-
   static void enableArpeggio(bool onOff);
 
   /**
    * Send the processor into an infinite blinking loop to indicate a run-time error
    */
-  void setErrorState();
+  static void setErrorState();
 
   static void setLed(bool onOff);
 private:
   // How long to wait until the display unit is fully powered up (measured in milliseconds)
   static const uint8_t  poweronDisplayDelay = 100;
+
+
 };
 
 extern Swizzler swizzler;
