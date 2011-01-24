@@ -49,7 +49,7 @@ void SetParameters::enablePortamento(uint8_t p) {
 
   SurfaceControlManager::displayOut.clear();
   SurfaceControlManager::displayOut.writeEepromString(portamentoStr, 0, 0);
-  SurfaceControlManager::displayOut.printf(1, "%10s (%3d)", onOffStr(onOff), p);
+  SurfaceControlManager::displayOut.printf(1, (char*)"%10s (%3d)", onOffStr(onOff), p);
 }
 
 void SetParameters::setLfoFreq(uint8_t p) {
@@ -59,7 +59,7 @@ void SetParameters::setLfoFreq(uint8_t p) {
 
   SurfaceControlManager::displayOut.clear();
   SurfaceControlManager::displayOut.writeEepromString(setLfoFreqStr, 0, 0);
-  SurfaceControlManager::displayOut.printf(1, "%8dhz (%3d)", p>>2, p);
+  SurfaceControlManager::displayOut.printf(1, (char*)"%8dhz (%3d)", p>>2, p);
 }
 
 void SetParameters::setLfoType(uint8_t p) {
@@ -67,7 +67,7 @@ void SetParameters::setLfoType(uint8_t p) {
   Swizzler::lfoController.setLfoMode(mode);
   PresetManager::curSettings.lfoType = p;
 
-  char *modeStr;
+  const char *modeStr;
   switch (mode) {
   case  LfoController::frequencyModulation:
     modeStr = "Frequency Mod.";
@@ -79,7 +79,7 @@ void SetParameters::setLfoType(uint8_t p) {
 
   SurfaceControlManager::displayOut.clear();
   SurfaceControlManager::displayOut.writeEepromString(setLfoTypeStr, 0, 0);
-  SurfaceControlManager::displayOut.printf(1, "%16s", modeStr);
+  SurfaceControlManager::displayOut.printf(1, (char*)"%16s", modeStr);
 }
 
 void SetParameters::setPortamentoTime(uint8_t p) {
@@ -88,7 +88,7 @@ void SetParameters::setPortamentoTime(uint8_t p) {
 
   SurfaceControlManager::displayOut.clear();
   SurfaceControlManager::displayOut.writeEepromString(portTimeStr, 0, 0);
-  SurfaceControlManager::displayOut.printf(1, "%8dms (%3d)", Swizzler::portamentoTime, p);
+  SurfaceControlManager::displayOut.printf(1, (char*)"%8dms (%3d)", Swizzler::portamentoTime, p);
 }
 
 void SetParameters::setPulseWidth(uint8_t p) {
@@ -98,7 +98,7 @@ void SetParameters::setPulseWidth(uint8_t p) {
 
   SurfaceControlManager::displayOut.clear();
   SurfaceControlManager::displayOut.writeEepromString(pulseWidthStr, 0, 0);
-  SurfaceControlManager::displayOut.printf(1, "%6d/256 (%3d)", pulseWidth, p);
+  SurfaceControlManager::displayOut.printf(1, (char*)"%6d/256 (%3d)", pulseWidth, p);
 }
 
 void SetParameters::setAttackTime(uint8_t p) {
@@ -108,7 +108,7 @@ void SetParameters::setAttackTime(uint8_t p) {
 
   SurfaceControlManager::displayOut.clear();
   SurfaceControlManager::displayOut.writeEepromString(attackTimeStr, 0, 0);
-  SurfaceControlManager::displayOut.printf(1, "%8dms (%3d)", attackTime, p);
+  SurfaceControlManager::displayOut.printf(1, (char*)"%8dms (%3d)", attackTime, p);
 }
 
 void SetParameters::setDecayTime(uint8_t p) {
@@ -118,7 +118,7 @@ void SetParameters::setDecayTime(uint8_t p) {
 
   SurfaceControlManager::displayOut.clear();
   SurfaceControlManager::displayOut.writeEepromString(decayTimeStr, 0, 0);
-  SurfaceControlManager::displayOut.printf(1, "%8dms (%3d)", decayTime, p);
+  SurfaceControlManager::displayOut.printf(1, (char*)"%8dms (%3d)", decayTime, p);
 }
 
 void SetParameters::setSustainLevel(uint8_t p) {
@@ -128,7 +128,7 @@ void SetParameters::setSustainLevel(uint8_t p) {
 
   SurfaceControlManager::displayOut.clear();
   SurfaceControlManager::displayOut.writeEepromString(sustainLevelStr, 0, 0);
-  SurfaceControlManager::displayOut.printf(1, "%6d/256 (%3d)", sustain, p);
+  SurfaceControlManager::displayOut.printf(1, (char*)"%6d/256 (%3d)", sustain, p);
 }
 
 void SetParameters::setReleaseTime(uint8_t p) {
@@ -138,7 +138,7 @@ void SetParameters::setReleaseTime(uint8_t p) {
 
   SurfaceControlManager::displayOut.clear();
   SurfaceControlManager::displayOut.writeEepromString(releaseTimeStr, 0, 0);
-  SurfaceControlManager::displayOut.printf(1, "%8dms (%3d)", releaseTime, p);
+  SurfaceControlManager::displayOut.printf(1, (char*)"%8dms (%3d)", releaseTime, p);
 }
 
 void SetParameters::enableArpeggio(uint8_t p) {
@@ -148,7 +148,7 @@ void SetParameters::enableArpeggio(uint8_t p) {
 
   SurfaceControlManager::displayOut.clear();
   SurfaceControlManager::displayOut.writeEepromString(ArpeggioStr, 0, 0);
-  SurfaceControlManager::displayOut.printf(1, "%10s (%3d)", onOffStr(onOff), p);
+  SurfaceControlManager::displayOut.printf(1, (char*)"%10s (%3d)", onOffStr(onOff), p);
 }
 
 void SetParameters::setArpeggioTime(uint8_t p) {
@@ -160,7 +160,7 @@ void SetParameters::setArpeggioTime(uint8_t p) {
 
   SurfaceControlManager::displayOut.clear();
   SurfaceControlManager::displayOut.writeEepromString(arpTimeStr, 0, 0);
-  SurfaceControlManager::displayOut.printf(1, "%8dms (%3d)", arpTime, p);
+  SurfaceControlManager::displayOut.printf(1, (char*)"%8dms (%3d)", arpTime, p);
 }
 
 void SetParameters::setArpeggioMinNotes(uint8_t p) {
@@ -171,7 +171,7 @@ void SetParameters::setArpeggioMinNotes(uint8_t p) {
 
   SurfaceControlManager::displayOut.clear();
   SurfaceControlManager::displayOut.writeEepromString(arpMinNotesStr, 0, 0);
-  SurfaceControlManager::displayOut.printf(1, "%4d notes (%3d)", minNotes, p);
+  SurfaceControlManager::displayOut.printf(1, (char*)"%4d notes (%3d)", minNotes, p);
 }
 
 void SetParameters::setBendRange(uint8_t p) {
@@ -182,13 +182,13 @@ void SetParameters::setBendRange(uint8_t p) {
 
   SurfaceControlManager::displayOut.clear();
   SurfaceControlManager::displayOut.writeEepromString(bendRangeStr, 0, 0);
-  SurfaceControlManager::displayOut.printf(1, "%5d semi-tones", bendRange);
+  SurfaceControlManager::displayOut.printf(1, (char*)"%5d semi-tones", bendRange);
 }
 
 void SetParameters::setWaveform(uint8_t voiceNum, uint8_t wf) {
   SoundDriver::WaveformType waveForm;
 
-  char* waveName;
+  const char* waveName;
   switch (wf) {
   case 0:
     waveForm = SoundDriver::triangleWave;
@@ -212,9 +212,9 @@ void SetParameters::setWaveform(uint8_t voiceNum, uint8_t wf) {
   }
 
   SurfaceControlManager::displayOut.clear();
-  SurfaceControlManager::displayOut.printf(0, "%14d", voiceNum+1);
+  SurfaceControlManager::displayOut.printf(0, (char*)"%14d", voiceNum+1);
   SurfaceControlManager::displayOut.writeEepromString(setWaveformStr, 0, 0);
-  SurfaceControlManager::displayOut.printf(1, "%16s", waveName);
+  SurfaceControlManager::displayOut.printf(1, (char*)"%16s", waveName);
 
   Swizzler::soundChip.setWaveform(voiceNum,waveForm);
 }
@@ -225,9 +225,9 @@ void SetParameters::setVoiceOffset(uint8_t voiceNum, uint8_t offset) {
   Swizzler::oscillators.setNoteOffset(voiceNum, relOfs);
 
   SurfaceControlManager::displayOut.clear();
-  SurfaceControlManager::displayOut.printf(0, "%14d", voiceNum+1);
+  SurfaceControlManager::displayOut.printf(0, (char*)"%14d", voiceNum+1);
   SurfaceControlManager::displayOut.writeEepromString(setOscOffset, 0, 0);
-  SurfaceControlManager::displayOut.printf(1, "%5d semi-tones", relOfs);
+  SurfaceControlManager::displayOut.printf(1, (char*)"%5d semi-tones", relOfs);
 }
 
 void SetParameters::setVoiceLevel(uint8_t voiceNum, uint8_t level) {
@@ -235,9 +235,9 @@ void SetParameters::setVoiceLevel(uint8_t voiceNum, uint8_t level) {
   Swizzler::soundChip.setVoiceLevel(voiceNum, outLevel);
 
   SurfaceControlManager::displayOut.clear();
-  SurfaceControlManager::displayOut.printf(0, "%12d", voiceNum+1);
+  SurfaceControlManager::displayOut.printf(0, (char*)"%12d", voiceNum+1);
   SurfaceControlManager::displayOut.writeEepromString(setOscLevel, 0, 0);
-  SurfaceControlManager::displayOut.printf(1, "%12d/254", outLevel);
+  SurfaceControlManager::displayOut.printf(1, (char*)"%12d/254", outLevel);
 }
 
 void SetParameters::setOscLevel1(uint8_t p) {
@@ -284,7 +284,7 @@ void SetParameters::setArpeggioDirection(uint8_t p) {
   Swizzler::arp.setArpDirection(ArpeggiatorNoteFilter::ArpeggioDirection(p));
   PresetManager::curSettings.arpeggioDirection = p;
 
-  char *dirStr;
+  const char *dirStr;
   switch(ArpeggiatorNoteFilter::ArpeggioDirection(p)) {
   case ArpeggiatorNoteFilter::up:
     dirStr = "Up";
@@ -299,7 +299,7 @@ void SetParameters::setArpeggioDirection(uint8_t p) {
 
   SurfaceControlManager::displayOut.clear();
   SurfaceControlManager::displayOut.writeEepromString(arpDirectionStr, 0, 0);
-  SurfaceControlManager::displayOut.printf(1, "%10s (%3d)", dirStr, p);
+  SurfaceControlManager::displayOut.printf(1, (char*)"%10s (%3d)", dirStr, p);
 }
 
 void SetParameters::setModWheelLevel(uint8_t p) {
