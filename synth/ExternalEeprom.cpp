@@ -6,8 +6,9 @@
  */
 
 #include "ExternalEeprom.h"
+#include "Wire.h"
 
-ExternalEeprom PresetEeprom = ExternalEeprom(Swizzler::eepromAddress);
+//ExternalEeprom PresetEeprom = ExternalEeprom(Swizzler::eepromAddress);
 
 /**
  * Records the i2c bus address for the eeprom being used. Note that Wire.begin()

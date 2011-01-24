@@ -22,10 +22,13 @@ void PresetManager::setInitialSettings() {
 
 void PresetManager::storePreset(uint8_t shim) {
 	const uint8_t* p = (const uint8_t*)(const void*)&curSettings;
-	uint16_t presetOfs = curPreset*sizeof(Preset);
+	uint16_t presetOfs = curPreset * sizeof(Preset);
 
 	// Store preset to external EEPROM
-	PresetEeprom.writeBlock(curPreset*ExternalEeprom::pageSize, (uint8_t*)(void*)&curSettings, sizeof(Preset));
+	Swizzler::presetEeprom.writeBlock(
+	    curPreset * ExternalEeprom::pageSize,
+	    (uint8_t*)(void*)&curSettings,
+	    sizeof(Preset));
 
 	/*
 	// Store preset to internal EEPROM
@@ -42,7 +45,10 @@ void PresetManager::loadPreset(uint8_t patchNum) {
 	uint16_t presetOfs = patchNum * sizeof(Preset);
 
 	// Read block from external EEPROM
-	PresetEeprom.readBlock(patchNum*ExternalEeprom::pageSize, p, sizeof(Preset));
+	Swizzler::presetEeprom.readBlock(
+	    patchNum*ExternalEeprom::pageSize,
+	    p,
+	    sizeof(Preset));
 
 	SetParameters::setAttackTime(readStorage.attackTime);
 	SetParameters::setDecayTime(readStorage.decayTime);

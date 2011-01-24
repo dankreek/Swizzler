@@ -14,6 +14,7 @@
 #include <util/delay.h>
 #include <avr/interrupt.h>
 
+ExternalEeprom Swizzler::presetEeprom = ExternalEeprom(eepromAddress);
 LfoController Swizzler::lfoController;
 ArpeggiatorNoteFilter Swizzler::arp;
 Oscillators Swizzler::oscillators;

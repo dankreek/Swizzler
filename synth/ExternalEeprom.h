@@ -8,7 +8,6 @@
 #ifndef EXTERNALEEPROM_H_
 #define EXTERNALEEPROM_H_
 
-#include "Swizzler.h"
 #include <inttypes.h>
 
 class ExternalEeprom {
@@ -46,7 +45,5 @@ class ExternalEeprom {
   private:
     uint8_t i2cAddress;
 };
-
-extern ExternalEeprom PresetEeprom;
 
 #endif /* EXTERNALEEPROM_H_ */

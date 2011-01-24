@@ -9,6 +9,7 @@
 #ifndef SWIZZLER_H_
 #define SWIZZLER_H_
 
+#include "ExternalEeprom.h"
 #include "MidiInput.h"
 #include "Wire.h"
 #include "SetParameters.h"
@@ -20,6 +21,7 @@
 #include "SineGenerator.h"
 #include "LfoController.h"
 #include "FreqFilterChain.h"
+
 
 class Swizzler {
 public:
@@ -54,6 +56,8 @@ public:
 
   void init();
   void mainLoop();
+
+  static ExternalEeprom presetEeprom;
 
   static void enableArpeggio(bool onOff);
 
