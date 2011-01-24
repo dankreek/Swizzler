@@ -41,6 +41,8 @@ public:
 
   void nextTick();
 
+  // Is sending updates to the display unit turned on
+  bool isOutputOn;
 private:
   uint8_t curTime;
 

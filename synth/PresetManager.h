@@ -41,8 +41,8 @@ public:
 private:
   static void applyPreset(Preset*);
 
-  static const uint8_t eepromAddress = 0x50;
   static ExternalEeprom presetEeprom;
+  static const uint8_t eepromAddress = 0x50;
 };
 
 #endif /* PRESETHANDLER_H_ */

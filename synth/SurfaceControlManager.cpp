@@ -16,6 +16,10 @@ uint8_t EEMEM greetingString2[] = "Swizzler";
 
 void SurfaceControlManager::init() {
   DisplayDriver::init();
+}
+
+void SurfaceControlManager::displayGreeting() {
+  displayOut.clear();
   displayOut.writeEepromString(greetingString1, 0, 3);
   displayOut.writeEepromString(greetingString2, 1, 4);
 }

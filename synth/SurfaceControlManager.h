@@ -17,6 +17,9 @@ public:
    */
   static void init();
 
+  // Output the power-on greeting
+  static void displayGreeting();
+
   // Frame buffer for output display
   static DisplayFrameBuffer displayOut;
 private:

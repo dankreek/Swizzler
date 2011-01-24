@@ -10,6 +10,7 @@
 #include "Swizzler.h"
 
 DisplayFrameBuffer::DisplayFrameBuffer() {
+  isOutputOn = true;
   curTime = refreshTime;
 
   // Make both the framebuffer and the diffbuffer full of empty spaces
@@ -24,8 +25,10 @@ DisplayFrameBuffer::DisplayFrameBuffer() {
 void DisplayFrameBuffer::nextTick() {
   curTime--;
   if (curTime == 0) {
-    recordChanges();
-    writeChangesToDisplay();
+    if (isOutputOn) {
+      recordChanges();
+      writeChangesToDisplay();
+    }
     curTime = refreshTime;
   }
 }
