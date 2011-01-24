@@ -15,14 +15,6 @@ void LfoController::setLfoMode(LfoMode mode) {
       Swizzler::freqModEffectChain.setFrequencyModulation(true);
       pwModulation.enableEffect(false);
       break;
-    case amplitudeModulation:
-      Swizzler::freqModEffectChain.setFrequencyModulation(false);
-      pwModulation.enableEffect(false);
-      break;
-    case freqAndPwModulation:
-      Swizzler::freqModEffectChain.setFrequencyModulation(true);
-      pwModulation.enableEffect(true);
-      break;
     case pulsewidthModulation:
       Swizzler::freqModEffectChain.setFrequencyModulation(false);
       pwModulation.enableEffect(true);

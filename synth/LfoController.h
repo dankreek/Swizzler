@@ -19,10 +19,8 @@
 class LfoController : public ITimerCall {
 public:
   enum LfoMode {
-    frequencyModulation,
-    pulsewidthModulation,
-    freqAndPwModulation,
-    amplitudeModulation
+    frequencyModulation  = 0x00,
+    pulsewidthModulation = 0x01,
   };
 
   // The sine generator is public so that the freq. modulation filters can read it

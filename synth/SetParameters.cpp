@@ -63,11 +63,23 @@ void SetParameters::setLfoFreq(uint8_t p) {
 }
 
 void SetParameters::setLfoType(uint8_t p) {
-  Swizzler::lfoController.setLfoMode((LfoController::LfoMode)p);
+  LfoController::LfoMode mode = (LfoController::LfoMode)p;
+  Swizzler::lfoController.setLfoMode(mode);
   PresetManager::curSettings.lfoType = p;
+
+  char *modeStr;
+  switch (mode) {
+  case  LfoController::frequencyModulation:
+    modeStr = "Frequency Mod.";
+    break;
+  case LfoController::pulsewidthModulation:
+    modeStr = "Pulse Width Mod.";
+    break;
+  }
 
   SurfaceControlManager::displayOut.clear();
   SurfaceControlManager::displayOut.writeEepromString(setLfoTypeStr, 0, 0);
+  SurfaceControlManager::displayOut.printf(1, "%16s", modeStr);
 }
 
 void SetParameters::setPortamentoTime(uint8_t p) {
