@@ -1,8 +1,6 @@
-/*
- * ArpeggiatorNoteFilter.cpp
- *
- *  Created on: Aug 23, 2010
- *      Author: justin
+/** @file   ArpeggiatorNoteFilter.cpp
+ *  @date   Aug 23, 2010
+ *  @author Justin May <may.justin@gmail.com>
  */
 
 #include "ArpeggiatorNoteFilter.h"

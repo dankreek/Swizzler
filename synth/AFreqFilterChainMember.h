@@ -1,7 +1,7 @@
-/** @file AFreqFilterChainMember.h
- *
- *  Created on: Aug 29, 2010
- *      Author: justin
+/** 
+ * @file   AFreqFilterChainMember.h
+ * @date   Aug 29, 2010
+ * @author Justin May <may.justin@gmail.com>
  */
 
 #ifndef AFREQFILTERCHAINMEMBER_H_

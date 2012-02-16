@@ -1,7 +1,6 @@
-/** @file AFreqTransmitter.h
- *
- *  Created on: Aug 28, 2010
- *      Author: justin
+/** @file   AFreqTransmitter.h
+ *  @date   Aug 28, 2010
+ *  @author Justin May <may.justin@gmail.com>
  */
 
 #ifndef AFREQTRANSMITTER_H_

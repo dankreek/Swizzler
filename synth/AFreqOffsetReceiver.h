@@ -1,7 +1,6 @@
-/** @file AFreqReceiver.h
- *
- *  Created on: Aug 28, 2010
- *      Author: justin
+/** @file  AFreqReceiver.h
+ *  @date  Aug 28, 2010
+ *  @author Justin May <may.justin@gmail.com>
  */
 
 #ifndef AFREQRECEIVER_H_

@@ -1,7 +1,6 @@
-/** @file ArpeggiatorNoteFilter.h
- *
- *  Created on: Aug 23, 2010
- *      Author: justin
+/** @file   ArpeggiatorNoteFilter.h
+ *  @date   Aug 23, 2010
+ *  @author Justin May <may.justin@gmail.com>
  */
 
 #ifndef ARPEGGIATORNOTEFILTER_H_

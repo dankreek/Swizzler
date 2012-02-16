@@ -1,7 +1,6 @@
-/** @file ANoteTransmitter.h
- *
- *  Created on: Aug 22, 2010
- *      Author: justin
+/** @file   ANoteTransmitter.h
+ *  @date   Aug 22, 2010
+ *  @author Justin May <may.justin@gmail.com>
  */
 
 #ifndef ANOTETRANSMITTER_H_

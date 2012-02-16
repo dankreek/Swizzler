@@ -1,7 +1,6 @@
-/** @file ANoteReceiver.h
- *
- *  Created on: Aug 16, 2010
- *      Author: justin
+/** @file   ANoteReceiver.h
+ *  @date   Aug 16, 2010
+ *  @author Justin May <may.justin@gmail.com>
  *
  *  Interface defining a class which can receive note events
  */
