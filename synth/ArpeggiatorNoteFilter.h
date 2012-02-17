@@ -1,8 +1,5 @@
-/*
- * ArpeggiatorNoteFilter.h
- *
- *  Created on: Aug 23, 2010
- *      Author: justin
+/** @file   ArpeggiatorNoteFilter.h
+ *  @date   Aug 23, 2010
  */
 
 #ifndef ARPEGGIATORNOTEFILTER_H_
@@ -14,46 +11,75 @@
 #include "ITimerCall.h"
 #include <inttypes.h>
 
+/**
+ * The arpeggio effect. The user holds down a number of keys and the synthesizer
+ * will individually iterate between them in the specified order.
+ *
+ * @author Justin May <may.justin@gmail.com>
+ */
 class ArpeggiatorNoteFilter : public ANoteReceiver, public ANoteTransmitter, public ITimerCall {
 public:
+  /**
+   * Set some reasonable defaults for the arpeggiator
+   */
   ArpeggiatorNoteFilter();
+
   void noteOn(uint8_t noteNumber, uint8_t velocity);
   void noteOff(uint8_t noteNumber);
 
   /// Different directions that the arpeggio can travel in
-  enum ArpeggioDirection { up = 0x00, down = 0x01, random = 0x02 };
+  enum ArpeggioDirection { up = 0, down = 1, random = 2 };
 
+  /**
+   * Set the direction in which the arpeggio will be iterated through
+   *
+   * @param dir     Arpeggio direction
+   */
   void setArpDirection(ArpeggioDirection dir);
 
   /**
+   * Get the minimum number of keys that are held down to trigger an arpeggio
    *
+   * @return The minimum number of notes
    */
   uint8_t getMinNotes() const;
-  void setMinNotes(uint8_t);
 
   /**
-   * Set the amount of time to wait before switching to the next arpeggio note.
+   * Set the minimum number of keys the user needs to have held down to create an arpeggio
    *
-   * @param arpTime Amount of time in number of ticks
+   * @param minimumNumberOfNotes    The minimum number of notes
    */
-  void setArpTime(uint16_t arpTime);
+  void setMinNotes(uint8_t minimumNumberOfNotes);
+
+  /**
+   * Set the amount of time (in ms) between notes in the arpeggio
+   *
+   * @param arpeggioTime    Time between arpeggio notes (in ms)
+   */
+  void setArpTime(uint16_t arpeggioTime);
 
   /// Service routine called by the timer loop
   void nextTick();
 
   /**
-   * Turn the arepggiator on/off
+   * Turn the arpeggiator on/off
    *
-   * @param onOff Set true to bypass the arpeggiator, or false to enable the arpeggiator
+   * @param onOff   Set true to bypass the arpeggiator, or false to enable the arpeggiator
    */
   void setBypass(bool onOff);
 
+  /// Not used for the arpeggiator
   void update();
 
 private:
+  /// Current arpeggio direction
   ArpeggioDirection curDir;
-  uint16_t          curTime;    // Time elapsed during
-  uint8_t           minNotes;
+
+  /// Time that has elapsed since the current note in the arpeggio was started
+  uint16_t curTime;
+
+  /// The minimum number of notes the user
+  uint8_t minNotes;
 
   /// Is the arpeggiator still on?
   bool isBypassOn;
@@ -67,6 +93,7 @@ private:
   /// Ordered buffer that keeps track of all the notes being held down
   MidiNoteBuffer noteBuffer;
 
+  /// Restart the arpeggio from the beginning
   void restartArpeggio();
 
   /// Advance nextNoteI to the next note in the sequence (depending upon direction)

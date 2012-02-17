@@ -1,8 +1,5 @@
-/*
- * FreqModFreqFilter.cpp
- *
- *  Created on: Oct 3, 2010
- *      Author: justin
+/** @file FreqModFreqFilter.cpp
+ *  @date Oct 3, 2010
  */
 
 #include "FreqModFreqFilter.h"

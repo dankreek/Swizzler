@@ -1,9 +1,5 @@
-/*
- * FreqFilterChain.h
- *
- *  Created on: Aug 28, 2010
- *      Author: justin
- *
+/** @file FreqFilterChain.h
+ *  @date Aug 28, 2010
  */
 
 #ifndef FREQFILTERCHAIN_H_
@@ -18,35 +14,66 @@
 #include "FreqModFreqFilter.h"
 #include "OutputFreqFilter.h"
 
+/**
+ * This class is a container for list of frequency modulations filters. When a <tt>note on</tt>
+ * command is received
+ *
+ * @author Justin May <may.justin@gmail.com>
+ */
 class FreqFilterChain : public ANoteReceiver, public ANoteTransmitter, public ITimerCall {
 public:
   FreqFilterChain();
 
-  void noteOn(uint8_t, uint8_t);
+  /**
+   * Receives a note from the MIDI note filter chain and forces an update through
+   * the frequency filter chain.
+   *
+   * @param noteNumber	MIDI note number
+   * @param velocity	Velocity that the MIDI key was struck at
+   * @see update()
+   */
+  void noteOn( uint8_t noteNumber, uint8_t velocity );
   void noteOff(uint8_t);
 
-  // Recalculate resulting frequency
+  /**
+   * Tell all the frequency modulation effects to calculate the final frequency offset. The oscillators
+   * will then be notified that they will need to recalculate their frequencies.
+   */
   void update();
 
-  // Keeps track of the current and previous note numbers that have entered the filter chain
+  /// The previous note number that was received
   int8_t prevNoteNum;
+
+  /// The current note number being played
   int8_t curNoteNum;
 
-  // Service all timer functions of each filter
+  /// Service all timer functions of each filter
   void nextTick();
 
-  // Turn portamento on/off
+  /**
+   * Turn portamento on/off
+   *
+   * @param onOff  If true, turn portamento on, otherwise turn it off
+   */
   void setPortamento(bool onOff);
 
-  // Turn frequency modulation on/off
+  /**
+   * Turn frequency modulation on/off
+   *
+   * @param onOff	If true, turn the frequency modulation effect on, otherwise turn it off
+   */
   void setFrequencyModulation(bool onOff);
 
-  // Get the current frequency offset (in schlips)
+  /**
+   * @return The current frequency offset (in schlips)
+   */
   int16_t getFreqOffset();
 private:
+
+  // TODO - I don't think this is needed anymore
   int8_t noteOffset;
 
-  // Pointer to the first frequency filter in the chain
+  /// Pointer to the first frequency filter in the chain
   AFreqOffsetTransmitter *chainHead;
 
   // These are all the filters in the chain

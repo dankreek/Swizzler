@@ -1,5 +1,4 @@
-/*
- * DisplayOutput.cpp
+/** @file DisplayDriver.cpp
  *
  *  Created on: Jul 7, 2010
  *      Author: justin

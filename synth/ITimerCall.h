@@ -12,6 +12,11 @@ class ITimerCall {
 public:
   // This method is called every ms by the timer
   virtual void nextTick() = 0;
+
+protected:
+  ~ITimerCall();
 };
+
+inline ITimerCall::~ITimerCall() {}
 
 #endif /* ITIMERCALL_H_ */

@@ -80,7 +80,7 @@ void PresetManager::storePreset(uint8_t shim) {
 
   // Store preset to external EEPROM
   presetEeprom.writeBlock(
-    curPreset * ExternalEeprom::pageSize,
+    curPreset * ExternalEeprom::PAGE_SIZE,
     (uint8_t*)(void*)&curSettings,
     sizeof(Preset));
 
@@ -97,7 +97,7 @@ void PresetManager::loadPreset(uint8_t patchNum) {
 
   // Read block from external EEPROM
   presetEeprom.readBlock(
-    patchNum*ExternalEeprom::pageSize,
+    patchNum*ExternalEeprom::PAGE_SIZE,
     p,
     sizeof(Preset));
 

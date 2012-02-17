@@ -1,8 +1,5 @@
-/*
- * DoubleBuffer.h
- *
- *  Created on: Jan 17, 2011
- *      Author: justin
+/** @file DisplayFrameBuffer.h
+ *  @date Jan 17, 2011
  */
 
 #ifndef DOUBLEBUFFER_H_
@@ -15,6 +12,8 @@
  * The display frame buffer is used to allow direct memory access to the display unit. After REFRESH_TIME number
  * of ticks, all the differences between the last screen update and what's in the current frame buffer are sent
  * to the display unit.
+ *
+ * @author Justin May <may.justin@gmail.com>
  */
 class DisplayFrameBuffer : public ITimerCall {
 public:

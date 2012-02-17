@@ -1,8 +1,5 @@
-/*
- * FreqFilterChain.cpp
- *
- *  Created on: Aug 28, 2010
- *      Author: justin
+/** @file FreqFilterChain.cpp
+ *  @date Aug 28, 2010
  */
 
 #include "FreqFilterChain.h"
@@ -34,30 +31,31 @@ void FreqFilterChain::setPortamento(bool onOff) {
 }
 
 void FreqFilterChain::update() {
-  chainHead->updateOffset();
+	chainHead->updateOffset();
 
-  // Tell the next guy (oscillators) to update
-  receiver->update();
+	// Tell the next guy (oscillators) to update
+	receiver->update();
 }
 
 void FreqFilterChain::noteOn(uint8_t noteNumber, uint8_t velocity) {
-  prevNoteNum = curNoteNum;
-  curNoteNum = (noteNumber+noteOffset);
-  update();
-  sendNoteOn(noteNumber, velocity);
+	prevNoteNum = curNoteNum;
+	// TODO - I don't think noteOffset is needed anymore.
+	curNoteNum = noteNumber + noteOffset;
+	update();
+	sendNoteOn( noteNumber, velocity );
 }
 
 void FreqFilterChain::nextTick() {
-  portamentoFilter.nextTick();
-  update();
+	portamentoFilter.nextTick();
+	update();
 }
 
 void FreqFilterChain::setFrequencyModulation(bool onOff) {
-  if (onOff) {
-    pitchbendFilter.linkTo(&freqModFilter);
-  } else {
-    pitchbendFilter.linkTo(&outputFilter);
-  }
+	if (onOff) {
+		pitchbendFilter.linkTo(&freqModFilter);
+	} else {
+		pitchbendFilter.linkTo(&outputFilter);
+	}
 }
 
 void FreqFilterChain::noteOff(uint8_t noteNumber) {}
