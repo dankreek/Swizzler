@@ -1,8 +1,5 @@
-/*
- * FreqUtils.cpp
- *
- *  Created on: Aug 29, 2010
- *      Author: justin
+/** @file FreqUtils.cpp
+ *  @date Aug 29, 2010
  */
 
 #include "FreqUtils.h"
@@ -22,7 +19,7 @@ uint16_t FreqUtils::noteLookupTable[] = {
   7902,   // B
 };
 
-uint16_t FreqUtils::noteToFreq(uint8_t noteNum) {
+uint16_t FreqUtils::noteToFreq( uint8_t noteNum ) {
   /**
    * The MIDI standard defines note #0 as a 'C', so
    * divide the note number by 12 to get the octave that the note is in
@@ -33,7 +30,7 @@ uint16_t FreqUtils::noteToFreq(uint8_t noteNum) {
 
   // Divides in half for the proper number of octaves
   // (every right shift is one less octave)
-  return (noteLookupTable[note] >> (9-octave));
+  return ( noteLookupTable[ note ] >> ( 9 - octave ) );
 }
 
 uint16_t FreqUtils::modulatedFreq(uint8_t baseNote, int16_t numSchlips) {
@@ -51,9 +48,9 @@ uint16_t FreqUtils::modulatedFreq(uint8_t baseNote, int16_t numSchlips) {
     divs = (divs*-1);
   }
 
-  int16_t insideNoteFreq = noteToFreq(insideNote);
+  int16_t insideNoteFreq = noteToFreq( insideNote );
 
-  int16_t fracFreq = ((int16_t)noteToFreq(outsideNote) - insideNoteFreq)*divs/schlipsDivs;
+  int16_t fracFreq = ( (int16_t) noteToFreq( outsideNote ) - insideNoteFreq ) * divs / schlipsDivs;
 
   return insideNoteFreq+fracFreq;
 }

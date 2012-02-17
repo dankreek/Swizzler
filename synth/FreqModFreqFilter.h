@@ -16,7 +16,7 @@
  *
  * @author Justin May <may.justin@gmail.com>
  * @see Swizzler::modWheelLevel
- * @see Swizzler::lfoController.sinGenerator
+ * @see Swizzler::lfoController
  */
 class FreqModFreqFilter : public AFreqOffsetReceiver, public AFreqOffsetTransmitter, public AFreqFilterChainMember {
 public:
