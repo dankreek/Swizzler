@@ -74,20 +74,20 @@ void ArpeggiatorNoteFilter::restartArpeggio() {
 }
 
 uint8_t ArpeggiatorNoteFilter::getMinNotes() const {
-  return minNotes;
+	return minNotes;
 }
 
 void ArpeggiatorNoteFilter::setMinNotes(uint8_t minNotes) {
-  this->minNotes = minNotes;
+	this->minNotes = minNotes;
 }
 
 void ArpeggiatorNoteFilter::nextTick() {
-  if (!isBypassOn) {
-    if (noteBuffer.size >= minNotes) {
+  if ( !isBypassOn ) {
+    if ( noteBuffer.size >= minNotes ) {
       curTime += 4;
 
       // Switch to the next note
-      if (curTime >= arpTime) {
+      if ( curTime >= arpTime ) {
         curTime = 0;
         sendNoteOn(noteBuffer.buffer[nextNoteI], 127);
         incNextI();

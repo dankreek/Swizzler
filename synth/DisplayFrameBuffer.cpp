@@ -5,17 +5,18 @@
  *      Author: justin
  */
 #include <stdarg.h>
+#include <avr/eeprom.h>
 #include "DisplayFrameBuffer.h"
 #include "DisplayDriver.h"
 #include "Swizzler.h"
 
 DisplayFrameBuffer::DisplayFrameBuffer() {
   isOutputOn = true;
-  curTime = refreshTime;
+  curTime = REFRESH_TIME;
 
   // Make both the framebuffer and the diffbuffer full of empty spaces
-  for (uint8_t i=0; i < numRows; i++) {
-    for (uint8_t j=0; j < numColumns; j++) {
+  for (uint8_t i=0; i < NUMBER_OF_ROWS; i++) {
+    for (uint8_t j=0; j < NUMBER_OF_COLUMNS; j++) {
       frameBuffer[i][j] = ' ';
       diffBuffer[i][j] = ' ';
     }
@@ -29,13 +30,13 @@ void DisplayFrameBuffer::nextTick() {
       recordChanges();
       writeChangesToDisplay();
     }
-    curTime = refreshTime;
+    curTime = REFRESH_TIME;
   }
 }
 
 void DisplayFrameBuffer::clear() {
-  for (uint8_t i=0; i < numRows; i++) {
-    for (uint8_t j=0; j < numColumns; j++) {
+  for (uint8_t i=0; i < NUMBER_OF_ROWS; i++) {
+    for (uint8_t j=0; j < NUMBER_OF_COLUMNS; j++) {
       frameBuffer[i][j] = ' ';
     }
   }
@@ -47,12 +48,12 @@ void DisplayFrameBuffer::recordChanges() {
   bool nullWasFound;
 
   // Find the distance between the first and last change for each line of the buffer
-  for (uint8_t row=0; row < numRows; row++) {
+  for (uint8_t row=0; row < NUMBER_OF_ROWS; row++) {
     firstChange = -1;
     lastChange = -1;
     nullWasFound = false;
 
-    for (uint8_t column=0; column < numColumns; column++) {
+    for (uint8_t column=0; column < NUMBER_OF_COLUMNS; column++) {
       if (frameBuffer[row][column] == '\0') {
         nullWasFound = true;
       }
@@ -81,7 +82,7 @@ void DisplayFrameBuffer::recordChanges() {
     }
 
     // This is a workaround for a problem outputting only 1 char to the display... wtf?
-    // TODO - Figure out what's wrong. It's probabky the TWI driver
+    // TODO - Figure out what's wrong. It's probably the TWI driver
     if ((lastChange - firstChange) == 0) {
       if (lastChange == 15) {
         firstChange = 14;
@@ -97,7 +98,7 @@ void DisplayFrameBuffer::recordChanges() {
 }
 
 void DisplayFrameBuffer::writeChangesToDisplay() {
-  for (uint8_t row=0; row < numRows; row++) {
+  for (uint8_t row=0; row < NUMBER_OF_ROWS; row++) {
     // If a change was found on this line, write it out
     if (changeList[row][0] != -1) {
       int8_t firstChange = changeList[row][0];
