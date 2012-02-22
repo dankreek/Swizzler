@@ -1,10 +1,5 @@
-/*
- * MidiControllerMapping.cpp
- *
- *  Created on: Aug 7, 2010
- *      Author: justin
- *
- * This file needs to be defined for every implementation of the Swizzler platform.
+/** @file MidiControllerMapping.cpp
+ *  @date Aug 7, 2010
  *
  * This mostly-static class contains a list of instances of itself which contain
  * the mapping from a midi controller number to a function with the signature of
@@ -108,6 +103,7 @@ MidiControllerMapping MidiControllerMapping::controllerList[] = {
         SetParameters::setArpeggioDirection),
 
     // Store and load presets
+    // TODO - Probably should take these out of MIDI and only use surface controlls. 
     MidiControllerMapping(
         MidiControllerNumbers::storePreset,
         PresetManager::storePreset),

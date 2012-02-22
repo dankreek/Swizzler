@@ -3,6 +3,7 @@
 extern "C" void __cxa_pure_virtual() {}
 
 // --- Needed to output a character to the LCD if using printf.
+// TODO - get rid of this
 /*
 #ifdef __cplusplus
 extern "C"{

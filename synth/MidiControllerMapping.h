@@ -1,10 +1,5 @@
-/*
- * MidiControllerMapping.h
- *
- *  Created on: Aug 7, 2010
- *      Author: justin
- *
- *  This class contains a mapping for midi controller number and a function that should get executed
+/** @file MidiControllerMapping.h
+ *  @date Aug 7, 2010
  */
 
 #ifndef MIDICONTROLLERMAPPING_H_
@@ -12,34 +7,54 @@
 
 #include <inttypes.h>
 
+/**
+ * This class contains a mapping for midi controller number and a method that should be called.
+ *
+ * @author Justin May <may.justin@gmail.com>
+ */
 class MidiControllerMapping {
 public:
-  // For each instance of MidiControllerMapping
+  /**
+   * Create a mapping between a MIDI controller and a method
+   *
+   * @param ctrlNum     MIDI controller number
+   * @param ctrlFunc    Method to be called when the MIDI controller message is recieved
+   */
   MidiControllerMapping(uint8_t ctrlNum, void (*ctrlFunc)(uint8_t));
 
   /**
-   * Loop through each MidiControllerMapping in the array and execute
+   * Loop through each MidiControllerMapping in the \p controllerList[] and execute
    * the controller's function if one is found.
    *
-   * @ctrlNum   Controller number to service
-   * @data      The data to pass into the controller function
+   * @param ctrlNum   Controller number to service
+   * @param data      The data to pass into the controller function
    *
-   * @return    true if a handler was found, false if one wasn't.
+   * @return true if a handler was found, false if one wasn't.
    */
   static bool executeController(uint8_t ctrlNum, uint8_t data);
 
 private:
-  // Each instance of a MidiControllerMapping has a number and a function to execute
+  /// MIDI controller number to response to
   uint8_t controllerNumber;
-  void (*executeFunction)(uint8_t);
+
+  /**
+   * Method to execute when receiving 
+   *
+   * @param value   MIDI controller value
+   */
+  void (*executeFunction)(uint8_t value);
 
   /**
    * This needs to be statically defined in the MidiControllerMapping source file
-   * See MidiControllerMapping.cpp for a deeper explanation of these
+   * @see MidiControllerMapping.cpp for a deeper explanation of these
    */
   static MidiControllerMapping controllerList[];
+
+  /**
+   * Constant used to signify the end of the list is reached. (The highest midi controller number
+   * is 0x7f, so 0xff will never occur in the MIDI stream.
+   */
   static const uint8_t endOfMappingList = 0xff;
-  //static uint8_t listLength;
 };
 
 inline MidiControllerMapping::MidiControllerMapping(uint8_t ctrlNum, void (*func)(uint8_t)) {

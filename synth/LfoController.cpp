@@ -1,8 +1,5 @@
-/*
- * LfoController.cpp
- *
- *  Created on: Jan 4, 2011
- *      Author: justin
+/** @file LfoController.cpp
+ *  @date Jan 4, 2011
  */
 #include "LfoController.h"
 #include "Swizzler.h"
