@@ -1,15 +1,16 @@
-/*
- * MidiControllerNumbers.h
- *
- *  Created on: Aug 10, 2010
- *      Author: justin
- *
+/** @file MidiControllerNumbers.h
+ *  @date Aug 10, 2010
  */
 #ifndef MIDICONTROLLERNUMBERS_H_
 #define MIDICONTROLLERNUMBERS_H_
 
 #include <inttypes.h>
 
+/**
+ * This class is a container for all the mappings of Swizzler Effect to MIDI controller numbers.
+ *
+ * @author Justin May <may.justin@gmail.com>
+ */
 class MidiControllerNumbers {
 public:
   static const uint8_t modWheel = 1;

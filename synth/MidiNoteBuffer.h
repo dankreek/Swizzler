@@ -1,10 +1,14 @@
+/** @file MidiNoteBuffer.h
+ */
 #ifndef MIDINOTEBUFFER_H_
 #define MIDINOTEBUFFER_H_
 
 #include <inttypes.h>
 
 /**
- * An ordered buffer that stores a list of midi notes to allow for areeggiating over them
+ * An ordered list that stores midi notes to allow for arpeggiating over them in order.
+ *
+ * @author Justin May <may.justin@gmail.com>
  */
 class MidiNoteBuffer {
 public:
@@ -19,26 +23,50 @@ public:
   // Initialize the Note Buffer
   MidiNoteBuffer();
 
-  // Add a new midi note in-order
+  /**
+   * Add a new MIDI note in-order
+   *
+   * @param noteNumber  MIDI note number to add
+   */
   void putMidiNote(uint8_t noteNumber);
 
-  // Remove a midi note from the buffer
+  /**
+   * Remove a MIDI note from the buffer
+   *
+   * @param noteNumber  MIDI note number to remove
+   */
   void removeMidiNote(uint8_t noteNumber);
 
-  // Macro to get the last note that was struck
+  /** 
+   * Get the last note that was entered into the list
+   *
+   * @return The MIDI note number that was last inserted
+   */
   uint8_t getLastNote();
 
-  // Buffer where the notes reside
+  /// Buffer where the notes reside
   uint8_t buffer[midiNoteBufSize];
 
-  // A little macro to check if the buffer is empty
+  /**
+   * Check if the buffer is empty
+   *
+   * @return True of the buffer is empty
+   */   
   bool isEmpty();
 
 private:
-  // Create room for another element in the buffer at the given index
+  /** 
+   * Create room for another element in the buffer at the given index
+   *
+   * @param i   Index to insert an empty element at 
+   */
   void makeHole(uint8_t i);
 
-  // Close the hole that a note left after being removed at the given index
+  /**
+   * Close the hole that a note left after being removed at the given index
+   *
+   * @param i   Index in the list to remove an entry from
+   */ 
   void closeHole(uint8_t i);
 };
 

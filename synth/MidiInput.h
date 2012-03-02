@@ -1,3 +1,5 @@
+/** @file MidiInput.h
+ */
 #ifndef MIDIINPUT_H_
 #define MIDIINPUT_H_
 
@@ -5,20 +7,32 @@
 #include "ANoteReceiver.h"
 #include <inttypes.h>
 
+/**
+ * This is a utility class that handles MIDI input. Bytes are read in from some external source, 
+ * (usually the UART) then pushed into the \a pushByte() method. When a complete MIDI command has
+ * been sent, it will be acted upon.
+ *
+ * @author Justin May <may.justin@gmail.com>
+ */
 class MidiInput {
-public:
-  // Event handler for a note on/off
+public:  
+  /// Event handler for a note on/off event
   static ANoteReceiver *noteReceiver;
 
-  // Event handler for pitch bending
+  /// Pointer to an event handler for when a pitch bend event is recieved
   static void (*pitchBendEventHandler)();
 
-  // The current pitch bend amount (between -64 and 63)
+  /// The current position of the pitch bend wheel (between -64 and 63)
   static int16_t pitchbendAmount;
+
+  /// Max value of the pitch bend wheel
   static const int16_t bendMax = 63;
+
+  /// Minimum value of the pitch bend wheel
   static const int16_t bendMin = -64;
 
-
+  // MIDI command bytes for all the different types of MIDI commands. 
+  // the lower nybble is the MIDI channel number
   static const unsigned char noteOff = 0x80;
   static const unsigned char noteOn = 0x90;
   static const unsigned char polyAfterTouch = 0xa0;
@@ -29,12 +43,15 @@ public:
   static const unsigned char sysExMsg = 0xf0;
 
   /**
-   * Initialize it
+   * Initialize all fields related to \a MidiInput
    */
   static void init();
 
   /**
-   * Push a byte onto the Midi stack. This will be called by an interrupt routine or some shits.
+   * Push a byte onto the MidiInput stack. Once an entire MIDI command is recieved, then
+   * it will be processed.
+   *
+   * @param byte    The next byte in the MIDI input stream
    */
   inline static
   void pushByte(uint8_t byte) {
@@ -106,7 +123,10 @@ public:
 
 
   /**
-   * If the passed-in byte the command type of
+   * Determine if the last received MIDI command byte is of the type \p command 
+   *
+   * @param command     MIDI command to check for 
+   * @return    True if \p midiCmd is of type \p command
    */
   inline static
   bool isCommandByte(int command) {
@@ -114,7 +134,7 @@ public:
   }
 
   /**
-   * Clear the current midi command
+   * Clear the current MIDI command
    */
   static inline
   void resetCommand() {
@@ -122,17 +142,29 @@ public:
     midiData2 = -1;
   }
 
-  // Handle MIDI events
+  /// Handle Note Off event
   static void handleNoteOff();
+
+  /// Handle Note On event
   static void handleNoteOn();
+
+  /// Handle the pitch bend event
   static void handlePitchBend();
+
+  /// Handle a MIDI controller change event
   static void handleControlChange();
+
+  /// Handle the program change event
   static void handleProgramChange();
 
 private:
-  // Current MIDI command data
+  /// Current MIDI command byte
   static int midiCmd;
+
+  /// First data byte in a MIDI message
   static int midiData1;
+
+  /// Second data byte in a MIDI message
   static int midiData2;
 };
 

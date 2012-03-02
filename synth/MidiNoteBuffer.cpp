@@ -1,8 +1,7 @@
+/** @file MidiNoteBuffer.cpp
+ */
+
 #include "MidiNoteBuffer.h"
-
-
-
-
 
 MidiNoteBuffer::MidiNoteBuffer() {
   size=0;
