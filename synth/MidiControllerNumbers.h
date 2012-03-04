@@ -13,43 +13,67 @@
  */
 class MidiControllerNumbers {
 public:
-  static const uint8_t modWheel = 1;
+	/// Modulation level
+	static const uint8_t MODULATION_WHEEL = 1;
 
-  static const uint8_t lfoFreq = 85;
-  static const uint8_t lfoType = 86;
+	/// Set LFO frequency
+	static const uint8_t LFO_FREQUENCY = 85;
 
-  static const uint8_t portamentoOnOff = 65;
-  static const uint8_t portamentoTime = 5;
+	/// Set LFO type (Frequency modulation or Pulse width Modulation)
+	static const uint8_t LFO_TYPE      = 86;
 
-  static const uint8_t oscLevel1 = 20;
-  static const uint8_t oscWaveform1 = 21;
+	/// Enable/disable portamento
+	static const uint8_t ENABLE_PORTAMENTO = 65;
+	/// Portamento glide time
+	static const uint8_t PORTAMENTO_TIME   = 5;
 
-  static const uint8_t oscLevel2 = 22;
-  static const uint8_t oscWaveform2 = 23;
-  static const uint8_t oscOffset2 = 24;
+	/// Oscillator 1 level
+	static const uint8_t VCO1_LEVEL    = 20;
+	/// Set oscillator 1 waveform
+	static const uint8_t VCO1_WAVEFORM = 21;
 
-  static const uint8_t oscLevel3 = 25;
-  static const uint8_t oscWaveform3 = 26;
-  static const uint8_t oscOffset3 = 27;
+	/// Oscillator 2 level
+	static const uint8_t VCO2_LEVEL       = 22;
+	/// Set oscillator 2 waveform
+	static const uint8_t VCO2_WAVEFORM    = 23;
+	/// Set oscillator 2 note offset
+	static const uint8_t VCO2_NOTE_OFFSET = 24;
+
+	/// Oscillator 3 level
+	static const uint8_t VCO3_LEVEL       = 25;
+	/// Set oscillator 3 waveform
+	static const uint8_t VCO3_WAVEFORM    = 26;
+	/// Set oscillator 3 note offset
+	static const uint8_t VCO3_NOTE_OFFSET = 27;
 
 //  static const uint8_t noiseLevel = 28;
 
-  static const uint8_t pitchBendRange = 29;
+	/// Pitchbend range
+	static const uint8_t PITCHBEND_RANGE = 29;
 
-  static const uint8_t pulseWidth = 30;
+	/// Global pulsewidth
+	static const uint8_t PULSE_WIDTH = 30;
 
-  static const uint8_t attackTime = 73;
-  static const uint8_t decayTime = 74;
-  static const uint8_t sustainLevel = 75;
-  static const uint8_t releaseTime = 76;
+	/// Attack time
+	static const uint8_t ATTACK_TIME   = 73;
+	/// Decay time
+	static const uint8_t DECAY_TIME    = 74;
+	/// Sustain level
+	static const uint8_t SUSTAIN_LEVEL = 75;
+	/// Release time
+	static const uint8_t RELEASE_TIME  = 76;
 
-  static const uint8_t arpOnOff = 77;
-  static const uint8_t arpTime = 78;
-  static const uint8_t arpMinNotes = 79;
-  static const uint8_t arpDirection = 80;
+	/// Enable/disable the arpeggiator effect
+	static const uint8_t ENABLE_ARPEGGIATOR     = 77;
+	/// Amount of time one arpeggio takes
+	static const uint8_t ARPEGGIO_TIME          = 78;
+	/// Minimum number of notes needed to trigger an arpeggio
+	static const uint8_t MINIMUM_ARPEGGIO_NOTES = 79;
+	/// Direction arpeggio travels in (forward, reverse or random)
+	static const uint8_t ARPEGGIO_DIRECTION     = 80;
 
-  // Store the current settings in the slot of the currently selected preset
-  static const uint8_t storePreset = 102;
+	/// Store the current settings in the slot of the currently selected preset
+	static const uint8_t SAVE_PRESET = 102;
 };
 
 #endif

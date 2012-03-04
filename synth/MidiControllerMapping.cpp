@@ -13,43 +13,43 @@
 
 MidiControllerMapping MidiControllerMapping::controllerList[] = {
     MidiControllerMapping(
-        MidiControllerNumbers::modWheel,
+        MidiControllerNumbers::MODULATION_WHEEL,
         SetParameters::setModWheelLevel),
 
     // LFO controlls
     MidiControllerMapping(
-        MidiControllerNumbers::lfoFreq,
+        MidiControllerNumbers::LFO_FREQUENCY,
         SetParameters::setLfoFreq),
     MidiControllerMapping(
-        MidiControllerNumbers::lfoType,
+        MidiControllerNumbers::LFO_TYPE,
         SetParameters::setLfoType),
 
     // Oscillator settings
     MidiControllerMapping(
-        MidiControllerNumbers::oscLevel1,
+        MidiControllerNumbers::VCO1_LEVEL,
         SetParameters::setOscLevel1),
     MidiControllerMapping(
-        MidiControllerNumbers::oscWaveform1,
+        MidiControllerNumbers::VCO1_WAVEFORM,
         SetParameters::setOscWaveform1),
 
     MidiControllerMapping(
-        MidiControllerNumbers::oscLevel2,
+        MidiControllerNumbers::VCO2_LEVEL,
         SetParameters::setOscLevel2),
     MidiControllerMapping(
-        MidiControllerNumbers::oscWaveform2,
+        MidiControllerNumbers::VCO2_WAVEFORM,
         SetParameters::setOscWaveform2),
     MidiControllerMapping(
-        MidiControllerNumbers::oscOffset2,
+        MidiControllerNumbers::VCO2_NOTE_OFFSET,
         SetParameters::setOscOffset2),
 
     MidiControllerMapping(
-        MidiControllerNumbers::oscLevel3,
+        MidiControllerNumbers::VCO3_LEVEL,
         SetParameters::setOscLevel3),
     MidiControllerMapping(
-        MidiControllerNumbers::oscWaveform3,
+        MidiControllerNumbers::VCO3_WAVEFORM,
         SetParameters::setOscWaveform3),
     MidiControllerMapping(
-        MidiControllerNumbers::oscOffset3,
+        MidiControllerNumbers::VCO3_NOTE_OFFSET,
         SetParameters::setOscOffset3),
 
 //    MidiControllerMapping(
@@ -58,54 +58,54 @@ MidiControllerMapping MidiControllerMapping::controllerList[] = {
 
     // Set pitch bending range
     MidiControllerMapping(
-        MidiControllerNumbers::pitchBendRange,
+        MidiControllerNumbers::PITCHBEND_RANGE,
         SetParameters::setBendRange),
 
     // Set pulse width
     MidiControllerMapping(
-        MidiControllerNumbers::pulseWidth,
+        MidiControllerNumbers::PULSE_WIDTH,
         SetParameters::setPulseWidth),
 
     // Portamento Controlls
     MidiControllerMapping(
-        MidiControllerNumbers::portamentoOnOff,
+        MidiControllerNumbers::ENABLE_PORTAMENTO,
         SetParameters::enablePortamento),
     MidiControllerMapping(
-        MidiControllerNumbers::portamentoTime,
+        MidiControllerNumbers::PORTAMENTO_TIME,
         SetParameters::setPortamentoTime),
 
     // Envelope timing and level
     MidiControllerMapping(
-        MidiControllerNumbers::attackTime,
+        MidiControllerNumbers::ATTACK_TIME,
         SetParameters::setAttackTime),
     MidiControllerMapping(
-        MidiControllerNumbers::decayTime,
+        MidiControllerNumbers::DECAY_TIME,
         SetParameters::setDecayTime),
     MidiControllerMapping(
-        MidiControllerNumbers::sustainLevel,
+        MidiControllerNumbers::SUSTAIN_LEVEL,
         SetParameters::setSustainLevel),
     MidiControllerMapping(
-        MidiControllerNumbers::releaseTime,
+        MidiControllerNumbers::RELEASE_TIME,
         SetParameters::setReleaseTime),
 
     // Arpeggiator settings
     MidiControllerMapping(
-        MidiControllerNumbers::arpOnOff,
+        MidiControllerNumbers::ENABLE_ARPEGGIATOR,
         SetParameters::enableArpeggio),
     MidiControllerMapping(
-        MidiControllerNumbers::arpMinNotes,
+        MidiControllerNumbers::MINIMUM_ARPEGGIO_NOTES,
         SetParameters::setArpeggioMinNotes),
     MidiControllerMapping(
-        MidiControllerNumbers::arpTime,
+        MidiControllerNumbers::ARPEGGIO_TIME,
         SetParameters::setArpeggioTime),
     MidiControllerMapping(
-        MidiControllerNumbers::arpDirection,
+        MidiControllerNumbers::ARPEGGIO_DIRECTION,
         SetParameters::setArpeggioDirection),
 
     // Store and load presets
     // TODO - Probably should take these out of MIDI and only use surface controlls. 
     MidiControllerMapping(
-        MidiControllerNumbers::storePreset,
+        MidiControllerNumbers::SAVE_PRESET,
         PresetManager::storePreset),
 
     // Signifies the end of the list

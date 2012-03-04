@@ -7,7 +7,6 @@
 
 #include "ANoteReceiver.h"
 #include "ANoteTransmitter.h"
-#include "OscillatorOutput.h"
 #include "PitchbendFreqFilter.h"
 #include "PortamentoFreqFilter.h"
 #include "ITimerCall.h"

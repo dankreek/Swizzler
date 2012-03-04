@@ -29,7 +29,7 @@ uint16_t FreqUtils::noteToFreq( uint8_t noteNum ) {
   int note = noteNum % 12;
 
   // Divides in half for the proper number of octaves
-  // (every right shift is one less octave)
+  // Every right shift lowers the frequency by one octave.
   return ( noteLookupTable[ note ] >> ( 9 - octave ) );
 }
 
