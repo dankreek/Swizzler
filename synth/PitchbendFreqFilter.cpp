@@ -1,8 +1,5 @@
-/*
- * PitchbendFreqFilter.cpp
- *
- *  Created on: Aug 29, 2010
- *      Author: justin
+/** @file PitchbendFreqFilter.cpp
+ *  @date Aug 29, 2010
  */
 
 #include "PitchbendFreqFilter.h"
@@ -14,21 +11,21 @@ void PitchbendFreqFilter::recvOffset(int16_t offset) {
   updateOffset();
 }
 
+// TODO - Why is this not a member of the class?
 int16_t genOffset() {
   int16_t numSchlips;
-  if (MidiInput::pitchbendAmount == 0) {
+
+  if ( MidiInput::pitchbendAmount == 0 ) {
     numSchlips=0;
-  }
-  else if (MidiInput::pitchbendAmount > 0) {
-    numSchlips = MidiInput::pitchbendAmount*Swizzler::bendRange/MidiInput::bendMax;
-  }
-  else {
-    numSchlips = MidiInput::pitchbendAmount*Swizzler::bendRange/(-MidiInput::bendMin);
+  } else if ( MidiInput::pitchbendAmount > 0 ) {
+    numSchlips = MidiInput::pitchbendAmount * Swizzler::bendRange / MidiInput::bendMax;
+  } else {
+    numSchlips = MidiInput::pitchbendAmount * Swizzler::bendRange / ( -MidiInput::bendMin );
   }
 
   return numSchlips;
 }
 
 void PitchbendFreqFilter::updateOffset() {
-  sendSchlipOffset(lastOffset+genOffset());
+  sendSchlipOffset( lastOffset + genOffset() );
 }

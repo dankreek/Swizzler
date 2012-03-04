@@ -32,7 +32,7 @@ public:
   static const int16_t bendMin = -64;
 
   // MIDI command bytes for all the different types of MIDI commands. 
-  // the lower nybble is the MIDI channel number
+  // the lower nibble is the MIDI channel number
   static const unsigned char noteOff = 0x80;
   static const unsigned char noteOn = 0x90;
   static const unsigned char polyAfterTouch = 0xa0;

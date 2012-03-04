@@ -79,6 +79,8 @@ private:
   PitchbendFreqFilter pitchbendFilter;          // Calculated pitch bends
   PortamentoFreqFilter portamentoFilter;
   FreqModFreqFilter freqModFilter;              // Frequency modulation filter
+
+  // TODO - Is this needed?
   OutputFreqFilter outputFilter;
 };
 

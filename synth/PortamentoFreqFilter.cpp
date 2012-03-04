@@ -1,8 +1,5 @@
-/*
- * PortamentoFreqFilter.cpp
- *
- *  Created on: Aug 29, 2010
- *      Author: justin
+/** @file PortamentoFreqFilter.cpp
+ *  @date Aug 29, 2010
  */
 
 #include "PortamentoFreqFilter.h"
@@ -15,72 +12,72 @@ PortamentoFreqFilter::PortamentoFreqFilter() {
 }
 
 void PortamentoFreqFilter::reset() {
-  destPortNote = 0;
-  srcPortNote = 0;
-  curSchlipsOffset = 0;
+  _destPortNote = 0;
+  _srcPortNote = 0;
+  _curSchlipsOffset = 0;
 }
 
 void PortamentoFreqFilter::nextTick() {
-  if (timerCount <= getEffectivePortTime()) {
-    curSchlipsOffset = curSchlipsOffset + offsetIncAmount;
-    timerCount++;
+  if (_timerCount <= _getEffectivePortTime()) {
+    _curSchlipsOffset = _curSchlipsOffset + _offsetIncAmount;
+    _timerCount++;
   }
   else {
-    curSchlipsOffset = 0;
+    _curSchlipsOffset = 0;
   }
 }
 
-void PortamentoFreqFilter::sendEffectiveOffset() {
-  sendSchlipOffset(getEffectiveOffset());
+// TODO - I think this is too highly factored, maybe replace all calls to this with the body of the method
+void PortamentoFreqFilter::_sendEffectiveOffset() {
+	sendSchlipOffset(_getEffectiveOffset());
 }
 
-void PortamentoFreqFilter::startNewGlide() {
-  timerCount=0;
-  int16_t beginSchlip = (srcPortNote-destPortNote)*FreqUtils::schlipsDivs;
+void PortamentoFreqFilter::_startNewGlide() {
+	_timerCount = 0;
+	int16_t beginSchlip = ( _srcPortNote - _destPortNote ) * FreqUtils::schlipsDivs;
 
 
-  offsetIncAmount = -(beginSchlip << linearResolution)/((int16_t)getEffectivePortTime());
-  curSchlipsOffset = (beginSchlip << linearResolution);
+	_offsetIncAmount = -( beginSchlip << LINEAR_RESOLUTION ) / ((int16_t) _getEffectivePortTime() );
+	_curSchlipsOffset = ( beginSchlip << LINEAR_RESOLUTION );
 }
 
-bool PortamentoFreqFilter::isNewNoteStruck() {
-  return (
-      (destPortNote != freqChainContainer->curNoteNum) ||
-      (srcPortNote != freqChainContainer->prevNoteNum));
+bool PortamentoFreqFilter::_isNewNoteStruck() {
+	return (( _destPortNote != freqChainContainer->curNoteNum ) ||
+			( _srcPortNote  != freqChainContainer->prevNoteNum ));
 }
 
-bool PortamentoFreqFilter::hasPrevNoteBeenStruck() {
-  return (freqChainContainer->prevNoteNum != -1);
+bool PortamentoFreqFilter::_hasPrevNoteBeenStruck() {
+	return ( freqChainContainer->prevNoteNum != -1 );
 }
 
 
 void PortamentoFreqFilter::updateOffset() {
-  // If no notes have changed, then simply output the current frequency
-  if (!isNewNoteStruck()) {
+	// If no notes have changed, then simply output the current frequency
+	if (!_isNewNoteStruck()) {
 
 
-  }
-  // If a note has been played start a new glide
-  else {
-    // If there was no previous frequency, go directly to the destination frequency
-    if (!hasPrevNoteBeenStruck()) {
-      freqChainContainer->prevNoteNum = freqChainContainer->curNoteNum;
-      srcPortNote = freqChainContainer->curNoteNum;
-    }
-    else {
-      srcPortNote = freqChainContainer->prevNoteNum;
-    }
+	}
+	// If a note has been played start a new glide
+	else {
+		// If there was no previous frequency, go directly to the destination frequency
+		if (!_hasPrevNoteBeenStruck()) {
+			freqChainContainer->prevNoteNum = freqChainContainer->curNoteNum;
+			_srcPortNote = freqChainContainer->curNoteNum;
+		} else {
+			_srcPortNote = freqChainContainer->prevNoteNum;
+		}
 
-    destPortNote = freqChainContainer->curNoteNum;
+		_destPortNote = freqChainContainer->curNoteNum;
 
-    startNewGlide();
-  }
+		_startNewGlide();
+	}
 
-  sendEffectiveOffset();
+	_sendEffectiveOffset();
 }
 
-uint16_t PortamentoFreqFilter::getEffectivePortTime() {
-  // Note the +1 is because the timer routine gets called every 2ms (divide by 2)
-  return (Swizzler::portamentoTime >> (linearResolution+1));
+uint16_t PortamentoFreqFilter::_getEffectivePortTime() {
+	// TODO - Figure out if this is still accurate. Should probably just measure all time in "ticks" instead of ms
+	// Note the +1 is because the timer routine gets called every 2ms (divide by 2)
+	return ( Swizzler::portamentoTime >> ( LINEAR_RESOLUTION + 1 ) );
 }
 

@@ -1,8 +1,5 @@
-/*
- * OutputFreqFilter.cpp
- *
- *  Created on: Jan 16, 2011
- *      Author: justin
+/** @file OutputFreqFilter.cpp
+ *  @date Jan 16, 2011
  */
 #include "OutputFreqFilter.h"
 
