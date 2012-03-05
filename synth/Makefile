@@ -113,7 +113,7 @@ SIZE = avr-size
 NM = avr-nm
 #AVRDUDE = $(AVR_TOOLS_PATH)/avrdude
 AVRDUDE = avrdude
-REMOVE = rm -f
+REMOVE = rm -rf
 MV = mv -f
 
 # Define all object files.
@@ -239,6 +239,6 @@ $(BIN)/core.a: $(OBJ)
 clean:
 	$(REMOVE) $(BIN)/$(TARGET).hex $(BIN)/$(TARGET).eep $(BIN)/$(TARGET).cof $(BIN)/$(TARGET).elf \
 	$(BIN)/$(TARGET).map i$(BIN)/$(TARGET).sym $(BIN)/$(TARGET).lss $(BIN)/core.a \
-	$(OBJ) $(LST) $(SRC:.c=.s) $(SRC:.c=.d) $(CXXSRC:.cpp=.s) $(CXXSRC:.cpp=.d)
+	$(OBJ) $(LST) $(SRC:.c=.s) $(SRC:.c=.d) $(CXXSRC:.cpp=.s) $(CXXSRC:.cpp=.d) ./html
 
 .PHONY:	all build elf hex eep lss sym program coff extcoff clean bin_dir sizebefore sizeafter
