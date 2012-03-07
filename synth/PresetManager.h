@@ -6,7 +6,7 @@
  */
 
 #include <inttypes.h>
-#include "Preset.h"
+#include "SwizzlerPatch.h"
 #include "ExternalEeprom.h"
 
 #ifndef PRESETHANDLER_H_
@@ -15,7 +15,7 @@
 class PresetManager {
 public:
   // The current controller values that the synth is using
-  static Preset curSettings;
+  static SwizzlerPatch curSettings;
 
   // The current preset number that's loaded
   static uint8_t curPreset;
@@ -27,7 +27,7 @@ public:
   // (the parameter's a dummy parameter so that the function can be hooked into a MidiControllerMapping
   static void storePreset(uint8_t);
 
-  // If this is the first boot of the swizzler, set the default settings
+  // If this is the first boot of the Swizzler, set the default settings
   static void setFactoryDefaults();
 
   // Save the current settings into EEPROM for restore on next bootup
@@ -40,7 +40,7 @@ public:
   static void setDefaultPreset();
 private:
   // Apply each parameter in the passed-in preset
-  static void applyPreset(Preset*);
+  static void applyPreset(SwizzlerPatch*);
 
   static ExternalEeprom presetEeprom;
   static const uint8_t eepromAddress = 0x50;

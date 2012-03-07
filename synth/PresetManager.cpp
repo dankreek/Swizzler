@@ -17,11 +17,11 @@ uint8_t EEMEM savePresetStr[]      = "Save Preset #";
 uint8_t EEMEM loadPresetStr[]      = "Preset #";
 
 ExternalEeprom PresetManager::presetEeprom = ExternalEeprom(eepromAddress);
-Preset PresetManager::curSettings;
+SwizzlerPatch PresetManager::curSettings;
 uint8_t	PresetManager::curPreset;
 
 // This is used to read in a preset from EEPROM before its settings are applied
-Preset readStorage;
+SwizzlerPatch readStorage;
 
 void PresetManager::setFactoryDefaults() {
   SurfaceControlManager::displayOut.isOutputOn = false;
@@ -76,13 +76,13 @@ void PresetManager::setDefaultPreset() {
 
 void PresetManager::storePreset(uint8_t shim) {
   const uint8_t* p = (const uint8_t*)(const void*)&curSettings;
-  uint16_t presetOfs = curPreset * sizeof(Preset);
+  uint16_t presetOfs = curPreset * sizeof(SwizzlerPatch);
 
   // Store preset to external EEPROM
   presetEeprom.writeBlock(
     curPreset * ExternalEeprom::PAGE_SIZE,
     (uint8_t*)(void*)&curSettings,
-    sizeof(Preset));
+    sizeof(SwizzlerPatch));
 
   SurfaceControlManager::displayOut.clear();
   SurfaceControlManager::displayOut.printf(0, (char*)"%16d", curPreset);
@@ -93,15 +93,15 @@ void PresetManager::loadPreset(uint8_t patchNum) {
   if (patchNum > 127) return;
   uint8_t* p = (uint8_t*)&readStorage;
 
-  uint16_t presetOfs = patchNum * sizeof(Preset);
+  uint16_t presetOfs = patchNum * sizeof(SwizzlerPatch);
 
   // Read block from external EEPROM
   presetEeprom.readBlock(
     patchNum*ExternalEeprom::PAGE_SIZE,
     p,
-    sizeof(Preset));
+    sizeof(SwizzlerPatch));
 
-  applyPreset((Preset*)p);
+  applyPreset((SwizzlerPatch*)p);
 
   curPreset = patchNum;
 
@@ -110,7 +110,7 @@ void PresetManager::loadPreset(uint8_t patchNum) {
   SurfaceControlManager::displayOut.writeEepromString(loadPresetStr, 0, 0);
 }
 
-void PresetManager::applyPreset(Preset *presetPtr) {
+void PresetManager::applyPreset(SwizzlerPatch *presetPtr) {
   SetParameters::setLfoFreq(presetPtr->lfoFreq);
   SetParameters::setLfoType(presetPtr->lfoType);
 
