@@ -22,7 +22,7 @@ MidiControllerMapping MidiControllerMapping::controllerList[] = {
         SetParameters::setLfoFreq),
     MidiControllerMapping(
         MidiControllerNumbers::LFO_TYPE,
-        SetParameters::setLfoType),
+        SetParameters::setLfoModulationParameter),
 
     // Oscillator settings
     MidiControllerMapping(

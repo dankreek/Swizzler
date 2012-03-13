@@ -1,8 +1,5 @@
-/*
- * SetParameters.cpp
- *
- *  Created on: Mar 9, 2010
- *      Author: justin
+/** @ file SetParameters.cpp
+ *  @date Mar 9, 2010
  */
 
 #include <inttypes.h>
@@ -15,11 +12,12 @@
 #include "Swizzler.h"
 #include "ArpeggiatorNoteFilter.h"
 
-// Knees to define how midi controls work, and the range for the control
-KnobKnee portTimeKnee = KnobKnee(71, 150, 103, 500, 2000);
+// Curves to define how MIDI controls work, and the range for the control
+// TODO - Make these private members of the class
+KnobKnee portTimeKnee   = KnobKnee(71, 150, 103, 500, 2000);
 KnobKnee attackTimeKnee = KnobKnee(71, 100, 103, 500, 4000);
-KnobKnee decRelTimeKnee = KnobKnee(71, 300, 103, 3000, 24000);	// Decay/release time knee
-KnobKnee arpTimeKnee = KnobKnee(71, 25, 103, 250, 1000);		// Arpeggio time (ms per note)
+KnobKnee decRelTimeKnee = KnobKnee(71, 300, 103, 3000, 24000);
+KnobKnee arpTimeKnee    = KnobKnee(71, 25, 103, 250, 1000);		// Arpeggio time (ms per note)
 
 uint8_t EEMEM portamentoStr[]   = "Portamento";
 uint8_t EEMEM portTimeStr[]     = "Portamento Time";
@@ -39,7 +37,7 @@ uint8_t EEMEM setOscOffset[]    = "Pitch Offset";
 uint8_t EEMEM setOscLevel[]     = "Osc. Level";
 uint8_t EEMEM bendRangeStr[]    = "Bend Range";
 
-char onStr[] = "On";
+char onStr[]  = "On";
 char offStr[] = "Off";
 
 void SetParameters::enablePortamento(uint8_t p) {
@@ -49,20 +47,21 @@ void SetParameters::enablePortamento(uint8_t p) {
 
   SurfaceControlManager::displayOut.clear();
   SurfaceControlManager::displayOut.writeEepromString(portamentoStr, 0, 0);
-  SurfaceControlManager::displayOut.printf(1, (char*)"%10s (%3d)", onOffStr(onOff), p);
+  SurfaceControlManager::displayOut.printf(1, (char*)"%10s (%3d)", _onOffStr(onOff), p);
 }
 
 void SetParameters::setLfoFreq(uint8_t p) {
-  // Note that the actual frequency is p/4. This yields a range of between 0 and 31hz
-  Swizzler::lfoController.sinGenerator.setFrequency(p);
-  PresetManager::curSettings.lfoFreq = p;
 
-  SurfaceControlManager::displayOut.clear();
-  SurfaceControlManager::displayOut.writeEepromString(setLfoFreqStr, 0, 0);
-  SurfaceControlManager::displayOut.printf(1, (char*)"%8dhz (%3d)", p>>2, p);
+	// Note that the actual frequency is p/4. This yields a range of between 0 and 31hz
+	Swizzler::lfoController.sinGenerator.setFrequency(p);
+	PresetManager::curSettings.lfoFreq = p;
+
+	SurfaceControlManager::displayOut.clear();
+	SurfaceControlManager::displayOut.writeEepromString(setLfoFreqStr, 0, 0);
+	SurfaceControlManager::displayOut.printf(1, (char*)"%8dhz (%3d)", p>>2, p);
 }
 
-void SetParameters::setLfoType(uint8_t p) {
+void SetParameters::setLfoModulationParameter(uint8_t p) {
   LfoController::LfoMode mode = (LfoController::LfoMode)p;
   Swizzler::lfoController.setLfoMode(mode);
   PresetManager::curSettings.lfoType = p;
@@ -148,12 +147,12 @@ void SetParameters::enableArpeggio(uint8_t p) {
 
   SurfaceControlManager::displayOut.clear();
   SurfaceControlManager::displayOut.writeEepromString(ArpeggioStr, 0, 0);
-  SurfaceControlManager::displayOut.printf(1, (char*)"%10s (%3d)", onOffStr(onOff), p);
+  SurfaceControlManager::displayOut.printf(1, (char*)"%10s (%3d)", _onOffStr(onOff), p);
 }
 
 void SetParameters::setArpeggioTime(uint8_t p) {
   // Tweaked to make 10 the minimum value.
-  // XXX: Is this the best way to go about it?
+  // TODO Figure out if this is the best way to go about it
   uint16_t arpTime = arpTimeKnee.getValue(p) + 10;
   Swizzler::arp.setArpTime(arpTime);
   PresetManager::curSettings.arpeggioTime = p;
@@ -165,7 +164,7 @@ void SetParameters::setArpeggioTime(uint8_t p) {
 
 void SetParameters::setArpeggioMinNotes(uint8_t p) {
   // Ranges from 1-8
-  uint8_t minNotes =(p >> 4) + 1;
+  uint8_t minNotes = (p >> 4) + 1;
   Swizzler::arp.setMinNotes(minNotes);
   PresetManager::curSettings.arpeggioMinNotes = p;
 
@@ -185,7 +184,7 @@ void SetParameters::setBendRange(uint8_t p) {
   SurfaceControlManager::displayOut.printf(1, (char*)"%5d semi-tones", bendRange);
 }
 
-void SetParameters::setWaveform(uint8_t voiceNum, uint8_t wf) {
+void SetParameters::_setWaveform(uint8_t voiceNum, uint8_t wf) {
   SoundDriver::WaveformType waveForm;
 
   const char* waveName;
@@ -206,6 +205,7 @@ void SetParameters::setWaveform(uint8_t voiceNum, uint8_t wf) {
     waveForm = SoundDriver::squareWave;
     waveName = "Square";
     break;
+    // TODO - The default should be a no-op, it is documented this way
   default:
     waveForm = SoundDriver::noiseWave;
     waveName = "Noise";
@@ -220,7 +220,7 @@ void SetParameters::setWaveform(uint8_t voiceNum, uint8_t wf) {
 }
 
 // @offset is the raw midi controller value (0-127)
-void SetParameters::setVoiceOffset(uint8_t voiceNum, uint8_t offset) {
+void SetParameters::_setVoiceOffset(uint8_t voiceNum, uint8_t offset) {
   int8_t relOfs = (int8_t)(offset >> 2)-16;
   Swizzler::oscillators.setNoteOffset(voiceNum, relOfs);
 
@@ -230,7 +230,7 @@ void SetParameters::setVoiceOffset(uint8_t voiceNum, uint8_t offset) {
   SurfaceControlManager::displayOut.printf(1, (char*)"%5d semi-tones", relOfs);
 }
 
-void SetParameters::setVoiceLevel(uint8_t voiceNum, uint8_t level) {
+void SetParameters::_setVoiceLevel(uint8_t voiceNum, uint8_t level) {
   uint8_t outLevel = level << 1;
   Swizzler::soundChip.setVoiceLevel(voiceNum, outLevel);
 
@@ -241,72 +241,73 @@ void SetParameters::setVoiceLevel(uint8_t voiceNum, uint8_t level) {
 }
 
 void SetParameters::setOscLevel1(uint8_t p) {
-  setVoiceLevel(0, p);
+  _setVoiceLevel(0, p);
   PresetManager::curSettings.voiceLevel1 = p;
 }
 
 void SetParameters::setOscLevel2(uint8_t p) {
-  setVoiceLevel(1, p);
+  _setVoiceLevel(1, p);
   PresetManager::curSettings.voiceLevel2 = p;
 }
 
 void SetParameters::setOscLevel3(uint8_t p) {
-  setVoiceLevel(2, p);
+  _setVoiceLevel(2, p);
   PresetManager::curSettings.voiceLevel3 = p;
 }
 
 void SetParameters::setOscWaveform1(uint8_t p) {
-  setWaveform(0, p);
+  _setWaveform(0, p);
   PresetManager::curSettings.waveform1 = p;
 }
 
 void SetParameters::setOscWaveform2(uint8_t p) {
-  setWaveform(1, p);
+  _setWaveform(1, p);
   PresetManager::curSettings.waveform2 = p;
 }
 
 void SetParameters::setOscWaveform3(uint8_t p) {
-  setWaveform(2, p);
+  _setWaveform(2, p);
   PresetManager::curSettings.waveform3 = p;
 }
 
 void SetParameters::setOscOffset2(uint8_t p) {
-  setVoiceOffset(1, p);
+  _setVoiceOffset(1, p);
   PresetManager::curSettings.freqOffset2 = p;
 }
 
 void SetParameters::setOscOffset3(uint8_t p) {
-  setVoiceOffset(2, p);
+  _setVoiceOffset(2, p);
   PresetManager::curSettings.freqOffset3 = p;
 }
 
-void SetParameters::setArpeggioDirection(uint8_t p) {
-  Swizzler::arp.setArpDirection(ArpeggiatorNoteFilter::ArpeggioDirection(p));
-  PresetManager::curSettings.arpeggioDirection = p;
+void SetParameters::setArpeggioDirection( uint8_t p ) {
+	Swizzler::arp.setArpDirection( ArpeggiatorNoteFilter::ArpeggioDirection( p ) );
+	PresetManager::curSettings.arpeggioDirection = p;
 
-  const char *dirStr;
-  switch(ArpeggiatorNoteFilter::ArpeggioDirection(p)) {
-  case ArpeggiatorNoteFilter::up:
-    dirStr = "Up";
-    break;
-  case ArpeggiatorNoteFilter::down:
-    dirStr = "Down";
-    break;
-  case ArpeggiatorNoteFilter::random:
-    dirStr = "Random";
-    break;
-  }
+	// TODO Define some default behavior
+	const char *dirStr;
+	switch ( ArpeggiatorNoteFilter::ArpeggioDirection( p ) ) {
+		case ArpeggiatorNoteFilter::up:
+			dirStr = "Up";
+			break;
+		case ArpeggiatorNoteFilter::down:
+			dirStr = "Down";
+			break;
+		case ArpeggiatorNoteFilter::random:
+			dirStr = "Random";
+			break;
+	}
 
-  SurfaceControlManager::displayOut.clear();
-  SurfaceControlManager::displayOut.writeEepromString(arpDirectionStr, 0, 0);
-  SurfaceControlManager::displayOut.printf(1, (char*)"%10s (%3d)", dirStr, p);
+	SurfaceControlManager::displayOut.clear();
+	SurfaceControlManager::displayOut.writeEepromString( arpDirectionStr, 0, 0 );
+	SurfaceControlManager::displayOut.printf( 1, (char*)"%10s (%3d)", dirStr, p );
 }
 
 void SetParameters::setModWheelLevel(uint8_t p) {
   Swizzler::modWheelLevel = p;
 }
 
-char* SetParameters::onOffStr(bool isOn) {
+char* SetParameters::_onOffStr(bool isOn) {
   if (isOn) {
     return onStr;
   } else {
