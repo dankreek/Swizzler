@@ -92,7 +92,7 @@ public:
 	 */
 	static void setSustainLevel( uint8_t ccValue );
 	/**
-	 * @param Set the release time of the envelope.
+	 * @brief Set the release time of the envelope.
 	 *
 	 * The release time value is determined by \p decRelTimeKnee. The range is between 0 and 24,000ms.
 	 *
@@ -216,7 +216,7 @@ public:
 	 *
 	 * No notes will play until the keyboard has more than the minimum number of
 	 * notes are played at one time. The minimum number of notes is equal to
-	 * \f$ccValue / 32 + 1\f$ .
+	 * \f$ \frac{ccValue}{32} + 1\f$ .
 	 *
 	 * @param ccValue	MIDI controller value
 	 */
