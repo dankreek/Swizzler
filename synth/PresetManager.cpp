@@ -112,7 +112,7 @@ void PresetManager::loadPreset(uint8_t patchNum) {
 
 void PresetManager::applyPreset(SwizzlerPatch *presetPtr) {
   SetParameters::setLfoFreq(presetPtr->lfoFreq);
-  SetParameters::setLfoType(presetPtr->lfoType);
+  SetParameters::setLfoModulationParameter(presetPtr->lfoType);
 
   SetParameters::setAttackTime(presetPtr->attackTime);
   SetParameters::setDecayTime(presetPtr->decayTime);

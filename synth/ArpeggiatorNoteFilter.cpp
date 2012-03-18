@@ -80,19 +80,21 @@ void ArpeggiatorNoteFilter::setMinNotes(uint8_t minNotes) {
 }
 
 void ArpeggiatorNoteFilter::nextTick() {
-  if ( !isBypassOn ) {
-    if ( noteBuffer.size >= minNotes ) {
-      curTime += 4;
+	if ( !isBypassOn ) {
+		if ( noteBuffer.size >= minNotes ) {
+			// TODO - Verify this is true and put this in a constant somewhere
+			// 4 ticks per millisecond
+			curTime += 4;
 
-      // Switch to the next note
-      if ( curTime >= arpTime ) {
-        curTime = 0;
-        sendNoteOn(noteBuffer.buffer[nextNoteI], 127);
-        incNextI();
-      }
+			// Switch to the next note
+			if ( curTime >= arpTime ) {
+				curTime = 0;
+				sendNoteOn(noteBuffer.buffer[nextNoteI], 127);
+				incNextI();
+			}
 
-    }
-  }
+		}
+	}
 }
 
 void ArpeggiatorNoteFilter::setBypass(bool onOff) {
@@ -122,7 +124,6 @@ void ArpeggiatorNoteFilter::incNextI() {
     nextNoteI  = nextCandidateI;
     break;
   }
-
 
 }
 

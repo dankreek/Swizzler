@@ -28,7 +28,11 @@ public:
   void noteOff(uint8_t noteNumber);
 
   /// Different directions that the arpeggio can travel in
-  enum ArpeggioDirection { up = 0, down = 1, random = 2 };
+  enum ArpeggioDirection {
+	  up = 0,		/*!< 0 - Arpeggios go from lowest note to highest note */
+	  down = 1, 	/*!< 1 - Arpeggios go from highest note to lowest note */
+	  random = 2 	/*!< 2 - A random note from all the notes held down is played */
+  };
 
   /**
    * Set the direction in which the arpeggio will be iterated through

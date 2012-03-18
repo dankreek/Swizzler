@@ -1,5 +1,11 @@
+/** @file SoundDriver.cpp
+ *  @date Jul 20, 2010
+ */
+
 #include "SoundDriver.h"
 #include "HardwareSerial.h"
+
+// TODO - Put these enums somewhere in a location common to this and the sound project
 
 /**
  * Different types of commands available for a voice
@@ -24,9 +30,10 @@ enum GlobalCommandType {
 };
 
 SoundDriver::SoundDriver(uint8_t addy) {
-  twiAddress = addy;
+  _twiAddress = addy;
 }
 
+// TODO - Maybe inline this code?
 void SoundDriver::restartGate() {
   setEnvelopeGate(false);
   setEnvelopeGate(true);

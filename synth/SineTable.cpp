@@ -1,20 +1,17 @@
-/*
- * SineTable.cpp
- *
- *  Created on: Oct 2, 2010
- *      Author: justin
+/** @file SineTable.cpp
+ *  @date Oct 2, 2010
  */
 #include "SineTable.h"
 
 int16_t SineTable::getSine(uint16_t div) {
-  if (div <= sineTableDivisions)
-    return sineTable[div];
-  else if (div <= (sineTableDivisions*2))
-    return sineTable[(sineTableDivisions*2)-div];
-  else if (div <= sineTableDivisions*3)
-    return -sineTable[div-(sineTableDivisions*2)];
+  if (div <= SINE_TABLE_DIVISIONS)
+    return _sineTable[div];
+  else if (div <= (SINE_TABLE_DIVISIONS*2))
+    return _sineTable[(SINE_TABLE_DIVISIONS*2)-div];
+  else if (div <= SINE_TABLE_DIVISIONS*3)
+    return -_sineTable[div-(SINE_TABLE_DIVISIONS*2)];
   else
-    return -sineTable[(sineTableDivisions*4)-div];
+    return -_sineTable[(SINE_TABLE_DIVISIONS*4)-div];
 }
 
 /**
@@ -23,7 +20,7 @@ int16_t SineTable::getSine(uint16_t div) {
  * Note that this is 1/4 of the sine wave, the rest of the wave is calculated by mirroring
  * and flipping the numbers. This yields a range of -255 to 255.
  */
-uint8_t SineTable::sineTable[] = {
+uint8_t SineTable::_sineTable[] = {
   0,   13,  25,  37,  50,  62,  74,  86,
   98,  109, 120, 131, 142, 152, 162, 171,
   180, 189, 197, 205, 212, 219, 225, 231,

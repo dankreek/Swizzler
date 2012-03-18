@@ -1,26 +1,23 @@
-/*
- * SineGenerator.cpp
- *
- *  Created on: Oct 3, 2010
- *      Author: justin
+/** @file SineGenerator.cpp
+ *  @date Oct 3, 2010
  */
 
 #include "SineGenerator.h"
 
 SineGenerator::SineGenerator() {
-  incAmount = 0;
-  idxAccum = 0;
+  _incAmount = 0;
+  _idxAccum = 0;
 }
 
 void SineGenerator::nextTick() {
-  idxAccum += incAmount;
+  _idxAccum += _incAmount;
 }
 
-void SineGenerator::setFrequency(uint16_t freq) {
-  incAmount = (freq*0x10000)/1000;
+void SineGenerator::setFrequency( uint16_t freq ) {
+  _incAmount = ( freq * 0x10000 ) / 1000;
 }
 
 int16_t SineGenerator::getCurValue() {
-  // Convert idxAccum (16 bit) to an index between 0-127 (7 bit)
-  return sineTable.getSine(idxAccum>>9);
+  // Convert _idxAccum (16 bit) to an index between 0-127 (7 bit)
+  return _sineTable.getSine( _idxAccum >> 9 );
 }
