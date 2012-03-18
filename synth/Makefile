@@ -36,13 +36,10 @@
 #
 # $Id$
 
-#TARGET = $(notdir $(CURDIR))
 TARGET = main
-#PORT = /dev/ttyUSB1
-PORT = /dev/ttyUSB*
-UPLOAD_RATE = 19200
-#AVRDUDE_PROGRAMMER = stk500v1
-AVRDUDE_PROGRAMMER = avrispv2
+PORT = usb
+#UPLOAD_RATE = 19200
+AVRDUDE_PROGRAMMER = dragon_isp
 BITCLOCK_DELAY = 2
 MCU = atmega328p
 F_CPU = 16000000
@@ -151,6 +148,7 @@ upload_flash: $(BIN)/$(TARGET).hex
 	$(AVRDUDE) $(AVRDUDE_FLAGS) $(AVRDUDE_WRITE_FLASH)
 	
 upload_eeprom: $(BIN)/$(TARGET).eep
+	sleep 2
 	$(AVRDUDE) $(AVRDUDE_FLAGS) $(AVRDUDE_WRITE_EEPROM)
 	
 verify_eeprom: $(BIN)/$(TARGET).eep	
