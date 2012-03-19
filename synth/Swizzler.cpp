@@ -1,8 +1,5 @@
-/*
- * Swizzler.cpp
- *
- *  Created on: Jan 31, 2010
- *      Author: justin
+/** @file Swizzler.cpp
+ *  @date Jan 31, 2010
  */
 
 #include "Oscillators.h"
