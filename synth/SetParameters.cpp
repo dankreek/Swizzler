@@ -227,7 +227,7 @@ void SetParameters::_setVoiceOffset(uint8_t voiceNum, uint8_t offset) {
   SurfaceControlManager::displayOut.clear();
   SurfaceControlManager::displayOut.printf(0, (char*)"%12d", voiceNum+1);
   SurfaceControlManager::displayOut.writeEepromString(setOscOffset, 0, 0);
-  SurfaceControlManager::displayOut.printf(1, (char*)"%5d semi-tones", relOfs);
+  SurfaceControlManager::displayOut.printf(1, (char*)"%5d semitones", relOfs);
 }
 
 void SetParameters::_setVoiceLevel(uint8_t voiceNum, uint8_t level) {
