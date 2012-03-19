@@ -32,9 +32,9 @@ uint8_t EEMEM attackTimeStr[]   = "Attack";
 uint8_t EEMEM decayTimeStr[]    = "Decay";
 uint8_t EEMEM sustainLevelStr[] = "Sustain";
 uint8_t EEMEM releaseTimeStr[]  = "Release";
-uint8_t EEMEM setWaveformStr[]  = "Set Waveform";
-uint8_t EEMEM setOscOffset[]    = "Pitch Offset";
-uint8_t EEMEM setOscLevel[]     = "Osc. Level";
+uint8_t EEMEM setWaveformStr[]  = "Waveform VCO";
+uint8_t EEMEM setOscOffset[]    = "Offset VCO";
+uint8_t EEMEM setOscLevel[]     = "Level VCO";
 uint8_t EEMEM bendRangeStr[]    = "Bend Range";
 
 char onStr[]  = "On";
@@ -225,7 +225,7 @@ void SetParameters::_setVoiceOffset(uint8_t voiceNum, uint8_t offset) {
   Swizzler::oscillators.setNoteOffset(voiceNum, relOfs);
 
   SurfaceControlManager::displayOut.clear();
-  SurfaceControlManager::displayOut.printf(0, (char*)"%14d", voiceNum+1);
+  SurfaceControlManager::displayOut.printf(0, (char*)"%12d", voiceNum+1);
   SurfaceControlManager::displayOut.writeEepromString(setOscOffset, 0, 0);
   SurfaceControlManager::displayOut.printf(1, (char*)"%5d semi-tones", relOfs);
 }
@@ -235,7 +235,7 @@ void SetParameters::_setVoiceLevel(uint8_t voiceNum, uint8_t level) {
   Swizzler::soundChip.setVoiceLevel(voiceNum, outLevel);
 
   SurfaceControlManager::displayOut.clear();
-  SurfaceControlManager::displayOut.printf(0, (char*)"%12d", voiceNum+1);
+  SurfaceControlManager::displayOut.printf(0, (char*)"%11d", voiceNum+1);
   SurfaceControlManager::displayOut.writeEepromString(setOscLevel, 0, 0);
   SurfaceControlManager::displayOut.printf(1, (char*)"%12d/254", outLevel);
 }
