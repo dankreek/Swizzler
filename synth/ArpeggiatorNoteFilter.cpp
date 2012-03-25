@@ -32,7 +32,7 @@ void ArpeggiatorNoteFilter::noteOn(uint8_t noteNumber, uint8_t velocity) {
       Swizzler::soundChip.restartGate();
 //    }
 
-    // Pass note through to next note reciever
+    // Pass note through to next note receiver
     sendNoteOn(noteNumber, velocity);
   // Do the arpeggiating
   } else {

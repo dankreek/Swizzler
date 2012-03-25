@@ -1,8 +1,5 @@
-/*
- * SurfaceControlManager.cpp
- *
- *  Created on: Jul 4, 2010
- *      Author: justin
+/** @file SurfaceControlManager.cpp
+ *  @date Jul 4, 2010
  */
 
 #include "SurfaceControlManager.h"

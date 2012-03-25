@@ -43,7 +43,7 @@ class KeypadInput {
      * Decrement the debounce counter
      */
     static inline void decCounter() {
-      if (debounceCounter >=0) debounceCounter--;
+      if ( debounceCounter >= 0 ) debounceCounter--;
     }
 
     static uint16_t debounceTime;
