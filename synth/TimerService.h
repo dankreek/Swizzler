@@ -1,10 +1,5 @@
-/*
- * TimerService.h
- *
- * This class represents one timer service. It is called
- *
- *  Created on: Oct 9, 2010
- *      Author: justin
+/** @file TimerService.h
+ *  @date Oct 9, 2010
  */
 
 #ifndef TIMERSERVICE_H_
@@ -13,6 +8,14 @@
 #include <inttypes.h>
 #include "ITimerCall.h"
 
+/**
+ * This class represents one timer service. This is currently
+ * not being used, but it may be a good idea to implement this.
+ *
+ * TODO - Implement this?
+ *
+ * @author Justin May <may.justin@gmail.com>
+ */
 class TimerService {
 public:
   /**

@@ -1,8 +1,5 @@
-/*
- * TimerService.cpp
- *
- *  Created on: Oct 9, 2010
- *      Author: justin
+/** @file TimerService.cpp
+ *  @date Oct 9, 2010
  */
 
 #include "TimerService.h"

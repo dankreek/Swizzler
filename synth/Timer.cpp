@@ -1,3 +1,7 @@
+/** @file Timer.cpp
+ *  @date Aug 1, 2010
+ */
+
 #include <avr/interrupt.h>
 #include <avr/io.h>
 #include <avr/pgmspace.h>
@@ -7,8 +11,7 @@
 
 // Call timer services
 ISR(TIMER0_OVF_vect) {
-  Swizzler::msCounter++;
-
+  Swizzler::tickCounter++;
 }
 
 void Timer::init() {

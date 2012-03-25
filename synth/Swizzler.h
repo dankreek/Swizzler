@@ -40,7 +40,7 @@ public:
   // The bend range is measured in schlips (like cents but 32 divisions instead of 100 between half-steps)
   static int16_t bendRange;
 
-  static uint16_t msCounter;    // Incremented once every millisecond
+  static uint16_t tickCounter;    // Incremented once every millisecond
   static const int ledPin = 13;
 
 

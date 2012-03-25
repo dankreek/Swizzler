@@ -24,7 +24,7 @@ int16_t Swizzler::bendRange;
 uint8_t Swizzler::modWheelLevel;
 
 SoundDriver Swizzler::soundChip = SoundDriver(0x70);
-uint16_t Swizzler::msCounter = 0;
+uint16_t Swizzler::tickCounter = 0;
 
 void Swizzler::handlePitchBend() {
   freqModEffectChain.update();
@@ -107,14 +107,14 @@ void Swizzler::setLed(bool onOff) {
  * ISR.
  */
 void Swizzler::mainLoop() {
-  uint16_t lastMs=msCounter;
+  uint16_t lastMs=tickCounter;
 
   while (true) {
     // Only call these services once every millisecond
-    if (lastMs != msCounter) {
-      lastMs = msCounter;
+    if (lastMs != tickCounter) {
+      lastMs = tickCounter;
 
-      if ((msCounter % 2) == 0) {
+      if ((tickCounter % 2) == 0) {
         lfoController.nextTick();
         freqModEffectChain.nextTick();
         arp.nextTick();

@@ -39,7 +39,7 @@
 #TARGET = $(notdir $(CURDIR))
 TARGET = main
 #PORT = /dev/ttyUSB1
-PORT = /dev/ttyUSB*
+PORT = usb
 UPLOAD_RATE = 19200
 #AVRDUDE_PROGRAMMER = stk500v1
 AVRDUDE_PROGRAMMER = avrispv2
